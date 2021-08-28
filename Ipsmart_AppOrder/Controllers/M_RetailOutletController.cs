@@ -244,6 +244,26 @@ namespace Improvar.Controllers
         //    return PartialView("_UPLOADDOCUMENTS", VE);
 
         //}
+        public ActionResult GetPartyDetails(string val, string Code)
+        {
+            try
+            {
+                var str = Master_Help.SLCD_help(val);
+                if (str.IndexOf("='helpmnu'") >= 0)
+                {
+                    return PartialView("_Help2", str);
+                }
+                else
+                {
+                    return Content(str);
+                }
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message + ex.InnerException);
+            }
+        }
         public ActionResult SAVE(FormCollection FC, RetailOutletEntry VE)
         {
             ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));

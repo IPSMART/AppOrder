@@ -1098,5 +1098,50 @@ namespace Improvar
                 return null;
             }
         }
+        public string ITCD_help(string val, string itemType = "")
+        {
+            try
+            {
+                string scm1 = CommVar.CurSchema(UNQSNO);
+                string valsrch = val.ToUpper().Trim();
+                string sql = "";
+                sql += "select a.itcd, a.itnm, a.uomcd, a.mtcd,a.HSNCODE, a.purecd,CNTPCS,c.PPURECD ";
+                sql += " from " + scm1 + ".m_item a, " + scm1 + ".M_CNTRL_HDR b, " + scm1 + ".M_PURE c ";
+                sql += "where a.M_AUTONO=b.M_AUTONO(+) and b.INACTIVE_TAG = 'N' and a.PURECD=c.PURECD(+) ";
+                if (valsrch.retStr() != "") sql += "and ( upper(a.itcd) = '" + valsrch + "')  ";
+                if (itemType.retStr() != "") sql += "and a.ittype in( " + itemType.retSqlformat() + ")  ";
+
+                DataTable rsTmp = SQLquery(sql);
+
+                if (val.retStr() == "" || rsTmp.Rows.Count > 1)
+                {
+                    System.Text.StringBuilder SB = new System.Text.StringBuilder();
+                    for (int i = 0; i <= rsTmp.Rows.Count - 1; i++)
+                    {
+                        SB.Append("<tr><td>" + rsTmp.Rows[i]["itnm"] + "</td><td>" + rsTmp.Rows[i]["itcd"] + "</td><td>" + rsTmp.Rows[i]["uomcd"] + "</td><td>" + rsTmp.Rows[i]["PURECD"] + "</td></tr>");
+                    }
+                    var hdr = "Item Name" + Cn.GCS() + "Item Code" + Cn.GCS() + "UOM" + Cn.GCS() + "Purity Code";
+                    return Generate_help(hdr, SB.ToString());
+                }
+                else
+                {
+                    string str = "";
+                    if (rsTmp.Rows.Count > 0)
+                    {
+                        str = ToReturnFieldValues("", rsTmp);
+                    }
+                    else
+                    {
+                        str = "Invalid Item Code. Please Enter a Valid Item Code !!";
+                    }
+                    return str;
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " " + ex.InnerException;
+            }
+
+        }
     }
 }
