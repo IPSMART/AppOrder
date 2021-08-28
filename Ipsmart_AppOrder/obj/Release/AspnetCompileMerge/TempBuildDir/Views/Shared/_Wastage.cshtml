@@ -1,0 +1,224 @@
+﻿@model Rossell_HO.ViewModels.WastageView
+<script>
+    $(this).ready(function () {
+        $("#main").addClass("ontop");       
+        $('#wasTable').dataTable({ "lengthMenu": [[-1], ["All"]] });
+        $('#wasTable input:text').first().focus();
+        $("#wrapper").draggable({ cursor: "move" });       
+        Gridevent1();
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+        function CloseHelp()
+        {
+            $('#innerDIV').html("");           
+            $("#main").removeClass("ontop");
+        }
+    function Gridevent1() {
+        $('#wasTable input:text').bind("keydown", function (e) {
+            var n = $("#wasTable input:text").length;
+            if (e.which == 13) {
+                e.preventDefault();
+                var nextIndex = $('#wasTable input:text').index(this) + 1;
+                if (nextIndex < n) {
+                    $('#wasTable input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#wasTable input:text').first().focus();
+                }
+            }
+            else if (e.which == 37) {
+                var nextIndex = $('#wasTable input:text').index(this) - 1;
+                if (nextIndex >= 0) {
+                    $('#wasTable input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#wasTable input:text').last().focus();
+                }
+            }
+        });
+        $('#wasTable input:text').on('keydown', function (event) {
+            return isNumber(event, this);
+        });
+        function isNumber(evt, element) {
+            var title = $(element).attr("title");
+            title = $.trim(title);
+            if (title.length <= 0) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode != 190 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                    && (charCode != 110 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                        && ((charCode < 48 && charCode != 8)
+                                || (charCode > 57 && charCode < 96)
+                                || charCode > 105))
+                    return false;
+                return true;
+            }
+            return true;
+        }
+    }
+    $('#wasTable').on('draw.dt', function () {
+        Gridevent1();        
+    });
+    function saveWastage()
+    {
+ //       var table = $('#wasTable').DataTable();
+            
+       
+ //       table
+ //.column(3)
+ //.data()
+ //.each(function (value, index) {
+ //    alert('Data in index: ' + index + ' is: ' + value);
+ //});
+        $.ajax({
+            url: $("#ChildUrl3").val(),
+            type: "POST",
+            data: $('form').serialize(),
+            success: function (result)
+            {
+                $('#partialDIV').html(result);
+                $('#innerDIV').html("");
+                $("#main").removeClass("ontop");                                               
+            }
+        });
+
+    }
+</script>
+<style type="text/css">
+    #textarea {
+        border: none;
+        overflow: auto;
+        height:400px;
+    }
+    
+    #wrapper {
+        background-color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        float: left;
+        border: 1px #D3D3D3 solid;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;                      
+    }
+
+    #innerDIV 
+    {                    
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 700px;
+        height: 400px;
+        margin-top: -200px; 
+        margin-left: -350px;    
+        z-index:999;    
+    }    
+</style>
+
+    <div id="wrapper">
+        @Html.HiddenFor(_ => Model.WStype)
+        @Html.HiddenFor(_ => Model.Invoice)
+        @Html.HiddenFor(_ => Model.Wtype)
+        @Html.HiddenFor(_ => Model.CHESTSLF)
+        @Html.HiddenFor(_ => Model.CHESTSLT)
+        <div style="height:30px;width:100%;background-color:peru;vertical-align:middle; font-weight:bold">
+            <table id="tableHeader" width="100%" cellpadding="2px" cellspacing="3px">
+                <tr>
+                    <td align="center" style="width:90%; color:white">Wastage Entry</td>
+                    <td align="center" style="width:10%">
+                        <span title="Close" onclick="CloseHelp();" class="glyphicon glyphicon-off" style="color:black;vertical-align:middle;cursor:pointer;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h5 style="font-weight:bold;color:mediumblue">@Model.WStype</h5></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div><br />
+        <div id="textarea" style="padding:5px; font-size:11px">
+            @Html.ValidationSummary(true)
+            <table id="wasTable" class="table-hover" cellpadding="5px" cellspacing="5px" width="100%">
+                <thead style="background-color:grey; color:white">
+                    <tr>
+                        <th style="border-left:1px solid gainsboro;border-top-left-radius:10px">SL</th>
+                        <th>Inv No</th>
+                        <th>Start No</th>
+                        <th>End No</th>
+                        <th>Gross WT</th>
+                        <th>Pkg No</th>
+                        <th>Qty</th>
+                        <th>Weight</th>
+                        <th style="border-right:1px solid gainsboro;border-top-right-radius:10px">Base Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                    if (Model.WS_details != null)
+                    {
+                        int teaCount = Model.WS_details.Count();
+                        for (int idx = 0; idx < teaCount; idx++)
+                        {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(_ => Model.WS_details[idx].SL)
+                                        @Html.HiddenFor(_ => Model.WS_details[idx].SL)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(_ => Model.WS_details[idx].Inv_No)
+                                        @Html.HiddenFor(_ => Model.WS_details[idx].Inv_No)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(_ => Model.WS_details[idx].START_NO)
+                                        @Html.HiddenFor(_ => Model.WS_details[idx].START_NO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(_ => Model.WS_details[idx].END_NO)
+                                        @Html.HiddenFor(_ => Model.WS_details[idx].END_NO)
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(_ => Model.WS_details[idx].GROSS_WT, new { style = "width:80px" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(_ => Model.WS_details[idx].PKG_NO, new { style = "width:80px" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(_ => Model.WS_details[idx].QTY, new { style = "width:80px" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(_ => Model.WS_details[idx].Wastage_Weight, new { style = "width:80px" })
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(_ => Model.WS_details[idx].Weight)
+                                        @Html.HiddenFor(_ => Model.WS_details[idx].Weight)
+                                    </td>
+                                </tr>
+                        }
+                    }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <br />
+            <input type="button" id="btnchildsave" value="Save" class="btn btn-primary" name="btnchildsave" onclick="saveWastage();" />
+            <input type="hidden" name="ChildUrl3" id="ChildUrl3" value="@Url.Action("SaveChildRecord", "Con_FAC_02080000T")" />
+        </div>
+    </div>
+
+ 
+
+

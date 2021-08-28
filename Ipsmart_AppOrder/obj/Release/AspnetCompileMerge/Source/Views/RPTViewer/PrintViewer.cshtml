@@ -1,0 +1,139 @@
+﻿@model Rossell_HO.Models.PrintViewer
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Print Viewer</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+    @if (Model.Portrait == true)
+    {
+        @Styles.Render("~/Content/A4-Portrait.css")
+    }
+    else
+    {
+        @Styles.Render("~/Content/A4-Landscep.css")
+    }   
+    @Styles.Render("~/Content/bootstrap.css")
+    <style>
+        .side-by-side {
+            float: left;
+            padding: 10px;
+        }
+    </style>
+    <style type="text/css" media="print">
+        
+        .dontprint {
+            display: none;           
+        }
+       
+    </style>
+    <script>
+        function GOTO()
+        {
+            var id = document.getElementById("pagenum").value;
+            window.location.hash = '#'+id;
+        }
+        function Showoff()
+        {
+            $("#floatDiv").hide();
+        }
+    </script>   
+    <script src="~/Scripts/jquery.min.js" type="text/javascript"></script>
+    <script language="javascript">
+
+            $(document).ready(function(){
+
+         //on window scroll fire it will call a function.
+
+                $(window).scroll(function () {
+
+         //after window scroll fire it will add define pixel added to that element.
+
+                    set = $(document).scrollTop()+"px";
+
+        //this is the jQuery animate function to fixed the div position after scrolling.
+
+                    $('#floatDiv').animate({ top: set }, { duration: 1000, queue: false });
+
+                });
+
+            });
+
+    </script>  
+</head>
+<body>  
+   
+    <form target="_blank">
+        <div class="divMain">
+            <div id="floatDiv" class="dontprint container">
+                @{ MyGlobal.MyGlobalString = "";}
+               
+                @if (Model.Off_Floting == true)
+                {
+                    Html.RenderPartial("_DownloadButton");
+                }
+                @{MyGlobal.ReportName = @Model.ReportName.ToString(); }
+            </div>
+
+            <div class="container">                
+                @for (int i = 0; i <= Model.NOPage - 1; i++)
+                {
+                    int id = i + 1;
+                    <div class="page">
+                        <div id=@id class="EveryPageFooter">
+                            @if (i == 0)
+                            {
+                                <h2><span style="color:blue;font-size:24px">@Model.Vname</span>  <br /><span style="font-size:20px">@Model.Title</span> </h2>
+                                <p><h4>@Model.Para1</h4></p>
+                                <p>@Model.Para2</p>
+                                <hr />
+                                <div style="display:none">
+                                    @{ 
+                                        MyGlobal.MyGlobalString = MyGlobal.MyGlobalString + "<table align='left' width='100%'><tr><td colspan='5'><h2><span style='color:blue;font-size:24px'>" + Model.Vname + "</span><br/><span style='font-size:20px'>" + Model.Title + "</span></h2></td></tr><tr><td colspan='5'><p><h4>" + Model.Para1 + "</h4></p></td></tr><tr><td colspan='5'><p>" + Model.Para2 + "</p></td></tr></table><hr />";
+                                    }
+                                </div>                                
+                             }
+                            @if (i > 0 && Model.RepetedHeader == true)
+                            {
+                                <h2><span style="color:blue;font-size:24px">@Model.Vname</span>  <br /><span style="font-size:20px">@Model.Title</span></h2>
+                                <p><h4>@Model.Para1</h4></p>
+                                <p>@Model.Para2</p>
+                                <hr />
+                                <div style="display:none">
+                                    @{ 
+                                        MyGlobal.MyGlobalString = MyGlobal.MyGlobalString + "<table align='left' width='100%'><tr><td colspan='5'><h2><span style='color:blue;font-size:24px'>" + Model.Vname + "</span><br/><span style='font-size:20px'>" + Model.Title + "</span></h2></td></tr><tr><td colspan='5'><p><h4>" + Model.Para1 + "</h4></p></td></tr><tr><td colspan='5'><p>" + Model.Para2 + "</p></td></tr></table><hr/>";
+                                    }
+                                </div>
+                              }
+                            @(new HtmlString(Model.SetReportContaint[i].GetHtml))
+                            <div style="display:none">
+                                @{ MyGlobal.MyGlobalString = MyGlobal.MyGlobalString + Model.SetReportContaint[i].GetHtml;}
+                            </div>                          
+                            @if (i == Model.NOPage - 1)
+                            {
+                                <br />
+                                <hr />
+                                <span style="font-size:10px;">@Model.StaticFooter</span>
+                                <div style="display:none">
+                                    @{ 
+                                        MyGlobal.MyGlobalString = MyGlobal.MyGlobalString + "</br><hr/><span style='font-size:10px;'>" + Model.StaticFooter + "</span>";
+                                    }
+                                </div>                               
+                             }
+                        </div>
+                        <div align="right" style="font-size:12px">Page @id of @Model.NOPage</div>
+                        <div style="display:none;page-break-after: always;">
+                            @( MyGlobal.MyGlobalString = MyGlobal.MyGlobalString + "<div align='right' style='font-size:12px'>Page " + id + " of " + Model.NOPage + "</div>")
+                        </div>                      
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿@model Rossell_HO.ViewModels.M_BrokerTaxView    
+<div class="editor-label">
+    @Html.Label("", "Select Tax Head")
+</div>
+<div class="editor-label">
+    <table id="childexm" cellpadding="2px" cellspacing="2px">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i <= Model.M_BROKER_TAX_DET.Count - 1; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(_ => Model.M_BROKER_TAX_DET[i].SLNO)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => Model.M_BROKER_TAX_DET[i].TAXCODE, new SelectList(Model.getTaxHead, "Value", "Text"), "--Select TaxHead--", new { @class = "form-control", id = "taxcode_" + i.ToString() })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => Model.M_BROKER_TAX_DET[i].ONFIELD, new SelectList(Model.getOnField, "Value", "Text"), "--Select On Field Head--", new { @class = "form-control", id = "onfield_" + i.ToString() })
+                    </td> 
+                    <td>OR</td>                   
+                    <td>
+                        @Html.TextBoxFor(model=> Model.M_BROKER_TAX_DET[i].USE_FORMULA,new { @class = "form-control",id="for_" + i.ToString(), placeholder = "Formula Area", style = "text-transform:uppercase" })
+                    </td>
+                    <td>
+                        <span style="color:crimson; cursor:pointer" onclick="deletechildrow('@Model.M_BROKER_TAX_DET[i].SLNO');">Click to Delete</span>
+                        @Html.HiddenFor(_ => Model.M_BROKER_TAX_DET[i].BROKER_CODE)
+                        @Html.HiddenFor(_ => Model.M_BROKER_TAX_DET[i].SLNO)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<p>
+    @if (Model.M_BROKER_TAX_DET.Any())
+    {
+        <input type="submit" value="Save" class="btn btn-success" onclick="return valid();" />
+        <input type="reset" value="Reset" class="btn btn-info" onclick="removediv();" />
+    }    
+</p>

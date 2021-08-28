@@ -1,0 +1,36 @@
+﻿@model Rossell_HO.Models.PrintViewer
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Print Viewer</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+    @Styles.Render("~/Content/bootstrap.css")    
+</head>
+<body>
+    <div class="container">
+       
+            <div class="table-responsive">
+              
+                        <h2><span style="color:blue;font-size:24px">@Model.Vname</span>  <br /><span style="font-size:20px">@Model.Title</span> </h2>
+                        <p><h4>@Model.Para1</h4></p>
+                        <p>@Model.Para2</p>
+                        <hr />
+               
+                @(new HtmlString(Model.SetReportContaint[0].GetHtml))
+               
+                    <br />
+                        <hr />
+                        <span style="font-size:10px;">@Model.StaticFooter</span>
+                
+            </div>
+        
+    </div>
+    
+</body>
+</html>

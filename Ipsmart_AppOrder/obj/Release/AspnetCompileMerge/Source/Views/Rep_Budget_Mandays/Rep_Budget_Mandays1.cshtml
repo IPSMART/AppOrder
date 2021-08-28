@@ -1,0 +1,35 @@
+﻿@model Rossell_HO.Models.Rep_Budget_Mandays
+@{
+    ViewBag.Title = "Mandays Budget Vs Actual";
+    Layout = "~/Views/Shared/_Manu.cshtml";
+}
+<form method="post">
+    <h2>Mandays Budget Vs Actual</h2>
+
+    <section class="content-wrapper main-content clear-fix">
+        @using (Html.BeginForm())
+        {
+            <fieldset>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Fdate)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Fdate, new { style = "width:100px" })
+                    @Html.ValidationMessageFor(model => model.Fdate)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Ldate)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Ldate)
+                    @Html.ValidationMessageFor(model => model.Ldate)
+                </div>
+                <br />
+                <p>
+                    <input type="submit" name="submitbutton" value="View Report" class="btn btn-success" />
+                    <input type="submit" name="submitbutton" value="Print Report" class="btn btn-success" />
+                </p>
+            </fieldset>
+        }
+    </section>
+</form>

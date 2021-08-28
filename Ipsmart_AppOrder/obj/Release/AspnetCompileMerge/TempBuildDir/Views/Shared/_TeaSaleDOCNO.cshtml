@@ -1,0 +1,25 @@
+﻿@model Rossell_HO.ViewModels.PreSaleConfirmView
+
+<select name="docno" id="docno" class="form-control">
+    <option value="0">-- Select --</option>
+    @foreach (var item in Model.DOCNO_TEA)
+    {
+        if (TempData["sale_tea_doccode"] != null)
+        {
+            if (TempData["sale_tea_doccode"].ToString() == item.DOCNO)
+            {
+                <option value="@item.DOCNO" selected="selected">@item.DOCNO.ToString()</option>
+            }
+            else
+            {
+                <option value="@item.DOCNO">@item.DOCNO.ToString()</option>
+            }
+        }
+        else
+        {
+            <option value="@item.DOCNO">@item.DOCNO.ToString()</option>
+        }
+    }
+</select>
+
+

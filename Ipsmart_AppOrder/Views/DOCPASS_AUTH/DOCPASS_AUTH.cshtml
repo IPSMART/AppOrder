@@ -1,0 +1,290 @@
+﻿@model Improvar.ViewModels.PassingAuthorityEntry
+@{
+    ViewBag.Title = "Passing Authority";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    string PageControllerName = "DOCPASS_AUTH";
+}
+
+<script src="~/Scripts/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ("@Model.DefaultAction" == "V" || "@Model.DefaultAction" == "D") {
+            modeView();
+        }
+        else if ("@Model.DefaultAction" == "E") {
+            $("#AUTHCD").attr("readonly", "readonly");
+        }
+        else if ("@Model.DefaultAction" == "A") {
+            $('form :input:enabled:visible:not([readonly]):first').focus();
+        }
+        $("#WaitingMode").hide();
+   });
+</script>
+<script>
+   function requiredFieldValidator()
+   {
+       if (!emptyFieldCheck("Enter Name", "AUTHNM")) { return false; }
+       var USERID = $("#M_SIGN_AUTH_USRID").val();
+       if (USERID == "") {
+           msgInfo("Enter User");
+           message_value = "M_SIGN_AUTH_USRID";
+            return false; 
+       }
+       if (!emptyFieldCheck("Enter Designation Code", "DESIGCD")) { return false; }
+        return true;
+   }
+</script>
+<script>
+    @{
+        string mldauto = "";
+        if (@Model.M_SIGN_AUTH != null)
+        {
+            mldauto = Model.M_SIGN_AUTH.M_AUTONO.ToString();
+        }
+        else
+        {
+            mldauto = "";
+        }
+    }
+    function ModifyLogDetails() {
+        if ("@Model.DefaultAction" == "V") {
+            ModifyLogDtl(@mldauto);
+        }
+    }
+</script>
+<script>
+    function input(id, id1) {
+        var str = $("#tempHDD").val().split('/');
+        $("#" + id.id).val(str[0]);
+        $("#" + id1.id).val(str[1].toString());
+    }
+    function SelectDESIGCD(id, DESIGCD, DESIGNM) {
+        if (id == "") {
+            $("#" + DESIGCD.id).val("");
+            $("#" + DESIGNM.id).val("");
+        }
+        else {
+            $.ajax({
+                type: 'GET',
+                url: $("#urlname").val(),
+                data: {
+                    val: id
+                },
+                success: function (result) {
+                    if (result == "0") {
+                        $("#Msgdiv1").show();
+                        $("#info").show();
+                        $("#msg_ok_info").focus();
+                        $("#DESIGCD").val("");
+                        $("#msgbody_info").html("Invalid Code !! ");
+                        message_value = "DESIGCD";
+                  }
+                    else {
+                        $("#tempHDD").val(result);
+                        input(DESIGCD, DESIGNM);
+                    }
+                }
+            });
+        }
+    }
+
+    function inputHB(id, id1) {
+        var str = $("#tempHDD").val().split('/');
+        $("#" + id.id).val(str[0]);
+        $("#" + id1.id).val(str[1].toString());
+    }
+    function SelectEMPCD(id, EMPCD, ENM) {
+        if (id == "") {
+            $("#ENM").val("");
+        }
+        else {
+            $.ajax({
+                type: 'GET',
+                url: $("#Selectempcd").val(),
+                data: {
+                    val: id
+                },
+                success: function (result) {
+                    if (result == "0") {
+                        $("#Msgdiv1").show();
+                        $("#info").show();
+                        $("#EMPCD").val("");
+                        $("#ENM").val("");
+                        $("#btnok").focus();
+                        $("#msgbody_info").html("Invalid Employee Code !! ");
+                        message_value = "EMPCD";
+                    }
+                    else {
+                        $("#tempHDD").val(result);
+                        inputHB(EMPCD, ENM);
+                    }
+                }
+            });
+        }
+    }
+
+
+</script>
+
+
+<script>
+
+    function AddDOCrow() {
+        $.ajax({
+            type: 'POST',
+            url: $("#add_doc_url").val(),
+            data: $('form').serialize(),
+            success: function (result) {
+                $("#partialdivdoc").animate({ marginTop: '-10px' }, 50);
+                $("#partialdivdoc").html(result);
+            }
+        });
+    }
+    function DeleteDOCrow() {
+        $.ajax({
+            type: 'POST',
+            url: $("#del_doc_url").val(),
+            data: $('form').serialize(),
+            success: function (result) {
+                $("#partialdivdoc").animate({ marginTop: '0px' }, 50);
+                $("#partialdivdoc").html(result);
+            }
+        });
+    }
+</script>
+@using (Html.BeginForm())
+{
+    if (Model.DefaultView == true)
+    {
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" id="btnSave" value="@Url.Action("SAVE", PageControllerName)" />
+            <input type="hidden" id="urlname" value="@Url.Action("DesigCode", PageControllerName)" />
+            <input type="hidden" id="Selectempcd" value="@Url.Action("EmployeeCode", PageControllerName)" />
+            <input type="hidden" id="add_doc_url" value="@Url.Action("AddDOCRow", PageControllerName )" />
+            <input type="hidden" id="del_doc_url" value="@Url.Action("DeleteDOCRow", PageControllerName )" />
+            <input type="hidden" id="srhpnl" value="@Url.Action("SearchPannelData", PageControllerName)" />
+            @Html.HiddenFor(s => s.DefaultAction)
+            @Html.HiddenFor(a => a.M_SIGN_AUTH.M_AUTONO)
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#Main">Main</a> </li>
+                <li> <a data-toggle="tab" href="#Documents">Documents</a>  </li>
+            </ul>
+            <div class="tab-content">
+                <div id="Main" class="tab-pane fade in active" style="margin-top: 10px;">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="editor-label" style="margin-top: 6px;">
+                                @Html.Label("", "Code")
+                                <b style="color:Red;">*</b>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.M_SIGN_AUTH.AUTHCD, new { htmlAttributes = new { @class = "form-control", id = "AUTHCD", @style = "text-transform:uppercase;", @placeholder = "Code", maxlength = 5,@TabIndex = -1, @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="editor-label" style="margin-top: 6px;">
+                                @Html.Label("", "Name")
+                                <b style="color:Red;">*</b>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.M_SIGN_AUTH.AUTHNM, new { htmlAttributes = new { @class = "form-control", id = "AUTHNM", @placeholder = "Description", maxlength = 40 } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="editor-label" style="margin-top: 6px;">
+                                @Html.Label("", "User Id")
+                                <b style="color:Red;">*</b>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(model => Model.M_SIGN_AUTH.USRID, new SelectList(Model.DropDown_list, "Value", "Text"),"=====Select=====", new { @class = " form-control" })
+                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="editor-field" style="margin-top: 4px;">
+                                @Html.Label("", "Employee Code")
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.M_SIGN_AUTH.EMPID, new { htmlAttributes = new { @class = "form-control textbox_image", id = "EMPCD", @placeholder = "Code", maxlength = 10, onblur = "SelectEMPCD(this.value,EMPCD,ENM);", onkeyup = "GetHelp('" + @Url.Action("GetEmployeeCode", PageControllerName) + "','EMPCD/ENM','0/1','Select Employee','EMPCD')" } })
+                                <img src="~/Image/search.png" width="20px" height="20px" class="Help_image_button" title="Help" onclick="GetHelp('@Url.Action("GetEmployeeCode", PageControllerName)','EMPCD/ENM','0/1','Select Employee','EMPCD')" />
+
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.M_EMPMAS.ENM, new { htmlAttributes = new { @class = "form-control", id = "ENM", @placeholder = "Employee Name", maxlength = 35, @TabIndex = -1, @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="editor-label" style="margin-top: 6px;">
+                                @Html.Label("", "Designation")
+                                <b style="color:Red;">*</b>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.M_SIGN_AUTH.DESIGCD, new { htmlAttributes = new { @class = "form-control textbox_image", id = "DESIGCD", onkeyup = "GetHelp('" + @Url.Action("GetDesigCode", PageControllerName) + "','DESIGCD/DESIGNM','1/0','Select Designation','DESIGCD')", onblur = "SelectDESIGCD(this.value,DESIGCD,DESIGNM);", @placeholder = "Code", maxlength = 5 } })
+                                <img src="~/Image/search.png" class="Help_image_button" width="20px" height="20px" style="margin-top:5px" title="Help" onclick="GetHelp('@Url.Action("GetDesigCode", PageControllerName)','DESIGCD/DESIGNM','1/0','Select Designation','DESIGCD')" />
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.M_DESIGNATION.DESIGNM, new { htmlAttributes = new { @class = "form-control", id = "DESIGNM", maxlength = 40, @title = "Only for View", @placeholder = "Designation Name", @TabIndex = -1, @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+                    @*00000000000000000000000000*@
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="editor-label" style="margin-top: 6px;">
+                                @Html.Label("", "Non Active ")
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="editor-field" style="margin-top:6px;">
+                                @Html.CheckBoxFor(model => model.Checked)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="Documents" class="tab-pane fade" style="margin-top: 10px;margin-left: 11px;">
+                    <div class="row" style="margin-top: 11px;width:max-content;height:auto;background-color:#c4b9b9">
+                        <div id="partialdivdoc">
+                            @Html.Partial("_UPLOADDOCUMENTS")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+                @ViewBag.ErrorMessage
+                }
+
+                <div class="container">
+                    <div id="helpDIV">
+
+                    </div>
+                </div>
+                }
+

@@ -1,0 +1,8 @@
+﻿@model Rossell_HO.ViewModels.AuctionSaleView
+<select name="saleNo" id="saleNo" class="form-control">
+    <option value="0">-- Select --</option>
+    @foreach (var item in Model.DOCNO_Tea_Sale)
+    {
+        <option value="@item.DOCNO">@item.DOCNO</option>
+    }
+</select>

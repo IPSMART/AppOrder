@@ -1,0 +1,41 @@
+﻿@model Rossell_HO.ViewModels.TaxHeadView
+<div class="editor-label">
+    @Html.LabelFor(model => model.TAXHEAD)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.TAXHEAD, new { @class = "form-control" })
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.TAXPER)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.TAXPER, new { @class = "form-control", onkeydown = "return isNumber(event,this);", id = "TAXPER" })
+</div>
+<div class="editor-label">
+    @Html.Label("", "Select Calculation Type")
+</div>
+<div class="editor-field">
+    <select name="Calcode" id="Calcode" class="form-control">
+        @if (Model.MANUAL == "N")
+        {
+            <option value="N" selected="selected">Auto Calculation</option>
+        }
+        else
+        {
+            <option value="N">Auto Calculation</option>
+        }
+        @if (Model.MANUAL == "Y")
+        {
+            <option value="Y" selected="selected">Manual Calculation</option>
+        }
+        else
+        {
+            <option value="Y">Manual Calculation</option>
+        }
+    </select>
+</div>
+@Html.HiddenFor(model => model.U_NAME)
+@Html.HiddenFor(model => model.U_ENTDT)
+@Html.HiddenFor(model => model.O_USER)
+@Html.HiddenFor(model => model.T_ID)
+@Html.HiddenFor(model => model.TAXCODE)

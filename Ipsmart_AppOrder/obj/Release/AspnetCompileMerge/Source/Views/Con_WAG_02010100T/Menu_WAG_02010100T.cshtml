@@ -1,0 +1,1098 @@
+﻿@model Rossell_HO.ViewModels.AttendanceSheet
+@{
+    ViewBag.Title = "Attendance Entry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery.min.js" type="text/javascript"></script>
+<script>
+
+$(document).ready(function(){
+    $('#example').dataTable({ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] });   
+    getMDek();
+    $('#Fdate').focus();   
+});
+$(document).keydown(function (e) {
+    //if(e.keyCode==82)
+    //{
+    //    $('input[type=submit]#js-reload-details').click();       
+    //}                                         
+    var add = "@Model.DefaultAction";
+    if(add=="A")
+    {
+        if (e.altKey && e.which == 65)
+        {
+            SetAttendance();
+        }
+    }    
+});
+</script>
+
+<script>
+    function getMDek() {
+        $("#divitionLoading").show();
+
+        var options = {
+            url: $("#LocationUrl").val() + "?Dvnid=" + $("#Divid").val(),
+            type: "get"
+        };
+
+        $.ajax(options).done(function (data) {
+            $("#divLocation").html(data);
+            $("#divitionLoading").hide();
+        });
+
+        return false;
+    }
+    function GetAttendence() {
+        $("#popup").css("display", "none")
+        var $form = $(this);
+        var div = $("#Divid").val();
+        var dek = $("#Mdekid").val();
+        var emp = $("#Empid").val();
+        var PriOrder = $("input[name=printorder]:checked").val();
+        $("#printview").val(PriOrder);
+        if (div == "0") {
+            $("#popup").html("<strongh>Select Division</strongh>");
+            $("#popup").show();
+            return false;
+        }
+        if (dek == "0") {
+            $("#popup").html("<strongh>Select Mohurier/Dek</strongh>");
+            $("#popup").show();
+            return false;
+        }
+        if (emp == "0") {
+            $("#popup").html("<strongh>Select Employee Type</strongh>");
+            $("#popup").show();
+            return false;
+        }
+        //$("#hidden_divi").val($("#Divid").val());
+        //$("#hidden_dek").val($("#Mdekid").val());
+        //$("#hidden_ecd").val($("#Empid").val());
+        //$("#hidden_date").val($("#Fdate").val());
+        return true;
+    }
+    function SetAttendance()
+    {       
+        //var url = $("#gridview").val() + "?fdate=" + $("#Fdate").val() + "&divid=" + $("#Divid").val() + "&mdekid=" + $("#Mdekid").val() + "&empid=" + $("#Empid").val();
+        //$("#divitionLoading1").show();
+        $.ajax({
+            type: 'GET',
+            url: $("#gridview").val(),
+            data: {
+                fdate: $("#Fdate").val(),
+                divid: $("#Divid").val(),
+                mdekid: $("#Mdekid").val(),
+                empid: $("#Empid").val()
+            },
+            success: function (result) {
+                $('#partialDIV').html(result);
+                $("#divitionLoading1").hide();
+                $("#btnadd").hide();
+            }
+        });       
+       
+    }
+    function SetEdit(id)
+    {       
+        $.ajax({
+            type: 'GET',
+            url: $("#editview").val(),
+            data: {
+                fdate: $("#Fdate").val(),
+                divid: $("#Divid").val(),
+                mdekid: $("#Mdekid").val(),
+                ecd: $("#Empid").val(),
+                empcd:id
+            },
+            success: function (result) {
+                $('#partialDIV').html(result);
+                $("#divitionLoading1").hide();
+            }
+        });       
+       
+    }
+    function SetDelete(id,div,dek,ecd1)
+    {
+        if (confirm("Are you confirm to delete?"))
+        {
+            $.ajax({
+                type: 'GET',
+                url: $("#deleteview").val(),
+                data: {
+                    fdate: $("#Fdate").val(),
+                    divid: $(div).val(),
+                    mdekid: dek,
+                    ecd: ecd1,
+                    empcd: id
+                },
+                success: function (result) {
+                    $('#partialDIV').html(result);
+                    $("#divitionLoading1").hide();
+                }
+            });
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+</script>
+<script>
+    function SaveValidated() {
+        $("#savepopup").css("display", "none")       
+        var emplid = $("#Iempcd").val();
+        var emplname = $("#lname").html();
+        var kmcdid = $("#Inkmcd").val();
+        var kmcdname = $("#kname").html();
+        if (emplid.length <= 0)
+        {
+            $("#savepopup").html("<strongh>Select Employee ID</strongh>");
+            $("#savepopup").show();
+            return false;
+        }
+        else {
+            if (emplname.length <= 0) {
+                $("#savepopup").html("<strongh>Invalid Employee Name</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+        }
+        //
+        if (kmcdid.length <= 0) {
+            $("#savepopup").html("<strongh>Select KMCD/Legacy Code</strongh>");
+            $("#savepopup").show();
+            return false;
+        }
+        else
+        {
+            if (kmcdname.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Invalid KMCD Description</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else
+            {
+                var kmtype = $('#kmtype').val();
+                if(kmtype=="N")
+                {
+                    var attn = $("#attn").val();
+                    if (attn.length <= 0) {
+                        $("#savepopup").html("<strongh>Enter Attendance</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else
+                    {
+                        if (attn != "0.5" && attn != "1") {
+                            $("#savepopup").html("<strongh>Normal Attendance not correct</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                }
+                else if (kmtype == "E" || kmtype == "C")
+                {
+                    var attn = $("#attn").val();
+                    if (attn.length <= 0) {
+                        $("#savepopup").html("<strongh>Enter Attendance</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else {
+                        if (attn != "0.5" && attn != "1") {
+                            $("#savepopup").html("<strongh>Normal Attendance not correct</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                    var leftyp = $("#leftyp").val();
+                    if (leftyp.length <= 0) {
+                        $("#savepopup").html("<strongh>Enter Leaf Type</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else
+                    {
+                        var leftypdesc = $("#Leafname").html();
+                        if (leftypdesc.length <= 0) {
+                            $("#savepopup").html("<strongh>Invalid Leaf Type</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                    var st = $("#st").val();
+                    var nd = $("#nd").val();
+                    var rd = $("#rd").val();
+                    var th = $("#th").val();
+                    if(st.length==0 && nd.length==0 && rd.length==0 && th.length==0)
+                    {
+                        $("#savepopup").html("<strongh>Leaf Type Half</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                }
+                else if ((kmtype == "S" || kmtype == "L" || kmtype == "M" || kmtype == "H" || kmtype == "P" || kmtype == "U" || kmtype == "Q" || kmtype == "R" || kmtype == "I" || kmtype=="J"))
+                {
+                    var leave = $("#leave").val();
+                    if (leave.length <= 0)
+                    {
+                        $("#savepopup").html("<strongh>Required Leave</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else
+                    {
+                        if (leave != "1")
+                        {
+                            $("#savepopup").html("<strongh>Leave not correct</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                }
+
+            }
+        }
+        //
+        var nsec = $('#n_req_sec').val();
+        if(nsec=="Y")
+        {
+            var sec = $('#nsec').val();
+            var sname = $('#sname').html();
+            if (sec.length <= 0) {
+                $("#savepopup").html("<strongh>Required Section for Normal Attendance</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else {
+                if (sname.length <= 0) {
+                    $("#savepopup").html("<strongh>Invalid Normal Attendance Section Name</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+            }
+        }
+        //
+        var Exkmcd = $('#Exkmcd').val();
+        var ekname = $('#ekname').html();               
+        if (Exkmcd.length > 0)
+        {
+            if (ekname.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Invalid KMCD Code for Extra Hazira</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            var Eattn = $('#Eattn').val();
+            if (Eattn.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Attention Required for Extra Hazira</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else
+            {
+                if (Eattn != "0.5" && Eattn != "1") {
+                    $("#savepopup").html("<strongh>Extra Hazira Attendance not correct</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+            }
+            var e_req_sec = $('#e_req_sec').val();
+            if (e_req_sec == "Y")
+            {
+                var Esec = $('#Esec').val();
+                var esname = $('#esname').html();
+                if (Esec.length <= 0) {
+                    $("#savepopup").html("<strongh>Required Section for Extra Hazira</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+                else {
+                    if (esname.length <= 0) {
+                        $("#savepopup").html("<strongh>Invalid Extra Hazira Section Name</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                }
+            }
+        }
+        //
+        var Oxkmcd = $('#Oxkmcd').val();
+        var Okname = $('#Okname').html();
+        if (Oxkmcd.length > 0)
+        {
+            if (Okname.length <= 0) {
+                $("#savepopup").html("<strongh>Invalid KMCD Code for Over Time</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            var Oattn = $('#Oattn').val();
+            if (Oattn.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Over Hours Required for Over Time(hours should be in minutes)</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else
+            {
+                var houre = parseFloat(Oattn).toFixed(2);
+                if ( houre > 24 || houre <.30)
+                {
+                    $("#savepopup").html("<strongh>Over Time Should be minimum=0.30 and maximum=24</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+            }
+            var o_req_sec = $('#o_req_sec').val();
+            if (o_req_sec == "Y")
+            {
+                var Osec = $('#Osec').val();
+                var osname = $('#osname').html();
+                if (Osec.length <= 0) {
+                    $("#savepopup").html("<strongh>Required Section for Over Time</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+                else {
+                    if (osname.length <= 0) {
+                        $("#savepopup").html("<strongh>Invalid Over Time Section Name</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                }
+            }
+        }
+        //
+        $.ajax({
+            type: 'GET',
+            url: $("#urlname3").val(),
+            data: {
+                empcd: $("#Iempcd").val(),
+                Nkmcd: $("#Inkmcd").val().toUpperCase(),
+                Nattn: $("#attn").val(),
+                NLeave: $("#leave").val(),
+                Nsec: $("#nsec").val(),
+                Nleaftype: $("#leftyp").val(),
+                Nst: $("#st").val(),
+                Nnd: $("#nd").val(),
+                Nrd: $("#rd").val(),
+                Nth: $("#th").val(),
+                Ekmcd: $("#Exkmcd").val().toUpperCase(),
+                Eattn: $("#Eattn").val(),
+                Esec: $("#Esec").val(),
+                Okmcd: $("#Oxkmcd").val().toUpperCase(),
+                Ohours: $("#Oattn").val(),
+                Osec: $("#Osec").val(),
+                Fdate: $("#Fdate").val(),
+                Divid: $("#Divid").val(),
+                Mdek: $("#Mdekid").val(),
+                ECD: $("#Empid").val(),
+                MW: $("#MWField").val(),
+                KMtype: $('#kmtype').val()
+            },
+            success: function (result) {                                                            
+                $('#partialDIV').html(result);
+                $("#btnadd").show();
+                $("#js-reload-details").click();
+            }
+        });
+    }
+    function EditValidated() {
+        $("#savepopup").css("display", "none")       
+        var emplid = $("#Iempcd").val();
+        var emplname = $("#lname").html();
+        var kmcdid = $("#Inkmcd").val();
+        var kmcdname = $("#kname").html();
+        if (emplid.length <= 0)
+        {
+            $("#savepopup").html("<strongh>Select Employee ID</strongh>");
+            $("#savepopup").show();
+            return false;
+        }
+        else {
+            if (emplname.length <= 0) {
+                $("#savepopup").html("<strongh>Invalid Employee Name</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+        }
+        //
+        if (kmcdid.length <= 0) {
+            $("#savepopup").html("<strongh>Select KMCD/Legacy Code</strongh>");
+            $("#savepopup").show();
+            return false;
+        }
+        else
+        {
+            if (kmcdname.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Invalid KMCD Description</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else
+            {
+                var kmtype = $('#kmtype').val();
+                if(kmtype=="N")
+                {
+                    var attn = $("#attn").val();
+                    if (attn.length <= 0) {
+                        $("#savepopup").html("<strongh>Enter Attendance</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else
+                    {
+                        if (attn != "0.5" && attn != "1") {
+                            $("#savepopup").html("<strongh>Normal Attendance not correct</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                }
+                else if (kmtype == "E" || kmtype == "C")
+                {
+                    var attn = $("#attn").val();
+                    if (attn.length <= 0) {
+                        $("#savepopup").html("<strongh>Enter Attendance</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else {
+                        if (attn != "0.5" && attn != "1") {
+                            $("#savepopup").html("<strongh>Normal Attendance not correct</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                    var leftyp = $("#leftyp").val();
+                    if (leftyp.length <= 0) {
+                        $("#savepopup").html("<strongh>Enter Leaf Type</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else
+                    {
+                        var leftypdesc = $("#Leafname").html();
+                        if (leftypdesc.length <= 0) {
+                            $("#savepopup").html("<strongh>Invalid Leaf Type</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                    var st = $("#st").val();
+                    var nd = $("#nd").val();
+                    var rd = $("#rd").val();
+                    var th = $("#th").val();
+                    if(st.length==0 && nd.length==0 && rd.length==0 && th.length==0)
+                    {
+                        $("#savepopup").html("<strongh>Leaf Type Half</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                }
+                else if ((kmtype == "S" || kmtype == "L" || kmtype == "M" || kmtype == "H" || kmtype == "P" || kmtype == "U" || kmtype == "Q" || kmtype == "R" || kmtype == "I" || kmtype=="J"))
+                {
+                    var leave = $("#leave").val();
+                    if (leave.length <= 0)
+                    {
+                        $("#savepopup").html("<strongh>Required Leave</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                    else
+                    {
+                        if (leave != "1")
+                        {
+                            $("#savepopup").html("<strongh>Leave not correct</strongh>");
+                            $("#savepopup").show();
+                            return false;
+                        }
+                    }
+                }
+
+            }
+        }
+        //
+        var nsec = $('#n_req_sec').val();
+        if(nsec=="Y")
+        {
+            var sec = $('#nsec').val();
+            var sname = $('#sname').html();
+            if (sec.length <= 0) {
+                $("#savepopup").html("<strongh>Required Section for Normal Attendance</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else {
+                if (sname.length <= 0) {
+                    $("#savepopup").html("<strongh>Invalid Normal Attendance Section Name</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+            }
+        }
+        //
+        var Exkmcd = $('#Exkmcd').val();
+        var ekname = $('#ekname').html();               
+        if (Exkmcd.length > 0)
+        {
+            if (ekname.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Invalid KMCD Code for Extra Hazira</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            var Eattn = $('#Eattn').val();
+            if (Eattn.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Attention Required for Extra Hazira</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else
+            {
+                if (Eattn != "0.5" && Eattn != "1") {
+                    $("#savepopup").html("<strongh>Extra Hazira Attendance not correct</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+            }
+            var e_req_sec = $('#e_req_sec').val();
+            if (e_req_sec == "Y")
+            {
+                var Esec = $('#Esec').val();
+                var esname = $('#esname').html();
+                if (Esec.length <= 0) {
+                    $("#savepopup").html("<strongh>Required Section for Extra Hazira</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+                else {
+                    if (esname.length <= 0) {
+                        $("#savepopup").html("<strongh>Invalid Extra Hazira Section Name</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                }
+            }
+        }
+        //
+        var Oxkmcd = $('#Oxkmcd').val();
+        var Okname = $('#Okname').html();
+        if (Oxkmcd.length > 0)
+        {
+            if (Okname.length <= 0) {
+                $("#savepopup").html("<strongh>Invalid KMCD Code for Over Time</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            var Oattn = $('#Oattn').val();
+            if (Oattn.length <= 0)
+            {
+                $("#savepopup").html("<strongh>Over Hours Required for Over Time(hours should be in minutes)</strongh>");
+                $("#savepopup").show();
+                return false;
+            }
+            else
+            {
+                var houre = parseFloat(Oattn).toFixed(2);
+                if ( houre > 24 || houre <.30)
+                {
+                    $("#savepopup").html("<strongh>Over Time Should be minimum=0.30 and maximum=24</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+            }
+            var o_req_sec = $('#o_req_sec').val();
+            if (o_req_sec == "Y")
+            {
+                var Osec = $('#Osec').val();
+                var osname = $('#osname').html();
+                if (Osec.length <= 0) {
+                    $("#savepopup").html("<strongh>Required Section for Over Time</strongh>");
+                    $("#savepopup").show();
+                    return false;
+                }
+                else {
+                    if (osname.length <= 0) {
+                        $("#savepopup").html("<strongh>Invalid Over Time Section Name</strongh>");
+                        $("#savepopup").show();
+                        return false;
+                    }
+                }
+            }
+        }
+        //
+        $.ajax({
+            type: 'GET',
+            url: $("#urlname5").val(),
+            data: {
+                empcd: $("#Iempcd").val(),
+                Nkmcd: $("#Inkmcd").val().toUpperCase(),
+                Nattn: $("#attn").val(),
+                NLeave: $("#leave").val(),
+                Nsec: $("#nsec").val(),
+                Nleaftype: $("#leftyp").val(),
+                Nst: $("#st").val(),
+                Nnd: $("#nd").val(),
+                Nrd: $("#rd").val(),
+                Nth: $("#th").val(),
+                Ekmcd: $("#Exkmcd").val().toUpperCase(),
+                Eattn: $("#Eattn").val(),
+                Esec: $("#Esec").val(),
+                Okmcd: $("#Oxkmcd").val().toUpperCase(),
+                Ohours: $("#Oattn").val(),
+                Osec: $("#Osec").val(),
+                Fdate: $("#Fdate").val(),
+                Divid: $("#Divid").val(),
+                Mdek: $("#Mdekid").val(),
+                ECD: $("#Empid").val(),
+                MW: $("#MWField").val(),
+                KMtype: $('#kmtype').val(),
+                oldDiv: $('#olddiv').val(),
+                oldDek: $('#olddek').val(),
+                oldecd: $('#oldecd').val(),
+                nentry: $('#nentry').val(),
+                eentry: $('#eentry').val(),
+                oentry: $('#oentry').val(),
+                rattn: $('#rattn').val(),
+                erattn: $('#erattn').val(),
+                orattn: $('#orattn').val(),
+            },
+            success: function (result) {
+
+                $('#partialDIV').html(result);
+            }
+        });
+    }   
+</script>
+@if (Model.PaidHolidayActive == 1)
+{
+    if (Model.PaidHolidayType == "C011")
+    {
+        <h3>Attendance Entry (<span style="color:cornflowerblue;font-weight:bold;font-size:16px">Paid Holiday </span><span style="font-size:15px">found over the selected date ! You can access on </span> <span style="color:blue;font-size:15px;font-weight:bold">"Extra Hazira"</span> <span style="font-size:15px"> and </span><span style="color:crimson;font-size:15px;font-weight:bold">"Over Time"</span><span style="font-size:15px"> only</span>)</h3><h5 style="color:crimson;font-weight:bold">Period - @Session["CompanyFinancial"].ToString()</h5>
+    }
+    else if (Model.PaidHolidayType == "P004")
+    {
+        <h3>Attendance Entry (<span style="color:cornflowerblue;font-weight:bold;font-size:16px">Unpaid Holiday </span><span style="font-size:15px">found over the selected date ! You can access on </span> <span style="color:blue;font-size:15px;font-weight:bold">"Extra Hazira"</span> <span style="font-size:15px"> and </span><span style="color:crimson;font-size:15px;font-weight:bold">"Over Time"</span><span style="font-size:15px"> only</span>)</h3><h5 style="color:crimson;font-weight:bold">Period - @Session["CompanyFinancial"].ToString()</h5>
+    }
+    <input type="hidden" id="pHol" value="1" />
+}
+else
+{
+    <h3>Attendance Entry</h3><h5 style="color:crimson;font-weight:bold">Period - @Session["CompanyFinancial"].ToString()</h5>
+    <input type="hidden" id="pHol" value="0" />
+}
+@using (Html.BeginForm())
+{
+    if (Model.DefaultView == true)
+    {       
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Fdate)
+                </div>
+                <div class="editor-field">                   
+                    @Html.EditorFor(model => model.Fdate, new { id = "Fdate" })                                       
+                    @Html.ValidationMessageFor(model => model.Fdate)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-field">
+                    @Html.LabelFor(model => model.Division)
+                    <select name="Divid" id="Divid" class="form-control" onchange="getMDek()">
+                        <option value="0">-- Select --</option>
+                        @foreach (var item in Model.Division)
+                        {
+                            if (TempData["Atten_entry_divid"].ToString() == item.CODE)
+                            {
+                                <option value="@item.CODE" selected="selected">@item.CODE - @item.DESCN</option>                               
+                            }
+                            else
+                            {
+                                <option value="@item.CODE">@item.CODE - @item.DESCN</option>
+                            }
+                        }
+                    </select>                   
+                    <input type="hidden" name="LocationUrl" id="LocationUrl" value="@Url.Action("FillMDEK", "Con_WAG_02010100T")" />
+                    <span id="divitionLoading" style="display:none;">
+                        <img src="@Url.Content("~/Image/loader.gif")" alt="loading..." height="20px" />
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-field">
+                    @Html.LabelFor(model => model.MDEK)
+                    <div id="divLocation">
+                        <select name="Mdekid" id="Mdekid" class="form-control">
+                            <option value="0">-- Select --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-field">
+                    @Html.LabelFor(model => model.EMPTYPE)
+                    <select name="Empid" id="Empid" class="form-control">
+                        <option value="0">-- Select --</option>
+                        @foreach (var item in Model.EMPTYPE)
+                        {
+                            if (TempData["Atten_entry_ecd"].ToString() == item.CODE)
+                            {
+                                <option value="@item.CODE" selected="selected">@item.CODE - @item.DESCN</option>
+                            }
+                            else
+                            {
+                                <option value="@item.CODE">@item.CODE - @item.DESCN</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label">
+                    @Html.Label("Option")
+                </div>
+                <div class="editor-field">
+                    @using (Html.BeginForm("Menu_WAG_02010100T", "Con_WAG_02010100T", FormMethod.Get))
+                    {
+                        <input type="submit" value="Refresh" class="btn btn-info" id="js-reload-details" onclick="return GetAttendence();" />
+                    }
+                    <input type="hidden" name="gridview" id="gridview" value="@Url.Action("GetGridInfo", "Con_WAG_02010100T")" />
+                    <input type="hidden" name="editview" id="editview" value="@Url.Action("EditEntry", "Con_WAG_02010100T")" />
+                    <input type="hidden" name="deleteview" id="deleteview" value="@Url.Action("DeleteEntry", "Con_WAG_02010100T")" />
+                    <input type="hidden" name="printview" id="printview" value="" />
+                </div>
+                <span id="divitionLoading1" style="display:none;">
+                    <img src="@Url.Content("~/Image/loader.gif")" alt="loading..." height="20px"/>
+                </span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div align="center" style="border:solid 1px gainsboro; padding: 6px 6px 6px 6px; border-radius:10px">
+                @{
+                    if (TempData["printOD"] == null)
+                    {
+                        <input type="radio" name="printorder" value="EMPCD" /> <span style="font-weight:bold; vertical-align:top">&nbsp;Employee Code Wise&nbsp;</span>
+                        <input type="radio" name="printorder" value="CENSUSNO" /><span style="font-weight:bold; vertical-align:top">&nbsp;Census No Wise&nbsp;</span>
+                        <input type="radio" name="printorder" value="SEQ" /><span style="font-weight:bold; vertical-align:top">&nbsp;Sequence No Wise&nbsp;</span>
+                        <input type="radio" name="printorder" value="NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name Wise&nbsp;</span>
+                        <input type="radio" name="printorder" value="MW" /><span style="font-weight:bold; vertical-align:top">&nbsp;Gender Wise&nbsp;</span>
+                        <input type="radio" name="printorder" value="EMPCD,a.NAME" checked="checked" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name and Code Wise&nbsp;</span>
+                    }
+                    else
+                    {
+                        if (TempData["printOD"].ToString() == "EMPCD")
+                        {
+                            <input type="radio" name="printorder" value="EMPCD" checked="checked" /> <span style="font-weight:bold; vertical-align:top">&nbsp;Employee Code Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="CENSUSNO" /><span style="font-weight:bold; vertical-align:top">&nbsp;Census No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="SEQ" /><span style="font-weight:bold; vertical-align:top">&nbsp;Sequence No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="MW" /><span style="font-weight:bold; vertical-align:top">&nbsp;Gender Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="EMPCD,a.NAME"  /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name and Code Wise&nbsp;</span>
+                        }
+                        else if (TempData["printOD"].ToString() == "CENSUSNO")
+                        {
+                            <input type="radio" name="printorder" value="EMPCD"  /> <span style="font-weight:bold; vertical-align:top">&nbsp;Employee Code Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="CENSUSNO" checked="checked"/><span style="font-weight:bold; vertical-align:top">&nbsp;Census No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="SEQ" /><span style="font-weight:bold; vertical-align:top">&nbsp;Sequence No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="MW" /><span style="font-weight:bold; vertical-align:top">&nbsp;Gender Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="EMPCD,a.NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name and Code Wise&nbsp;</span>
+                        }
+                        else if (TempData["printOD"].ToString() == "SEQ")
+                        {
+                            <input type="radio" name="printorder" value="EMPCD" /> <span style="font-weight:bold; vertical-align:top">&nbsp;Employee Code Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="CENSUSNO" /><span style="font-weight:bold; vertical-align:top">&nbsp;Census No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="SEQ" checked="checked"/><span style="font-weight:bold; vertical-align:top">&nbsp;Sequence No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="MW" /><span style="font-weight:bold; vertical-align:top">&nbsp;Gender Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="EMPCD,a.NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name and Code Wise&nbsp;</span>
+                        }
+                        else if (TempData["printOD"].ToString() == "NAME")
+                        {
+                            <input type="radio" name="printorder" value="EMPCD" /> <span style="font-weight:bold; vertical-align:top">&nbsp;Employee Code Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="CENSUSNO" /><span style="font-weight:bold; vertical-align:top">&nbsp;Census No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="SEQ" /><span style="font-weight:bold; vertical-align:top">&nbsp;Sequence No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="NAME" checked="checked"/><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="MW" /><span style="font-weight:bold; vertical-align:top">&nbsp;Gender Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="EMPCD,a.NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name and Code Wise&nbsp;</span>
+                        }
+                        else if (TempData["printOD"].ToString() == "MW")
+                        {
+                            <input type="radio" name="printorder" value="EMPCD" /> <span style="font-weight:bold; vertical-align:top">&nbsp;Employee Code Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="CENSUSNO" /><span style="font-weight:bold; vertical-align:top">&nbsp;Census No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="SEQ" /><span style="font-weight:bold; vertical-align:top">&nbsp;Sequence No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="MW" checked="checked"/><span style="font-weight:bold; vertical-align:top">&nbsp;Gender Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="EMPCD,a.NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name and Code Wise&nbsp;</span>
+                        }
+                        else 
+                        {
+                            <input type="radio" name="printorder" value="EMPCD" /> <span style="font-weight:bold; vertical-align:top">&nbsp;Employee Code Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="CENSUSNO" /><span style="font-weight:bold; vertical-align:top">&nbsp;Census No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="SEQ" /><span style="font-weight:bold; vertical-align:top">&nbsp;Sequence No Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="NAME" /><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="MW" /><span style="font-weight:bold; vertical-align:top">&nbsp;Gender Wise&nbsp;</span>
+                            <input type="radio" name="printorder" value="EMPCD,a.NAME" checked="checked"/><span style="font-weight:bold; vertical-align:top">&nbsp;Employee Name and Code Wise&nbsp;</span>
+                        }
+                    }
+                }
+                
+            </div>                      
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="popup" class="alert alert-info fade in" style="display:none">
+                </div>               
+
+                <div class="table-responsive">
+                    @if (Model.Flag != 0)
+                    {
+                        int i = 1;
+                        <table id="example" class="table table-striped table-hover" cellspacing="0px" width="100%"  style="font-size:10px;">
+                            <thead>
+                                <tr style="font-size:13px;background-color:lightblue; vertical-align:middle;">
+                                    <th colspan="3" align="right" style="border-bottom:1px solid gainsboro;border-top:1px solid gainsboro;border-left:1px solid gainsboro;border-top-left-radius:10px">&nbsp;</th>
+                                    <th colspan="9" align="center" style="border-bottom:1px solid gainsboro;border-left:1px solid gainsboro;border-top:1px solid gainsboro;background-color:olivedrab;color:white;text-align:center" valign="middle">NORMAL ATTENDANCE</th>
+                                    <th colspan="3" align="center" style="border-bottom:1px solid gainsboro;border-left:1px solid gainsboro;border-top:1px solid gainsboro;background-color:royalblue;color:white;text-align:center" valign="middle">EXTRA HAZIRA</th>
+                                    <th colspan="4" align="center" style="border-bottom:1px solid gainsboro;border-left:1px solid gainsboro;border-top:1px solid gainsboro;border-right:1px solid gainsboro;background-color:indianred;color:white;text-align:center;border-top-right-radius:10px" valign="middle">OVER TIME</th>
+                                    @*<th colspan="5" style="border-bottom:1px solid black;border-top:1px solid black"></th>*@
+                                </tr>
+                                <tr style="background-color:cadetblue; font-size:13px;">
+                                    <th style="border-left:1px solid gainsboro">SL</th>
+                                    <th>
+                                        EMPCD
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th style="border-left:1px solid gainsboro">
+                                        KMCD
+                                    </th>
+                                    <th>
+                                        Attn
+                                    </th>
+                                    <th>
+                                        Leave
+                                    </th>
+                                    <th>
+                                        Sec
+                                    </th>
+                                    <th>
+                                        LType
+                                    </th>
+                                    <th style="color:white">
+                                        1st
+                                    </th>
+                                    <th style="color:white">
+                                        2nd
+                                    </th>
+                                    <th style="color:white">
+                                        3rd
+                                    </th>
+                                    <th style="color:white">
+                                        4th
+                                    </th>
+                                    <th style="border-left:1px solid gainsboro">
+                                        KMCD
+                                    </th>
+                                    <th>
+                                        Attn
+                                    </th>
+                                    <th>
+                                        Sec
+                                    </th>
+                                    <th style="border-left:1px solid gainsboro">
+                                        KMCD
+                                    </th>
+                                    <th>
+                                        Hours
+                                    </th>
+                                    <th>
+                                        Sec
+                                    </th>
+                                    @*<th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>*@
+                                    <th style="border-right:1px solid gainsboro">Opt</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr style="background-color:lightblue; font-size:13px; border-top:1px solid gainsboro;border-bottom:1px solid gainsboro;font-weight:bold;">
+                                    <td style="border-left:1px solid gainsboro;border-bottom-left-radius:10px"></td>
+                                    <td></td>
+                                    <td>
+                                        Total -
+                                    </td>
+                                    <td style="border-left:1px solid gainsboro;background-color:olivedrab;color:white"></td>
+                                    <td style="background-color:olivedrab;color:white">
+                                        @Model.NAttn
+                                    </td>
+                                    <td style="background-color:olivedrab;color:white">
+                                        @Model.NLeave
+                                    </td>
+                                    <td style="background-color:olivedrab;color:white"></td>
+                                    <td style="background-color:olivedrab;color:white"></td>
+                                    <td style="background-color:olivedrab;color:white">
+                                        @Model.first
+                                    </td>
+                                    <td style="background-color:olivedrab;color:white">
+                                        @Model.second
+                                    </td>
+                                    <td style="background-color:olivedrab;color:white">
+                                        @Model.third
+                                    </td>
+                                    <td style="background-color:olivedrab;color:white">
+                                        @Model.fourth
+                                    </td>
+                                    <td style="border-left:1px solid gainsboro;background-color:royalblue;color:white"></td>
+                                    <td style="background-color:royalblue;color:white">
+                                        @Model.EAttn
+                                    </td>
+                                    <td style="background-color:royalblue;color:white"></td>
+                                    <td style="border-left:1px solid gainsboro;background-color:indianred;color:white"></td>
+                                    <td style="background-color:indianred;color:white">
+                                        @Model.OHours
+                                    </td>                                   
+                                    @*<td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>*@
+                                    <td style="background-color:indianred;color:white"></td>
+                                    <td style="background-color:indianred;color:white;border-right:1px solid gainsboro;border-bottom-right-radius:10px"></td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach (var item in Model.AttnView)
+                                {
+                                    if (i <= Model.ShowPageItem)
+                                    {
+                                        <tr style="font-size:11px; font-weight:bold">
+                                            <td style="border-left:1px solid gainsboro">
+                                                @Html.DisplayFor(modelItem => item.SLNO)                                               
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EMPCD)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NAME)
+                                            </td>
+                                            <td style="border-left:1px solid gainsboro">
+                                                @Html.DisplayFor(modelItem => item.KMCD)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ATTN)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LEAVE)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SEC_CODE)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ELPCODE)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FIRST)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SECOND)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.THIRD)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FOURTH)
+                                            </td>
+                                            <td style="border-left:1px solid gainsboro">
+                                                @Html.DisplayFor(modelItem => item.EKMCD)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EATTN)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ESECTION)
+                                            </td>
+                                            <td style="border-left:1px solid gainsboro">
+                                                @Html.DisplayFor(modelItem => item.OKMCD)
+                                            </td>
+                                            <td>                                               
+                                                @Html.DisplayFor(modelItem => item.OATTN)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.OSECTION)
+                                            </td>
+                                            @*<td>
+                                                @Html.HiddenFor(modelItem => item.dvsn_code)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(modelItem => item.dek_code)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(modelItem => item.ecd)
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(modelItem => item.ptype)
+                                            </td>*@
+                                            <td style="border-right:1px solid gainsboro">  
+                                                @if (Model.DefaultAction == "E")
+                                                {
+                                                    <a href="#partialDIV" id="" onclick="SetEdit('@item.EMPCD')">Edit</a>
+                                                }
+                                                else if (Model.DefaultAction == "D")
+                                                {
+                                                    <input type="hidden" id="olddiv_@item.EMPCD" value="'@item.dvsn_code','@item.EDVSN','@item.ODVSN'" />
+                                                    <a href="#partialDIV" id="" onclick="SetDelete('@item.EMPCD','#olddiv_@item.EMPCD','@item.dek_code','@item.ecd')">Delete</a>                                                     
+                                                }
+                                                else if (Model.DefaultAction == "A")
+                                                {
+                                                    if (Model.Edit == "E")
+                                                    {
+                                                        <a href = "#partialDIV" id = "" onclick = "SetEdit('@item.EMPCD')" > Edit </a>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                        //i += 1;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                            @*<input type="button" value="Add New" class="btn btn-success" onclick="SetAttendance()" />*@
+                        if (Model.DefaultAction == "A")
+                        {
+                            <a href="#partialDIV" id="btnadd" class="btn btn-success" onclick="return SetAttendance()">Add New</a>
+                        }
+                    }
+                    else
+                    {
+                        if (Model.MLOCK == 1)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="~/Image/CAUTION.png" width="80px" height="100px" />
+                                </div>                               
+                            </div>   
+                            <div class="row">
+                                <div class="col-md-12">
+                                   <h3 style="color:crimson;">Pay sheet has been generated, The selected parameter has been locked!</h3> 
+                                </div>
+                            </div>                        
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div id="partialDIV">
+        </div>
+    }    
+}

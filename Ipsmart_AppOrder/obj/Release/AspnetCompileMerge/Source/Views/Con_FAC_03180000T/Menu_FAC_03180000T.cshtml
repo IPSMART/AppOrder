@@ -1,0 +1,81 @@
+﻿@model Rossell_HO.Models.AuctionChart
+@{
+    ViewBag.Title = "Auction Sales Chart";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+<link rel="stylesheet" href="~/Content/bootstrap-select.css" />
+@Scripts.Render("~/Scripts/Multiple-Select-min.js")
+@Scripts.Render("~/Scripts/bootstrap-select.js")
+<script>
+    function ChkValid()
+    {
+        var fdate = document.getElementById("Fdate").value;
+        var ldate = document.getElementById("Ldate").value;
+        var gcode = document.getElementById("Gcode").value;
+        if (fdate.length <= 0) {
+            var scrpt = $("#Msgdiv").html();
+            $("#Msgdiv").html("<div id='savepopup' class='alert alert-success fade in'><strong> Select From Date</strong></div>" + scrpt);
+            return false;
+        }
+        if (ldate.length <= 0) {
+            var scrpt = $("#Msgdiv").html();
+            $("#Msgdiv").html("<div id='savepopup' class='alert alert-success fade in'><strong> Select To Date</strong></div>" + scrpt);
+            return false;
+        }
+        if(gcode.length<=0)
+        {
+            var scrpt = $("#Msgdiv").html();
+            $("#Msgdiv").html("<div id='savepopup' class='alert alert-success fade in'><strong> Select Garden</strong></div>" + scrpt);
+            return false;
+        }
+    }
+</script>
+<h2>Auction Sales Chart</h2>
+
+<section class="content-wrapper main-content clear-fix">
+    @using (Html.BeginForm())
+    {
+        <fieldset>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Fdate)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Fdate)
+                @Html.ValidationMessageFor(model => model.Fdate)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Ldate)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Ldate)
+                @Html.ValidationMessageFor(model => model.Ldate)
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Garden)
+                    </div>
+
+                    <select id="Gcode" name="Gcode" class="selectpicker" multiple data-live-search="true" data-live-search-placeholder="Search" data-actions-box="true">
+                        <optgroup label="Garden Name">
+                            @foreach (var item in Model.Garden)
+                            {
+                                <option value="@item.CODE">@item.DESCN - @item.CODE</option>
+                            }
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+
+            <br />
+            <p>
+                <input type="submit" formtarget="_blank" name="submitbutton" value="View Report" class="btn btn-success" onclick="return ChkValid();" />
+                <input type="submit" formtarget="_blank" name="submitbutton" value="Print Report" class="btn btn-success" onclick="return ChkValid();" />
+            </p>
+        </fieldset>
+        <div id="Msgdiv">
+            <script>$('#savepopup').fadeTo(2000, 500).slideUp(500, function() {$('#savepopup').slideUp(500);});</script>
+        </div>
+    }
+</section>

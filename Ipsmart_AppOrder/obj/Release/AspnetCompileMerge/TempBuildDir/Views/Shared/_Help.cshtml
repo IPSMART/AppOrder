@@ -1,0 +1,90 @@
+﻿@model System.Data.DataTable
+@using System.Data;
+<script>    
+    $("#helpDIV").ready(function () {
+        $('#helpmnu').dataTable({ "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]] });      
+    });
+    $("#wrapper").draggable({ cursor: "move" });
+    
+    function CloseHelp()
+    {        
+        $('#helpDIV').html("");
+    }
+    function HelpRowClick(id) {        
+        var field = $('#ReferanceFieldID').val();
+        var columnnm = $('#ReferanceColumn').val();
+        var row = document.getElementById(id);
+        var col = document.getElementById("helpmnu").rows[row.rowIndex].cells[columnnm].innerHTML;
+        $("#" + field).val(col);
+        $('#helpDIV').html("");
+    }
+</script>
+<style type="text/css">
+    #textarea {
+        border: none;
+        overflow: auto;
+        height: 400px;
+        width: 100%;
+    }
+
+    #wrapper {
+        background-color:white; border-top-left-radius:10px;border-top-right-radius:10px; float:left;
+         border: 1px #D3D3D3 solid;
+         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 350px;
+        height: 450px;
+    }
+     #helpDIV {   
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -15em; /*set to a negative number 1/2 of your height*/
+    margin-left: -13em; /*set to a negative number 1/2 of your width*/  
+}
+</style>
+<div id="wrapper">
+    <input type="hidden" id="ReferanceFieldID" value="" />
+    <input type="hidden" id="ReferanceColumn" value="" />      
+    <div style="height:30px;width:100%;background-color:peru;vertical-align:middle; font-weight:bold">
+    <table id="tableHeader"  width="100%" cellpadding="3px" cellspacing="3px">
+        <tr>
+            <td align="center" style="width:90%">
+                                            
+            </td>
+            <td align="center" style="width:10%">
+                <span title="Close" onclick="CloseHelp();" class="glyphicon glyphicon-off" style="color:black;vertical-align:middle;cursor:pointer;"></span>
+            </td>
+        </tr>
+    </table>      
+    </div><br />
+    <div id="textarea" style="padding:5px; font-size:11px">
+        <table id="helpmnu" class="table-hover" cellpadding="3px" cellspacing="3px" width="100%">
+            <thead style="background-color:grey; color:white">
+                <tr>
+                    @foreach (DataColumn col in Model.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                    foreach (DataRow row in Model.Rows)
+                    {
+                        <tr id="Hrow_@i.ToString()" onclick="HelpRowClick(this.id)">
+                            @foreach (DataColumn col in Model.Columns)
+                            {
+                                <td>@row[col.ColumnName]</td>
+                            }
+                        </tr>
+                        i += 1;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

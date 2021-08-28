@@ -1,0 +1,55 @@
+﻿@model Improvar.ViewModels.PrintPage
+@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <link rel="stylesheet" href="~/Content/NoMarginPrint.css" type="text/css" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.PAGE_TITLE</title>
+    <style>
+        @@page {
+            margin-left: .20in;
+            margin-right: .20in;
+            margin-top: .20in;
+            margin-bottom: .20in;
+            size: A4 landscape;
+        }
+    </style>
+</head>
+<body>
+    @if (Model.PrintingPageContent != null)
+    {
+        for (int i = 0; i < Model.PrintingPageContent.Count; i++)
+        {//need a heading
+            <div style="page-break-after:always">
+                @if (Model.PrintingPageContent[i].NAME != null)
+                {
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => Model.PrintingPageContent[i].NAME, new { @class = "form-control", style = "resize: none;font-size:x-large;font-weight:bold;border:none;height:24px;", id = "NAME" + i })
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => Model.PrintingPageContent[i].PNTTXT, new { @class = "form-control", style = "font-size:x-large;border:none;width:" + Model.WIDTH + "px;height:" + Model.HEIGHT + "px;", id = "PNTTXT" + i })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div><p>No Data Found. Please Select another Data</p></div>
+    }
+</body>
+</html>

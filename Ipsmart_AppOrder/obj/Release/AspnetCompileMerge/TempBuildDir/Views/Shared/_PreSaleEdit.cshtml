@@ -1,0 +1,250 @@
+﻿@model Rossell_HO.ViewModels.PreSaleConfirmView
+<script>
+    $('#example').on('draw.dt', function () {
+        Gridevent();
+    });
+    $("#partialDIV").ready(function () {
+        $('#example').dataTable({ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] });
+        $('#example input:text').first().focus();
+        $('#saveinfo').hide();
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var options = document.getElementById('Ccode').options;
+        for (var i = 0, n = options.length; i < n ; i++)
+        {
+            if (options[i].value == '@Model.PCD')
+            {
+                document.getElementById("Ccode").selectedIndex = i;
+                break;
+            }
+        }
+        var options1 = document.getElementById('Brcode').options;
+        for (var i = 0, n = options1.length; i < n ; i++) {
+            if (options1[i].value == '@Model.BrokerCode') {
+                document.getElementById("Brcode").selectedIndex = i;
+                break;
+            }
+        }
+        var options2 = document.getElementById('Grcode').options;
+        for (var i = 0, n = options2.length; i < n ; i++) {
+            if (options2[i].value == '@Model.GradeCode') {
+                document.getElementById("Grcode").selectedIndex = i;
+                break;
+            }
+        }
+    });
+    function Gridevent() {
+        $('#example input:text').bind("keydown", function (e) {
+            var n = $("#example input:text").length;
+            if (e.which == 13) {
+                e.preventDefault();
+                var nextIndex = $('#example input:text').index(this) + 1;
+                if (nextIndex < n) {
+                    $('#example input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#example input:text').first().focus();
+                }
+            }
+            else if (e.which == 37) {
+                var nextIndex = $('#example input:text').index(this) - 1;
+                if (nextIndex >= 0) {
+                    $('#example input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#example input:text').last().focus();
+                }
+            }
+        });
+        $('#example input:text').on('keydown', function (event) {
+            return isNumber(event, this);
+        });
+        function isNumber(evt, element) {
+            var title = $(element).attr("title");
+            title = $.trim(title);
+            if (title.length <= 0) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode != 190 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                    && (charCode != 110 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                        && ((charCode < 48 && charCode != 8)
+                                || (charCode > 57 && charCode < 96)
+                                || charCode > 105))
+                    return false;
+                return true;
+            }
+            return true;
+        }
+    }
+    function save() {
+        var row = $("#example > tbody > tr").length;
+        var flag = 0;
+        for (var i = 0; i <= row - 1; i++)
+        {
+            var sale = document.getElementById("sale_" + i).value;
+            var rate = document.getElementById("rate_" + i).value;
+            var check = document.getElementById("check_" + i);
+            if (check.checked)
+            {
+                flag = 1;
+                if (sale.length == 0) {
+                    $('#saveinfo').html("Sale quantity needed at row no : " + (i + 1));
+                    $('#saveinfo').fadeTo(2000, 500).slideUp(500, function () { $('#saveinfo').slideUp(500); });
+                    document.getElementById("sale_" + i).focus();
+                    return false;
+                }
+                if (rate.length == 0)
+                {
+                    $('#saveinfo').html("Sale rate needed at row no : " + (i + 1));
+                    $('#saveinfo').fadeTo(2000, 500).slideUp(500, function () { $('#saveinfo').slideUp(500); });
+                    document.getElementById("rate_" + i).focus();
+                    return false;
+                }
+            }
+        }
+        if('@Model.DefaultAction'=="E")
+        {
+            if (flag == 0) {
+                $('#saveinfo').html("Save not allowed without any selection");
+                $('#saveinfo').fadeTo(2000, 500).slideUp(500, function () { $('#saveinfo').slideUp(500); });
+                return false;
+            }
+        }
+        else if('@Model.DefaultAction'=="D")
+        {
+            if (flag == 0) {
+                $('#saveinfo').html("Delete not allowed without any selection");
+                $('#saveinfo').fadeTo(2000, 500).slideUp(500, function () { $('#saveinfo').slideUp(500); });
+                return false;
+            }
+        }
+
+    }
+
+</script>
+<div class="table-responsive">
+    @Html.ValidationSummary(true)
+    <table id="example" class="table table-striped table-hover" cellspacing="0px" width="100%">
+        <thead>
+            <tr style="font-size:12px; font-weight:bold;background-color:olivedrab;color:white">
+                <th style="border-left:1px solid gainsboro;border-top-left-radius:10px">Select</th>
+                <th>Garden</th>
+                <th>Marks</th>
+                <th>Inv. No.</th>
+                <th>Grade</th>
+                <th>No. of Pkg.</th>
+                <th>Inv. Kgs</th>
+                <th>Kgs</th>
+                <th>Sample</th>
+                <th>Other</th>
+                <th>Rate</th>
+                <th style="border-right:1px solid gainsboro;border-top-right-radius:10px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int teaCount = Model.PreSaleEdit.Count();
+                for (int idx = 0; idx < teaCount; idx++)
+                {
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="border-left:1px solid gainsboro">
+                            @if (Model.PreSaleEdit[idx].REC_DOCNO == null)
+                            {
+                                @Html.CheckBoxFor(_ => Model.PreSaleEdit[idx].Check, new { id = "check_" + idx.ToString() })
+                            }
+                            else
+                            {
+                                <img src="~/Image/tea.png" width="25px" height="25px" title="Sale has been confirmed" />
+                            }                            
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.DisplayFor(_ => Model.PreSaleEdit[idx].GLOCA)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].GLOCA)
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.DisplayFor(_ => Model.PreSaleEdit[idx].MARK)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].MARK)
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.DisplayFor(_ => Model.PreSaleEdit[idx].INVNO)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].INVNO)
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.DisplayFor(_ => Model.PreSaleEdit[idx].GRADE)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].GRADE)
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.DisplayFor(_ => Model.PreSaleEdit[idx].PKG_NO)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].PKG_NO)
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.DisplayFor(_ => Model.PreSaleEdit[idx].INV_QTY)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].INV_QTY)
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.TextBoxFor(_ => Model.PreSaleEdit[idx].QTY, new { style = "width:40px", id = "sale_" + idx.ToString() })
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.TextBoxFor(_ => Model.PreSaleEdit[idx].SAMP_QTY, new { style = "width:40px", id = "sample_" + idx.ToString() })
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.TextBoxFor(_ => Model.PreSaleEdit[idx].OTH_QTY, new { style = "width:40px", id = "other_" + idx.ToString() })
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.TextBoxFor(_ => Model.PreSaleEdit[idx].RATE, new { style = "width:40px", id = "rate_" + idx.ToString() })
+                        </td>
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].DOCNO)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].DOCDT)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].GROSS_WT)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].LOCA)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].SRLNO)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].UNIT)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].START_NO)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].END_NO)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].TARE_WT)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].MFG_FROM)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].MFG_TO)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].SIZE_CODE)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].CROP_YEAR)
+                            @Html.HiddenFor(_ => Model.PreSaleEdit[idx].PACK_DATE)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr style="border-bottom:1px solid gainsboro;background-color:olivedrab">
+                <td style="border-left:1px solid gainsboro;border-bottom-left-radius:10px"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="border-right:1px solid gainsboro;border-bottom-right-radius:10px"></td>
+            </tr>
+        </tfoot>
+    </table>
+    @if (Model.DefaultAction == "A" || Model.DefaultAction == "E")
+    {
+        <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+        <input type="submit" id="btnoption" value="Save" class="btn btn-primary" name="btnSave" onclick="return save();" />
+    }
+    else if (Model.DefaultAction == "D")
+    {
+        <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+        <input type="submit" id="btnoption" value="Delete" class="btn btn-primary" name="btnSave" onclick="return save();" />
+    }
+</div>
+<br />
+<div id='saveinfo' class='alert alert-success fade in'>
+
+</div>

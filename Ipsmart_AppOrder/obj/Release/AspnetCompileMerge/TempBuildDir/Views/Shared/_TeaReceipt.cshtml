@@ -1,0 +1,397 @@
+﻿@model Rossell_HO.ViewModels.TeaReceiptView
+<script>
+    function Gridevent() {
+        $('#example input:text').bind("keydown", function (e) {
+            var n = $("#example input:text").length;
+            if (e.which == 13) {
+                e.preventDefault();
+                var nextIndex = $('#example input:text').index(this) + 1;
+                if (nextIndex < n) {
+                    $('#example input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#example input:text').first().focus();
+                }
+            }
+            else if (e.which == 37) {
+                var nextIndex = $('#example input:text').index(this) - 1;
+                if (nextIndex >= 0) {
+                    $('#example input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#example input:text').last().focus();
+                }
+            }
+        });
+        $('#example input:text').on('keydown', function (event) {
+            return isNumber(event, this);
+        });
+        function isNumber(evt, element)
+        {
+            var title= $(element).attr("title");
+            title=$.trim(title);
+            if(title.length<=0)
+            {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode != 190 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                    && (charCode != 110 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                        && ((charCode < 48 && charCode != 8)
+                                || (charCode > 57 && charCode < 96)
+                                || charCode > 105))
+                    return false;
+                return true;
+            }
+            return true;
+        }
+    }
+    $('#example').on('draw.dt', function () {
+        Gridevent();
+    });
+    $("#partialDIV").ready(function () {
+        $('#example').dataTable({ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] });
+        $('#example input:text').first().focus();
+        $('#newDocumentNo').val('@Model.newDocumentNo.ToString()');
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+    function AddRow()
+    {
+        $("#divitionLoading1").show();
+        $.ajax({
+            type: 'post',
+            url: $("#btnRefresh").val(),
+            data: {
+                Gcode: $("#Gcode").val(),
+                Ucode: $("#Ucode").val(),
+                Action: "@Model.DefaultAction",
+                nrow: $("#n_row").val().length <= 0 ? 1 : $("#n_row").val()
+            },
+            success: function (result) {
+                $('#partialDIV').html(result);
+                $("#divitionLoading1").hide();
+            }
+        });
+    }
+    function ChildData(type,from,to,qty,gross,invno,typewt)
+    {
+        var model = @Html.Raw(Json.Encode(Model));
+        var invno1= document.getElementById(invno).value;
+        var from1= document.getElementById(from).value;
+        var to1= document.getElementById(to).value;
+        var qty1= document.getElementById(qty).value;
+        var gross1= document.getElementById(gross).value;
+        var typewt1= document.getElementById(typewt).value;
+        if(invno1.length<=0)
+        {
+            document.getElementById("innerDIV").innerHTML = "<div id='savepopup1' class='alert alert-success fade in'><strong> Invoice Number Should be needed</strong></div>";
+            return false;
+        }
+        if(from1==null || from1.length<=0)
+        {
+            document.getElementById("innerDIV").innerHTML = "<div id='savepopup1' class='alert alert-success fade in'><strong> Serial From Should be needed</strong></div>";
+            return false;
+        }
+        if(to1.length<=0)
+        {
+            document.getElementById("innerDIV").innerHTML = "<div id='savepopup1' class='alert alert-success fade in'><strong> Serial To Should be needed</strong></div>";
+            return false;
+        }
+        if(qty1.length<=0)
+        {
+            document.getElementById("innerDIV").innerHTML = "<div id='savepopup1' class='alert alert-success fade in'><strong> Quantity Should be needed</strong></div>";
+            return false;
+        }
+        if(gross1.length<=0)
+        {
+            document.getElementById("innerDIV").innerHTML = "<div id='savepopup1' class='alert alert-success fade in'><strong> Gross Weight Should be needed</strong></div>";
+            return false;
+        }
+        if(typewt1.length<=0)
+        {
+            document.getElementById("innerDIV").innerHTML = "<div id='savepopup1' class='alert alert-success fade in'><strong>" + type + " Weight Should be needed</strong></div>";
+            return false;
+        }
+        $.ajax({
+            url: $("#ChildUrl").val(),
+            type: "POST",
+            data: $('form').serialize() + "&type="+type +"&from=" + from1 +"&to=" + to1 + "&qty=" + qty1 + "&gross=" + gross1 +"&invno=" +invno1 +"&typewt=" +typewt1 +"&action=" +"@Model.DefaultAction" ,
+            success: function (result)
+            {
+               $('#innerDIV').html(result);
+            }
+        });
+    }
+</script>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#invoice">Tea Receipt Details</a></li>
+    <li><a data-toggle="tab" href="#testing">Receipt Remarks</a></li>
+</ul>
+<div class="tab-content">
+    <div id="invoice" class="tab-pane fade in active">       
+        <div class="table-responsive">
+            @Html.HiddenFor(_ => Model.Gcode)
+            @Html.HiddenFor(_ => Model.Ucode)
+            @Html.ValidationSummary(true)
+            <input type="hidden" name="ChildUrl" id="ChildUrl" value="@Url.Action("ChildRecord", "Con_FAC_02080000T")" />
+            
+            <table id="example" class="table table-striped table-hover" cellspacing="0px" width="100%">
+                <thead>
+                    <tr style="font-size:12px; font-weight:bold;background-color:olivedrab;color:white">
+                        <th style="border-left:1px solid gainsboro;border-top-left-radius:10px">Select</th>
+                        <th>Inv. No.</th>
+                        <th>Grade</th>
+                        <th>No. of Pkg.</th>
+                        <th>Serial From</th>
+                        <th>Serial To</th>
+                        <th>Consign No</th>
+                        <th>Qty</th>
+                        <th>Gross</th>
+                        <th>Tare</th>
+                        <th>WS</th>
+                        <th>BR</th>
+                        <th>TR</th>
+                        <th>SR PKGS</th>
+                        <th>SR KGS</th>
+                        <th style="border-right:1px solid gainsboro;border-top-right-radius:10px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int teaCount = Model.TeaReceipt.Count();
+                        for (int idx = 0; idx < teaCount; idx++)
+                        {
+                            <tr style="font-size:12px; font-weight:bold;">
+                                <td style="border-left:1px solid gainsboro">
+                                    @Html.CheckBoxFor(_ => Model.TeaReceipt[idx].Check)
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].INVNO, new { style = "width:60px", title = "Inv No", id = "Invno_" + idx.ToString() })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].INVNO)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].INVNO, new { id = "Invno_" + idx.ToString() })
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.DefaultAction == "E")
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].GRADE, new { style = "width:80px", id = "grade_" + idx.ToString() })
+                                        @*<input type="button" value="?" title="Help" style="color:red; font-weight:bold" onclick="GetHelp('@Url.Action("GetGread", "Con_FAC_02080000T")','grade_@idx.ToString()','0','Select Grade')" />*@
+                                        <img src="~/Image/search.png" width="16px" height="16px" title="Help" onclick="GetHelp('@Url.Action("GetGread", "Con_FAC_02080000T")','grade_@idx.ToString()','0','Select Grade')" />
+                                    }
+                                    else
+                                    {
+                                        if (Model.TeaReceipt[idx].NewRow == true)
+                                        {
+                                            @Html.TextBoxFor(_ => Model.TeaReceipt[idx].GRADE, new { style = "width:80px", id = "grade_" + idx.ToString() })
+                                            <img src="~/Image/search.png" width="16px" height="16px" title="Help" onclick="GetHelp('@Url.Action("GetGread", "Con_FAC_02080000T")','grade_@idx.ToString()','0','Select Grade')" />
+                                            @*<input type="button" value="?" title="Help" style="color:red; font-weight:bold" onclick="GetHelp('@Url.Action("GetGread", "Con_FAC_02080000T")','grade_@idx.ToString()','0','Select Grade')" />*@
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(_ => Model.TeaReceipt[idx].GRADE)
+                                            @Html.HiddenFor(_ => Model.TeaReceipt[idx].GRADE)
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].BAG_CHEST, new { style = "width:40px" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].BAG_CHEST)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].BAG_CHEST)
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].CHESTSLF, new { style = "width:60px", id = "CHESTSLF_" + idx.ToString() })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].CHESTSLF)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].CHESTSLF, new { id = "CHESTSLF_" + idx.ToString() })
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].CHESTSLT, new { style = "width:60px", id = "CHESTSLT_" + idx.ToString() })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].CHESTSLT)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].CHESTSLT, new { id = "CHESTSLT_" + idx.ToString() })
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].CN_NO, new { style = "width:60px", title = "Consignment No" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].CN_NO)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].CN_NO)
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].QTY, new { style = "width:40px", id = "Qty_" + idx.ToString() })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].QTY)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].QTY, new { id = "Qty_" + idx.ToString() })
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].GROSS, new { style = "width:40px", id = "Gross_" + idx.ToString() })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].GROSS)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].GROSS, new { id = "Gross_" + idx.ToString() })
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.TeaReceipt[idx].NewRow == true)
+                                    {
+                                        @Html.TextBoxFor(_ => Model.TeaReceipt[idx].TARE, new { style = "width:40px" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(_ => Model.TeaReceipt[idx].TARE)
+                                        @Html.HiddenFor(_ => Model.TeaReceipt[idx].TARE)
+                                    }
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(_ => Model.TeaReceipt[idx].WS_WT, new { style = "width:40px", id = "WS_" + idx.ToString() })
+                                    <img src="~/Image/Add.png" width="8px" height="8px" title="enter WS details" onclick="return ChildData('WS','CHESTSLF_@idx.ToString()','CHESTSLT_@idx.ToString()','Qty_@idx.ToString()','Gross_@idx.ToString()','Invno_@idx.ToString()','WS_@idx.ToString()');" />
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(_ => Model.TeaReceipt[idx].BR_WT, new { style = "width:40px", id = "BR_" + idx.ToString() })
+                                    <img src="~/Image/Add.png" width="8px" height="8px" title="enter BR details" onclick="return ChildData('BR','CHESTSLF_@idx.ToString()','CHESTSLT_@idx.ToString()','Qty_@idx.ToString()','Gross_@idx.ToString()','Invno_@idx.ToString()','BR_@idx.ToString()');" />
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(_ => Model.TeaReceipt[idx].TR, new { style = "width:40px", id = "TR_" + idx.ToString() })
+                                    <img src="~/Image/Add.png" width="8px" height="8px" title="enter TR details" onclick="return ChildData('TR','CHESTSLF_@idx.ToString()','CHESTSLT_@idx.ToString()','Qty_@idx.ToString()','Gross_@idx.ToString()','Invno_@idx.ToString()','TR_@idx.ToString()');" />
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(_ => Model.TeaReceipt[idx].SR_PKGS, new { style = "width:40px", id = "SRPKGS_" + idx.ToString() })
+                                    <img src="~/Image/Add.png" width="8px" height="8px" title="enter SR PKGS details" onclick="return ChildData('SRPKGS','CHESTSLF_@idx.ToString()','CHESTSLT_@idx.ToString()','Qty_@idx.ToString()','Gross_@idx.ToString()','Invno_@idx.ToString()','SRPKGS_@idx.ToString()');" />
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(_ => Model.TeaReceipt[idx].SR_KGS, new { style = "width:40px", id = "SRKGS_" + idx.ToString() })
+                                    <img src="~/Image/Add.png" width="8px" height="8px" title="enter SR KGS details" onclick="return ChildData('SRKGS','CHESTSLF_@idx.ToString()','CHESTSLT_@idx.ToString()','Qty_@idx.ToString()','Gross_@idx.ToString()','Invno_@idx.ToString()','SRKGS_@idx.ToString()');" />
+                                </td>
+                                <td style="border-right:1px solid gainsboro">
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].DESTI)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].GLOCA)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].LOCA)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].UNIT)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].DTAG)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].DESP_DATE)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].DESP_NO)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].MFG_FROM)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].MFG_TO)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].O_USER)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].O_USERNEW)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].MARK)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].GRADE_TYPE)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].SL_NO)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].CN_DATE)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].T_ID)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].T_IDNEW)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].U_ENTDT)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].U_ENTDTNEW)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].U_NAME)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].U_NAMENEW)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].NewRow)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].DATE_ORA)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].SZ_CODE)  
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].WS_details)     
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].BR_details)   
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].TR_details)    
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].SRPKGS_details)
+                                    @Html.HiddenFor(_ => Model.TeaReceipt[idx].SRKGS_details)                                                         
+                                </td>
+                            </tr>                            
+                        }
+                    }
+                    </tbody>
+                    <tfoot>
+                        <tr style="border-bottom:1px solid gainsboro;background-color:olivedrab">
+                            <td style="border-left:1px solid gainsboro;border-bottom-left-radius:10px"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="border-right:1px solid gainsboro;border-bottom-right-radius:10px"></td>
+                        </tr>
+                    </tfoot>
+                    </table>
+                    @if (Model.DefaultAction == "A" || Model.DefaultAction == "E")
+                    {
+                        <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+                        <input type="submit" id="btnoption" value="Save" class="btn btn-primary" name="btnSave" />
+                        if (Model.DefaultAction == "A")
+                        {
+                            <input type="button" id="addrow" value="Add Row" class="btn btn-success" onclick="AddRow();" />
+                            <input type="text" id="n_row" value="1" class="btn btn-success" style="width:60px" />
+                            <span id="divitionLoading1" style="display:none;">
+                                <img src="@Url.Content("~/Image/loader.gif")" alt="loading..." height="20px" />
+                            </span>
+                        }
+                    }
+                    else if (Model.DefaultAction == "D")
+                    {
+                        <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+                        <input type="submit" id="btnoption" value="Delete" class="btn btn-primary" name="btnSave" />
+                    }
+                </div>
+    </div>
+    <div id="testing" class="tab-pane fade">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new { style = "height:118px;width:auto" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Other_Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Other_Remarks, new { style = "height:118px;width:auto" })
+                </div>
+            </div>           
+        </div>        
+    </div>   
+</div>

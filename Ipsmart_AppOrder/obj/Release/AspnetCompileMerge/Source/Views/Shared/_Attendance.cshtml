@@ -1,0 +1,805 @@
+﻿@model Rossell_HO.ViewModels.AttendanceSheet
+<style>
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 3px;
+        font-size: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius:2px;
+    }
+
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+
+    .myInput {
+        border-box: box-sizing;
+        background-image: url('searchicon.png');
+        background-position: 4px 8px;
+        background-repeat: no-repeat;
+        font-size: 14px;
+        padding: 2px 8px 8px 15px;
+        border: none;        
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f6f6f6;
+        min-width: 50px;
+        overflow: auto;
+        height:100px;
+        box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 4px 8px;
+            text-decoration: none;
+            display: block;
+        }
+
+    .dropdown a:hover {
+        background-color: #ddd;
+    }
+
+    .show {
+        display: block;
+    }
+</style>
+
+<script>
+    function controlEnter(obj, event)
+    {
+        var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+        var elem = ["Iempcd", "Inkmcd", "attn", "leave", "nsec", "leftyp", "st", "nd", "rd", "th", "Exkmcd", "Eattn", "Esec", "Oxkmcd", "Oattn", "Osec"];
+        if (keyCode == 13)
+        {
+            var index = elem.indexOf(obj);
+            index=index+1;
+            for (var i = index; i <= elem.length - 1; i++)
+            {
+                var obj2 = elem[i].toString();
+                var obj1 = document.getElementById(obj2);
+                if (obj1.readOnly == false)
+                {
+                    document.getElementById(obj2).focus();
+                    break;
+                }
+            }               
+            return false;
+        }
+        else if(keyCode==37)
+        {
+            var index = elem.indexOf(obj);
+            index = index - 1;
+            for (var i = index; i >= 0; i--)
+            {
+                var obj2 = elem[i].toString();
+                var obj1 = document.getElementById(obj2);
+                if (obj1.readOnly == false) {
+                    document.getElementById(obj2).focus();
+                    break;
+                }
+            }           
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    function Reset()
+    {
+        $('#partialDIV').html("");
+        $("#btnadd").show();
+    }
+    $("#partialDIV").keydown(function (e) {
+        if(e.altKey && e.which==83)
+        {
+            $("#addsave").click();
+        }
+    });
+</script>
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+    
+function myFunction(id) {
+    document.getElementById(id).classList.toggle("show");
+}
+function SelectEMPCD(id,flag,id1)
+{   
+    document.getElementById("Iempcd").value = id;
+    if (flag == "2")
+    {
+        myFunction(id1);
+    }   
+    var a = id;
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname").val(),
+        data: {
+            empcd:a
+        },
+        success: function (result)
+        {
+            var ss = result.split("#");
+            $('#lname').html(ss[0]);
+            $('#MWField').val(ss[1]);
+            $('#MARITAL_ST').val(ss[2]);
+            if ($('#lname').html().length <= 0) {
+                $('#Iempcd').popover('show');
+                $('#Iempcd').focus();
+            }
+            else {
+                $('#Iempcd').popover('destroy');
+            }
+        }
+    });
+    
+}
+function SelectKMCD(id, flag, id1)
+{
+    document.getElementById("Inkmcd").value = id;     
+    if (flag == "2") {
+        myFunction(id1);
+    }
+    var a = id;
+   
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname1").val(),
+        data: {
+            empcd: a,
+            filter: "",
+            Setdate: $("#Fdate").val(),
+            employee_code: $("#Iempcd").val(),
+            Divid: $("#Divid").val(),
+            Mdek: $("#Mdekid").val(),
+            ECD: $("#Empid").val(),
+            MW: $("#MWField").val(),
+            Mstatus: $("#MARITAL_ST").val()
+        },
+        success: function (result) {
+            var ss = result.split("#");
+            $('#kname').html(ss[0]);
+            $('#kmtype').val(ss[1]);
+            $('#n_req_sec').val(ss[2]);            
+            if (result.length > 0)
+            {
+                $('#leavealert').show();
+                $('#leavealert').html('<strong>' + ss[3].toString() + '</strong>');
+            }
+            else
+            {
+                $('#leavealert').hide();
+            }
+            var kmtype = $("#kmtype").val();           
+            if (ss[4] == "N") {
+                $("#attn").val("");
+                $("#attn").prop('readonly', true);
+                $("#leave").val("");
+                $("#leave").prop('readonly', true);
+                $("#nsec").prop('readonly', false);
+                $("#leftyp").val("");
+                $("#leftyp").prop('readonly', true);
+                $("#st").val("");
+                $("#st").prop('readonly', true);
+                $("#nd").val("");
+                $("#nd").prop('readonly', true);
+                $("#rd").val("");
+                $("#rd").prop('readonly', true);
+                $("#th").val("");
+                $("#th").prop('readonly', true);
+                $("#Exkmcd").val("");
+                $("#Exkmcd").prop('readonly', true);
+                $("#Eattn").val("");
+                $("#Eattn").prop('readonly', true);
+                $("#Esec").val("");
+                $("#Esec").prop('readonly', true);
+                $("#Oxkmcd").val("");
+                $("#Oxkmcd").prop('readonly', true);
+                $("#Oattn").val("");
+                $("#Oattn").prop('readonly', true);
+                $("#Osec").val("");
+                $("#Osec").prop('readonly', true);
+            }
+            else {
+                if (kmtype == "A")
+                {
+                    $("#attn").val("0");
+                    $("#attn").prop('readonly', true);
+                    $("#leave").val("0");
+                    $("#leave").prop('readonly', true);
+                    $("#nsec").prop('readonly', false);
+                    $("#leftyp").val("");
+                    $("#leftyp").prop('readonly', true);
+                    $("#st").val("");
+                    $("#st").prop('readonly', true);
+                    $("#nd").val("");
+                    $("#nd").prop('readonly', true);
+                    $("#rd").val("");
+                    $("#rd").prop('readonly', true);
+                    $("#th").val("");
+                    $("#th").prop('readonly', true);
+                    $("#Exkmcd").val("");
+                    $("#Exkmcd").prop('readonly', true);
+                    $("#Eattn").val("");
+                    $("#Eattn").prop('readonly', true);
+                    $("#Esec").val("");
+                    $("#Esec").prop('readonly', true);
+                    $("#Oxkmcd").val("");
+                    $("#Oxkmcd").prop('readonly', true);
+                    $("#Oattn").val("");
+                    $("#Oattn").prop('readonly', true);
+                    $("#Osec").val("");
+                    $("#Osec").prop('readonly', true);
+                }
+                else if (kmtype == "E" || kmtype == "C") {
+                    $("#attn").val("1");
+                    $("#attn").prop('readonly', false);
+                    $("#nsec").prop('readonly', false);
+                    $("#leave").val("0");
+                    $("#leave").prop('readonly', true);
+                    $("#leftyp").val("");
+                    $("#leftyp").prop('readonly', false);
+                    $("#st").val("");
+                    $("#st").prop('readonly', false);
+                    $("#nd").val("");
+                    $("#nd").prop('readonly', false);
+                    $("#rd").val("");
+                    $("#rd").prop('readonly', false);
+                    $("#th").val("");
+                    $("#th").prop('readonly', false);
+                    $("#Exkmcd").prop('readonly', false);
+                    $("#Eattn").prop('readonly', false);
+                    $("#Esec").prop('readonly', false);
+                    $("#Oxkmcd").prop('readonly', false);
+                    $("#Oattn").prop('readonly', false);
+                    $("#Osec").prop('readonly', false);
+                }
+                else if (kmtype == "N") {
+                    $("#attn").val("1");
+                    $("#attn").prop('readonly', false);
+                    $("#nsec").prop('readonly', false);
+                    $("#leave").val("0");
+                    $("#leave").prop('readonly', true);
+                    $("#leftyp").val("");
+                    $("#leftyp").prop('readonly', true);
+                    $("#st").val("");
+                    $("#st").prop('readonly', true);
+                    $("#nd").val("");
+                    $("#nd").prop('readonly', true);
+                    $("#rd").val("");
+                    $("#rd").prop('readonly', true);
+                    $("#th").val("");
+                    $("#th").prop('readonly', true);
+                    $("#Exkmcd").prop('readonly', false);
+                    $("#Eattn").prop('readonly', false);
+                    $("#Esec").prop('readonly', false);
+                    $("#Oxkmcd").prop('readonly', false);
+                    $("#Oattn").prop('readonly', false);
+                    $("#Osec").prop('readonly', false);
+                }
+                else if (kmtype == "S" || kmtype == "L" || kmtype == "M" || kmtype == "H" || kmtype == "P" || kmtype == "U" || kmtype == "Q" || kmtype == "R" || kmtype == "I" || kmtype == "J")
+                {
+                    if (kmtype == "H" || kmtype == "R")
+                    {
+                        $("#attn").val("0");
+                        $("#attn").prop('readonly', true);
+                        $("#leave").val("1");
+                        $("#leave").prop('readonly', true);
+                        $("#nsec").prop('readonly', true);
+                        $("#leftyp").val("");
+                        $("#leftyp").prop('readonly', true);
+                        $("#st").val("");
+                        $("#st").prop('readonly', true);
+                        $("#nd").val("");
+                        $("#nd").prop('readonly', true);
+                        $("#rd").val("");
+                        $("#rd").prop('readonly', true);
+                        $("#th").val("");
+                        $("#th").prop('readonly', true);
+                        $("#Exkmcd").val("");
+                        $("#Exkmcd").prop('readonly', false);
+                        $("#Eattn").val("");
+                        $("#Eattn").prop('readonly', false);
+                        $("#Esec").val("");
+                        $("#Esec").prop('readonly', false);
+                        $("#Oxkmcd").val("");
+                        $("#Oxkmcd").prop('readonly', false);
+                        $("#Oattn").val("");
+                        $("#Oattn").prop('readonly', false);
+                        $("#Osec").val("");
+                        $("#Osec").prop('readonly', false);
+                    }
+                    else
+                    {
+                        $("#attn").val("0");
+                        $("#attn").prop('readonly', true);
+                        $("#leave").val("1");
+                        $("#leave").prop('readonly', true);
+                        $("#nsec").prop('readonly', false);
+                        $("#leftyp").val("");
+                        $("#leftyp").prop('readonly', true);
+                        $("#st").val("");
+                        $("#st").prop('readonly', true);
+                        $("#nd").val("");
+                        $("#nd").prop('readonly', true);
+                        $("#rd").val("");
+                        $("#rd").prop('readonly', true);
+                        $("#th").val("");
+                        $("#th").prop('readonly', true);
+                        $("#Exkmcd").val("");
+                        $("#Exkmcd").prop('readonly', true);
+                        $("#Eattn").val("");
+                        $("#Eattn").prop('readonly', true);
+                        $("#Esec").val("");
+                        $("#Esec").prop('readonly', true);
+                        $("#Oxkmcd").val("");
+                        $("#Oxkmcd").prop('readonly', true);
+                        $("#Oattn").val("");
+                        $("#Oattn").prop('readonly', true);
+                        $("#Osec").val("");
+                        $("#Osec").prop('readonly', true);
+                    }
+                }
+            }
+        }
+    });
+}
+function SelectSECT(id, flag, id1) {
+   
+    document.getElementById("nsec").value = id;
+    if (flag == "2") {
+        myFunction(id1);
+    }
+    var a = id;
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname2").val(),
+        data: {
+            empcd: a
+        },
+        success: function (result)
+        {
+            $('#sname').html(result);
+            if ($('#n_req_sec').val() == "Y")
+            {
+                if ($('#sname').html().length <= 0)
+                {
+                    $('#nsec').attr('data-content', "Section required for normal attendance sheet entry, given code is invalid!");
+                    $('#nsec').focus();
+                    $('#nsec').popover('show');
+                }
+                else {
+                    $('#nsec').popover('destroy');
+                }
+            }
+            else
+            {
+                $('#nsec').popover('destroy');
+            }
+        }
+    });
+}
+function SelectEKMCD(id, flag, id1) {
+    document.getElementById("Exkmcd").value = id;
+    if (flag == "2") {
+        myFunction(id1);
+    }
+    var a = id;
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname1").val(),
+        data: {
+            empcd: a,
+            filter:"N"
+        },
+        success: function (result) {
+            var ss = result.split("#");
+            $('#ekname').html(ss[0]);
+            $('#e_req_sec').val(ss[2]);
+        }
+    });
+}
+function SelectESECT(id, flag, id1) {
+   
+    document.getElementById("Esec").value = id;
+    if (flag == "2") {
+        myFunction(id1);
+    }
+    var a = id;
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname2").val(),
+        data: {
+            empcd: a
+        },
+        success: function (result)
+        {
+            $('#esname').html(result);
+            if ($('#e_req_sec').val() == "Y") {
+                if ($('#esname').html().length <= 0) {
+                    $('#Esec').attr('data-content', "Section required for extra hazira attendance sheet entry, given code is invalid!");
+                    $('#Esec').focus();
+                    $('#Esec').popover('show');
+                }
+                else {
+                    $('#Esec').popover('destroy');
+                }
+            }
+            else {
+                $('#Esec').popover('destroy');
+            }
+        }
+    });
+}
+function SelectOKMCD(id, flag, id1) {
+    document.getElementById("Oxkmcd").value = id;
+    if (flag == "2") {
+        myFunction(id1);
+    }
+    var a = id;
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname1").val(),
+        data: {
+            empcd: a,
+            filter: "N"
+        },
+        success: function (result) {
+            var ss = result.split("#");
+            $('#Okname').html(ss[0]);
+            $('#o_req_sec').val(ss[2]);
+        }
+    });
+}
+function SelectOSECT(id, flag, id1) {   
+    document.getElementById("Osec").value = id;
+    if (flag == "2") {
+        myFunction(id1);
+    }
+    var a = id;
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname2").val(),
+        data: {
+            empcd: a
+        },
+        success: function (result) {
+            $('#osname').html(result);
+            if ($('#o_req_sec').val() == "Y") {
+                if ($('#osname').html().length <= 0) {
+                    $('#Osec').attr('data-content', "Section required for over time attendance sheet entry, given code is invalid!");
+                    $('#Osec').focus();
+                    $('#Osec').popover('show');
+                }
+                else {
+                    $('#Osec').popover('destroy');
+                }
+            }
+            else {
+                $('#Osec').popover('destroy');
+            }
+        }
+    });
+}
+function filterFunction(id,id1) {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById(id1);
+    filter = input.value.toUpperCase();
+    div = document.getElementById(id);
+    a = div.getElementsByTagName("a");
+    for (i = 0; i < a.length; i++) {
+        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+}
+function SelectLeaf(id)
+{
+    var a = id;
+    $.ajax({
+        type: 'GET',
+        url: $("#urlname4").val(),
+        data: {
+            leaftype: a
+        },
+        success: function (result) {
+            var ss = result.split("#");           
+            $('#Leafname').html(ss[0]);
+            $('#kmcode').val(ss[1]);
+            if ($('#n_req_sec').val() == "Y")
+            {
+                if ($('#sname').html().length > 0)               
+                {
+                    $('#nsec').popover('destroy');
+                    if ($('#kmtype').val() == "E" || $('#kmtype').val() == "C") {
+                        if ($('#Leafname').html().length <= 0) {
+                            $('#leftyp').attr('data-content', "Leaf Type Required, given code is invalid!");
+                            $('#leftyp').focus();
+                            $('#leftyp').popover('show');
+                        }
+                        else {
+                            $('#leftyp').popover('destroy');
+                        }
+                    }
+                    else {
+                        $('#leftyp').popover('destroy');
+                    }
+                }
+            }
+            else
+            {
+                $('#nsec').popover('destroy');
+                if ($('#kmtype').val() == "E" || $('#kmtype').val() == "C") {
+                    if ($('#Leafname').html().length <= 0) {
+                        $('#leftyp').attr('data-content', "Leaf Type Required, given code is invalid!");
+                        $('#leftyp').focus();
+                        $('#leftyp').popover('show');
+                    }
+                    else {
+                        $('#leftyp').popover('destroy');
+                    }
+                }
+                else {
+                    $('#leftyp').popover('destroy');
+                }
+            }
+
+           
+        }
+    });
+}
+</script>
+@if (Model.Sort_EMPL.Count > 0)
+{
+<div>  
+    <input type="hidden" id="urlname" value="@Url.Action("GetEMPCDNAME", "Con_WAG_02010100T")" />
+    <input type="hidden" id="urlname1" value="@Url.Action("GetKMCDNAME", "Con_WAG_02010100T")" />
+    <input type="hidden" id="urlname2" value="@Url.Action("GetSECNAME", "Con_WAG_02010100T")" />
+    <input type="hidden" id="urlname3" value="@Url.Action("SaveEntry", "Con_WAG_02010100T")" />
+    <input type="hidden" id="urlname4" value="@Url.Action("LeafDESC", "Con_WAG_02010100T")" />   
+   <script>
+       $("#Iempcd").focus();            
+   </script>  
+</div>
+<div class="table-responsive">
+    <table class="table" cellspacing="0px" width="100%" style="font-size:9px;font-weight:bold">
+        <thead>
+            <tr style="background-color:gainsboro; font-size:11px;">              
+                <th style="border-top-left-radius:10px;background-color:lightblue">
+                    EMPCD
+                </th>
+                <th style="background-color:lightblue">
+                    Name
+                </th>
+                <th style="border-left:1px solid gainsboro;background-color:olivedrab;color:white">
+                    KMCD
+                </th>
+                <th style="background-color:olivedrab;color:white">
+                    Attn
+                </th>
+                <th style="background-color:olivedrab;color:white">
+                    Leave
+                </th>
+                <th style="background-color:olivedrab;color:white">
+                    Sec
+                </th>
+                <th style="background-color:olivedrab;color:white">
+                    LType
+                </th>
+                <th style="color:white;background-color:olivedrab">
+                    1st
+                </th>
+                <th style="color:white;background-color:olivedrab">
+                    2nd
+                </th>
+                <th style="color:white;background-color:olivedrab">
+                    3rd
+                </th>
+                <th style="color:white;background-color:olivedrab">
+                    4th
+                </th>
+                <th style="border-left:1px solid gainsboro;background-color:royalblue;color:white">
+                    KMCD
+                </th>
+                <th style="background-color:royalblue;color:white">
+                    Attn
+                </th>
+                <th style="background-color:royalblue;color:white">
+                    Sec
+                </th>
+                <th style="border-left:1px solid gainsboro;background-color:indianred;color:white">
+                    KMCD
+                </th>
+                <th style="background-color:indianred;color:white">
+                    Hours
+                </th>
+                <th style="background-color:indianred;color:white">
+                    Sec
+                </th>
+                <th style="border-top-right-radius:10px;background-color:indianred;color:white">Opt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="font-size:12px;">               
+                <td>                    
+                    <input type="text" value="" id="Iempcd" style="width:50px" onblur="SelectEMPCD(this.value, 1);" onkeydown="controlEnter('Iempcd', event);" data-toggle="popover" data-content="Invalid employee code!" data-trigger="focus" data-placement="top" title="Information"/>
+                    <input type="hidden" id="MWField" value="" />
+                    <input type="hidden" id="MARITAL_ST" value="" />
+                    <div class="dropdown">
+                        <button onclick="myFunction('myDropdown1')" class="dropbtn"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        <div id="myDropdown1" class="dropdown-content">
+                            <input type="text" placeholder="Search.." id="myInput1" onkeyup="filterFunction('myDropdown1', 'myInput1')" class="myInput" />
+                            @foreach (var item in Model.Sort_EMPL)
+                            {
+                                <a href="#urlname" onclick="SelectEMPCD('@item.EMPCD','2','myDropdown1');">@item.EMPCD - @item.NAME</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    @Html.Label(" ", new { id = "lname", style = "color:blue;width:125px" })
+                </td>
+                <td>
+                    <input type="text" value="" id="Inkmcd"  style="width:45px;text-transform:uppercase" onblur="SelectKMCD(this.value, 1);" onkeydown="controlEnter('Inkmcd', event);"/>
+                    <div class="dropdown">
+                        <button onclick="myFunction('myDropdown2')" class="dropbtn"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        <div id="myDropdown2" class="dropdown-content">
+                            <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction('myDropdown2', 'myInput2')" class="myInput" />
+                            @foreach (var item in Model.Sort_KAMJARI)
+                            {
+                                <a href="#urlname" onclick="SelectKMCD('@item.KMCD','2','myDropdown2')">@item.LEG_CODE - @item.KMCD - @item.DESCN</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td><input type="number" value="" id="attn"  style="width:35px" min="0.5" max="1" step="0.5" maxlength="3" onkeydown="controlEnter('attn', event);"/></td>
+                <td><input type="number" value="" id="leave" style="width:30px" min="0" max="1" maxlength="1" onkeydown="controlEnter('leave', event);"/></td>
+                <td>
+                    <input type="text" value="" id="nsec" style="width:50px" onblur="SelectSECT(this.value, 1);" onkeydown="controlEnter('nsec', event);" data-toggle="popover" data-content="Section required for normal attendance sheet entry!" data-trigger="focus" data-placement="top" title="Normal Attendance"/>
+                    <input type="hidden" value="" id="n_req_sec" />
+                    <div class="dropdown">
+                        <button onclick="myFunction('myDropdown3')" class="dropbtn"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        <div id="myDropdown3" class="dropdown-content">
+                            <input type="text" placeholder="Search.." id="myInput3" onkeyup="filterFunction('myDropdown3', 'myInput3')" class="myInput" />
+                            @foreach (var item in Model.Sort_Section)
+                            {
+                                <a href="#urlname" onclick="SelectSECT('@item.CODE','2','myDropdown3')">@item.CODE - @item.DESCN</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" value="" id="leftyp" style="width:20px" maxlength="1" onblur="SelectLeaf(this.value);" onkeydown="controlEnter('leftyp', event);" data-toggle="popover" data-content="Leaf Type Required" data-trigger="focus" data-placement="top" title="Information"/>
+                </td>
+                <td><input type="number" value="" id="st" style="width:40px" min="0" onkeydown="controlEnter('st', event);"/></td>
+                <td><input type="number" value="" id="nd" style="width:40px" min="0" onkeydown="controlEnter('nd', event);"/></td>
+                <td><input type="number" value="" id="rd" style="width:40px" min="0" onkeydown="controlEnter('rd', event);"/></td>
+                <td>
+                    <input type="number" value="" id="th" style="width:40px" min="0" onkeydown="controlEnter('th', event);"/>
+                    <input type="hidden" value="" id="kmtype" />
+                    <input type="hidden" value="" id="kmcode" />
+                </td>
+                <td>
+                    <input type="text" value="" id="Exkmcd" style="width:45px;text-transform:uppercase" onblur="SelectEKMCD(this.value, 1);" onkeydown="controlEnter('Exkmcd', event);"/>
+                    <div class="dropdown">
+                        <button onclick="myFunction('myDropdown4')" class="dropbtn"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        <div id="myDropdown4" class="dropdown-content">
+                            <input type="text" placeholder="Search.." id="myInput4" onkeyup="filterFunction('myDropdown4', 'myInput4')" class="myInput" />
+                            @foreach (var item in Model.Sort_KAMJARI_E_O)
+                            {
+                                <a href="#urlname" onclick="SelectEKMCD('@item.KMCD','2','myDropdown4')">@item.LEG_CODE - @item.KMCD - @item.DESCN</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td><input type="number" value="" id="Eattn" style="width:35px" min="0.5" max="1" step="0.5" maxlength="3" onkeydown="controlEnter('Eattn', event);"/></td>
+                <td>
+                    <input type="text" value="" id="Esec" style="width:50px" onblur="SelectESECT(this.value, 1);" onkeydown="controlEnter('Esec', event);" data-toggle="popover" data-content="Section required for extra hazira attendance sheet entry!" data-trigger="focus" data-placement="top" title="Extra Hazira Attendance"/>
+                    <input type="hidden" value="" id="e_req_sec" />
+                    <div class="dropdown">
+                        <button onclick="myFunction('myDropdown5')" class="dropbtn"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        <div id="myDropdown5" class="dropdown-content">
+                            <input type="text" placeholder="Search.." id="myInput5" onkeyup="filterFunction('myDropdown5', 'myInput5')" class="myInput" />
+                            @foreach (var item in Model.Sort_Section)
+                            {
+                                <a href="#urlname" onclick="SelectESECT('@item.CODE','2','myDropdown5')">@item.CODE - @item.DESCN</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" value="" id="Oxkmcd" style="width:45px;text-transform:uppercase" onblur="SelectOKMCD(this.value, 1);" onkeydown="controlEnter('Oxkmcd', event);"/>
+                    <div class="dropdown">
+                        <button onclick="myFunction('myDropdown6')" class="dropbtn"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        <div id="myDropdown6" class="dropdown-content">
+                            <input type="text" placeholder="Search.." id="myInput6" onkeyup="filterFunction('myDropdown6', 'myInput6')" class="myInput" />
+                            @foreach (var item in Model.Sort_KAMJARI_E_O)
+                            {
+                                <a href="#urlname" onclick="SelectOKMCD('@item.KMCD','2','myDropdown6')">@item.LEG_CODE - @item.KMCD - @item.DESCN</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input type="number" value="" id="Oattn" style="width:40px" min="1" max="24" maxlength="4" onkeydown="controlEnter('Oattn', event);"/>
+                </td>
+                <td>
+                    <input type="text" value="" id="Osec" style="width:50px"  onblur="SelectOSECT(this.value, 1);" onkeydown="controlEnter('Osec', event);" data-toggle="popover" data-content="Section required for over time attendance sheet entry!" data-trigger="focus" data-placement="top" title="Over Time Attendance"/>
+                    <input type="hidden" value="" id="o_req_sec" />
+                    <div class="dropdown">
+                        <button onclick="myFunction('myDropdown7')" class="dropbtn"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        <div id="myDropdown7" class="dropdown-content">
+                            <input type="text" placeholder="Search.." id="myInput7" onkeyup="filterFunction('myDropdown7', 'myInput7')" class="myInput" />
+                            @foreach (var item in Model.Sort_Section)
+                            {
+                                <a href="#urlname" onclick="SelectOSECT('@item.CODE','2','myDropdown7')">@item.CODE - @item.DESCN</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input type="button" id="addsave" style="border-radius:5px;" value=" Save " onclick="SaveValidated();" />&nbsp;
+                    <input type="button" id="btnRevart" style="border-radius:5px;" value="Revert" onclick="Reset();"/>
+                </td>
+            </tr>            
+        </tbody>
+    </table>
+    <table class="table" cellspacing="5px" width="100%" style="font-size:9px;">
+        <tr style="font-size:9px;">           
+            <td>
+                <span style="color:forestgreen">Normal KMCD Description : </span>@Html.Label(" ", new { id = "kname", style = "color:blue" })
+            </td>           
+            <td>
+                <span style="color:forestgreen">Normal Section Description : </span>@Html.Label(" ", new { id = "sname", style = "color:blue" })
+            </td>
+            <td>
+                <span style="color:forestgreen">Leaf Type Description : </span>@Html.Label(" ", new { id = "Leafname", style = "color:blue" })
+            </td>           
+            <td>
+                <span style="color:forestgreen">Extra Hazira KMCD Description : </span>@Html.Label(" ", new { id = "ekname", style = "color:blue" })
+            </td>            
+            <td>
+                <span style="color:forestgreen">Extra Hazira Section Description : </span>@Html.Label(" ", new { id = "esname", style = "color:blue" })
+            </td>
+            <td>
+                <span style="color:forestgreen">Over Time KMCD Description : </span>@Html.Label(" ", new { id = "Okname", style = "color:blue" })
+            </td>           
+            <td>
+                <span style="color:forestgreen">Over Time Section Description : </span>@Html.Label(" ", new { id = "osname", style = "color:blue" })
+            </td>           
+        </tr>
+    </table> 
+</div>
+<div id="leavealert" class="alert alert-danger fade in" style="display:none">
+</div>
+<div id="savepopup" class="alert alert-info fade in" style="display:none">
+</div>
+}
+else
+{   
+    <div id="savepopup" class="alert alert-info fade in">
+        <strong>No Record Found For New Entry!</strong>
+    </div>
+    <script>
+        $("#savepopup").fadeTo(2000, 500).slideUp(500, function () {
+            $("#savepopup").slideUp(500);
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,174 @@
+﻿@model Rossell_HO.ViewModels.TeaSampleView
+<script>
+    $("#partialDIV").ready(function () {
+        $('#example').dataTable({ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] });
+    });   
+</script>
+
+    <div class="table-responsive">
+        @Html.HiddenFor(_ => Model.Gcode)
+        @Html.HiddenFor(_ => Model.Ucode)
+        @Html.ValidationSummary(true)       
+        <table id="example" class="table table-striped table-hover" cellspacing="0px" width="100%">
+            <thead>
+                <tr style="font-size:12px; font-weight:bold;background-color:olivedrab;color:white">
+                    <th style="border-left:1px solid gainsboro;border-top-left-radius:10px">Select</th>
+                    <th>Garden Inv. No.</th>
+                    <th>Inv. Date</th>
+                    <th>Corp. Year</th>
+                    <th>Grade</th>
+                    <th>Mark</th>
+                    <th>No. of Pkg.</th>
+                    <th>Quantity in Kg.</th>
+                    <th style="border-right:1px solid gainsboro;border-top-right-radius:10px">Packing Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int teaCount = Model.TeaSample.Count();
+                    for (int idx = 0; idx < teaCount; idx++)
+                    {
+                        <tr style="font-size:12px; font-weight:bold;">
+                            <td style="border-left:1px solid gainsboro">
+                                @Html.CheckBoxFor(_ => Model.TeaSample[idx].Check)                                
+                            </td>
+                            <td>                                
+                                @Html.DisplayFor(_ => Model.TeaSample[idx].INVNO)                              
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].INVNO)
+                            </td>
+                            <td>
+                                @if (Model.DefaultAction == "E")
+                                {                                   
+                                    @Html.EditorFor(_ => Model.TeaSample[idx].INVDT, new { placeholder="dd/mm/yyyy" })                                    
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(_ => Model.TeaSample[idx].INVDT)
+                                }                               
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].INVDT)
+                            </td>
+                            <td>
+                                @if (Model.DefaultAction == "E")
+                                {
+                                    @Html.TextBoxFor(_ => Model.TeaSample[idx].CROP_YEAR, new { style = "width:40px" })
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(_ => Model.TeaSample[idx].CROP_YEAR)
+                                }                                
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].CROP_YEAR)
+                            </td>
+                            <td>
+                                @if (Model.DefaultAction == "E")
+                                {
+                                    @Html.TextBoxFor(_ => Model.TeaSample[idx].GRADE, new { style = "width:80px",id="grade_"+idx.ToString() })
+                                    @*<input type="button" value="?" title="Help" style="color:red; font-weight:bold"  onclick="GetHelp('@Url.Action("GetGread","Con_FAC_02060000T")','grade_@idx.ToString()','0','Select Grade')" />*@
+                                    <img src="~/Image/search.png" width="16px" height="16px" title="Help" onclick="GetHelp('@Url.Action("GetGread","Con_FAC_02060000T")','grade_@idx.ToString()','0','Select Grade')" />
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(_ => Model.TeaSample[idx].GRADE)
+                                }                               
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].GRADE)
+                            </td>
+                            <td>
+                                @if (Model.DefaultAction == "E")
+                                {
+                                    @Html.TextBoxFor(_ => Model.TeaSample[idx].MARK, new { style = "width:80px", id = "mark_" + idx.ToString() })
+                                    @*<input type="button" value="?" title="Help" style="color:red; font-weight:bold" onclick="GetHelp('@Url.Action("GetMark","Con_FAC_02060000T")','mark_@idx.ToString()','0','Select Mark')" />*@
+                                    <img src="~/Image/search.png" width="16px" height="16px" title="Help" onclick="GetHelp('@Url.Action("GetMark","Con_FAC_02060000T")','mark_@idx.ToString()','0','Select Mark')" />
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(_ => Model.TeaSample[idx].MARK)
+                                }                               
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].MARK)
+                            </td>
+                            <td>
+                                @if (Model.DefaultAction == "E")
+                                {
+                                    @Html.TextBoxFor(_ => Model.TeaSample[idx].PKG_NO, new { style = "width:40px" })
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(_ => Model.TeaSample[idx].PKG_NO)
+                                }                               
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].PKG_NO)
+                            </td>
+                            <td>
+                                @if (Model.DefaultAction == "E")
+                                {
+                                    @Html.TextBoxFor(_ => Model.TeaSample[idx].QTY, new { style="width:30px"})
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(_ => Model.TeaSample[idx].QTY)
+                                }                               
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].QTY)
+                            </td>
+                            <td style="border-right:1px solid gainsboro">
+                                @if (Model.DefaultAction == "E")
+                                {
+                                    @Html.EditorFor(_ => Model.TeaSample[idx].PACK_DATE)
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(_ => Model.TeaSample[idx].PACK_DATE)
+                                }                               
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].PACK_DATE)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].GLOCA)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].LOCA)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].UNIT)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].DTAG)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].END_NO)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].GROSS_WT)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].MFG_FROM)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].MFG_TO)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].O_USER)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].O_USERNEW)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].REC_DOCDT)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].REC_DOCNO)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].SIZE_CODE)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].SRLNO)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].START_NO)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].TARE_WT)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].T_ID)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].T_IDNEW)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].U_ENTDT)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].U_ENTDTNEW)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].U_NAME)
+                                @Html.HiddenFor(_ => Model.TeaSample[idx].U_NAMENEW)
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr style="border-bottom:1px solid gainsboro;background-color:olivedrab">
+                    <td style="border-left:1px solid gainsboro;border-bottom-left-radius:10px"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="border-right:1px solid gainsboro;border-bottom-right-radius:10px"></td>
+                </tr>
+            </tfoot>
+        </table>
+        @if (Model.DefaultAction == "A" || Model.DefaultAction == "E")
+        {
+            <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+            <input type="submit" id="btnoption" value="Save" class="btn btn-primary" name="btnSave" />
+        }
+        else if (Model.DefaultAction == "D")
+        {
+            <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+            <input type="submit" id="btnoption" value="Delete" class="btn btn-primary" name="btnSave" />
+        }
+
+    </div>
+
+
+ 

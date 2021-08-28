@@ -1,0 +1,75 @@
+﻿@model Rossell_HO.Models.Login
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    @Styles.Render("~/Content/css")   
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+</head>
+<body>
+    <div class="container body-content">
+        <div class="jumbotron">
+            <h1>Login</h1>
+            <section class="content-wrapper main-content clear-fix">
+            @using (Html.BeginForm())
+            {
+                <fieldset>
+                    <legend>Classic Login</legend>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.UserName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserName)
+                    </div>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Password)
+                    </div>
+                    <div class="editor-field">
+                        @Html.PasswordFor(model => model.Password,  new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                        <div class="editor-label">
+                            Change Password @Html.CheckBox("check2", false, new { ID = "check2" })
+                        </div>   
+                    </div>
+                    <br />
+                    <p>
+                        <input type="submit" value="Login" class="btn btn-success" />
+                        <input type="reset" value="Reset" class="btn btn-info" />
+                    </p>
+                    <p>
+                        @if (@ViewBag.Flag == "1")
+                        {
+                            <span style="color:royalblue"> @ViewBag.Msg @Html.ActionLink("Click Here", "ChangePassword",new { cpf = "1" })</span>
+                        }
+                        else
+                        {
+                            <span style="color:royalblue">
+                                @ViewBag.Msg
+                            </span>
+                        }                        
+                    </p>
+                </fieldset>
+            }
+              </section>
+</div>
+     </div>       
+        <div class="container body-content">
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Classic ERP</p>
+            </footer>
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")       
+</body>
+</html>

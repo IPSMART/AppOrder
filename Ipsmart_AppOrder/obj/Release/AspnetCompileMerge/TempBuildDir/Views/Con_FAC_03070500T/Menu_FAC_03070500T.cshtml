@@ -1,0 +1,35 @@
+﻿@model Rossell_HO.Models.Menu
+@{
+    ViewBag.Title = "Weekly Production Report";
+    Layout = "~/Views/Shared/_Manu.cshtml";
+}
+<form method="post">
+    <h2>Weekly Production Reports</h2>
+
+    <section class="content-wrapper main-content clear-fix">
+        @using (Html.BeginForm())
+        {
+            <fieldset>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Fdate)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Fdate)
+                    @Html.ValidationMessageFor(model => model.Fdate)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Ldate)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Ldate)
+                    @Html.ValidationMessageFor(model => model.Ldate)
+                </div>
+                <br />
+                <p>
+                    <input type="submit" name="submitbutton" value="Generate Reports in Excel Sheet" class="btn btn-success" />
+                </p>
+                <span>@ViewBag.wpmsg</span>
+            </fieldset>
+        }
+    </section>   
+</form>

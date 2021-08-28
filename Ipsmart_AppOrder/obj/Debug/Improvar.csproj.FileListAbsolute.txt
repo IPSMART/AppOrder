@@ -1,0 +1,1312 @@
+F:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csproj.ResolveComReference.cache
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CSharp.Core.targets
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.VisualBasic.Core.targets
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.Collections.Immutable.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.Reflection.Metadata.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe.config
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Improvar.dll.config
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Improvar.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Improvar.pdb
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe.config
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csc.rsp
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csi.exe
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csi.rsp
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.AppContext.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.Diagnostics.StackTrace.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.Primitives.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe.config
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\vbc.rsp
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.CrystalReports.Engine.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportSource.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.Shared.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\EPPlus.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\FsAttoparsec.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\FSharp.Core.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.Web.Infrastructure.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Swashbuckle.Core.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.ValueTuple.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Razor.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\WebActivatorEx.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\WebGrease.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\stdole.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.pdb
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\EPPlus.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\FsAttoparsec.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\FSharp.Core.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.pdb
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.pdb
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.pdb
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.ValueTuple.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Razor.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.xml
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\cs\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\de\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\en\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\es\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\fr\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\it\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\ja\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\ko\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\pl\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\pt-BR\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\ru\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\tr\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\zh-Hans\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\bin\zh-Hant\FSharp.Core.resources.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.dll
+F:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.pdb
+F:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+D:\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project_MVC_Finance\Improvar\bin\roslyn\System.Collections.Immutable.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe
+D:\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe
+D:\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe.config
+D:\Project_MVC_Finance\Improvar\bin\Improvar.dll.config
+D:\Project_MVC_Finance\Improvar\bin\Improvar.dll
+D:\Project_MVC_Finance\Improvar\bin\Improvar.pdb
+D:\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe.config
+D:\Project_MVC_Finance\Improvar\bin\roslyn\csc.rsp
+D:\Project_MVC_Finance\Improvar\bin\roslyn\csi.exe
+D:\Project_MVC_Finance\Improvar\bin\roslyn\csi.rsp
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\System.AppContext.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe.config
+D:\Project_MVC_Finance\Improvar\bin\roslyn\vbc.rsp
+D:\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.dll
+D:\Project_MVC_Finance\Improvar\bin\EntityFramework.dll
+D:\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.dll
+D:\Project_MVC_Finance\Improvar\bin\EPPlus.dll
+D:\Project_MVC_Finance\Improvar\bin\FsAttoparsec.dll
+D:\Project_MVC_Finance\Improvar\bin\FSharp.Core.dll
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.dll
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.dll
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.Web.Infrastructure.dll
+D:\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.dll
+D:\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.dll
+D:\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+D:\Project_MVC_Finance\Improvar\bin\PagedList.dll
+D:\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.dll
+D:\Project_MVC_Finance\Improvar\bin\Swashbuckle.Core.dll
+D:\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.dll
+D:\Project_MVC_Finance\Improvar\bin\System.ValueTuple.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Http.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Razor.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.dll
+D:\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.dll
+D:\Project_MVC_Finance\Improvar\bin\WebActivatorEx.dll
+D:\Project_MVC_Finance\Improvar\bin\WebGrease.dll
+D:\Project_MVC_Finance\Improvar\bin\stdole.dll
+D:\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.pdb
+D:\Project_MVC_Finance\Improvar\bin\EntityFramework.xml
+D:\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.xml
+D:\Project_MVC_Finance\Improvar\bin\EPPlus.xml
+D:\Project_MVC_Finance\Improvar\bin\FsAttoparsec.xml
+D:\Project_MVC_Finance\Improvar\bin\FSharp.Core.xml
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.pdb
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.xml
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.pdb
+D:\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.xml
+D:\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.xml
+D:\Project_MVC_Finance\Improvar\bin\PagedList.xml
+D:\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.xml
+D:\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.pdb
+D:\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.xml
+D:\Project_MVC_Finance\Improvar\bin\System.ValueTuple.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Http.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Razor.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.xml
+D:\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.xml
+D:\Project_MVC_Finance\Improvar\bin\cs\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\de\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\en\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\es\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\fr\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\it\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\ja\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\ko\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\pl\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\pt-BR\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\ru\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\tr\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\zh-Hans\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\bin\zh-Hant\FSharp.Core.resources.dll
+D:\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+D:\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Core.dll
+D:\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csproj.ResolveComReference.cache
+D:\Project_MVC_Finance\Improvar\obj\Debug\Improvar.dll
+D:\Project_MVC_Finance\Improvar\obj\Debug\Improvar.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Core.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csproj.ResolveComReference.cache
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\obj\Debug\Improvar.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\obj\Debug\Improvar.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\System.Collections.Immutable.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe.config
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Improvar.dll.config
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Improvar.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Improvar.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe.config
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\csc.rsp
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\csi.exe
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\csi.rsp
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\System.AppContext.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe.config
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\roslyn\vbc.rsp
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ClosedXML.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportSource.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.Shared.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\EntityFramework.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\EPPlus.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\FastMember.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\FsAttoparsec.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\FSharp.Core.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.Web.Infrastructure.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\PagedList.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\QRCoder.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Swashbuckle.Core.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Buffers.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Memory.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.ValueTuple.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Http.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Razor.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\WebActivatorEx.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\WebGrease.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\stdole.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ClosedXML.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ClosedXML.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\EntityFramework.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\EPPlus.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\FsAttoparsec.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\FSharp.Core.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\PagedList.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Buffers.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.pdb
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Memory.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.ValueTuple.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Http.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Razor.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.xml
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\cs\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\de\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\en\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\es\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\fr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\it\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ja\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ko\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\pl\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\pt-BR\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\ru\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\tr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\zh-Hans\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Project_MVC_Finance\Improvar\bin\zh-Hant\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\System.Collections.Immutable.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe.config
+D:\Project\Project_MVC_Finance\Improvar\bin\Improvar.dll.config
+D:\Project\Project_MVC_Finance\Improvar\bin\Improvar.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Improvar.pdb
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe.config
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\csc.rsp
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\csi.exe
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\csi.rsp
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\System.AppContext.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe.config
+D:\Project\Project_MVC_Finance\Improvar\bin\roslyn\vbc.rsp
+D:\Project\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\ClosedXML.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportSource.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.Shared.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\EntityFramework.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\EPPlus.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\FastMember.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\FsAttoparsec.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\FSharp.Core.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.Web.Infrastructure.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\PagedList.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\QRCoder.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Swashbuckle.Core.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Buffers.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Memory.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.ValueTuple.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Http.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Razor.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\WebActivatorEx.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\WebGrease.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\stdole.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.pdb
+D:\Project\Project_MVC_Finance\Improvar\bin\ClosedXML.pdb
+D:\Project\Project_MVC_Finance\Improvar\bin\ClosedXML.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\EntityFramework.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\EPPlus.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\FsAttoparsec.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\FSharp.Core.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.pdb
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.pdb
+D:\Project\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\PagedList.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Buffers.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.pdb
+D:\Project\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Memory.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.ValueTuple.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Http.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Razor.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.xml
+D:\Project\Project_MVC_Finance\Improvar\bin\cs\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\de\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\en\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\es\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\fr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\it\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\ja\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\ko\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\pl\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\pt-BR\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\ru\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\tr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\zh-Hans\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\bin\zh-Hant\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+D:\Project\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Core.dll
+D:\Project\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\Project\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csproj.ResolveComReference.cache
+D:\Project\Project_MVC_Finance\Improvar\obj\Debug\Improvar.dll
+D:\Project\Project_MVC_Finance\Improvar\obj\Debug\Improvar.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\System.Collections.Immutable.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\System.Reflection.Metadata.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe.config
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Improvar.dll.config
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Improvar.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Improvar.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe.config
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\csc.rsp
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\csi.exe
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\csi.rsp
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\System.AppContext.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\System.Diagnostics.StackTrace.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.Primitives.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe.config
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\roslyn\vbc.rsp
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ClosedXML.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\EntityFramework.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\EPPlus.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\FastMember.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\FsAttoparsec.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\FSharp.Core.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Agent.Intercept.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.Web.Infrastructure.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\PagedList.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\QRCoder.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Swashbuckle.Core.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Buffers.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Memory.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.ValueTuple.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Http.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Razor.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\WebActivatorEx.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\WebGrease.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\stdole.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ClosedXML.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ClosedXML.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\EntityFramework.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\EPPlus.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\FsAttoparsec.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\FSharp.Core.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\PagedList.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Buffers.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.pdb
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Memory.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.ValueTuple.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Http.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Razor.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.xml
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\cs\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\de\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\en\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\es\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\fr\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\it\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ja\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ko\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\pl\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\pt-BR\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\ru\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\tr\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\zh-Hans\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\bin\zh-Hant\FSharp.Core.resources.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Core.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csproj.ResolveComReference.cache
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\obj\Debug\Improvar.dll
+E:\ASP.NET\Project After Changes\Project_MVC_Finance\Improvar\obj\Debug\Improvar.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.Collections.Immutable.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.Reflection.Metadata.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\VBCSCompiler.exe.config
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Improvar.dll.config
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Improvar.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Improvar.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csc.exe.config
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csc.rsp
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csi.exe
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\csi.rsp
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.AppContext.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.Diagnostics.StackTrace.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\System.IO.FileSystem.Primitives.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\vbc.exe.config
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\roslyn\vbc.rsp
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ClosedXML.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\EPPlus.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\FastMember.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\FsAttoparsec.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\FSharp.Core.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Agent.Intercept.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.Web.Infrastructure.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\QRCoder.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Swashbuckle.Core.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Buffers.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Memory.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.ValueTuple.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Razor.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\WebActivatorEx.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\WebGrease.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\stdole.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Antlr3.Runtime.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ClosedXML.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ClosedXML.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\DocumentFormat.OpenXml.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\EntityFramework.SqlServer.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\EPPlus.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ExcelNumberFormat.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\FsAttoparsec.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\FSharp.Core.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.DependencyCollector.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.Web.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AI.WindowsServer.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.ApplicationInsights.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Logging.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\Newtonsoft.Json.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\PagedList.Mvc.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Buffers.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.pdb
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Memory.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Net.Http.Formatting.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.ValueTuple.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Helpers.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Http.WebHost.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Mvc.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Razor.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Deployment.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.WebPages.Razor.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\System.Web.Optimization.xml
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\cs\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\de\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\en\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\es\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\fr\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\it\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ja\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ko\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\pl\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\pt-BR\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\ru\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\tr\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\zh-Hans\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\bin\zh-Hant\FSharp.Core.resources.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+E:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Core.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.csproj.ResolveComReference.cache
+E:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.dll
+E:\ASP.NET\Project_MVC_Finance\Improvar\obj\Debug\Improvar.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\csc.exe
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\System.Collections.Immutable.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\System.Reflection.Metadata.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\vbc.exe
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\VBCSCompiler.exe
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\VBCSCompiler.exe.config
+D:\current Project\IPSMART\Finance\Improvar\bin\Improvar.dll.config
+D:\current Project\IPSMART\Finance\Improvar\bin\Improvar.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Improvar.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\csc.exe.config
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\csc.rsp
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\csi.exe
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\csi.rsp
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\System.AppContext.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\System.IO.FileSystem.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\vbc.exe.config
+D:\current Project\IPSMART\Finance\Improvar\bin\roslyn\vbc.rsp
+D:\current Project\IPSMART\Finance\Improvar\bin\Antlr3.Runtime.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\ClosedXML.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportSource.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.Shared.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\DocumentFormat.OpenXml.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\EntityFramework.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\EntityFramework.SqlServer.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\EPPlus.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\ExcelNumberFormat.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\FastMember.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\FsAttoparsec.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\FSharp.Core.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.Agent.Intercept.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.DependencyCollector.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.Web.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.WindowsServer.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.ApplicationInsights.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.Logging.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.Web.Infrastructure.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Newtonsoft.Json.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Oracle.ManagedDataAccess.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\PagedList.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\PagedList.Mvc.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\QRCoder.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Swashbuckle.Core.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Buffers.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Memory.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Net.Http.Formatting.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.ValueTuple.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Helpers.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Http.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Http.WebHost.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Mvc.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Optimization.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Razor.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.WebPages.Deployment.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.WebPages.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.WebPages.Razor.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\WebActivatorEx.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\WebGrease.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\stdole.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\Antlr3.Runtime.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\ClosedXML.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\ClosedXML.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\DocumentFormat.OpenXml.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\EntityFramework.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\EntityFramework.SqlServer.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\EPPlus.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\ExcelNumberFormat.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\FsAttoparsec.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\FSharp.Core.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.DependencyCollector.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.PerfCounterCollector.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.Web.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AI.WindowsServer.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.ApplicationInsights.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.Logging.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.Logging.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\Microsoft.IdentityModel.Tokens.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\Newtonsoft.Json.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\PagedList.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\PagedList.Mvc.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Buffers.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Diagnostics.DiagnosticSource.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.pdb
+D:\current Project\IPSMART\Finance\Improvar\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Memory.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Net.Http.Formatting.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.ValueTuple.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Helpers.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Http.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Http.WebHost.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Mvc.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Razor.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.WebPages.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.WebPages.Deployment.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.WebPages.Razor.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\System.Web.Optimization.xml
+D:\current Project\IPSMART\Finance\Improvar\bin\cs\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\de\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\en\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\es\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\fr\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\it\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\ja\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\ko\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\pl\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\pt-BR\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\ru\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\tr\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\zh-Hans\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\bin\zh-Hant\FSharp.Core.resources.dll
+D:\current Project\IPSMART\Finance\Improvar\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+D:\current Project\IPSMART\Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Core.dll
+D:\current Project\IPSMART\Finance\Improvar\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\current Project\IPSMART\Finance\Improvar\obj\Debug\Improvar.csproj.ResolveComReference.cache
+D:\current Project\IPSMART\Finance\Improvar\obj\Debug\Improvar.dll
+D:\current Project\IPSMART\Finance\Improvar\obj\Debug\Improvar.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\csc.exe
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\System.Collections.Immutable.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\vbc.exe
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\VBCSCompiler.exe
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\VBCSCompiler.exe.config
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Improvar.dll.config
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Improvar.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Improvar.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\csc.exe.config
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\csc.rsp
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\csi.exe
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\csi.rsp
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\System.AppContext.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\System.IO.FileSystem.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\vbc.exe.config
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\roslyn\vbc.rsp
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Antlr3.Runtime.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ClosedXML.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportSource.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.Shared.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\DocumentFormat.OpenXml.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\EntityFramework.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\EntityFramework.SqlServer.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\EPPlus.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ExcelNumberFormat.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\FastMember.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\FsAttoparsec.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\FSharp.Core.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.DependencyCollector.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.Web.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.WindowsServer.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.ApplicationInsights.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.Logging.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.Tokens.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.Web.Infrastructure.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Newtonsoft.Json.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Oracle.ManagedDataAccess.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\PagedList.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\PagedList.Mvc.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\QRCoder.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Swashbuckle.Core.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Buffers.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Memory.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Net.Http.Formatting.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.ValueTuple.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Helpers.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Http.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Http.WebHost.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Mvc.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Optimization.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Razor.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.WebPages.Deployment.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.WebPages.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.WebPages.Razor.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\WebActivatorEx.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\WebGrease.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\stdole.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Antlr3.Runtime.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ClosedXML.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ClosedXML.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\DocumentFormat.OpenXml.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\EntityFramework.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\EntityFramework.SqlServer.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\EPPlus.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ExcelNumberFormat.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\FsAttoparsec.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\FSharp.Core.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.DependencyCollector.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.PerfCounterCollector.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.Web.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AI.WindowsServer.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.ApplicationInsights.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.Logging.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.Logging.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.Tokens.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Microsoft.IdentityModel.Tokens.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\Newtonsoft.Json.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\PagedList.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\PagedList.Mvc.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Buffers.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.IdentityModel.Tokens.Jwt.pdb
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Memory.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Net.Http.Formatting.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.ValueTuple.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Helpers.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Http.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Http.WebHost.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Mvc.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Razor.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.WebPages.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.WebPages.Deployment.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.WebPages.Razor.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\System.Web.Optimization.xml
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\cs\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\de\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\en\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\es\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\fr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\it\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ja\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ko\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\pl\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\pt-BR\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\ru\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\tr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\zh-Hans\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\bin\zh-Hant\FSharp.Core.resources.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\obj\Debug\Interop.Microsoft.Office.Core.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\obj\Debug\Improvar.csproj.ResolveComReference.cache
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\obj\Debug\Improvar.dll
+D:\Project\Project_MVC_Jewel\Ipsmart_Jewel\obj\Debug\Improvar.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\csc.exe
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\System.Collections.Immutable.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\vbc.exe
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\VBCSCompiler.exe
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\VBCSCompiler.exe.config
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Improvar.dll.config
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Improvar.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Improvar.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\csc.exe.config
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\csc.rsp
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\csi.exe
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\csi.rsp
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\System.AppContext.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\System.IO.FileSystem.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\vbc.exe.config
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\roslyn\vbc.rsp
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Antlr3.Runtime.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\BarcodeLib.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ClosedXML.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportSource.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.Shared.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\DocumentFormat.OpenXml.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\EntityFramework.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\EntityFramework.SqlServer.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\EPPlus.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ExcelNumberFormat.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\FastMember.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\FsAttoparsec.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\FSharp.Core.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.DependencyCollector.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.Web.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.WindowsServer.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.ApplicationInsights.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.Logging.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.Tokens.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.Web.Infrastructure.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Newtonsoft.Json.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Oracle.ManagedDataAccess.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Oracle.ManagedDataAccess.EntityFramework.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\PagedList.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\PagedList.Mvc.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\QRCoder.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Swashbuckle.Core.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Buffers.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Memory.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Net.Http.Formatting.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.ValueTuple.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Helpers.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Http.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Http.WebHost.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Mvc.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Optimization.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Razor.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.WebPages.Deployment.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.WebPages.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.WebPages.Razor.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\WebActivatorEx.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\WebGrease.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\stdole.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Antlr3.Runtime.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ClosedXML.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ClosedXML.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\DocumentFormat.OpenXml.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\EntityFramework.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\EntityFramework.SqlServer.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\EPPlus.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ExcelNumberFormat.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\FsAttoparsec.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\FSharp.Core.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.DependencyCollector.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.PerfCounterCollector.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.Web.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AI.WindowsServer.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.ApplicationInsights.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.Logging.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.Logging.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.Tokens.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Microsoft.IdentityModel.Tokens.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\Newtonsoft.Json.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\PagedList.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\PagedList.Mvc.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Buffers.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.IdentityModel.Tokens.Jwt.pdb
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Memory.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Net.Http.Formatting.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.ValueTuple.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Helpers.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Http.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Http.WebHost.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Mvc.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Razor.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.WebPages.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.WebPages.Deployment.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.WebPages.Razor.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\System.Web.Optimization.xml
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\cs\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\de\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\en\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\es\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\fr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\it\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ja\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ko\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\pl\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\pt-BR\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\ru\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\tr\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\zh-Hans\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\bin\zh-Hant\FSharp.Core.resources.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\obj\Debug\Improvar.csprojResolveAssemblyReference.cache
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\obj\Debug\Interop.Microsoft.Office.Core.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\obj\Debug\Interop.Microsoft.Office.Interop.Excel.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\obj\Debug\Improvar.csproj.ResolveComReference.cache
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\obj\Debug\Improvar.dll
+D:\Project\Project_MVC_AppOrder\Ipsmart_AppOrder\obj\Debug\Improvar.pdb

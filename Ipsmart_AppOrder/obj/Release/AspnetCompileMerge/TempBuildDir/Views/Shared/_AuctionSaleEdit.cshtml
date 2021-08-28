@@ -1,0 +1,291 @@
+﻿@model Rossell_HO.ViewModels.AuctionSaleView
+<script>
+    function save() {
+        var row = $("#example > tbody > tr").length;
+        var flag = 0;
+        for (var i = 0; i <= row - 1; i++) {
+            var check = document.getElementById("check_" + i);
+            if (check.checked) {
+                flag = 1;
+            }
+        }
+        if (flag == 0) {
+            $('#saveinfo').html("Save not allowed without any selection");
+            $('#saveinfo').fadeTo(2000, 500).slideUp(500, function () { $('#saveinfo').slideUp(500); });
+            return false;
+        }
+    }
+    function Editvalided() {       
+        $.ajax({
+            type: 'POST',
+            url: $("#btneditcompute").val(),
+            cache: false,
+            data: $('form').serialize() + "&Action=" + "@Model.DefaultAction" + "&Gcode=" + $("#Gcode").val() + "&Ucode=" + $("#Ucode").val() + "&Bcode=" + $("#Bcode").val(),
+            success: function (result) {
+                $('#partialDIV').html(result);
+            }
+        });
+    }
+    function Gridevent() {
+        $('#example input:text').bind("keydown", function (e) {
+            var n = $("#example input:text").length;
+            if (e.which == 13) {
+                e.preventDefault();
+                var nextIndex = $('#example input:text').index(this) + 1;
+                if (nextIndex < n) {
+                    $('#example input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#example input:text').first().focus();
+                }
+            }
+            else if (e.which == 37) {
+                var nextIndex = $('#example input:text').index(this) - 1;
+                if (nextIndex >= 0) {
+                    $('#example input:text')[nextIndex].focus();
+                }
+                else {
+                    $('#example input:text').last().focus();
+                }
+            }
+        });
+        $('#example input:text').on('keydown', function (event) {
+            return isNumber(event, this);
+        });
+        function isNumber(evt, element) {
+            var title = $(element).attr("title");
+            title = $.trim(title);
+            if (title.length <= 0) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode != 190 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                    && (charCode != 110 || $(element).val().indexOf('.') != -1)  // “.” CHECK DOT, AND ONLY ONE.
+                        && ((charCode < 48 && charCode != 8)
+                                || (charCode > 57 && charCode < 96)
+                                || charCode > 105))
+                    return false;
+                return true;
+            }
+            return true;
+        }
+    }
+    $('#example').on('draw.dt', function () {
+        Gridevent();
+    });
+    $("#partialDIV").ready(function () {
+        $('#example').dataTable({ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] });
+        $('#example input:text').first().focus();
+        $('#saveinfo').hide();
+        $('#RVCNO').val('@Model.RVCNO');
+        $('#auctionNo').val('@Model.auctionNo');
+        $('#Bcode').val('@Model.BrokerCode');
+        $('#Remarks').val('@Model.Remarks');
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+</script>
+<div class="table-responsive">
+    <table id="example" class="table table-striped table-hover" cellspacing="0px" width="100%">
+        <thead>
+            <tr style="font-size:12px; font-weight:bold;background-color:olivedrab;color:white">
+                <th style="border-left:1px solid gainsboro;border-top-left-radius:10px">Select</th>
+                <th>Inv. No.</th>
+                <th>Corp. Year</th>
+                <th>Grade</th>
+                <th>No. of Pkg.</th>
+                <th>Inv. Kgs</th>
+                <th>Sold Kgs</th>
+                <th>Sample</th>
+                <th>Other</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th style="border-right:1px solid gainsboro;border-top-right-radius:10px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int teaCount = Model.AuctionSaleEdit.Count();
+                for (int idx = 0; idx < teaCount; idx++)
+                {
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="border-left:1px solid gainsboro">
+                            @Html.CheckBoxFor(_ => Model.AuctionSaleEdit[idx].check, new { id = "check_" + idx.ToString() })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].INVNO)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].INVNO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].CROP_YEAR)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].CROP_YEAR)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].GRADE)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].GRADE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].PKG_NO)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].PKG_NO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].INV_KG)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].INV_KG)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].QTY)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].QTY)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].SAMP_QTY)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].SAMP_QTY)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].OTHER_QTY)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].OTHER_QTY)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].RATE)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].RATE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => Model.AuctionSaleEdit[idx].AMT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].AMT)
+                        </td>
+                        <td style="border-right:1px solid gainsboro">
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].CANC_DT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].DISCOUNT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].DOCDT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].DOCNO)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].END_NO)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].GLOCA)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].GROSS_WT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].LOCA)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].MARK)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].MFG_FROM)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].MFG_TO)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].OTH_AMT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].OTH_SHRT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].O_USER)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].PACK_DATE)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].SALE_TYPE)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].SAM_SHRT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].SIZE_CODE)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].SRLNO)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].START_NO)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].TARE_WT)
+                            @Html.HiddenFor(_ => Model.AuctionSaleEdit[idx].UNIT)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr style="background-color:olivedrab;font-size:12px; font-weight:bold;color:white;">
+                <td style="border-left:1px solid gainsboro;border-bottom-left-radius:10px"></td>
+                <td></td>
+                <td></td>
+                <td>Total - </td>
+                <td align="left">
+                    @Html.DisplayFor(_ => Model.SumPKGS)
+                    @Html.HiddenFor(_ => Model.SumPKGS)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(_ => Model.SumINVKGS)
+                    @Html.HiddenFor(_ => Model.SumINVKGS)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => Model.SumSOLDKGS)
+                    @Html.HiddenFor(_ => Model.SumSOLDKGS)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => Model.SumSAMPLE)
+                    @Html.HiddenFor(_ => Model.SumSAMPLE)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => Model.SumOTHER)
+                    @Html.HiddenFor(_ => Model.SumOTHER)
+                </td>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(_ => Model.SumAMOUNT)
+                    @Html.HiddenFor(_ => Model.SumAMOUNT)
+                </td>
+                <td style="border-right:1px solid gainsboro;border-bottom-right-radius:10px"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <hr />
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Label("", "Brokerage")
+            @Html.TextBoxFor(model => model.BRKG, new { @class = "form-control1", id = "BRKG", onkeydown = "return isNumber(event,this);" })
+        </div>
+        <div class="col-md-2">
+            @Html.Label("", "Misc. Charge")
+            @Html.TextBoxFor(model => model.MISC, new { @class = "form-control1", id = "MISC" })
+        </div>
+        <div class="col-md-2">
+            @Html.Label("", "Other Charge")
+            @Html.TextBoxFor(model => model.OTHC, new { @class = "form-control1", id = "OTHC" })
+        </div>
+        <div class="col-md-2">
+            @Html.Label("", "Gross Amount")
+            @Html.TextBoxFor(model => model.GAMT, new { @class = "form-control1", id = "GAMT" })
+        </div>
+        <div class="col-md-4">
+            @Html.Label("", "Remarks")
+            @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control", id = "Remarks" })
+        </div>
+    </div>
+    <div class="row">
+        @for (int i = 0; i <= Model.BrokerTaxDet.Count - 1; i++)
+        {
+            <div class="col-md-2">
+                @Html.Label("", Model.BrokerTaxDet[i].TAXHEAD)
+                @Html.HiddenFor(_ => Model.BrokerTaxDet[i].TAXCODE)
+                @if (Model.BrokerTaxDet[i].MANUAL == "N")
+                {
+                    @Html.TextBoxFor(model => Model.BrokerTaxDet[i].TAXAMT, new { @class = "form-control1", title = "Auto Calculation Activate" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => Model.BrokerTaxDet[i].TAXAMT, new { @class = "form-control1", title = "Manual Calculation Activate" })
+                }
+            </div>
+        }
+        <div class="col-md-2">
+            @Html.Label("", "Total Deduction")
+            @Html.TextBoxFor(model => Model.TOTDEDUCTION, new { @class = "form-control1", id = "TOTDEDUCTION" })
+        </div>
+        <div class="col-md-2">
+            @Html.Label("", "Net Amount")
+            @Html.TextBoxFor(model => Model.NAMT, new { @class = "form-control1", id = "NAMT" })
+        </div>
+        <div class="col-md-2">           
+            @if (Model.DefaultAction == "E")
+            {
+                @Html.Label("", "Option")
+                <input type="button" id="btntoggol" value="Re-Compute Tax" class="btn btn-success" onclick="return Editvalided('@Model.DefaultAction');" />
+            }            
+        </div>
+        <input type="hidden" id="btneditcompute" value="@Url.Action("edittax", "Con_FAC_02100000T")" />
+    </div>
+    <br />   
+    @if (Model.DefaultAction == "E")
+    {
+        <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+        <input type="submit" id="btnoption" value="Save" class="btn btn-primary" name="btnSave" onclick="return save();" />
+    }
+    else if (Model.DefaultAction == "D")
+    {
+        <input type="button" id="btntoggol" value="Select All" class="btn btn-danger" onclick="selectall('btntoggol');" />
+        <input type="submit" id="btnoption" value="Delete" class="btn btn-primary" name="btnSave" onclick="return save();" />
+    }
+</div>
+<br />
+<div id='saveinfo' class='alert alert-success fade in'>
+
+</div>

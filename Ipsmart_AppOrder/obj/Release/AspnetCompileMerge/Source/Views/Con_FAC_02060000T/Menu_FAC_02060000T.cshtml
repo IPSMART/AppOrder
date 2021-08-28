@@ -1,0 +1,129 @@
+﻿@model Rossell_HO.ViewModels.TeaSampleView
+@{
+    ViewBag.Title = "Tea Sample";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery.min.js" type="text/javascript"></script>
+<SCRIPT>
+    function selectall(id)
+    {
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == "checkbox") {
+                if (inputs[i].checked == true) {
+                    inputs[i].checked = false;
+                } else if (inputs[i].checked == false) {
+                    inputs[i].checked = true;
+                }
+            }
+        }
+    }
+    function SampleValided()
+    {
+        var gc = document.getElementById("Gcode").value;
+        var uc = document.getElementById("Ucode").value;
+        if (gc == "0")
+        {
+            document.getElementById("partialDIV").innerHTML = "<div id='savepopup' class='alert alert-success fade in'><strong> Select Garden</strong></div>";
+            return false;
+        }
+        if (uc == "0")
+        {
+            document.getElementById("partialDIV").innerHTML = "<div id='savepopup' class='alert alert-success fade in'><strong> Select Unit</strong></div>";
+            return false;
+        }
+        $.ajax({
+            type: 'post',
+            url: $("#btnRefresh").val(),
+            data: {
+                Gcode: $("#Gcode").val(),
+                Ucode: $("#Ucode").val(),
+                Action:"@Model.DefaultAction"
+            },
+            success: function (result) {
+                $('#partialDIV').html(result);
+            }
+        });
+    }    
+    function GetHelp(urlstring,id,colnm,caption)
+    {
+        $.ajax({
+            type: 'get',
+            url: urlstring,
+            success: function (result) {
+                $('#helpDIV').html(result);
+                $('#ReferanceFieldID').val(id);
+                $('#ReferanceColumn').val(colnm);               
+                document.getElementById("tableHeader").rows[0].cells[0].innerHTML = caption;
+            }
+        });
+    }
+   
+</script>
+<h2>Tea Sample</h2>
+    @using (Html.BeginForm())
+    {
+        if (Model.DefaultView == true)
+        {           
+            <div class="container">
+                <div class="form-group">                  
+                    <label class="col-sm-1" for="Gcode">Select Garden</label>
+                    <div class="col-sm-4">
+                        <select name="Gcode" id="Gcode" class="form-control">
+                            <option value="0">-- Select --</option>
+                            @foreach (var item in Model.M_GARDEN)
+                            {
+                                if (TempData["smp_tea_gcode"].ToString() == item.CODE)
+                                {
+                                    <option value="@item.CODE" selected="selected">@item.DESCN - @item.CODE</option>                                    
+                                }
+                                else
+                                {
+                                    <option value="@item.CODE">@item.DESCN - @item.CODE</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <label class="col-sm-1" for="Ucode">Select Unit</label>
+                    <div class="col-sm-4">
+                        <select name="Ucode" id="Ucode" class="form-control">
+                            <option value="0">-- Select --</option>
+                            @foreach (var item in Model.M_UNIT)
+                            {
+                                if (TempData["smp_tea_ucode"].ToString() == item.CODE)
+                                {
+                            <option value="@item.CODE" selected="selected">@item.NAME - @item.CODE</option>
+                                }
+                                else
+                                {
+                            <option value="@item.CODE">@item.NAME - @item.CODE</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-2">                      
+                        <input type="button" value="Refresh" class="btn btn-info" id="btnRefresh" onclick="return SampleValided();" />
+                        <input type="hidden" id="btnRefresh" value="@Url.Action("Refresh","Con_FAC_02060000T")" />
+                       @Html.HiddenFor(p=> p.DefaultAction)
+                    </div>
+
+                </div>
+            </div>
+        }
+        <hr />
+        <div class="container">
+            <div id="partialDIV">
+                @*@if (Model.Flag != 0)
+                {
+                    
+                }*@               
+                @(new HtmlString(Model.MSG))                
+            </div>
+        </div>
+        <div class="container">
+            <div id="helpDIV">
+
+            </div>
+        </div>
+    }

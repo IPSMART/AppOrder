@@ -1,0 +1,199 @@
+﻿@model Rossell_HO.ViewModels.CompanySelection
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Company Selection</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script>
+        function getCompanyLocation()
+        {
+        $("#divLoadingSubCat").show();
+
+        var options = {
+            url: $("#LocationUrl").val() + "/" + $("#Comid").val(),
+            type: "get"
+        };
+
+        $.ajax(options).done(function (data) {
+            $("#divLocation").html(data);
+            $("#divLoadingSubCat").hide();
+        });
+
+        return false;
+        }
+
+        function getCompanyFinancial()
+        {
+            $("#divLoadingSubCat1").show();
+            $('#LocationText').val($('#LComid option:selected').text())
+            var options = {
+                url: $("#FinancialUrl").val() + "?ID=" + $("#Comid").val() + "&loca=" + $("#LComid").val() + "&loca2=" + $("#LComid option:selected").text(),
+                type: "get"
+            };
+
+            $.ajax(options).done(function (data) {
+                $("#divFinancial").html(data);
+                $("#divLoadingSubCat1").hide();
+            });
+
+            return false;
+        }
+        function setFinancialText()
+        {
+            $('#FinancialText').val($('#FinaID option:selected').text())
+        }
+    </script>
+    <style>
+        .form-group input[type="checkbox"] {
+    display: none;
+}
+
+.form-group input[type="checkbox"] + .btn-group > label span {
+    width: 20px;
+}
+
+.form-group input[type="checkbox"] + .btn-group > label span:first-child {
+    display: none;
+}
+.form-group input[type="checkbox"] + .btn-group > label span:last-child {
+    display: inline-block;   
+}
+
+.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
+    display: inline-block;
+}
+.form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
+    display: none;   
+}
+    </style>
+</head>
+<body>
+    <div class="container body-content">
+        <div class="jumbotron">
+            <h1>Company Selection</h1>
+            <section class="content-wrapper main-content clear-fix">
+                @using (Html.BeginForm())
+                {
+                    <fieldset>
+                        <legend><span style="color:indianred">@ViewBag.UserName</span></legend>
+                        <legend><span style="color:cornflowerblue">@ViewBag.Lastlog</span></legend>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Comid)
+                        </div>
+                        <div class="editor-field">
+                            <select name="Comid" id="Comid" class = "form-control" onchange="getCompanyLocation()">
+                                <option value="0">-- Select --</option>
+                                @foreach (var item in Model.CompanyName)
+                                {
+                                    if (item.NAME == Model.Company_Name)
+                                    {
+                                        <option value="@item.NAME" selected="selected">@item.NAME</option>                                                                         
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.NAME">@item.NAME</option>
+                                    }
+                                }
+                            </select>                            
+                            @Html.ValidationMessageFor(model => model.Comid)
+                            <input type="hidden" name="LocationUrl" id="LocationUrl" value="@Url.Action("FillLocation", "Home")" />
+                            <span id="divLoadingSubCat" style="display:none;">
+                                <img src="@Url.Content("~/Image/loader.gif")" alt="loading..." height="20px" />
+                            </span>                            
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Loca)
+                        </div>
+                        <div class="editor-field">
+                            <div id="divLocation">
+                                <select name="LComid" id="LComid" class = "form-control">
+                                    <option value="0">-- Select --</option>
+                                </select>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Loca)
+                            <input type="hidden" name="FinancialUrl" id="FinancialUrl" value="@Url.Action("FillFinancialYear", "Home")" />
+                            <span id="divLoadingSubCat1" style="display:none;">
+                                <img src="@Url.Content("~/Image/loader.gif")" alt="loading..." height="20px" />
+                            </span>
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.FINA)
+                        </div>
+                        <div class="editor-field">
+                            <div id="divFinancial">
+                                <select name="FinaID" id="FinaID" class="form-control">
+                                    <option value="0">-- Select --</option>
+                                </select>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FINA)
+                        </div>
+                        <div class="editor-label">
+                            &nbsp;
+                        </div>
+                       @if (Model.Ischeked == true)
+                       {
+                        <div class="[ form-group ]">
+                            <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" checked="checked" />
+                            <div class="[ btn-group ]">
+                                <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
+                                    <span class="[ glyphicon glyphicon-ok ]"></span>
+                                    <span> </span>
+                                </label>
+                                <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
+                                    SET AS DEFAULT
+                                </label>
+                            </div>
+                        </div>
+                       }
+                       else
+                       {
+                        <div class="[ form-group ]">
+                            <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" />
+                            <div class="[ btn-group ]">
+                                <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
+                                    <span class="[ glyphicon glyphicon-ok ]"></span>
+                                    <span> </span>
+                                </label>
+                                <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
+                                    SET AS DEFAULT
+                                </label>
+                            </div>
+                        </div>
+                       }                                       
+                        <legend></legend>
+                        <p>
+                            <input type="submit" name="submitbutton" value="OK" class="btn btn-success" onclick="return validCompanySelection();" />                           
+                            <input type="submit" name="submitbutton" value="Logout" class="btn btn-info" /> 
+                            <input type="hidden" name="LocationText" id="LocationText" value="" />
+                            <input type="hidden" name="FinancialText" id="FinancialText" value="" />                                 
+                        </p>
+                        <p>
+                            <span id="validationMessage"></span>
+                        </p>
+                    </fieldset>
+                }
+            </section>
+        </div>
+    </div>
+    <div class="container body-content">
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Classic ERP</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/Jaguar.js");
+    <script type="text/javascript">
+       getCompanyLocation()
+    </script>    
+</body>
+</html>

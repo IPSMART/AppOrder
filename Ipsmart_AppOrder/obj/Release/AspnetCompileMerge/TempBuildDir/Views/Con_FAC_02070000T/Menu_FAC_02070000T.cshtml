@@ -1,0 +1,205 @@
+﻿@model Rossell_HO.ViewModels.TeaTestingView
+@{
+    ViewBag.Title = "Tea Testing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery.min.js" type="text/javascript"></script>
+<script>
+    function selectall(id) {
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == "checkbox") {
+                if (inputs[i].checked == true) {
+                    inputs[i].checked = false;
+                } else if (inputs[i].checked == false) {
+                    inputs[i].checked = true;
+                }
+            }
+        }
+    }
+    function TestingValided() {
+        var fdate = document.getElementById("Fdate").value;
+        var gc = document.getElementById("Gcode").value;
+        var mc = document.getElementById("Ucode").value;
+        var yc = document.getElementById("Dcode").value;
+        if (fdate.length <= 0)
+        {
+            document.getElementById("partialDIV").innerHTML = "<div id='savepopup' class='alert alert-success fade in'><strong> Enter Date</strong></div>";
+            return false;
+        }
+        if (gc == "0") {
+            document.getElementById("partialDIV").innerHTML = "<div id='savepopup' class='alert alert-success fade in'><strong> Select Garden</strong></div>";
+            return false;
+        }
+        if (mc == "0") {
+            document.getElementById("partialDIV").innerHTML = "<div id='savepopup' class='alert alert-success fade in'><strong> Select Unit</strong></div>";
+            return false;
+        }
+        if (yc == "0") {
+            document.getElementById("partialDIV").innerHTML = "<div id='savepopup' class='alert alert-success fade in'><strong> Select Document Number</strong></div>";
+            return false;
+        }
+        if("@Model.DefaultAction"!="A")
+        {
+            var tc = document.getElementById("Tcode").value;
+            if (tc == "0") {
+                document.getElementById("partialDIV").innerHTML = "<div id='savepopup' class='alert alert-success fade in'><strong> Select Testing Number</strong></div>";
+                return false;
+            }
+            $.ajax({
+                type: 'post',
+                url: $("#btnRefresh").val(),
+                data: {
+                    Gcode: $("#Gcode").val(),
+                    Ucode: $("#Ucode").val(),
+                    Dcode: $("#Dcode").val(),
+                    Action: "@Model.DefaultAction",
+                    TestingNO:$("#Tcode").val()
+                },
+                success: function (result) {
+                    $('#partialDIV').html(result);                              
+                }
+            });
+        }
+        else
+        {
+            $.ajax({
+                type: 'post',
+                url: $("#btnRefresh").val(),
+                data: {
+                    Gcode: $("#Gcode").val(),
+                    Ucode: $("#Ucode").val(),
+                    Dcode: $("#Dcode").val(),
+                    Action: "@Model.DefaultAction"                
+                },
+                success: function (result) {
+                    $('#partialDIV').html(result);                              
+                }
+            });
+        }
+        
+    }
+</script>
+<h2>Tea Testing</h2>
+@using (Html.BeginForm())
+{
+    if (Model.DefaultView == true)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Fdate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Fdate, new { id = "Fdate" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.LabelFor(model => model.M_GARDEN)
+                        <select name="Gcode" id="Gcode" class="form-control">
+                            <option value="0">-- Select --</option>
+                            @foreach (var item in Model.M_GARDEN)
+                            {
+                                if (TempData["smp_tea_gcode"].ToString() == item.CODE)
+                                {
+                                    <option value="@item.CODE" selected="selected">@item.DESCN - @item.CODE</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.CODE">@item.DESCN - @item.CODE</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.LabelFor(model => model.M_UNIT)
+                        <select name="Ucode" id="Ucode" class="form-control">
+                            <option value="0">-- Select --</option>
+                            @foreach (var item in Model.M_UNIT)
+                            {
+                                if (TempData["smp_tea_ucode"].ToString() == item.CODE)
+                                {
+                                    <option value="@item.CODE" selected="selected">@item.NAME - @item.CODE</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.CODE">@item.NAME - @item.CODE</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.LabelFor(model => model.SMPL_DOCNO)
+                        <select name="Dcode" id="Dcode" class="form-control">
+                            <option value="0">-- Select --</option>
+                            @foreach (var item in Model.SMPL_DOCNO)
+                            {
+                                if (TempData["smp_tea_dcode"].ToString() == item.DOCNO)
+                                {
+                                    <option value="@item.DOCNO" selected="selected">@item.DOCNO</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.DOCNO">@item.DOCNO</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">       
+                    @if (Model.DefaultAction == "A")
+                    {
+                        <div class="editor-field">
+                            @Html.LabelFor(model => model.TestingNo)
+                            @Html.TextBoxFor(model => model.TestingNo, new { @class = "form-control", @readonly = "readonly", id = "TestingNo" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="editor-field">
+                            @Html.LabelFor(model => model.getTestingNo)
+                            <select name="Tcode" id="Tcode" class="form-control">
+                                <option value="0">-- Select --</option>
+                                @foreach (var item in Model.getTestingNo)
+                                {
+                                    if (TempData["smp_tea_tcode"].ToString() == item.TEstingNO.ToString())
+                                    {
+                                        <option value="@item.TEstingNO.ToString()" selected="selected">@item.TEstingNO.ToString()</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.TEstingNO.ToString()">@item.TEstingNO.ToString()</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Option")
+                    </div>
+                    <div class="editor-field">
+                        <input type="button" value="Refresh" class="btn btn-info" id="btnRefresh" onclick="return TestingValided();" />
+                        <input type="hidden" id="btnRefresh" value="@Url.Action("Refresh","Con_FAC_02070000T")" />
+                        @Html.HiddenFor(p => p.DefaultAction)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="container">
+            <div id="partialDIV">
+                @(new HtmlString(Model.MSG))
+            </div>
+        </div>
+                           
+    }
+}
