@@ -86,8 +86,8 @@ namespace Improvar.Models
         public virtual DbSet<MS_COMPTYPE> MS_COMPTYPE { get; set; }
 
         public virtual DbSet<MS_BANKIFSC> MS_BANKIFSC { get; set; }
+        public virtual DbSet<M_RETAILOUTLET> M_RETAILOUTLET { get; set; }
 
-        
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

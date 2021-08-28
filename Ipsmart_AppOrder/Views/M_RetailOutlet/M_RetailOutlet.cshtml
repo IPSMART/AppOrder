@@ -1,8 +1,304 @@
-﻿
+﻿@model Improvar.ViewModels.RetailOutletEntry
 @{
-    ViewBag.Title = "M_RetailOutlet";
-    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+    ViewBag.Title = "Purity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>M_RetailOutlet</h2>
+<script src="~/Scripts/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ("@Model.DefaultAction" == "V" || "@Model.DefaultAction" == "D") {
+            modeView();
+        }
+        else if ("@Model.DefaultAction" == "E") {
+            $("#PURECD").attr("readonly", true);
+        }
+        else if ("@Model.DefaultAction" == "A") {
+            $('form :input:enabled:visible:not([readonly]):first').focus();
+        }
+        $("#WaitingMode").hide();
+    });
+</script>
+<script>
+    function requiredFieldValidator() {
+        if (!emptyFieldCheck("Enter Purity Code", "PURECD")) {
+            $("li").removeClass("active").addClass("");
+            $(".nav-tabs li:first-child").addClass('active');
+            //below set the  child sequence
+            $(".tab-content div").removeClass("active");
+            $(".tab-content div:first-child").removeClass("tab-pane fade").addClass("tab-pane fade in active");
+            return false;
+        }
+        //if ($("#PURECD").val() != "") {
+        //    if (($.trim($("#PURECD").val())).length != 3) {
+        //        msgInfo(" Purity Code length should be 3");
+        //        message_value = "PURECD";
+        //        $("li").removeClass("active").addClass("");
+        //        $(".nav-tabs li:first-child").addClass('active');
+        //        //below set the  child sequence
+        //        $(".tab-content div").removeClass("active");
+        //        $(".tab-content div:first-child").removeClass("tab-pane fade").addClass("tab-pane fade in active");
+        //        return false;
+        //    }
+        //}
+        if (!emptyFieldCheck("Enter Purity Name", "PURENM")) {
+            $("li").removeClass("active").addClass("");
+            $(".nav-tabs li:first-child").addClass('active');
+            //below set the  child sequence
+            $(".tab-content div").removeClass("active");
+            $(".tab-content div:first-child").removeClass("tab-pane fade").addClass("tab-pane fade in active");
+            return false;
+        }
+        if (!emptyFieldCheck("Enter Metal", "MTCD")) {
+            $("li").removeClass("active").addClass("");
+            $(".nav-tabs li:first-child").addClass('active');
+            //below set the  child sequence
+            $(".tab-content div").removeClass("active");
+            $(".tab-content div:first-child").removeClass("tab-pane fade").addClass("tab-pane fade in active");
+            return false;
+        }
+        return true;
+    }
+</script>
+<script>
+    @{
+        string mldauto = "";
+        if (@Model.M_CNTRL_HDR != null)
+        {
+            mldauto = Model.M_RETAILOUTLET.M_AUTONO.ToString();
+        }
+        else
+        {
+            mldauto = "";
+        }
+    }
+    function ModifyLogDetails() {
+        if ("@Model.DefaultAction" == "V") {
+            ModifyLogDtl(@mldauto);
+        }
+    }
+</script>
+<script>
+    function CheckPURECD(id) {
+        if ("@Model.DefaultAction" == "A") {
+            var valu = document.getElementById(id).value;
+            if (valu == "") {
+            }
+            else {
+                $.ajax({
+                    type: 'GET',
+                    url: $("#MetalCode").val(),
+                    data: { val: valu },
+                    success: function (result) {
+                        if (result == "1") {
+                            msgInfo("Entered Purity Code Already Exists. ! Please Enter a Valid / Different Purity Code! ");
+                            message_value = "PURECD";
+                            return false;
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+<script>
+    function AddDOCrow() {
+        $.ajax({
+            type: 'POST',
+            url: $("#add_doc_url").val(),
+            data: $('form').serialize(),
+            success: function (result) {
+                $("#partialdivDocument").animate({ marginTop: '-10px' }, 50);
+                $("#partialdivDocument").html(result);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
+    }
+    function DeleteDOCrow() {
+        $.ajax({
+            type: 'POST',
+            url: $("#del_doc_url").val(),
+            data: $('form').serialize(),
+            success: function (result) {
+                $("#partialdivDocument").animate({ marginTop: '0px' }, 50);
+                $("#partialdivDocument").html(result);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
+    }
+</script>
+<script></script>
+@{
+    string PageControllerName = "M_RetailOutlet";
+}
+@using (Html.BeginForm())
+{
+    if (Model.DefaultView == true)
+    {
+        @Html.HiddenFor(a => Model.maxdate)
+        @Html.HiddenFor(a => Model.mindate)
+        <div class="form-horizontal" style="padding-left:5px;padding-right:5px;">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" id="btnSave" value="@Url.Action("SAVE", PageControllerName)" />
+            <input type="hidden" id="MetalCode" value="@Url.Action("CheckCode", PageControllerName)" />
+            <input type="hidden" id="srhpnl" value="@Url.Action("SearchPannelData", PageControllerName)" />
+            <input type="hidden" id="add_doc_url" value="@Url.Action("AddDOCRow", PageControllerName )" />
+            <input type="hidden" id="del_doc_url" value="@Url.Action("DeleteDOCRow", PageControllerName )" />
+            @Html.HiddenFor(s => s.DefaultAction)
+            @Html.HiddenFor(a => a.M_RETAILOUTLET.M_AUTONO)
+            <div id="Main" class="tab-pane fade in active" style="margin-top: 10px;">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", " Retail Code")
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.RETLRCD, new { htmlAttributes = new { @class = "form-control ", id = "RETLRCD", onkeyup = "toUpper(PURECD)", @placeholder = " Purity Code", onblur = "CheckPURECD('PURECD')", maxlength = 3 , @TabIndex = -1, @readonly = "readonly" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Retail Name")
+                            <b style="color:red"><sup>*</sup></b>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.RETLRNM, new { htmlAttributes = new { @class = "form-control ", id = "RETOUTNM", @placeholder = "Purity Name", maxlength = 15 } })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Address1")
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.RETLRADD1, new { htmlAttributes = new { @class = "form-control ", id = "RETLRADD1", @placeholder = "Purity Name", maxlength = 15 } })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Address2")
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.RETLRADD2, new { htmlAttributes = new { @class = "form-control ", id = "RETLRADD2", @placeholder = "Purity Name", maxlength = 15 } })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-label" style="margin-top: 6px;">
+                            @Html.Label("", "Pin Code")
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.RETLRPIN, new { htmlAttributes = new { @class = "form-control", id = "RETLRPIN", @placeholder = "Pin Code", @onkeypress = "return event.charCode > 47 && event.charCode < 58;", maxlength = 10 } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Locality")
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.RETLRLOCALITY, new { htmlAttributes = new { @class = "form-control ", id = "RETLRLOCALITY", @placeholder = "Purity Name", maxlength = 15 } })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-label" style="margin-top: 6px;">
+                            @Html.Label("", "GST No.")
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.RETLRGSTNO, new { htmlAttributes = new { @class = "form-control", Id = "RETLRGSTNO", @style = "text-transform:uppercase", maxlength = 15, @placeholder = "GST No." } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Remarks")
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.REMARKS, new { htmlAttributes = new { @class = "form-control ", id = "REMARKS", @placeholder = "Purity Name", maxlength = 15 } })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Dist. Slcd")
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.DSTBRSLCD, new { htmlAttributes = new { @class = "form-control ", id = "DSTBRSLCD", @placeholder = "Purity Name", maxlength = 15 } })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-label" style="margin-top:0px;margin-bottom: -5px;display: inline-block;">
+                            @Html.Label("", "De - Activate")
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="editor-field" style="display: inline-block;">
+                            @Html.CheckBoxFor(model => model.Checked)
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    }
+    else
+    {
+        @ViewBag.ErrorMessage
+    }
+
+    <div class="container">
+        <div id="helpDIV">
+
+        </div>
+    </div>
+}
+
 

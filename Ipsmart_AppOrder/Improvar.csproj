@@ -397,6 +397,7 @@
     <Compile Include="Models\M_MONTH.cs" />
     <Compile Include="Models\M_PARTYGRP.cs" />
     <Compile Include="Models\M_REPFORMAT.cs" />
+    <Compile Include="Models\M_RETAILOUTLET.cs" />
     <Compile Include="Models\M_SDR_QUERY.cs" />
     <Compile Include="Models\M_SDR_USERID.cs" />
     <Compile Include="Models\M_SIGN_AUTH.cs" />
@@ -470,6 +471,7 @@
     <Compile Include="ViewModels\dataLock.cs" />
     <Compile Include="ViewModels\ModifyLog.cs" />
     <Compile Include="ViewModels\ReportViewinHtml.cs" />
+    <Compile Include="ViewModels\RetailOutletEntry.cs" />
     <Compile Include="ViewModels\SDRQueryReport.cs" />
     <Compile Include="ViewModels\SubLedgerEntry.cs" />
     <Compile Include="ViewModels\UOMMasterEntry.cs" />
