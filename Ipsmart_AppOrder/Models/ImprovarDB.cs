@@ -15,6 +15,9 @@ namespace Improvar.Models
         {
             Database.SetInitializer<ImprovarDB>(null);
         }
+        
+        public virtual DbSet<T_RETAILORDERDTL> T_RETAILORDERDTL { get; set; }
+        public virtual DbSet<T_RETAILORDER> T_RETAILORDER { get; set; }
         public virtual DbSet<T_TXNEWB> T_TXNEWB { get; set; }
         public virtual DbSet<T_TXNEINV> T_TXNEINV { get; set; }
         public virtual DbSet<MS_MUSRACS> MS_MUSRACS { get; set; }

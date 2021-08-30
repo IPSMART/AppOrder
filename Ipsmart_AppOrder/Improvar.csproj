@@ -445,6 +445,8 @@
     <Compile Include="Models\T_CNTRL_HDR_DOC.cs" />
     <Compile Include="Models\T_CNTRL_HDR_DOC_DTL.cs" />
     <Compile Include="Models\T_CNTRL_HDR_REM.cs" />
+    <Compile Include="Models\T_RETAILORDER.cs" />
+    <Compile Include="Models\T_RETAILORDERDTL.cs" />
     <Compile Include="Models\T_TXNEINV.cs" />
     <Compile Include="Models\T_TXNEWB.cs" />
     <Compile Include="Models\T_TXNSTATUS.cs" />
