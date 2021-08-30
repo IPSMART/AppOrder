@@ -100,15 +100,21 @@ namespace Improvar.Controllers
                 ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
 
 
-                sql += " select distinct * from  " + scm + ".M_RetailOutlet " + Environment.NewLine;
+                sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO from  " + scm + ".M_RetailOutlet " + Environment.NewLine;
+                sql += "where " + Environment.NewLine;
+                if (RetailerName.retStr() != "") sql += "upper(RETLRNM) like '%" + RetailerName.retStr().ToUpper() + "%' ";
+                if (RetailerPin.retStr() != "") sql += "and RETLRPIN like '%" + RetailerPin.retStr() + "%' ";
+                if (RetailerGstno.retStr() != "") sql += "and upper(RETLRGSTNO) like '%" + RetailerGstno.retStr().ToUpper() + "%' ";
+                if (RetailerCity.retStr() != "") sql += "and upper(RETLRCITY) like '%" + RetailerCity.retStr().ToUpper() + "%' ";
                 var txndt = masterHelp.SQLquery(sql);
                 retlOrdrlst = (from DataRow dr in txndt.Rows
                                select new VMRetailOrder
                                {
-                                   RetailerCode = dr["RETOUTCD"].ToString(),
-                                   RetailerGstno = dr["RETOUTNM"].ToString(),
-                                   RetailerCity = dr["RETOUTNM"].retDateStr(),
-                                   RetailerName = dr["RETOUTNM"].ToString(),
+                                   RetailerCode = dr["RETLRCD"].ToString(),
+                                   RetailerGstno = dr["RETLRGSTNO"].ToString(),
+                                   RetailerCity = dr["RETLRCITY"].retDateStr(),
+                                   RetailerName = dr["RETLRNM"].ToString(),
+                                   RetailerPin = dr["RETLRPIN"].ToString(),
                                }).ToList();
 
             }
@@ -214,7 +220,7 @@ namespace Improvar.Controllers
                         List<KARTIEMS> KARTIEMS = new List<ViewModels.KARTIEMS>();
                         var KARTIEMS1 = new KARTIEMS() { itcd = "F008477", sizes = new List<SIZEDTL>() { new SIZEDTL() { qnty = "323", sizecd = "S" } } };
                         KARTIEMS.Add(KARTIEMS1);
-                       
+
                         int slno = 0;
                         foreach (var v in KARTIEMS)
                         {
@@ -231,7 +237,7 @@ namespace Improvar.Controllers
                                 TRETAILORDERDTL.SIZECD = v1.sizecd;
                                 DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
                             }
-                            
+
                         }
                         //T_CNTRL_HDR MCH = Cn.T_CNTRL_HDR(VE.Checked, "M_GrpMast", MREASON.AUTONO.retInt(), VE.DefaultAction, CommVar.CurSchema(UNQSNO));
                         T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(DOCCD, DOCDT, DOCNO, MREASON.AUTONO, Month, DOCPATTERN, DefaultAction, CommVar.CurSchema(UNQSNO), "", MREASON.SLCD, 0, "", YR_CD);
