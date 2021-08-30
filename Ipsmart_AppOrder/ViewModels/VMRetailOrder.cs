@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Improvar.ViewModels
 {
-    public class VMRetailOrder 
+    public class VMRetailOrder
     {
         public List<ImageView> ImageView { get; set; }
         public bool Checked { get; set; }
@@ -21,6 +21,12 @@ namespace Improvar.ViewModels
         public string SelectedRetailerPin { get; set; }
         public string SelectedRetailerGstno { get; set; }
         public string SelectedRetailerCity { get; set; }
+
+        public string GEOLONGITUDE { get; set; }
+        public string GEOLATITUDE { get; set; }
+        //public string GEOADDRESS { get; set; }
+        public string ITEMDETAIL_JSTR { get; set; }
+
     }
 
     public class ImageView
@@ -28,5 +34,17 @@ namespace Improvar.ViewModels
         public string Url { get; set; }
         public string Desc { get; set; }
         public string ITCD { get; set; }
+        public string SIZES { get; set; }
+    }
+
+    public class KARTIEMS
+    {
+        public string itcd { get; set; }
+        public List<SIZEDTL> sizes { get; set; }
+    }
+    public class SIZEDTL
+    {
+        public string sizecd { get; set; }
+        public string qnty { get; set; }
     }
 }

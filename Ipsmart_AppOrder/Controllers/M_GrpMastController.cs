@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Improvar.Controllers
 {
@@ -40,8 +42,12 @@ namespace Improvar.Controllers
                     string doccd = "";
 
                     string sql = "";
-                    sql = " select a.m_autono,a.itcd,a.styleno from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b ";
-                    sql += "where a.itgrpcd = b.itgrpcd and b.brandcd = '" + brand + "'";
+                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
+                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
+                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + brand + "'";
+                    sql += " group by  a.m_autono,a.itcd,a.styleno";
+
+
                     var dt = masterHelp.SQLquery(sql);
                     List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
                     foreach (DataRow dr in dt.Rows)
@@ -49,6 +55,7 @@ namespace Improvar.Controllers
                         ImageView objImageView = new ImageView();
                         objImageView.ITCD = dr["ITCD"].ToString();
                         objImageView.Desc = dr["styleno"].ToString();
+                        objImageView.SIZES = dr["sizes"].ToString();
                         //objImageView.Desc = dr["desc"].ToString();
                         var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
                         if (img.Count > 0)
@@ -98,7 +105,7 @@ namespace Improvar.Controllers
                 retlOrdrlst = (from DataRow dr in txndt.Rows
                                select new VMRetailOrder
                                {
-                                   RetailerCode = dr["RETOUTNM"].ToString(),
+                                   RetailerCode = dr["RETOUTCD"].ToString(),
                                    RetailerGstno = dr["RETOUTNM"].ToString(),
                                    RetailerCity = dr["RETOUTNM"].retDateStr(),
                                    RetailerName = dr["RETOUTNM"].ToString(),
@@ -112,6 +119,52 @@ namespace Improvar.Controllers
             }
             return Json(retlOrdrlst, JsonRequestBehavior.AllowGet);
         }
+        public class AddressComponent
+        {
+            public string long_name { get; set; }
+            public string short_name { get; set; }
+            public List<string> types { get; set; }
+        }
+
+        public class Result
+        {
+            public List<AddressComponent> address_components { get; set; }
+            public string formatted_address { get; set; }
+        }
+
+        public class GeoLocation
+        {
+            public List<Result> results { get; set; }
+            public string status { get; set; }
+        }
+
+        public string GetAddress(string lat, string lng)
+        {
+            try
+            {
+                string datastring = "";
+                lat = "22.555"; lng = "88.258";
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
+                WebRequest rqst = HttpWebRequest.Create(url);
+                using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
+                {
+                    Stream strm = (Stream)rspns.GetResponseStream();
+                    StreamReader strmrdr = new StreamReader(strm);
+                    datastring = strmrdr.ReadToEnd();
+                    strm.Close();
+                    strmrdr.Close();
+                    rspns.Close();
+                }
+                GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
+                var address = geoLocation.results[0].formatted_address;
+                return datastring;
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return "";
+            }
+        }
         public ActionResult SAVE(FormCollection FC, VMRetailOrder VE)
         {
             ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
@@ -119,6 +172,7 @@ namespace Improvar.Controllers
             {
                 try
                 {
+                    var address = GetAddress("", "");
                     DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".M_CNTRL_HDR in  row share mode");
                     //if (VE.DefaultAction == "A" || VE.DefaultAction == "E")
                     //{
@@ -237,6 +291,8 @@ namespace Improvar.Controllers
             }
             return null;
         }
+
+
     }
 }
 
