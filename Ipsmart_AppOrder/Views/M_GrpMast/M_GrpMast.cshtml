@@ -59,6 +59,7 @@
     });
 
     function GetRetailerInfo() {
+        debugger;
         var RetailerName = $("#RetailerName").val();
         var RetailerPin = $("#RetailerPin").val();
         var RetailerGstno = $("#RetailerGstno").val();
@@ -75,16 +76,16 @@
             contentType: "application/json",
             success: function (result) {
                 var isnum = 0;
-                console.log('    result.length:' + result.length);
+                console.log('result.length:' + result.length);
 
                 $.each(result, function (index, itemData) {
                     ++isnum;
 
                     $("#SelectedRetailerCode").val(itemData.RetailerCode);
-                    $("#RetailerName").val(itemData.RetailerName);
-                    $("#RetailerPin").val(itemData.RetailerPin);
-                    $("#RetailerGstno").val(itemData.RetailerGstno);
-                    $("#RetailerCity").val(itemData.RetailerCity);
+                    $("#SelectedRetailerName").val(itemData.RetailerName);
+                    $("#SelectedRetailerPin").val(itemData.RetailerPin);
+                    $("#SelectedRetailerGstno").val(itemData.RetailerGstno);
+                    $("#SelectedRetailerCity").val(itemData.RetailerCity);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -178,7 +179,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.RetailerName, new { htmlAttributes = new { @class = "form-control ", id = "RetailerName", @placeholder = " Make Code" } })
+                    @Html.EditorFor(model => model.RetailerName, new { htmlAttributes = new { @class = "form-control ", id = "RetailerName", @placeholder = " Retailer Name" } })
                 </div>
             </div>
             <div class="col-md-5">
@@ -188,7 +189,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.RetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "RetailerPin", @placeholder = " Make Code" } })
+                    @Html.EditorFor(model => model.RetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "RetailerPin", @placeholder = " Retailer Pin" } })
                 </div>
             </div><div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
@@ -197,7 +198,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.RetailerGstno, new { htmlAttributes = new { @class = "form-control ", id = "RetailerGstno", @placeholder = " Make Code" } })
+                    @Html.EditorFor(model => model.RetailerGstno, new { htmlAttributes = new { @class = "form-control ", id = "RetailerGstno", @placeholder = " Retailer Gstno" } })
                 </div>
             </div>
             <div class="col-md-5">
@@ -207,10 +208,10 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.RetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "RetailerCity", @placeholder = " Make Code" } })
+                    @Html.EditorFor(model => model.RetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "RetailerCity", @placeholder = " Retailer City" } })
                 </div>
             </div>
-            <button onclick="GetRetailerInfo()" type="button">Get Retailer Info</button>
+            <button class="btn btn-sm btn-info" onclick="GetRetailerInfo()" type="button">Get Retailer Info</button>
         </div>
 
         <div class="row">
@@ -231,7 +232,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerName, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerName", @placeholder = " Make Code", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.SelectedRetailerName, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerName", @placeholder = " Retailer Name", @readonly = "readonly" } })
                 </div>
             </div>
             <div class="col-md-5">
@@ -241,7 +242,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerPin", @placeholder = " Make Code", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.SelectedRetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerPin", @placeholder = "Retailer Pin", @readonly = "readonly" } })
                 </div>
             </div><div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
@@ -250,7 +251,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerGstno, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerGstno", @placeholder = " Make Code", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.SelectedRetailerGstno, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerGstno", @placeholder = "Retailer Gstno", @readonly = "readonly" } })
                 </div>
             </div>
             <div class="col-md-5">
@@ -260,7 +261,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCity", @placeholder = " Make Code", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.SelectedRetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCity", @placeholder = "Retailer City", @readonly = "readonly" } })
                 </div>
             </div>
         </div>
@@ -278,7 +279,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    <button onclick="AddtoCart()" type="button" class="btn btn-sm"> Add to Cart </button>
+                    <button onclick="AddtoCart()" type="button" class="btn btn-sm btn-warning"> Add to Cart </button>
                 </div>
             </div>
         </div>
@@ -356,27 +357,27 @@
                 }
 
                 function SaveData() {
-                    getLocation();
-                    if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
-                        getLocation();
-                        return false;
-                    }
-                    if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
-                        getLocation();
-                        return false;
-                    }
-                    var hdnData1 = '';
-                    $('#tblCart > tbody  > tr').each(function () {
-                        var ITCD = $(this).find("td").eq(0).html();
-                        var QNTY = $(this).find("td").eq(1).html();
-                        var SIZE = $(this).find("td").eq(2).html();
-                        if (hdnData1 != '') hdnData1 += ',';
-                        hdnData1 += "{ 'ITCD': '" + ITCD + "', 'SIZE': '" + SIZE + "' , 'QNTY': '" + QNTY + "' }";
-                    });
+                    //getLocation();
+                    //if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
+                    //    getLocation();
+                    //    return false;
+                    //}
+                    //if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
+                    //    getLocation();
+                    //    return false;
+                    //}
+                    //var hdnData1 = '';
+                    //$('#tblCart > tbody  > tr').each(function () {
+                    //    var ITCD = $(this).find("td").eq(0).html();
+                    //    var QNTY = $(this).find("td").eq(1).html();
+                    //    var SIZE = $(this).find("td").eq(2).html();
+                    //    if (hdnData1 != '') hdnData1 += ',';
+                    //    hdnData1 += "{ 'ITCD': '" + ITCD + "', 'SIZE': '" + SIZE + "' , 'QNTY': '" + QNTY + "' }";
+                    //});
 
-                    console.log(hdnData1);
-                    if (hdnData1 == '') { msgInfo('Data Not found'); return false;}
-                    $("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+                    //console.log(hdnData1);
+                    //if (hdnData1 == '') { msgInfo('Data Not found'); return false;}
+                    //$("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
 
                     $.ajax({
                         type: 'post',
