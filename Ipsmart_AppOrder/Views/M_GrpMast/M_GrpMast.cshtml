@@ -354,27 +354,27 @@
                 }
 
                 function SaveData() {
-                    getLocation();
-                    if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
-                        getLocation();
-                        return false;
-                    }
-                    if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
-                        getLocation();
-                        return false;
-                    }
-                    var hdnData1 = '';
-                    $('#tblCart > tbody  > tr').each(function () {
-                        var ITCD = $(this).find("td").eq(0).html();
-                        var QNTY = $(this).find("td").eq(1).html();
-                        var SIZE = $(this).find("td").eq(2).html();
-                        if (hdnData1 != '') hdnData1 += ',';
-                        hdnData1 += "{ 'ITCD': '" + ITCD + "', 'SIZE': '" + SIZE + "' , 'QNTY': '" + QNTY + "' }";
-                    });
+                    //getLocation();
+                    //if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
+                    //    getLocation();
+                    //    return false;
+                    //}
+                    //if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
+                    //    getLocation();
+                    //    return false;
+                    //}
+                    //var hdnData1 = '';
+                    //$('#tblCart > tbody  > tr').each(function () {
+                    //    var ITCD = $(this).find("td").eq(0).html();
+                    //    var QNTY = $(this).find("td").eq(1).html();
+                    //    var SIZE = $(this).find("td").eq(2).html();
+                    //    if (hdnData1 != '') hdnData1 += ',';
+                    //    hdnData1 += "{ 'ITCD': '" + ITCD + "', 'SIZE': '" + SIZE + "' , 'QNTY': '" + QNTY + "' }";
+                    //});
 
-                    console.log(hdnData1);
-                    if (hdnData1 == '') { msgInfo('Data Not found'); return false;}
-                    $("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+                    //console.log(hdnData1);
+                    //if (hdnData1 == '') { msgInfo('Data Not found'); return false;}
+                    //$("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
 
                     $.ajax({
                         type: 'post',
