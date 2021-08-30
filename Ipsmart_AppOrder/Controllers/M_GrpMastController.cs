@@ -195,7 +195,7 @@ namespace Improvar.Controllers
                             DOCNO = Cn.MaxDocNumber(DOCCD, Ddate);
 
                             DOCPATTERN = Cn.DocPattern(Convert.ToInt32(DOCNO), DOCCD, CommVar.CurSchema(UNQSNO).ToString(), CommVar.FinSchema(UNQSNO), Ddate);
-                            auto_no = Cn.Autonumber_Transaction(CommVar.Compcd(UNQSNO), CommVar.Loccd(UNQSNO), DOCNO, DOCCD, Ddate, "", "", YR_CD);
+                            auto_no = Cn.Autonumber_Transaction(CommVar.Compcd(UNQSNO),CommVar.Loccd(UNQSNO), DOCNO, DOCCD, Ddate, "", "", YR_CD);
                             MREASON.AUTONO = auto_no.Split(Convert.ToChar(Cn.GCS()))[0].ToString();
                             Month = auto_no.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
                         }
