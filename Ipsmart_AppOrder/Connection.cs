@@ -428,13 +428,14 @@ namespace Improvar
             }
             return autonum;
         }
-        public string Autonumber_Transaction(string com_code, string loc_code, string doc_no, string doc_code, string fin_yr, string Ddate, string YR_CD = "")
+        public string Autonumber_Transaction(string com_code, string loc_code, string doc_no, string doc_code, string Ddate, string oldautono = "", string module_code = "", string yrcd = "")
         {
             var UNQSNO = getQueryStringUNQSNO();
-            Improvar.Models.ImprovarDB DB = new Models.ImprovarDB(GetConnectionString(), CommVar.CurSchema(UNQSNO));
+            Improvar.Models.ImprovarDB DB = new Models.ImprovarDB(GetConnectionString(), CommVar.CurSchema(UNQSNO).ToString());
             Improvar.Models.ImprovarDB DB1 = new Models.ImprovarDB(GetConnectionString(), Getschema);
             string LOC = CommVar.Loccd(UNQSNO);
             string COM = CommVar.Compcd(UNQSNO);
+            string YR_CD = CommVar.YearCode(UNQSNO);
             string MonthCode = "";
             string autonum = "";
             string ReturnMonthCode = "";
@@ -471,23 +472,74 @@ namespace Improvar
             {
                 MonthCode = MonthCode.PadRight(4, '0');
             }
-            string[] fin = fin_yr.Split('-');
-            string yrcd = "";
-            if (YR_CD.retStr() == "")
+            if (yrcd.retStr() != "")
             {
-                yrcd = fin[1].Substring(7).Trim();
+                YR_CD = yrcd;
             }
-            else
-            {
-                yrcd = YR_CD;
-            }
-            //autonum = fin[1].Substring(7).Trim() + com_code + loc_code + "I" + doc_code + MonthCode + doc_no;
-
-            //autonum = fin[1].Substring(7).Trim() + com_code + loc_code + "F" + doc_code + MonthCode + doc_no;
-            autonum = yrcd+ com_code + loc_code + "F" + doc_code + MonthCode + doc_no;
+            autonum = YR_CD + com_code + loc_code + "S" + doc_code + MonthCode + doc_no;
 
             return autonum + GCS() + ReturnMonthCode;
         }
+        //public string Autonumber_Transaction(string com_code, string loc_code, string doc_no, string doc_code, string fin_yr, string Ddate, string YR_CD = "")
+        //{
+        //    var UNQSNO = getQueryStringUNQSNO();
+        //    Improvar.Models.ImprovarDB DB = new Models.ImprovarDB(GetConnectionString(), CommVar.CurSchema(UNQSNO));
+        //    Improvar.Models.ImprovarDB DB1 = new Models.ImprovarDB(GetConnectionString(), Getschema);
+        //    string LOC = CommVar.Loccd(UNQSNO);
+        //    string COM = CommVar.Compcd(UNQSNO);
+        //    string MonthCode = "";
+        //    string autonum = "";
+        //    string ReturnMonthCode = "";
+
+        //    var query = (from c in DB.M_DOCTYPE where (c.DOCCD == doc_code) select new { DOCJNRL = c.DOCJNRL }).ToList();
+        //    string DocumentNumType = query[0].DOCJNRL.ToString();
+        //    if (DocumentNumType == "Y" || DocumentNumType == "C")
+        //    {
+        //        MonthCode = "0000";
+        //        ReturnMonthCode = MonthCode;
+        //    }
+        //    else if (DocumentNumType == "D")
+        //    {
+        //        string ddddt = Ddate;
+        //        string date = ddddt.Substring(0, 2);
+        //        string month = ddddt.Substring(3, 2);
+        //        MonthCode = month + date;
+        //        ReturnMonthCode = MonthCode;
+        //    }
+        //    else
+        //    {
+        //        DateTime DOC_D = Convert.ToDateTime(Ddate);
+        //        if (Ddate == null) DOC_D = Convert.ToDateTime(System.DateTime.Now.ToString().retDateStr());
+        //        var MCode = (from c in DB.M_MONTH where (DOC_D >= c.SDATE && DOC_D <= c.EDATE) select new { MTHCD = c.MNTHCD }).ToList();
+        //        if (MCode.Count != 0) MonthCode = MCode[0].MTHCD.ToString();
+        //        else MonthCode = DOC_D.Year.ToString().Substring(2, 2) + DOC_D.Month.ToString().PadLeft(2, '0');
+        //        ReturnMonthCode = MonthCode;
+        //    }
+        //    if (doc_code.Length < 5)
+        //    {
+        //        doc_code = doc_code.PadRight(5, '0');
+        //    }
+        //    if (MonthCode.Length < 4)
+        //    {
+        //        MonthCode = MonthCode.PadRight(4, '0');
+        //    }
+        //    string[] fin = fin_yr.Split('-');
+        //    string yrcd = "";
+        //    if (YR_CD.retStr() == "")
+        //    {
+        //        yrcd = fin[1].Substring(7).Trim();
+        //    }
+        //    else
+        //    {
+        //        yrcd = YR_CD;
+        //    }
+        //    //autonum = fin[1].Substring(7).Trim() + com_code + loc_code + "I" + doc_code + MonthCode + doc_no;
+
+        //    //autonum = fin[1].Substring(7).Trim() + com_code + loc_code + "F" + doc_code + MonthCode + doc_no;
+        //    autonum = yrcd+ com_code + loc_code + "F" + doc_code + MonthCode + doc_no;
+
+        //    return autonum + GCS() + ReturnMonthCode;
+        //}
         //public string MaxDocNumber(string doc_cd, string doc_date, string YR_CD = "")
         //{
         //    Improvar.Models.ImprovarDB DB = new Models.ImprovarDB(GetConnectionString(), CommVar.CurSchema(UNQSNO));
