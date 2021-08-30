@@ -152,11 +152,13 @@
 </script>
 <script>
     function TakeOrder() {
-        var sizes = $("#size_" + index).html();
-
-        var qnty = $("#qnty").val();
-        var tr = '<tr><td>' + itcd + '</td><td>' + qnty + '</td></tr>';
-        $('#tblCart > tbody:last-child').append(tr);
+        var index1 = swiper.realIndex;
+        var sizes = $("#size_" + index1).html();
+        var sizearr = sizes.split(',');
+        $.each(sizearr, function (index, value) {
+            var tr = '<tr><td>' + value + '</td><td> <input type="number" class="form-control"/></td></tr>';
+            $('#tblSizes > tbody:last-child').append(tr);
+        });       
     }
 </script>
 @Html.ActionLink("M_RetailOutlet", "M_RetailOutlet", "M_RetailOutlet") ||
