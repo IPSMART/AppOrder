@@ -1,9 +1,10 @@
 ﻿@model Improvar.ViewModels.VMRetailOrder
 @{
-    ViewBag.Title = "M_GrpMast";
+    ViewBag.Title = "Order";
     Layout = null;
     string PageControllerName = "M_GrpMast";
 }
+<title>@ViewBag.Title</title>
 <link href="~/Content/bootstrap.css" rel="stylesheet" />
 @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -16,7 +17,6 @@
         width: 100%;
         height: 100%;
     }
-
     .swiper-slide {
         text-align: center;
         font-size: 18px;
@@ -143,28 +143,89 @@
     function handlePermission() {
         navigator.permissions.query({ name: 'geolocation' }).then(function (result) {
             console.log(result.state);
-            if(result.state == 'denied') {
+            if (result.state == 'denied') {
                 alert('Please allow your location permission');
             }
         });
     }
-  
+
 </script>
 <script>
     function TakeOrder() {
         var index1 = swiper.realIndex;
         var sizes = $("#size_" + index1).html();
         var sizearr = sizes.split(',');
+        $('#tblSizes > tbody').html('');
         $.each(sizearr, function (index, value) {
             var tr = '<tr><td>' + value + '</td><td> <input type="number" class="form-control"/></td></tr>';
             $('#tblSizes > tbody:last-child').append(tr);
-        });       
+        });
     }
 </script>
-@Html.ActionLink("M_RetailOutlet", "M_RetailOutlet", "M_RetailOutlet") ||
+<script>
+    function AddtoCart() {
+        getLocation();
+        var index = swiper.realIndex;
+        var itcd = $("#itcd_" + index).html();
+        var styleno = $("#styleno_" + index).html();
+        var sizedt = '';
+        $('#tblSizes > tbody  > tr').each(function () {
+            var SIZE = $(this).find("td").eq(0).html();
+            var QNTY = $(this).find("td:eq(1) input[type='number']").val();
+            if (sizedt != '') sizedt += ',';
+            sizedt += SIZE + '=' + QNTY;
+        });
+        var tr = '<tr><td>' + itcd + '</td><td>' + styleno + '</td><td>' + sizedt + '</td></tr>';
+        $('#tblCart > tbody:last-child').append(tr);
+        $('#tblSizes > tbody').html('');
+    }
+
+    function SaveData() {
+        getLocation();
+        if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
+            getLocation();
+            return false;
+        }
+        if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
+            getLocation();
+            return false;
+        }
+        var hdnData1 = '';
+        $('#tblCart > tbody  > tr').each(function () {
+            var ITCD = $(this).find("td").eq(0).html();
+            var QNTY = $(this).find("td").eq(1).html();
+            var SIZE = $(this).find("td").eq(2).html();
+            if (hdnData1 != '') hdnData1 += ',';
+            hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "'  }";
+        });
+
+        console.log(hdnData1);
+        if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
+        $("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+
+        $.ajax({
+            type: 'post',
+            url: "@Url.Action("SAVE", PageControllerName)",
+            data: $('form').serialize(),
+            success: function (result) {
+                alert(result);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
+    }
+</script>
+<a href="/M_RetailOutlet/M_RetailOutlet?op=V&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=Q0hFTUtPTEsyMDIxNTc4OTA=&DC=&MP=">Retailer Master</a>||
 @Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")
 <div class="container-fluid">
-    <h1>Order taken from retailer</h1>
+        <div class="alert alert-info" style="font-size: large;">
+            <strong>Order</strong> taken from retailer
+        </div>
+    
+   
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model => model.GEOLONGITUDE)
@@ -213,7 +274,6 @@
             </div>
             <button class="btn btn-sm btn-info" onclick="GetRetailerInfo()" type="button">Get Retailer Info</button>
         </div>
-
         <div class="row">
             <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
@@ -265,62 +325,25 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
-            <div class="col-md-5">
-                <div class="editor-field">
-                    <input type="number" min="0" max="9999999" id="qnty" placeholder="Qnty" class="form-control" />
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="editor-field">
-                    <input type="" min="0" max="9999999" id="qnty" placeholder="Qnty" class="form-control" />
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="editor-field">
-                    <button onclick="AddtoCart()" type="button" class="btn btn-sm btn-warning"> Add to Cart </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            @*<button onclick="getLocation()">Try It</button>
-                <p id="demo"></p>
-
-                <input id="demo1" />*@
-
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
                     @if (Model.ImageView != null)
-                {
-                    for (int i = 0; i < Model.ImageView.Count; i++)
                     {
+                        for (int i = 0; i < Model.ImageView.Count; i++)
+                        {
                             <div class="swiper-slide">
                                 <span style="display: none" id="itcd_@i">@Model.ImageView[i].ITCD</span>
                                 <span style="display: none" id="size_@i">@Model.ImageView[i].SIZES</span>
-                                <div class="title">@Model.ImageView[i].Desc</div>
+                                <div class="title" id="styleno_@i">@Model.ImageView[i].Desc</div>
                                 <img src="@Model.ImageView[i].Url" />
-                            </div>}
-                }
+                            </div>
+                        }
+                    }
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
-        </div>
-        <div class="row">
-            <button onclick="TakeOrder()" class="btn btn-sm" style="background-color:gainsboro;" type="button">TAKE ORDER</button>
-        </div>
-
-        <div class="row">
-            <table class="table table-striped" id="tblSizes">
-                <thead>
-                    <tr style="background-color: #255994;color: white;"><th>Size</th><th>Qnty</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-
             <script>
                 var swiper = new Swiper(".mySwiper", {
                     navigation: {
@@ -329,78 +352,44 @@
                     },
                 });
             </script>
-            <script>
-                function testme() {
-                    debugger;
-                    var ttt = $("div.swiper-wrapper > .swiper-slide").html();
-                    alert(swiper.realIndex);
-                    alert(ttt);
-                }
-            </script>
-            <br />
-            <br />
-            <br />
-
-            <input type="hidden" id="hdnData" />
-            <br />
-            <br />
-            <br />
-  
-            <script>
-                function AddtoCart() {
-                    getLocation();
-                    var index = swiper.realIndex;
-                    var itcd = $("#itcd_" + index).html();
-                    var qnty = $("#qnty").val();
-                    var tr = '<tr><td>' + itcd + '</td><td>' + qnty + '</td></tr>';
-                    $('#tblCart > tbody:last-child').append(tr);
-                }
-
-                function SaveData() {
-                    //getLocation();
-                    //if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
-                    //    getLocation();
-                    //    return false;
-                    //}
-                    //if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
-                    //    getLocation();
-                    //    return false;
-                    //}
-                    //var hdnData1 = '';
-                    //$('#tblCart > tbody  > tr').each(function () {
-                    //    var ITCD = $(this).find("td").eq(0).html();
-                    //    var QNTY = $(this).find("td").eq(1).html();
-                    //    var SIZE = $(this).find("td").eq(2).html();
-                    //    if (hdnData1 != '') hdnData1 += ',';
-                    //    hdnData1 += "{ 'ITCD': '" + ITCD + "', 'SIZE': '" + SIZE + "' , 'QNTY': '" + QNTY + "' }";
-                    //});
-
-                    //console.log(hdnData1);
-                    //if (hdnData1 == '') { msgInfo('Data Not found'); return false;}
-                    //$("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
-
-                    $.ajax({
-                        type: 'post',
-                        url: "@Url.Action("SAVE", PageControllerName)",
-                        data: $('form').serialize(),
-                        success: function (result) {
-                            alert(result);
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            $("#WaitingMode").hide();
-                            msgError(XMLHttpRequest.responseText);
-                            $("body span h1").remove(); $("#msgbody_error style").remove();
-                        }
-                    });
-                }
-            </script>
-            <table class="table table-striped" id="tblCart">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="editor-field">
+                    <button onclick="TakeOrder()" class="btn btn-sm" style="background-color:#d5c180;color: darkmagenta;" type="button">Take Order</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-striped" id="tblSizes">
                 <thead>
-                    <tr style="background-color: #255994;color: white;"><th>Itcd</th><th>Qnty</th></tr>
+                    <tr style="background-color: #255994;color: white;"><th>Size</th><th>Qnty</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
-            <button onclick="SaveData()" class="btn btn-sm btn-success" type="button">Place Order</button>
-       
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="editor-field">
+                    <button onclick="AddtoCart()" type="button" class="btn btn-sm btn-warning"> Add to Cart </button>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="hdnData" />
+        <div class="row">
+            <table class="table table-striped" id="tblCart">
+                <thead>
+                    <tr style="background-color: #255994;color: white;"><th>Itcd</th><th>Styleno</th><th>Sizes Qnty</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="editor-field">
+                    <button onclick="SaveData()" class="btn btn-sm btn-success" type="button">Place Order</button>
+                </div>
+            </div>
+        </div>
     }
 </div>

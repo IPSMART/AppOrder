@@ -37,14 +37,9 @@ namespace Improvar.ViewModels
         public string SIZES { get; set; }
     }
 
-    public class KARTIEMS
+    public class APP_ITEMLIST
     {
         public string itcd { get; set; }
-        public List<SIZEDTL> sizes { get; set; }
-    }
-    public class SIZEDTL
-    {
-        public string sizecd { get; set; }
-        public string qnty { get; set; }
+        public string sizes { get; set; }
     }
 }

@@ -28,8 +28,8 @@ namespace Improvar.Controllers
                     ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
                     ImprovarDB DB1 = new ImprovarDB(Cn.GetConnectionString(), Cn.Getschema);
                     RetailOutletEntry VE = new RetailOutletEntry();
-                    //Cn.getQueryString(VE);
-                    //Cn.ValidateMenuPermission(VE);
+                    Cn.getQueryString(VE);
+                    Cn.ValidateMenuPermission(VE);
                     var doctP = (from i in DB1.MS_DOCCTG select new DocumentType() { value = i.DOC_CTG, text = i.DOC_CTG }).OrderBy(s => s.text).ToList();
                     //if (op.Length != 0)
                     //{

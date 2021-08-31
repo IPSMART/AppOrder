@@ -22,7 +22,7 @@ namespace Improvar.Controllers
         string UNQSNO = CommVar.getQueryStringUNQSNO();
         // GET: M_GrpMast
         public ActionResult M_GrpMast(string op = "", string key = "", int Nindex = 0, string searchValue = "")
-        {
+        {//k
             VMRetailOrder VE = new VMRetailOrder();
             try
             {
@@ -163,7 +163,7 @@ namespace Improvar.Controllers
                 }
                 GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
                 var address = geoLocation.results[0].formatted_address;
-                return datastring;
+                return address;
             }
             catch (Exception ex)
             {
@@ -178,6 +178,7 @@ namespace Improvar.Controllers
             {
                 try
                 {
+                   var address= GetAddress("", "");
                     string DefaultAction = "A";
                     DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_CNTRL_HDR in  row share mode");
                     if (DefaultAction == "A")
@@ -217,12 +218,12 @@ namespace Improvar.Controllers
                         //    MREASON.DTAG = "E";
                         //}
                         MREASON.SLCD = "C00001";
-                        List<KARTIEMS> KARTIEMS = new List<ViewModels.KARTIEMS>();
-                        var KARTIEMS1 = new KARTIEMS() { itcd = "F008477", sizes = new List<SIZEDTL>() { new SIZEDTL() { qnty = "323", sizecd = "S" } } };
-                        KARTIEMS.Add(KARTIEMS1);
-
+                        //List<APP_ITEMLIST> KARTIEMS = new List<ViewModels.APP_ITEMLIST>();
+                        //var KARTIEMS1 = new APP_ITEMLIST() { itcd = "F008477", sizes = new List<APP_SIZEDTL>() { new APP_SIZEDTL() { qnty = "323", sizecd = "S" } } };
+                        //KARTIEMS.Add(KARTIEMS1);
+                        List<APP_ITEMLIST> aPP_ITEMLIST = JsonConvert.DeserializeObject<List<APP_ITEMLIST>>(VE.ITEMDETAIL_JSTR);
                         int slno = 0;
-                        foreach (var v in KARTIEMS)
+                        foreach (var v in aPP_ITEMLIST)
                         {
                             T_RETAILORDERDTL TRETAILORDERDTL = new T_RETAILORDERDTL();
                             slno++;
@@ -231,13 +232,17 @@ namespace Improvar.Controllers
                             TRETAILORDERDTL.AUTONO = MREASON.AUTONO;
                             TRETAILORDERDTL.ITCD = v.itcd;
                             TRETAILORDERDTL.SLNO = slno.retShort();
-                            foreach (var v1 in v.sizes)
+                            var sizes = v.sizes.retStr().Split(',');
+                            foreach (var sizeq in sizes)
                             {
-                                TRETAILORDERDTL.QNTY = v1.qnty.retDbl();
-                                TRETAILORDERDTL.SIZECD = v1.sizecd;
+                                var sqn = sizeq.retStr().Split('=');
+                                if (sqn.Length > 1)
+                                {
+                                    TRETAILORDERDTL.SIZECD = sqn[0];
+                                    TRETAILORDERDTL.QNTY = sqn[1].retDbl();
+                                }
                                 DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
                             }
-
                         }
                         //T_CNTRL_HDR MCH = Cn.T_CNTRL_HDR(VE.Checked, "M_GrpMast", MREASON.AUTONO.retInt(), VE.DefaultAction, CommVar.CurSchema(UNQSNO));
                         T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(DOCCD, DOCDT, DOCNO, MREASON.AUTONO, Month, DOCPATTERN, DefaultAction, CommVar.CurSchema(UNQSNO), "", MREASON.SLCD, 0, "", YR_CD);
