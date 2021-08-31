@@ -16,6 +16,7 @@ namespace Improvar.ViewModels
         public string RetailerGstno { get; set; }
         public string RetailerCity { get; set; }
 
+        public string DSTBRSLCD { get; set; }
         public string SelectedRetailerCode { get; set; }
         public string SelectedRetailerName { get; set; }
         public string SelectedRetailerPin { get; set; }
