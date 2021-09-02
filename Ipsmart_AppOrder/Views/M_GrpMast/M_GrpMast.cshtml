@@ -58,7 +58,7 @@
             margin-bottom: 24px;
         }
     }
-        @@media (max-width: 700px) {
+        @@media (max-width: 800px) {
             .mySwiper{
           display: block;
             width: 100%;
@@ -104,12 +104,14 @@
                 }
                 $.each(result, function (index, itemData) {
                     $("#SelectedRetailerCode").val(itemData.RetailerCode);
-                    $("#SelectedRetailerName").val(itemData.RetailerName);
-                    $("#SelectedRetailerPin").val(itemData.RetailerPin);
-                    $("#SelectedRetailerGstno").val(itemData.RetailerGstno);
-                    $("#SelectedRetailerCity").val(itemData.RetailerCity);
+                    //$("#SelectedRetailerName").val(itemData.RetailerName);
+                    //$("#SelectedRetailerPin").val(itemData.RetailerPin);
+                    //$("#SelectedRetailerGstno").val(itemData.RetailerGstno);
+                    //$("#SelectedRetailerCity").val(itemData.RetailerCity);
                     $("#Dstbrslcd").val(itemData.Dstbrslcd);
-                    $("#Dstbrslnm").val(itemData.Dstbrslnm);
+                    //$("#Dstbrslnm").val(itemData.Dstbrslnm);
+                    $("#divGetRetailerInfo").hide();
+                    
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -196,8 +198,10 @@
         $('#tblSizes > tbody  > tr').each(function () {
             var SIZE = $(this).find("td").eq(0).html();
             var QNTY = $(this).find("td:eq(1) input[type='number']").val();
-            if (sizedt != '') sizedt += ',';
-            sizedt += SIZE + '=' + QNTY;
+            if (QNTY != '') {
+                if (sizedt != '') sizedt += ',';
+                sizedt += SIZE + '=' + QNTY;
+            }
         });
         var tr = '<tr><td>' + itcd + '</td><td>' + styleno + '</td><td>' + sizedt + '</td></tr>';
         $('#tblCart > tbody:last-child').append(tr);
@@ -250,15 +254,13 @@
     <div class="alert alert-info" style="font-size: large;">
         <strong>Order</strong> taken from retailer
     </div>
-
-
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model => model.GEOLONGITUDE)
         @Html.HiddenFor(model => model.GEOLATITUDE)
         @*@Html.HiddenFor(model => model.GEOADDRESS)*@
         @Html.HiddenFor(model => model.ITEMDETAIL_JSTR)
-        <div class="row">
+        <div class="row" id="divGetRetailerInfo">
             <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
                     @Html.Label("", "Retailer Name")
@@ -301,47 +303,61 @@
             <button class="btn btn-sm btn-info" onclick="GetRetailerInfo()" type="button">Get Retailer Info</button>
         </div>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", "Retailer Code")
+                    @Html.Label("", "Retailer Name")
                 </div>
             </div>
-            <div class="col-md-5">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerCode, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCode", @placeholder = "Retailer Code", @readonly = "readonly" } })
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", " Name")
-                </div>
-            </div>
-            <div class="col-md-5">
+            <div class="col-md-7">
                 <div class="editor-field">
                     @Html.EditorFor(model => model.SelectedRetailerName, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerName", @placeholder = " Retailer Name", @readonly = "readonly" } })
                 </div>
             </div>
-            <div class="col-md-5">
+                        @Html.HiddenFor(model => model.SelectedRetailerCode)
+                        @Html.HiddenFor(model => model.Dstbrslcd)
+
+
+            @*<div class="col-md-1">
+                <div class="editor-field" style="margin-top: 4px;">
+                    @Html.Label("", "Retailer Code")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.SelectedRetailerCode, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCode", @placeholder = "Retailer Code", @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field" style="margin-top: 4px;">
+                    @Html.Label("", " Name")
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.SelectedRetailerName, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerName", @placeholder = " Retailer Name", @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="col-md-1">
                 <div class="editor-field" style="margin-top: 4px;">
                     @Html.Label("", " Pin")
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-1">
                 <div class="editor-field">
                     @Html.EditorFor(model => model.SelectedRetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerPin", @placeholder = "Retailer Pin", @readonly = "readonly" } })
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-1">
                 <div class="editor-field" style="margin-top: 4px;">
                     @Html.Label("", " Gstno")
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <div class="editor-field">
                     @Html.EditorFor(model => model.SelectedRetailerGstno, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerGstno", @placeholder = "Retailer Gstno", @readonly = "readonly" } })
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-1">
                 <div class="editor-field" style="margin-top: 4px;">
                     @Html.Label("", " City")
                 </div>
@@ -351,7 +367,7 @@
                     @Html.EditorFor(model => model.SelectedRetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCity", @placeholder = "Retailer City", @readonly = "readonly" } })
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-1">
                 <div class="editor-field" style="margin-top: 4px;">
                     @Html.Label("", " Distributor")
                 </div>
@@ -361,7 +377,7 @@
                     @Html.EditorFor(model => model.Dstbrslnm, new { htmlAttributes = new { @class = "form-control ", id = "Dstbrslnm", @placeholder = "Retailer City", @readonly = "readonly" } })
                     @Html.HiddenFor(model => model.Dstbrslcd)
                 </div>
-            </div>
+            </div>*@
         </div>
         <div class="row">
             <div class="swiper mySwiper">

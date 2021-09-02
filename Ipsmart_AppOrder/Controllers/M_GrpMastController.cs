@@ -97,8 +97,9 @@ namespace Improvar.Controllers
             try
             {
                 string LOC = CommVar.Loccd(UNQSNO), COM = CommVar.Compcd(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), yrcd = CommVar.YearCode(UNQSNO);
-                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));                
-                sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO,a.DSTBRSLCD,b.slnm DSTBRSLnm  from  " + scm + ".M_RetailOutlet a, " + scm + ".m_subleg b " + Environment.NewLine;
+                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
+                sql = "";
+                sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO,a.DSTBRSLCD,b.slnm DSTBRSLnm  from  " + scm + ".M_RetailOutlet a, " + scmf + ".m_subleg b " + Environment.NewLine;
                 sql += "where  A.DSTBRSLCD=b.slcd " + Environment.NewLine;
                 if (RetailerName.retStr() != "") sql += " and upper(RETLRNM) like '%" + RetailerName.retStr().ToUpper() + "%' ";
                 if (RetailerPin.retStr() != "") sql += "and RETLRPIN like '%" + RetailerPin.retStr() + "%' ";
@@ -184,8 +185,8 @@ namespace Improvar.Controllers
                     if (DefaultAction == "A")
                     {
                         T_RETAILORDER MREASON = new T_RETAILORDER();
-                        MREASON.CLCD = CommVar.ClientCode(UNQSNO);
-                        string DOCPATTERN = "", DOCCD = "SRETO", DOCNO = ""; int EMD_NO = 0;
+                        MREASON.CLCD = CommVar.ClientCode(UNQSNO);//DTYPE=RETAILORD
+                        string DOCPATTERN = "", DOCCD = "SORDR", DOCNO = ""; int EMD_NO = 0;
                         DateTime DOCDT = System.DateTime.Now;
                         string Ddate = Convert.ToString(DOCDT);
                         string auto_no = ""; string Month = "", YR_CD = CommVar.YearCode(UNQSNO);
@@ -217,7 +218,7 @@ namespace Improvar.Controllers
                         //    DOCPATTERN = VE.T_CNTRL_HDR.DOCNO;
                         //    MREASON.DTAG = "E";
                         //}
-                        MREASON.SLCD = "C00001";
+                        MREASON.SLCD = VE.Dstbrslcd;
                         //List<APP_ITEMLIST> KARTIEMS = new List<ViewModels.APP_ITEMLIST>();
                         //var KARTIEMS1 = new APP_ITEMLIST() { itcd = "F008477", sizes = new List<APP_SIZEDTL>() { new APP_SIZEDTL() { qnty = "323", sizecd = "S" } } };
                         //KARTIEMS.Add(KARTIEMS1);
