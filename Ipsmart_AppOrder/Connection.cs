@@ -16,8 +16,6 @@ using System.Collections;
 using System.Drawing;
 using Improvar.Models;
 using System.Net.Sockets;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using Microsoft.VisualBasic;
 using System.Security.Cryptography;
 using QRCoder;
@@ -2024,111 +2022,7 @@ namespace Improvar
             //=============================================end cheking===================================================
             return ViewClass;
         }
-        public System.Data.DataTable PDF_Convert_DataTable(byte[] path)
-        {
-            try
-            {
-                PdfReader reader = new PdfReader(path);
-                List<String> text = new List<String>();
-                String page;
-                List<String> pageStrings;
-                string[] separators = { "\n", "\r\n" };
-                for (int i = 1; i <= reader.NumberOfPages; i++)
-                {
-                    page = PdfTextExtractor.GetTextFromPage(reader, i);
-                    pageStrings = new List<string>(page.Split(separators, StringSplitOptions.RemoveEmptyEntries));
-                    text.AddRange(pageStrings);
-                }
-                reader.Close();
-                string[] Headers = { "PLANT", "INVOICE NO", "INVOICE DATE", "INVOICE AMOUNT", "NARRATION" };
-                System.Data.DataTable dt = new System.Data.DataTable("pdftable");
-                for (int j = 0; j < Headers.Length; j++)
-                {
-                    if (!string.IsNullOrEmpty(Headers[j]))
-                    {
-                        if (j == 3)
-                        {
-                            dt.Columns.Add(Headers[j], typeof(double));
-                        }
-                        else
-                        {
-                            dt.Columns.Add(Headers[j], typeof(string));
-                        }
-                    }
-                }
-                DataRow dr = dt.NewRow();
-                int flag = 0;
-                for (int i = 0; i <= text.Count - 1; i++)
-                {
-
-                    for (int j = 0; j <= Headers.Length - 1; j++)
-                    {
-                        string pdfstring = text[i];
-                        int pos = text[i].IndexOf(Headers[j]);
-                        if (pos >= 0)
-                        {
-                            if (j == 0)
-                            {
-                                string[] plant = text[i].Replace(Headers[j], "").Split(' ');
-                                dr[Headers[j]] = plant[0];
-                            }
-                            else if (j == 1)
-                            {
-                                string inv = text[i].Replace(Headers[j], "").Trim();
-                                char[] ch = inv.ToCharArray();
-                                string doccd = "";
-                                string invno = "";
-                                for (int z = 0; z <= ch.Length - 1; z++)
-                                {
-                                    int k;
-                                    bool isNumeric = int.TryParse(ch[z].ToString(), out k);
-                                    if (isNumeric == false)
-                                    {
-                                        doccd = doccd + ch[z];
-                                    }
-                                    else
-                                    {
-                                        invno = invno + ch[z];
-                                    }
-                                }
-                                dr[Headers[j]] = doccd + invno.PadLeft(6, '0');
-                            }
-                            else if (j == 2)
-                            {
-                                string[] docdt = text[i].Replace(Headers[j], "").Split('/');
-                                string newdt = docdt[0].Trim() + "/" + docdt[1].Trim() + "/" + "20" + docdt[2].Trim();
-                                dr[Headers[j]] = newdt;
-                            }
-                            else if (j == 3)
-                            {
-                                string plant = text[i].Replace(Headers[j], "");
-                                dr[Headers[j]] = Convert.ToDouble(plant);
-
-                            }
-                            else
-                            {
-                                dr[Headers[j]] = text[i].Replace(Headers[j], "");
-                            }
-                            flag += 1;
-                            break;
-                        }
-                    }
-                    if (flag == Headers.Length)
-                    {
-                        dt.Rows.Add(dr);
-                        flag = 0;
-                        dr = dt.NewRow();
-                    }
-                }
-                dt.Columns[0].ColumnName = "DOCUMENT NO";
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
+    
         public string dateRangeForMonthlyDoc_Type(object ViewClass, string doccd, string docdt = "")
         {
             MasterHelp masterHelp = new MasterHelp();
