@@ -25,6 +25,7 @@ namespace Improvar.Controllers
                 else
                 {
                     ViewBag.formname = "Retail";
+                    ViewBag.Title = "Retail";
                     ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
                     ImprovarDB DB1 = new ImprovarDB(Cn.GetConnectionString(), Cn.Getschema);
                     RetailOutletEntry VE = new RetailOutletEntry();
@@ -33,59 +34,59 @@ namespace Improvar.Controllers
                     var doctP = (from i in DB1.MS_DOCCTG select new DocumentType() { value = i.DOC_CTG, text = i.DOC_CTG }).OrderBy(s => s.text).ToList();
                     //if (op.Length != 0)
                     //{
-                        VE.IndexKey = (from p in DB.M_RETAILOUTLET orderby p.M_AUTONO select new IndexKey() { Navikey = p.RETLRCD }).ToList();
-                        if (op == "E" || op == "D" || op == "V")
+                    VE.IndexKey = (from p in DB.M_RETAILOUTLET orderby p.M_AUTONO select new IndexKey() { Navikey = p.RETLRCD }).ToList();
+                    if (op == "E" || op == "D" || op == "V")
+                    {
+                        if (searchValue.Length != 0)
                         {
-                            if (searchValue.Length != 0)
+                            VE.Index = Nindex;
+                            VE = Navigation(VE, DB, 0, searchValue);
+                        }
+                        else
+                        {
+                            if (key == "F")
                             {
-                                VE.Index = Nindex;
+                                VE.Index = 0;
                                 VE = Navigation(VE, DB, 0, searchValue);
                             }
-                            else
+                            else if (key == "" || key == "L")
                             {
-                                if (key == "F")
-                                {
-                                    VE.Index = 0;
-                                    VE = Navigation(VE, DB, 0, searchValue);
-                                }
-                                else if (key == "" || key == "L")
-                                {
-                                    VE.Index = VE.IndexKey.Count - 1;
-                                    VE = Navigation(VE, DB, VE.IndexKey.Count - 1, searchValue);
-                                }
-                                else if (key == "P")
-                                {
-                                    Nindex -= 1;
-                                    if (Nindex < 0)
-                                    {
-                                        Nindex = 0;
-                                    }
-                                    VE.Index = Nindex;
-                                    VE = Navigation(VE, DB, Nindex, searchValue);
-                                }
-                                else if (key == "N")
-                                {
-                                    Nindex += 1;
-                                    if (Nindex > VE.IndexKey.Count - 1)
-                                    {
-                                        Nindex = VE.IndexKey.Count - 1;
-                                    }
-                                    VE.Index = Nindex;
-                                    VE = Navigation(VE, DB, Nindex, searchValue);
-                                }
+                                VE.Index = VE.IndexKey.Count - 1;
+                                VE = Navigation(VE, DB, VE.IndexKey.Count - 1, searchValue);
                             }
-                            VE.M_RETAILOUTLET = sl;
-                            VE.M_CNTRL_HDR = sll;
-                            VE.M_CNTRL_HDR_REM = MCHR;
+                            else if (key == "P")
+                            {
+                                Nindex -= 1;
+                                if (Nindex < 0)
+                                {
+                                    Nindex = 0;
+                                }
+                                VE.Index = Nindex;
+                                VE = Navigation(VE, DB, Nindex, searchValue);
+                            }
+                            else if (key == "N")
+                            {
+                                Nindex += 1;
+                                if (Nindex > VE.IndexKey.Count - 1)
+                                {
+                                    Nindex = VE.IndexKey.Count - 1;
+                                }
+                                VE.Index = Nindex;
+                                VE = Navigation(VE, DB, Nindex, searchValue);
+                            }
                         }
-                        if (op.ToString() == "A")
-                        {
-                            List<UploadDOC> UploadDOC1 = new List<UploadDOC>();
-                            UploadDOC UPL = new UploadDOC();
-                            UPL.DocumentType = doctP;
-                            UploadDOC1.Add(UPL);
-                            VE.UploadDOC = UploadDOC1;
-                        }
+                        VE.M_RETAILOUTLET = sl;
+                        VE.M_CNTRL_HDR = sll;
+                        VE.M_CNTRL_HDR_REM = MCHR;
+                    }
+                    if (op.ToString() == "A")
+                    {
+                        List<UploadDOC> UploadDOC1 = new List<UploadDOC>();
+                        UploadDOC UPL = new UploadDOC();
+                        UPL.DocumentType = doctP;
+                        UploadDOC1.Add(UPL);
+                        VE.UploadDOC = UploadDOC1;
+                    }
                     VE.DefaultView = true;
                     return View(VE);
                     //}
@@ -112,7 +113,8 @@ namespace Improvar.Controllers
         {
             sl = new M_RETAILOUTLET(); sll = new M_CNTRL_HDR();
             ImprovarDB DB1 = new ImprovarDB(Cn.GetConnectionString(), Cn.Getschema);
-            var doctP = (from i in DB1.MS_DOCCTG select new DocumentType() { value = i.DOC_CTG, text = i.DOC_CTG }).OrderBy(s => s.text).ToList();
+            ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
+            //var doctP = (from i in DB1.MS_DOCCTG select new DocumentType() { value = i.DOC_CTG, text = i.DOC_CTG }).OrderBy(s => s.text).ToList();
             if (VE.IndexKey.Count != 0)
             {
                 string[] aa = null;
@@ -134,7 +136,7 @@ namespace Improvar.Controllers
                 {
                     VE.Checked = false;
                 }
-                //if (sl.MTCD != null) VE.MTNM = (from i in DB.M_METAL where i.MTCD == sl.MTCD select i.MTNM).FirstOrDefault();
+                if (sl.DSTBRSLCD != null) VE.DSTBRSLNM = (from i in DBF.M_SUBLEG where i.SLCD == sl.DSTBRSLCD select i.SLNM).FirstOrDefault();
                 //if (sl.PPURECD != null) VE.PPURENM = (from i in DB.M_RETAILOUTLET where i.RETLRCD == sl.PPURECD select i.RETLRNM).FirstOrDefault();
                 //MCHR = Cn.GetMasterReamrks(CommVar.CurSchema(UNQSNO), Convert.ToInt32(sl.M_AUTONO));
                 //VE.UploadDOC = Cn.GetUploadImage(CommVar.CurSchema(UNQSNO).ToString(), Convert.ToInt32(sl.M_AUTONO));
@@ -244,24 +246,56 @@ namespace Improvar.Controllers
         //    return PartialView("_UPLOADDOCUMENTS", VE);
 
         //}
-        public ActionResult GetPartyDetails(string val, string Code)
+        public ActionResult GetPartyDetails(RetailOutletEntry VE)
         {
-            try
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO);
+            string sql = "";
+            string LINK_CD = "D";
+            string linkcd = LINK_CD.retSqlformat();
+            //string valsrch = val.ToUpper().Trim();
+            string slcd = VE.M_RETAILOUTLET.DSTBRSLCD.retStr().ToUpper().Trim();
+            string slnm = VE.DSTBRSLNM.retStr().ToUpper().Trim();
+            string gstno = VE.DSTBRGSTNO.retStr().ToUpper().Trim();
+            string area = VE.DSTBRAREA.retStr().ToUpper().Trim();
+
+            sql = "";
+            sql += "select distinct a.slcd, a.slnm, a.gstno, nvl(a.slarea,a.district) slarea,a.statecd,a.district,a.tcsappl,a.panno ";
+            sql += "from " + scmf + ".m_subleg a, " + scmf + ".m_subleg_link b, " + scmf + ".m_cntrl_hdr c, " + scmf + ".m_cntrl_loca d ";
+            sql += "where a.slcd=b.slcd(+) and a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
+            if (slcd.retStr() != "") sql += "and  upper(a.slcd) = '" + slcd + "'  ";
+            if (slnm.retStr() != "") sql += "and  upper(a.slnm) = '" + slnm + "' ";
+            if (gstno.retStr() != "") sql += "and upper(a.gstno) = '" + gstno + "' ";
+            if (area.retStr() != "") sql += "and upper(nvl(a.slarea,a.district)) = '" + area + "' ";
+            //if (GLCD.retStr() != "") sql += "f.glcd = '" + GLCD + "' and ";
+            if (linkcd != "") sql += "and b.linkcd in (" + linkcd + ")  ";
+            sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
+            sql += "nvl(c.inactive_tag,'N') = 'N' ";
+            sql += "order by slnm,slcd";
+            DataTable tbl = Master_Help.SQLquery(sql);
+            if (tbl.Rows.Count > 1)
             {
-                var str = Master_Help.SLCD_help(val);
-                if (str.IndexOf("='helpmnu'") >= 0)
+                System.Text.StringBuilder SB = new System.Text.StringBuilder();
+                for (int i = 0; i <= tbl.Rows.Count - 1; i++)
                 {
-                    return PartialView("_Help2", str);
+                    //SB.Append("<tr><td>" + tbl.Rows[i]["slnm"] + "</td><td>" + tbl.Rows[i]["slcd"] + " </td><td>" + tbl.Rows[i]["gstno"] + " </td><td>" + tbl.Rows[i]["slarea"] + " </td><td>" + tbl.Rows[i]["statecd"] + " </td></tr>");
+                    SB.Append("<tr><td>" + tbl.Rows[i]["slnm"] + "</td><td>" + tbl.Rows[i]["slcd"] + " </td></tr>");
+                }
+                //var hdr = "" + CAPTION + " Name" + Cn.GCS() + "" + CAPTION + " Code" + Cn.GCS() + "GST Number" + Cn.GCS() + "Area" + Cn.GCS() + "State Code";
+                var hdr = "Distributor Name" + Cn.GCS() + "Distributor Code";
+                return PartialView("_Help2", (Master_Help.Generate_help(hdr, SB.ToString())));
+
+            }
+            else
+            {
+                if (tbl.Rows.Count > 0)
+                {
+                    string str = Master_Help.ToReturnFieldValues("", tbl);
+                    return Content(str);
                 }
                 else
                 {
-                    return Content(str);
+                    return Content("Invalid Distributor Code ! Please Enter a Valid Distributor Code !!");
                 }
-            }
-            catch (Exception ex)
-            {
-                Cn.SaveException(ex, "");
-                return Content(ex.Message + ex.InnerException);
             }
         }
         public ActionResult SAVE(FormCollection FC, RetailOutletEntry VE)
@@ -315,15 +349,15 @@ namespace Improvar.Controllers
                             {
                                 MRETAILOUTLET.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
                             }
-                            DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "E"; });
-                            DB.M_CNTRL_HDR_REM.RemoveRange(DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO));
+                            //DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "E"; });
+                            //DB.M_CNTRL_HDR_REM.RemoveRange(DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO));
                             DB.M_CNTRL_HDR_DOC.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "E"; });
                             DB.M_CNTRL_HDR_DOC.RemoveRange(DB.M_CNTRL_HDR_DOC.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO));
 
                             DB.M_CNTRL_HDR_DOC_DTL.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "E"; });
                             DB.M_CNTRL_HDR_DOC_DTL.RemoveRange(DB.M_CNTRL_HDR_DOC_DTL.Where(x => x.M_AUTONO == MRETAILOUTLET.M_AUTONO));
                         }
-                        
+
                         MRETAILOUTLET.RETLRNM = VE.M_RETAILOUTLET.RETLRNM;
                         MRETAILOUTLET.RETLRADD1 = VE.M_RETAILOUTLET.RETLRADD1;
                         MRETAILOUTLET.RETLRADD2 = VE.M_RETAILOUTLET.RETLRADD2;
@@ -351,7 +385,7 @@ namespace Improvar.Controllers
                             DB.M_CNTRL_HDR_DOC.AddRange(img.Item1);
                             DB.M_CNTRL_HDR_DOC_DTL.AddRange(img.Item2);
                         }
-                        if (VE.M_CNTRL_HDR_REM.DOCREM != null)// add REMARKS
+                        if (VE.M_CNTRL_HDR_REM != null && VE.M_CNTRL_HDR_REM.DOCREM != null)// add REMARKS
                         {
                             var NOTE = Cn.SAVEMASTERREMARKS(VE.M_CNTRL_HDR_REM, Convert.ToInt32(MRETAILOUTLET.M_AUTONO), MRETAILOUTLET.CLCD, MRETAILOUTLET.EMD_NO.Value);
 
@@ -386,14 +420,14 @@ namespace Improvar.Controllers
                         DB.M_RETAILOUTLET.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "D"; });
                         DB.M_CNTRL_HDR_DOC.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "D"; });
                         DB.M_CNTRL_HDR_DOC_DTL.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "D"; });
-                        DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "D"; });
+                        //DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO).ToList().ForEach(x => { x.DTAG = "D"; });
                         DB.SaveChanges();
                         DB.M_CNTRL_HDR_DOC_DTL.RemoveRange(DB.M_CNTRL_HDR_DOC_DTL.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO));
                         DB.SaveChanges();
                         DB.M_CNTRL_HDR_DOC.RemoveRange(DB.M_CNTRL_HDR_DOC.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO));
                         DB.SaveChanges();
-                        DB.M_CNTRL_HDR_REM.RemoveRange(DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO));
-                        DB.SaveChanges();
+                        //DB.M_CNTRL_HDR_REM.RemoveRange(DB.M_CNTRL_HDR_REM.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO));
+                        //DB.SaveChanges();
                         DB.M_RETAILOUTLET.RemoveRange(DB.M_RETAILOUTLET.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO));
                         DB.SaveChanges();
                         DB.M_CNTRL_HDR.RemoveRange(DB.M_CNTRL_HDR.Where(x => x.M_AUTONO == VE.M_RETAILOUTLET.M_AUTONO));

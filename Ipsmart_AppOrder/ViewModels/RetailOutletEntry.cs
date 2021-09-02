@@ -12,5 +12,7 @@ namespace Improvar.ViewModels
         public M_CNTRL_HDR M_CNTRL_HDR { get; set; }
         public bool Checked { get; set; }
         public string DSTBRSLNM { get; set; }
+        public string DSTBRGSTNO { get; set; }
+        public string DSTBRAREA { get; set; }
     }
 }
