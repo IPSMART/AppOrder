@@ -97,12 +97,10 @@ namespace Improvar.Controllers
             try
             {
                 string LOC = CommVar.Loccd(UNQSNO), COM = CommVar.Compcd(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), yrcd = CommVar.YearCode(UNQSNO);
-                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
-
-
-                sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO from  " + scm + ".M_RetailOutlet " + Environment.NewLine;
-                sql += "where " + Environment.NewLine;
-                if (RetailerName.retStr() != "") sql += "upper(RETLRNM) like '%" + RetailerName.retStr().ToUpper() + "%' ";
+                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));                
+                sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO,a.DSTBRSLCD,b.slnm DSTBRSLnm  from  " + scm + ".M_RetailOutlet a, " + scm + ".m_subleg b " + Environment.NewLine;
+                sql += "where  A.DSTBRSLCD=b.slcd " + Environment.NewLine;
+                if (RetailerName.retStr() != "") sql += " and upper(RETLRNM) like '%" + RetailerName.retStr().ToUpper() + "%' ";
                 if (RetailerPin.retStr() != "") sql += "and RETLRPIN like '%" + RetailerPin.retStr() + "%' ";
                 if (RetailerGstno.retStr() != "") sql += "and upper(RETLRGSTNO) like '%" + RetailerGstno.retStr().ToUpper() + "%' ";
                 if (RetailerCity.retStr() != "") sql += "and upper(RETLRCITY) like '%" + RetailerCity.retStr().ToUpper() + "%' ";
@@ -115,8 +113,10 @@ namespace Improvar.Controllers
                                    RetailerCity = dr["RETLRCITY"].retDateStr(),
                                    RetailerName = dr["RETLRNM"].ToString(),
                                    RetailerPin = dr["RETLRPIN"].ToString(),
-                               }).ToList();
-
+                                   Dstbrslcd = dr["DSTBRSLCD"].ToString(),
+                                   Dstbrslnm = dr["DSTBRSLnm"].ToString(),
+                               }).Take(5).ToList();
+                
             }
             catch (Exception ex)
             {
@@ -178,7 +178,7 @@ namespace Improvar.Controllers
             {
                 try
                 {
-                   var address= GetAddress("", "");
+                    var address = GetAddress("", "");
                     string DefaultAction = "A";
                     DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_CNTRL_HDR in  row share mode");
                     if (DefaultAction == "A")
@@ -196,7 +196,7 @@ namespace Improvar.Controllers
                             DOCNO = Cn.MaxDocNumber(DOCCD, Ddate);
 
                             DOCPATTERN = Cn.DocPattern(Convert.ToInt32(DOCNO), DOCCD, CommVar.CurSchema(UNQSNO).ToString(), CommVar.FinSchema(UNQSNO), Ddate);
-                            auto_no = Cn.Autonumber_Transaction(CommVar.Compcd(UNQSNO),CommVar.Loccd(UNQSNO), DOCNO, DOCCD, Ddate, "", "", YR_CD);
+                            auto_no = Cn.Autonumber_Transaction(CommVar.Compcd(UNQSNO), CommVar.Loccd(UNQSNO), DOCNO, DOCCD, Ddate, "", "", YR_CD);
                             MREASON.AUTONO = auto_no.Split(Convert.ToChar(Cn.GCS()))[0].ToString();
                             Month = auto_no.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
                         }

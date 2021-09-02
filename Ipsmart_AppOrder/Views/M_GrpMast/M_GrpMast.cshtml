@@ -18,7 +18,6 @@
         width: 100%;
         height: 100%;
     }
-
     .swiper-slide {
         text-align: center;
         font-size: 18px;
@@ -59,6 +58,17 @@
             margin-bottom: 24px;
         }
     }
+        @@media (max-width: 700px) {
+            .mySwiper{
+          display: block;
+            width: 100%;
+           height: 70%;
+            }
+      .swiper-slide img {
+       
+        }   
+    }
+
 </style>
 <script>
     $(document).ready(function () {
@@ -82,17 +92,24 @@
             },
             contentType: "application/json",
             success: function (result) {
-                var isnum = 0;
-                console.log('result.length:' + result.length);
-
+                if (result.length == 0) {
+                    alert('No retailer found !'); return;
+                }
+                else if (result.length > 1) {
+                    var alldata = '';
+                    $.each(result, function (index, itemData) {
+                        alldata +=((index+1)+". Name:" + itemData.RetailerName+ " Pin:" + itemData.RetailerPin+ " Gst:" + itemData.RetailerGstno+ " City:" + itemData.RetailerCity+" ... ");
+                    });
+                    alert('Use filter to get accurate data. ' + alldata); return;
+                }
                 $.each(result, function (index, itemData) {
-                    ++isnum;
-
                     $("#SelectedRetailerCode").val(itemData.RetailerCode);
                     $("#SelectedRetailerName").val(itemData.RetailerName);
                     $("#SelectedRetailerPin").val(itemData.RetailerPin);
                     $("#SelectedRetailerGstno").val(itemData.RetailerGstno);
                     $("#SelectedRetailerCity").val(itemData.RetailerCity);
+                    $("#Dstbrslcd").val(itemData.Dstbrslcd);
+                    $("#Dstbrslnm").val(itemData.Dstbrslnm);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -197,6 +214,9 @@
             getLocation();
             return false;
         }
+        if (!emptyFieldCheck("Please select retailer!", "SelectedRetailerCode")) {
+            return false;
+        }        
         var hdnData1 = '';
         $('#tblCart > tbody  > tr').each(function () {
             var ITCD = $(this).find("td").eq(0).html();
@@ -256,7 +276,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.RetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "RetailerPin", @placeholder = " Retailer Pin" } })
+                    @Html.EditorFor(model => model.RetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "RetailerPin", @placeholder = " Retailer Pin", maxlength = 10 } })
                 </div>
             </div><div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
@@ -283,7 +303,7 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", "Selected Retailer Code")
+                    @Html.Label("", "Retailer Code")
                 </div>
             </div>
             <div class="col-md-5">
@@ -293,7 +313,7 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", "Selected Retailer Name")
+                    @Html.Label("", " Name")
                 </div>
             </div>
             <div class="col-md-5">
@@ -303,16 +323,17 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", "Selected Retailer Pin")
+                    @Html.Label("", " Pin")
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
                     @Html.EditorFor(model => model.SelectedRetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerPin", @placeholder = "Retailer Pin", @readonly = "readonly" } })
                 </div>
-            </div><div class="col-md-5">
+            </div>
+            <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", "Selected Retailer Gstno")
+                    @Html.Label("", " Gstno")
                 </div>
             </div>
             <div class="col-md-5">
@@ -322,12 +343,23 @@
             </div>
             <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", "Selected Retailer City")
+                    @Html.Label("", " City")
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="editor-field">
                     @Html.EditorFor(model => model.SelectedRetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCity", @placeholder = "Retailer City", @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="editor-field" style="margin-top: 4px;">
+                    @Html.Label("", " Distributor")
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Dstbrslnm, new { htmlAttributes = new { @class = "form-control ", id = "Dstbrslnm", @placeholder = "Retailer City", @readonly = "readonly" } })
+                    @Html.HiddenFor(model => model.Dstbrslcd)
                 </div>
             </div>
         </div>
@@ -352,6 +384,7 @@
             </div>
             <script>
                 var swiper = new Swiper(".mySwiper", {
+                   // autoHeight: true,
                     navigation: {
                         nextEl: ".swiper-button-next",
                         prevEl: ".swiper-button-prev",
