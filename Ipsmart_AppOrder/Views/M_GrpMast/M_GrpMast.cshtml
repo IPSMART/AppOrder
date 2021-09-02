@@ -104,7 +104,7 @@
                 }
                 $.each(result, function (index, itemData) {
                     $("#SelectedRetailerCode").val(itemData.RetailerCode);
-                    //$("#SelectedRetailerName").val(itemData.RetailerName);
+                    $("#SelectedRetailerName").val(itemData.RetailerName);
                     //$("#SelectedRetailerPin").val(itemData.RetailerPin);
                     //$("#SelectedRetailerGstno").val(itemData.RetailerGstno);
                     //$("#SelectedRetailerCity").val(itemData.RetailerCity);
@@ -211,14 +211,17 @@
     function SaveData() {
         getLocation();
         if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
-            getLocation();
+                alert('Please select retailer !');
+                getLocation();
             return false;
         }
         if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
+            alert('Please select retailer !');
             getLocation();
             return false;
         }
         if (!emptyFieldCheck("Please select retailer!", "SelectedRetailerCode")) {
+            alert('Please select retailer !');
             return false;
         }        
         var hdnData1 = '';
@@ -239,7 +242,10 @@
             url: "@Url.Action("SAVE", PageControllerName)",
             data: $('form').serialize(),
             success: function (result) {
-                alert(result);
+                if (result == '1') {
+                    alert('Data Saved Successfully !!');
+                    location.reload();
+                }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 $("#WaitingMode").hide();
