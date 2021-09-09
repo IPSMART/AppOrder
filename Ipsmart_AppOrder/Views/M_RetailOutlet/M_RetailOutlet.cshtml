@@ -300,12 +300,12 @@
                             @Html.EditorFor(model => model.DSTBRSLNM, new { htmlAttributes = new { @class = "form-control", id = "DSTBRSLNM", maxlength = 40, @placeholder = "Distributor Name" } })
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <div class="editor-field" style="">
                             @Html.EditorFor(model => model.DSTBRGSTNO, new { htmlAttributes = new { @class = "form-control", id = "DSTBRGSTNO", maxlength = 40, @placeholder = "Distributor Gst" } })
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-3">
                         <div class="editor-field" style="">
                             @Html.EditorFor(model => model.DSTBRAREA, new { htmlAttributes = new { @class = "form-control", id = "DSTBRAREA", maxlength = 40, @placeholder = "Distributor Area" } })
                         </div>
@@ -317,7 +317,7 @@
                     </div>
                     <div class="col-md-5" style="width:auto;">
                         <div class="editor-label" style="margin-top: 0px;">
-                            <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="ClearDstBrInfo()" class="btn btn-sm btn-success" value="Clear Info" />
+                            <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="ClearDstBrInfo()" class="btn btn-sm btn-danger" value="Clear" />
                         </div>
                     </div>
                 </div>
