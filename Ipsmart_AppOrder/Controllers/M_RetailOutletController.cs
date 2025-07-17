@@ -262,8 +262,8 @@ namespace Improvar.Controllers
             sql += "select distinct a.slcd, a.slnm, a.gstno, nvl(a.slarea,a.district) slarea,a.statecd,a.district,a.tcsappl,a.panno ";
             sql += "from " + scmf + ".m_subleg a, " + scmf + ".m_subleg_link b, " + scmf + ".m_cntrl_hdr c, " + scmf + ".m_cntrl_loca d ";
             sql += "where a.slcd=b.slcd(+) and a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
-            if (slcd.retStr() != "") sql += "and  upper(a.slcd) = '%" + slcd + "%'  ";
-            if (slnm.retStr() != "") sql += "and  upper(a.slnm) = '%" + slnm + "%' ";
+            if (slcd.retStr() != "") sql += "and  upper(a.slcd) LIKE '%" + slcd + "%'  ";
+            if (slnm.retStr() != "") sql += "and  upper(a.slnm) LIKE '%" + slnm + "%' ";
             if (gstno.retStr() != "") sql += "and upper(a.gstno) like '%" + gstno + "%' ";
             if (area.retStr() != "") sql += "and upper(nvl(a.slarea,a.district)) like '%" + area + "%' ";
             //if (GLCD.retStr() != "") sql += "f.glcd = '" + GLCD + "' and ";

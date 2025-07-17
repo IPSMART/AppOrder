@@ -104,16 +104,7 @@
 <script>
     function GetDstBrInfo(id) {
         debugger;
-        //var DefaultAction = $("#DefaultAction").val();
-        //if (DefaultAction == "V") return true;
-        //var MENU_PARA = $("#MENU_PARA").val();
-        //var ModuleCode = $("#ModuleCode").val();
-        //if (id == "") {
-        //    ClearAllTextBoxes("ITCD,ITSTYLE,UOM,STYLENO,ITGRPCD,ITGRPNM,HSNCODE,PRODGRPGSTPER,GSTPER,BarImages,GLCD,BLUOMCD,CONVQTYPUNIT");
-        //}
-        //else {
-            //var code = $("#ITGRPCD").val() + String.fromCharCode(181) + $("#DOCDT").val() + String.fromCharCode(181) + $("#TAXGRPCD").val() + String.fromCharCode(181) + $("#GOCD").val() + String.fromCharCode(181) + $("#PRCCD").val() + String.fromCharCode(181) + $("#MTRLJOBCD").val() + String.fromCharCode(181) + $("#BARCODE").val() + String.fromCharCode(181) + $("#RATE").val();
-            $.ajax({
+        $.ajax({
                 type: 'POST',
                 beforesend: $("#WaitingMode").show(),
                 url:  "@Url.Action("GetPartyDetails", PageControllerName)",
@@ -152,8 +143,6 @@
                     $("body span h1").remove(); $("#msgbody_error style").remove();
                 }
             });
-
-        //}
     }
     function ClearDstBrInfo() {
         ClearAllTextBoxes("DSTBRSLCD,DSTBRSLNM,DSTBRGSTNO,DSTBRAREA");
@@ -290,7 +279,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="editor-field">
-                            @Html.EditorFor(model => model.M_RETAILOUTLET.DSTBRSLCD, new { htmlAttributes = new { @class = "form-control", id = "DSTBRSLCD", maxlength = 8, @placeholder = "Code" } })
+                            @Html.EditorFor(model => model.M_RETAILOUTLET.DSTBRSLCD, new { htmlAttributes = new { @class = "form-control", id = "DSTBRSLCD", maxlength = 8, @placeholder = "Code" , onblur = "GetDstBrInfo()" } })
                             @*@Html.EditorFor(model => model.M_RETAILOUTLET.DSTBRSLCD, new { htmlAttributes = new { @class = "form-control textbox_image", id = "DSTBRSLCD", onkeydown = "GetHelpBlur('" + @Url.Action("GetPartyDetails", PageControllerName) + "','Distributor Details','DSTBRSLCD','DSTBRSLCD=slcd=1/DSTBRSLNM=slnm=0')", onblur = "GetHelpBlur('" + @Url.Action("GetPartyDetails", PageControllerName) + "','Distributor Details','DSTBRSLCD','DSTBRSLCD=slcd=1/DSTBRSLNM=slnm=0');", @placeholder = "Code", maxlength = 7 } })
                             <img src="~/Image/search.png" width="20px" height="20px" class="Help_image_button" title="Help" onmousedown="GetHelpBlur('@Url.Action("GetPartyDetails", PageControllerName)','Distributor Details','DSTBRSLCD','DSTBRSLCD=slcd=1/DSTBRSLNM=slnm=0')" />*@
                         </div>
