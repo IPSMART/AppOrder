@@ -34,44 +34,44 @@ namespace Improvar.Controllers
                 {
 
                     ViewBag.formname = "M_GrpMast";
-                    string brand = "REVO";
-                    string scm = CommVar.CurSchema(UNQSNO);
-                    string fscm = CommVar.FinSchema(UNQSNO);
-                    string comp = CommVar.Compcd(UNQSNO);
-                    string loc = CommVar.Loccd(UNQSNO);
-                    string doccd = "";
+                    //string brand = "CHOC";// "REVO";
+                    //string scm = CommVar.CurSchema(UNQSNO);
+                    //string fscm = CommVar.FinSchema(UNQSNO);
+                    //string comp = CommVar.Compcd(UNQSNO);
+                    //string loc = CommVar.Loccd(UNQSNO);
+                    //string doccd = "";
 
-                    string sql = "";
-                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
-                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
-                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + brand + "'";
-                    sql += " group by  a.m_autono,a.itcd,a.styleno";
+                    //string sql = "";
+                    //sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
+                    //sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
+                    //sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + brand + "'";
+                    //sql += " group by  a.m_autono,a.itcd,a.styleno";
 
 
-                    var dt = masterHelp.SQLquery(sql);
-                    List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        ImageView objImageView = new ImageView();
-                        objImageView.ITCD = dr["ITCD"].ToString();
-                        objImageView.Desc = dr["styleno"].ToString();
-                        objImageView.SIZES = dr["sizes"].ToString();
-                        //objImageView.Desc = dr["desc"].ToString();
-                        var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
-                        if (img.Count > 0)
-                        {
-                            var DBImgString = img[0].DOC_FILE;
-                            var ImageName = img[0].DOC_FILE_NAME;
-                            var extension = Path.GetExtension(ImageName);
-                            string filename = objImageView.ITCD + "_0" + extension;
-                            var folderpath = CommVar.LocalUploadDocPath(filename);
-                            var link = Cn.SaveImage(DBImgString, folderpath);
-                            var path = CommVar.WebUploadDocURL(filename);
-                            objImageView.Url = path;
-                            ImageViewlst.Add(objImageView);
-                        }
-                    }
-                    VE.ImageView = ImageViewlst;
+                    //var dt = masterHelp.SQLquery(sql);
+                    //List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
+                    //foreach (DataRow dr in dt.Rows)
+                    //{
+                    //    ImageView objImageView = new ImageView();
+                    //    objImageView.ITCD = dr["ITCD"].ToString();
+                    //    objImageView.Desc = dr["styleno"].ToString();
+                    //    objImageView.SIZES = dr["sizes"].ToString();
+                    //    //objImageView.Desc = dr["desc"].ToString();
+                    //    var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
+                    //    if (img.Count > 0)
+                    //    {
+                    //        var DBImgString = img[0].DOC_FILE;
+                    //        var ImageName = img[0].DOC_FILE_NAME;
+                    //        var extension = Path.GetExtension(ImageName);
+                    //        string filename = objImageView.ITCD + "_0" + extension;
+                    //        var folderpath = CommVar.LocalUploadDocPath(filename);
+                    //        var link = Cn.SaveImage(DBImgString, folderpath);
+                    //        var path = CommVar.WebUploadDocURL(filename);
+                    //        objImageView.Url = path;
+                    //        ImageViewlst.Add(objImageView);
+                    //    }
+                    //}
+                    //VE.ImageView = ImageViewlst;
                     //ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
                     //   GetUploadImage(string schema, long AutoNO)
 
@@ -305,7 +305,141 @@ namespace Improvar.Controllers
             }
             return null;
         }
+        public ActionResult GetBrandDetails(VMRetailOrder VE)
+        {
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
+            string sql = "";
+           
+            string BrandCode = VE.BrandCode.retStr().ToUpper().Trim();
+            string BrandName = VE.BrandName.retStr().ToUpper().Trim();
+            
+            sql = "";
+            sql += "select distinct a.BRANDCD,a.BRANDNM ";
+            sql += "from " + scm + ".M_BRAND a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
+            sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
+            if (BrandCode.retStr() != "") sql += "and  upper(a.BRANDCD) LIKE '%" + BrandCode + "%'  ";
+            if (BrandName.retStr() != "") sql += "and  upper(a.BRANDNM) LIKE '%" + BrandName + "%' ";
+            sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
+            sql += "nvl(c.inactive_tag,'N') = 'N' ";
+            sql += "order by BRANDNM,BRANDCD";
+            DataTable tbl = masterHelp.SQLquery(sql);
+            if (tbl.Rows.Count > 1)
+            {
+                System.Text.StringBuilder SB = new System.Text.StringBuilder();
+                for (int i = 0; i <= tbl.Rows.Count - 1; i++)
+                {
+                    SB.Append("<tr><td>" + tbl.Rows[i]["BRANDNM"] + "</td><td>" + tbl.Rows[i]["BRANDCD"] + " </td></tr>");
+                }
+                var hdr = "Brand Name" + Cn.GCS() + "Brand Code";
+                return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
 
+            }
+            else
+            {
+                if (tbl.Rows.Count > 0)
+                {
+                    string str = masterHelp.ToReturnFieldValues("", tbl);
+                    return Content(str);
+                }
+                else
+                {
+                    return Content("Invalid Brand Code ! Please Enter a Valid Brand Code !!");
+                }
+            }
+        }
+
+        public ActionResult GetGrpDetails(VMRetailOrder VE)
+        {
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
+            string sql = "";
+
+            string GroupCode = VE.GroupCode.retStr().ToUpper().Trim();
+            string GroupName = VE.GroupName.retStr().ToUpper().Trim();
+
+            sql = "";
+            sql += "select distinct a.ITGRPCD,a.ITGRPNM ";
+            sql += "from " + scm + ".M_GROUP a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
+            sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
+            if (GroupCode.retStr() != "") sql += "and  upper(a.ITGRPCD) LIKE '%" + GroupCode + "%'  ";
+            if (GroupName.retStr() != "") sql += "and  upper(a.ITGRPNM) LIKE '%" + GroupName + "%' ";
+            sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
+            sql += "nvl(c.inactive_tag,'N') = 'N' ";
+            sql += "order by ITGRPNM,ITGRPCD";
+            DataTable tbl = masterHelp.SQLquery(sql);
+            if (tbl.Rows.Count > 1)
+            {
+                System.Text.StringBuilder SB = new System.Text.StringBuilder();
+                for (int i = 0; i <= tbl.Rows.Count - 1; i++)
+                {
+                    SB.Append("<tr><td>" + tbl.Rows[i]["ITGRPNM"] + "</td><td>" + tbl.Rows[i]["ITGRPCD"] + " </td></tr>");
+                }
+                var hdr = "Group Name" + Cn.GCS() + "Group Code";
+                return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
+
+            }
+            else
+            {
+                if (tbl.Rows.Count > 0)
+                {
+                    string str = masterHelp.ToReturnFieldValues("", tbl);
+                    return Content(str);
+                }
+                else
+                {
+                    return Content("Invalid Group Code ! Please Enter a Valid Group Code !!");
+                }
+            }
+        }
+        public ActionResult GetItem(VMRetailOrder VE)
+        {
+            try
+            {
+                string brand = VE.BrandCode;
+                string scm = CommVar.CurSchema(UNQSNO);
+                string fscm = CommVar.FinSchema(UNQSNO);
+                string comp = CommVar.Compcd(UNQSNO);
+                string loc = CommVar.Loccd(UNQSNO);
+                string doccd = "";
+
+                string sql = "";
+                sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
+                sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
+                sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + brand + "'";
+                sql += " group by  a.m_autono,a.itcd,a.styleno";
+
+
+                var dt = masterHelp.SQLquery(sql);
+                List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ImageView objImageView = new ImageView();
+                    objImageView.ITCD = dr["ITCD"].ToString();
+                    objImageView.Desc = dr["styleno"].ToString();
+                    objImageView.SIZES = dr["sizes"].ToString();
+                    //objImageView.Desc = dr["desc"].ToString();
+                    var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
+                    if (img.Count > 0)
+                    {
+                        var DBImgString = img[0].DOC_FILE;
+                        var ImageName = img[0].DOC_FILE_NAME;
+                        var extension = Path.GetExtension(ImageName);
+                        string filename = objImageView.ITCD + "_0" + extension;
+                        var folderpath = CommVar.LocalUploadDocPath(filename);
+                        var link = Cn.SaveImage(DBImgString, folderpath);
+                        var path = CommVar.WebUploadDocURL(filename);
+                        objImageView.Url = path;
+                        ImageViewlst.Add(objImageView);
+                    }
+                }
+                VE.ImageView = ImageViewlst;
+                return PartialView("_M_GrpMast_Main", VE);
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message + ex.InnerException);
+            }
+        }
 
     }
 }

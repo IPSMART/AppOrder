@@ -1,0 +1,29 @@
+﻿@model Improvar.ViewModels.VMRetailOrder
+
+<div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            @if (Model.ImageView != null)
+            {
+                for (int i = 0; i < Model.ImageView.Count; i++)
+                {
+                    <div class="swiper-slide">
+                        <span style="display: none" id="itcd_@i">@Model.ImageView[i].ITCD</span>
+                        <span style="display: none" id="size_@i">@Model.ImageView[i].SIZES</span>
+                        <div class="title" id="styleno_@i">@Model.ImageView[i].Desc</div>
+                        <img src="@Model.ImageView[i].Url" />
+                    </div>
+                }
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            // autoHeight: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>

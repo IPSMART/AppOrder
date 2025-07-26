@@ -716,7 +716,7 @@
     <Content Include="ApplicationInsights.config" />
     <Content Include="Report\CORRES.rpt" />
     <Content Include="Report\ENVELOPE.rpt" />
-    <None Include="Properties\PublishProfiles\Ipsmart_Jewel.pubxml" />
+    <None Include="Properties\PublishProfiles\Ipsmart_AppOrder.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\capsLock.js" />
     <Content Include="Scripts\Chart.js" />
@@ -847,6 +847,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\M_GrpMast\M_GrpMast.cshtml" />
     <Content Include="Views\M_RetailOutlet\M_RetailOutlet.cshtml" />
+    <Content Include="Views\Shared\_M_GrpMast_Main.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

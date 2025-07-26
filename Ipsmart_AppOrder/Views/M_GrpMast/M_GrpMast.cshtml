@@ -5,6 +5,8 @@
     string PageControllerName = "M_GrpMast";
 }
 <title>@ViewBag.Title</title>
+<link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+<link rel="icon" href="~/favicon.ico" type="image/x-icon">
 <link href="~/Content/bootstrap.css" rel="stylesheet" />
 <link href="~/Content/layout_misc.css" rel="stylesheet" />
 <link href="~/Content/swiper-bundle.min.css" rel="stylesheet" />
@@ -13,6 +15,10 @@
 @*<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>*@
 <script src="~/Scripts/swiper-bundle.min.js"></script>
 <script src="~/Scripts/Custom.js"></script>
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/datatables.min.js"></script>
+@Scripts.Render("~/bundles/jqueryui")
+<script src="~/Scripts/jquery.mobile-events.js"></script>
 <style>
     .swiper {
         width: 100%;
@@ -53,22 +59,23 @@
             font-size: 12pt;
             font-family: 'Mark Bold' !important;
         }
+
     @@media (min-width: 1200px) {
-    body{
+        body {
             margin-bottom: 24px;
         }
     }
-        @@media (max-width: 800px) {
-            .mySwiper{
-          display: block;
-            width: 100%;
-           height: 70%;
-            }
-      .swiper-slide img {
-       
-        }   
-    }
 
+    @@media (max-width: 800px) {
+        .mySwiper {
+            display: block;
+            width: 100%;
+            height: 70%;
+        }
+
+        .swiper-slide img {
+        }
+    }
 </style>
 <script>
     $(document).ready(function () {
@@ -98,7 +105,7 @@
                 else if (result.length > 1) {
                     var alldata = '';
                     $.each(result, function (index, itemData) {
-                        alldata +=((index+1)+". Name:" + itemData.RetailerName+ " Pin:" + itemData.RetailerPin+ " Gst:" + itemData.RetailerGstno+ " City:" + itemData.RetailerCity+" ... ");
+                        alldata += ((index + 1) + ". Name:" + itemData.RetailerName + " Pin:" + itemData.RetailerPin + " Gst:" + itemData.RetailerGstno + " City:" + itemData.RetailerCity + " ... ");
                     });
                     alert('Use filter to get accurate data. ' + alldata); return;
                 }
@@ -111,7 +118,7 @@
                     $("#Dstbrslcd").val(itemData.Dstbrslcd);
                     //$("#Dstbrslnm").val(itemData.Dstbrslnm);
                     $("#divGetRetailerInfo").hide();
-                    
+
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -209,21 +216,25 @@
     }
 
     function SaveData() {
+        $("#WaitingMode").show(),
         getLocation();
         if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
-                alert('Please select retailer !');
-                getLocation();
+            alert('Please select retailer !');
+            getLocation();
+            $("#WaitingMode").hide();
             return false;
         }
         if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
             alert('Please select retailer !');
             getLocation();
+            $("#WaitingMode").hide();
             return false;
         }
         if (!emptyFieldCheck("Please select retailer!", "SelectedRetailerCode")) {
             alert('Please select retailer !');
+            $("#WaitingMode").hide();
             return false;
-        }        
+        }
         var hdnData1 = '';
         $('#tblCart > tbody  > tr').each(function () {
             var ITCD = $(this).find("td").eq(0).html();
@@ -255,7 +266,117 @@
         });
     }
 </script>
+<script>
+    function GetBrandInfo(id) {
+        debugger;
+        $.ajax({
+                type: 'POST',
+                beforesend: $("#WaitingMode").show(),
+                url:  "@Url.Action("GetBrandDetails", PageControllerName)",
+                data: $('form').serialize(),
+                success: function (result) {
+                    var MSG = result.indexOf('#helpDIV');
+                    if (MSG >= 0) {
+                        ClearAllTextBoxes("BrandCode,BrandName");
+                        $('#SearchFldValue').val("BrandCode");
+                        $('#helpDIV').html(result);
+                        $('#ReferanceFieldID').val("BrandCode,BrandName");
+                        $('#ReferanceColumn').val("1/0");
+                        $('#helpDIV_Header').html("Brand Details");
+                    }
+                    else {
+                        var MSG = result.indexOf(String.fromCharCode(181));
+                        if (MSG >= 0) {
+                            $("#BrandCode").val(returncolvalue(result, "BRANDCD"));
+                            $("#BrandName").val(returncolvalue(result, "BRANDNM"));
+                            hlpblurval = "BrandCode";//id;
+                        }
+                        else {
+                            $('#helpDIV').html("");
+                            msgInfo("" + result + " !");
+                            ClearAllTextBoxes("BrandCode,BrandName");
+                            message_value = "BrandCode";
+                        }
+                    }
+                    $("#WaitingMode").hide();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#WaitingMode").hide();
+                    msgError(XMLHttpRequest.responseText);
+                    $("body span h1").remove(); $("#msgbody_error style").remove();
+                }
+            });
+    }
+
+    function GetGrpInfo(id) {
+        debugger;
+        $.ajax({
+            type: 'POST',
+            beforesend: $("#WaitingMode").show(),
+            url:  "@Url.Action("GetGrpDetails", PageControllerName)",
+            data: $('form').serialize(),
+        success: function (result) {
+            var MSG = result.indexOf('#helpDIV');
+            if (MSG >= 0) {
+                ClearAllTextBoxes("GroupCode,GroupName");
+                $('#SearchFldValue').val("GroupCode");
+                $('#helpDIV').html(result);
+                $('#ReferanceFieldID').val("GroupCode,GroupName");
+                $('#ReferanceColumn').val("1/0");
+                $('#helpDIV_Header').html("Brand Details");
+            }
+            else {
+                var MSG = result.indexOf(String.fromCharCode(181));
+                if (MSG >= 0) {
+                    $("#GroupCode").val(returncolvalue(result, "ITGRPCD"));
+                    $("#GroupName").val(returncolvalue(result, "ITGRPNM"));
+                    hlpblurval = "GroupCode";//id;
+                }
+                else {
+                    $('#helpDIV').html("");
+                    msgInfo("" + result + " !");
+                    ClearAllTextBoxes("GroupCode,GroupName");
+                    message_value = "GroupCode";
+                }
+            }
+            $("#WaitingMode").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
+</script>
+<script>
+    function GetItemData() {
+        debugger;
+        $.ajax({
+            type: 'post',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("GetItem", PageControllerName )",
+            data: $('form').serialize(),
+        success: function (result) {
+            $("#partialdivDetail").animate({ marginTop: '-10px' }, 50);
+            $("#partialdivDetail").html(result);
+            $("#WaitingMode").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
+</script>
 @*@Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")*@
+<div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
+    <p style="position: absolute; color: White; top: 46%; left: 47%;">
+        Loading, please wait...<br />
+        <span> <img src="~/Image/ajax_loader.gif" width="60px" height="60px"></span>
+    </p>
+</div>
 <div class="container-fluid">
     <div class="alert alert-info" style="font-size: large;">
         <strong>Order</strong> taken from retailer
@@ -309,7 +430,7 @@
             <button class="btn btn-sm btn-info" onclick="GetRetailerInfo()" type="button">Get Retailer Info</button>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="editor-field" style="margin-top: 4px;">
                     @Html.Label("", "Retailer Name")
                 </div>
@@ -319,74 +440,116 @@
                     @Html.EditorFor(model => model.SelectedRetailerName, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerName", @placeholder = " Retailer Name", @readonly = "readonly" } })
                 </div>
             </div>
-                        @Html.HiddenFor(model => model.SelectedRetailerCode)
-                        @Html.HiddenFor(model => model.Dstbrslcd)
+            @Html.HiddenFor(model => model.SelectedRetailerCode)
+            @Html.HiddenFor(model => model.Dstbrslcd)
 
 
             @*<div class="col-md-1">
-                <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", "Retailer Code")
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "Retailer Code")
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerCode, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCode", @placeholder = "Retailer Code", @readonly = "readonly" } })
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.SelectedRetailerCode, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCode", @placeholder = "Retailer Code", @readonly = "readonly" } })
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", " Name")
+                <div class="col-md-1">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", " Name")
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-7">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerName, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerName", @placeholder = " Retailer Name", @readonly = "readonly" } })
+                <div class="col-md-7">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.SelectedRetailerName, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerName", @placeholder = " Retailer Name", @readonly = "readonly" } })
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", " Pin")
+                <div class="col-md-1">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", " Pin")
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerPin", @placeholder = "Retailer Pin", @readonly = "readonly" } })
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.SelectedRetailerPin, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerPin", @placeholder = "Retailer Pin", @readonly = "readonly" } })
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", " Gstno")
+                <div class="col-md-1">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", " Gstno")
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerGstno, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerGstno", @placeholder = "Retailer Gstno", @readonly = "readonly" } })
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.SelectedRetailerGstno, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerGstno", @placeholder = "Retailer Gstno", @readonly = "readonly" } })
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", " City")
+                <div class="col-md-1">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", " City")
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-5">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.SelectedRetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCity", @placeholder = "Retailer City", @readonly = "readonly" } })
+                <div class="col-md-5">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.SelectedRetailerCity, new { htmlAttributes = new { @class = "form-control ", id = "SelectedRetailerCity", @placeholder = "Retailer City", @readonly = "readonly" } })
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="editor-field" style="margin-top: 4px;">
-                    @Html.Label("", " Distributor")
+                <div class="col-md-1">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", " Distributor")
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-5">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Dstbrslnm, new { htmlAttributes = new { @class = "form-control ", id = "Dstbrslnm", @placeholder = "Retailer City", @readonly = "readonly" } })
-                    @Html.HiddenFor(model => model.Dstbrslcd)
-                </div>
-            </div>*@
+                <div class="col-md-5">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Dstbrslnm, new { htmlAttributes = new { @class = "form-control ", id = "Dstbrslnm", @placeholder = "Retailer City", @readonly = "readonly" } })
+                        @Html.HiddenFor(model => model.Dstbrslcd)
+                    </div>
+                </div>*@
         </div>
         <div class="row">
-            <div class="swiper mySwiper">
+            <div class="col-md-5">
+                <div class="editor-field" style="margin-top: 4px;">
+                    @Html.Label("", "Brand")
+                    <b style="color:red"><sup>*</sup></b>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.BrandCode, new { htmlAttributes = new { @class = "form-control", id = "BrandCode", maxlength = 8, @placeholder = "Code", onblur = "GetBrandInfo()" } })
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="editor-field" style="">
+                    @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @class = "form-control", id = "BrandName", maxlength = 40, @placeholder = "Distributor Name", onblur = "GetBrandInfo()" } })
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="editor-field" style="margin-top: 4px;">
+                    @Html.Label("", "Group")
+                    <b style="color:red"><sup>*</sup></b>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.GroupCode, new { htmlAttributes = new { @class = "form-control", id = "GroupCode", maxlength = 8, @placeholder = "Code", onblur = "GetGrpInfo()" } })
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="editor-field" style="">
+                    @Html.EditorFor(model => model.GroupName, new { htmlAttributes = new { @class = "form-control", id = "GroupName", maxlength = 40, @placeholder = "Distributor Name", onblur = "GetGrpInfo()" } })
+                </div>
+            </div>
+            <div class="col-md-5" style="width:auto;">
+                <div class="editor-label" style="margin-top: 0px;">
+                    <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="GetItemData()" class="btn btn-sm btn-danger" value="Get Data" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="partialdivDetail" style="margin-top:0px;">
+                @Html.Partial("_M_GrpMast_Main")
+            </div>
+            @*<div class="swiper mySwiper">
                 <div class="swiper-wrapper">
                     @if (Model.ImageView != null)
                     {
@@ -406,13 +569,13 @@
             </div>
             <script>
                 var swiper = new Swiper(".mySwiper", {
-                   // autoHeight: true,
+                    // autoHeight: true,
                     navigation: {
                         nextEl: ".swiper-button-next",
                         prevEl: ".swiper-button-prev",
                     },
                 });
-            </script>
+            </script>*@
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -452,6 +615,11 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <div id="helpDIV">
+
+            </div>
+        </div>
     }
 </div>
 <div class="row">
@@ -466,7 +634,7 @@
             Period- @Session["CompanyFinancial"]
         </div>
         <div class="abc sec3_1">
-            <a href="/M_RetailOutlet/M_RetailOutlet?op=V&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=Q0hFTUtPTEsyMDIxNTc4OTA=&DC=&MP=" target="_blank">Retailer Master</a>
+            <a href="../M_RetailOutlet/M_RetailOutlet?op=V&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=Q0hFTUtPTEsyMDIxNTc4OTA=&DC=&MP=" target="_blank">Retailer Master</a>
         </div>
         <div class="abc sec4">
             Developed by IPSMART Team

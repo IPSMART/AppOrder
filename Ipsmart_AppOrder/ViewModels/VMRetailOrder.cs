@@ -28,6 +28,10 @@ namespace Improvar.ViewModels
         public string GEOLATITUDE { get; set; }
         //public string GEOADDRESS { get; set; }
         public string ITEMDETAIL_JSTR { get; set; }
+        public string BrandCode { get; set; }
+        public string BrandName { get; set; }
+        public string GroupCode { get; set; }
+        public string GroupName { get; set; }
 
     }
 
