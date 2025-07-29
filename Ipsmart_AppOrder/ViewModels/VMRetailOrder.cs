@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Improvar.ViewModels
 {
-    public class VMRetailOrder
+    public class VMRetailOrder : Permission
     {
         public List<ImageView> ImageView { get; set; }
         public bool Checked { get; set; }

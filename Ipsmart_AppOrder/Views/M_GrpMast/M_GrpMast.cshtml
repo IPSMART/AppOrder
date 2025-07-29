@@ -3,6 +3,7 @@
     ViewBag.Title = "Order";
     Layout = null;
     string PageControllerName = "M_GrpMast";
+    string US = Model?.UNQSNO_ENCRYPTED;
 }
 <title>@ViewBag.Title</title>
 <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
@@ -132,18 +133,36 @@
 <script>
     function getLocation() {
         if (navigator.geolocation) {
-            handlePermission();
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
-                $("#GEOLONGITUDE").val(lat);
-                $("#GEOLATITUDE").val(lng);
-                console.log(lat + ',' + lng);
-            });
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    // Success: Set hidden fields
+                    $("#GEOLONGITUDE").val(position.coords.latitude);
+                    $("#GEOLATITUDE").val(position.coords.longitude);
+                    console.log(position.coords.latitude + ',' + position.coords.longitude);
+
+                },
+                function (error) {
+                    alert("Location access is required to use this service.");
+
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+
         }
-        else {
-            console.log("Geolocation is not supported by this browser.");
-        }
+        //if (navigator.geolocation) {
+        //    handlePermission();
+        //    navigator.geolocation.getCurrentPosition(function (position) {
+        //        var lat = position.coords.latitude;
+        //        var lng = position.coords.longitude;
+        //        $("#GEOLONGITUDE").val(lat);
+        //        $("#GEOLATITUDE").val(lng);
+        //        console.log(lat + ',' + lng);
+        //    });
+        //}
+        //else {
+        //    console.log("Geolocation is not supported by this browser.");
+        //}
     }
     //function getLocation() {
     //    if (navigator.geolocation) {
@@ -634,7 +653,7 @@
             Period- @Session["CompanyFinancial"]
         </div>
         <div class="abc sec3_1">
-            <a href="../M_RetailOutlet/M_RetailOutlet?op=V&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=Q0hFTUtPTEsyMDIxNTc4OTA=&DC=&MP=" target="_blank">Retailer Master</a>
+            <a href="../M_RetailOutlet/M_RetailOutlet?op=V&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=@US&DC=&MP=" target="_blank">Retailer Master</a>
         </div>
         <div class="abc sec4">
             Developed by IPSMART Team

@@ -34,6 +34,7 @@ namespace Improvar.Controllers
                 {
 
                     ViewBag.formname = "M_GrpMast";
+                    VE.UNQSNO_ENCRYPTED = Cn.Encrypt_URL(UNQSNO);
                     //string brand = "CHOC";// "REVO";
                     //string scm = CommVar.CurSchema(UNQSNO);
                     //string fscm = CommVar.FinSchema(UNQSNO);

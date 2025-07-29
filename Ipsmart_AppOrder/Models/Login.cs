@@ -10,5 +10,8 @@ namespace Improvar.Models
         public string Password { get; set; }
         public string IP { get; set; }
         public bool REMEMBERME { get; set; }
+        public string latitude { get; set; }
+
+        public string longitude { get; set; }
     }
 }

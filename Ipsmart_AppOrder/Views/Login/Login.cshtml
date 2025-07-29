@@ -16,6 +16,65 @@
     @Scripts.Render("~/bundles/modernizr")
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
     <link rel="stylesheet" href="~/Content/login_signup.css?Ver=@Module.ContentVersion" />
+    <head runat="server">
+        <title></title>
+    </head>
+
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck&callback"  defer></script>*@
+
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck&callback"
+        async defer></script>*@
+
+    @*<script src="http://maps.google.com/maps/api/js?sensor=false"></script>*@
+    @*<script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+            function showPosition(position) {
+                $("#latitude").val(position.coords.latitude);
+                $("#longitude").val(position.coords.longitude);
+                //$("#latitudeshow").val(position.coords.latitude);
+                //$("#longitudeshow").val(position.coords.longitude);
+            }
+        });
+    </script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        // Success: Set hidden fields
+                        $("#latitude").val(position.coords.latitude);
+                        $("#longitude").val(position.coords.longitude);
+                        $("#locationReady").val("true");
+                    },
+                    function (error) {
+                        alert("Location access is required to use this service.");
+                        $("#locationReady").val("false");
+                        // Optional: disable form or redirect
+                        $("#btnLogin").prop("disabled", true);
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+                $("#locationReady").val("false");
+                $("#btnLogin").prop("disabled", true);
+            }
+
+            // On form submission, ensure location is present
+            $("form").submit(function (e) {
+                if ($("#locationReady").val() !== "true") {
+                    alert("Location is required before Login.");
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
     <script>
         function ShowHide() {
             var x1 = document.getElementById("Password");
@@ -51,20 +110,24 @@
                         <h3>
                             @Module.Module_Name
                         </h3>
-                        <h6><span class="glyphicon glyphicon-log-in"></span>
+                        <h6>
+                            <span class="glyphicon glyphicon-log-in"></span>
                             Welcome to IP-SMART
                         </h6>
                     </center>
                 </div>
                 <div class="col-lg-6">
                     <label><b>User ID</b></label>
-                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { id = "UserName", @class = "ttext TEXT", placeholder = "Enter User ID", required = "required",autofocus= "autofocus", autocomplete = "off", onkeyup = "toUpper(UserName)" } })
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { id = "UserName", @class = "ttext TEXT", placeholder = "Enter User ID", required = "required", autofocus = "autofocus", autocomplete = "off", onkeyup = "toUpper(UserName)" } })
                     <label><b>Password</b></label>
                     @Html.PasswordFor(model => model.Password, new { value = Model.Password, @class = "passview1 blocks1", placeholder = "Enter Password", id = "Password", required = "required" })
                     <img src="~/Image/pass_eye_close.png" name="pa2" id="eye" style="cursor:pointer" class="passview2 blocks1" onclick="ShowHide();">
                     <img src="~/Image/pass_eye.png" style="display:none;cursor:pointer " name="pa3" id="eye_close" class="passview2 blocks1" onclick="ShowHide();">
                     @Html.HiddenFor(model => model.IP)
-                    <br />
+                    @Html.HiddenFor(model => model.latitude, new { id = "latitude" })
+                    @Html.HiddenFor(model => model.longitude, new { id = "longitude" })
+                    <input type="hidden" id="locationReady" value="false" />
+  <br />
                     <br />
                     <br />
                     <br />
@@ -79,12 +142,20 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-7">
-                            <button type="submit" class="btn btn-lg btn-info">Login</button>
+                            <button type="submit" id="btnLogin" class="btn btn-lg btn-info">Login</button>
                         </div>
                         <div class="col-lg-5 text-right">
                             @Html.ActionLink("Forgot Password ?", "ForgotPassword", null, new { onclick = "this.href += '?USERID=' + document.getElementById('UserName').value;" })
                         </div>
                     </div>
+                    @*<div class="row">
+                            <div class="col-lg-4">
+                                @Html.EditorFor(model => model.latitude, new { htmlAttributes = new { id = "latitudeshow", @class = "ttext TEXT" } })
+                            </div>
+                            <div class="col-lg-4">
+                                @Html.EditorFor(model => model.longitude, new { htmlAttributes = new { id = "longitudeshow", @class = "ttext TEXT" } })
+                            </div>
+                        </div>*@
                     <center>
                         <p>
                             @if (@ViewBag.Flag == "1")
@@ -102,7 +173,6 @@
                 </div>
             </div>
         </div>
-
     }
 </body>
 </html>

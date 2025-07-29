@@ -12,6 +12,11 @@ using Microsoft.VisualBasic;
 using Improvar.ViewModels;
 using System.Net;
 using System.IO;
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Web.Script.Serialization;
 
 namespace Improvar.Controllers
 {
@@ -202,7 +207,7 @@ namespace Improvar.Controllers
                     bool validIP = Cn.LoginIPValidate(log.UserName);
                     if (validIP == false)
                     {
-                        msg = "You are not authorised to login from IP "+ Cn.GetStaticIp() + "... Contact System Administrator...";
+                        msg = "You are not authorised to login from IP " + Cn.GetStaticIp() + "... Contact System Administrator...";
                         ViewBag.Msg = msg;
                         ModelState.Clear();
                     }
@@ -228,6 +233,22 @@ namespace Improvar.Controllers
                         Response.Cookies["UserName"].Value = log.UserName.Trim();
                         Response.Cookies["Password"].Value = log.Password.Trim();
                         Response.Cookies["Rememberme"].Value = Convert.ToString(log.REMEMBERME);
+
+                        //save login address
+                        if (log.latitude.retStr() != "")
+                        {
+                            var currentaddress = LoginAddress(log.latitude, log.longitude);
+                            string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
+                            sql += "VALUES('" + log.UserName + "','" + Module.Module_Code + "','" + session_no[1] + "',sysdate,'" + log.latitude + "-" + log.longitude + "','" + currentaddress + "','" + Cn.GetStaticIp() + "') ";
+                            masterHelp.SQLNonQuery(sql);
+                        }
+                        else
+                        {
+                            ViewBag.Msg = "Location is required.";
+                            ModelState.Clear();
+                        }
+                        //end save login address
+
                         return RedirectToAction("CompanySelection", "Home");
                     }
                 }
@@ -249,7 +270,7 @@ namespace Improvar.Controllers
             }
             return View(log);
         }
-     
+
         public ActionResult ChangePassword(string USERID)
         {
             Password pass = new Password();
@@ -257,16 +278,16 @@ namespace Improvar.Controllers
             string sql = "select * from ipsmart_policy where rownum=1";
             DataTable dt = masterHelp.SQLquery(sql);
             var ipsmart_policy = (from DataRow dr in dt.Rows
-                      select new
-                      {
-                          NOOFTXTCHAR = dr["NOOFTXTCHAR"],
-                          NOOFLOWERCHAR = dr["NOOFLOWERCHAR"],
-                          NOOFUPPERCHAR = dr["NOOFUPPERCHAR"],
-                          NOOFSPCHAR = dr["NOOFSPCHAR"],
-                          NOOFNUMCHAR = dr["NOOFNUMCHAR"],
-                          MINPWDLENGTH = dr["MINPWDLENGTH"],
-                          MAXPWDLENGTH = dr["MAXPWDLENGTH"],
-                      }).FirstOrDefault();
+                                  select new
+                                  {
+                                      NOOFTXTCHAR = dr["NOOFTXTCHAR"],
+                                      NOOFLOWERCHAR = dr["NOOFLOWERCHAR"],
+                                      NOOFUPPERCHAR = dr["NOOFUPPERCHAR"],
+                                      NOOFSPCHAR = dr["NOOFSPCHAR"],
+                                      NOOFNUMCHAR = dr["NOOFNUMCHAR"],
+                                      MINPWDLENGTH = dr["MINPWDLENGTH"],
+                                      MAXPWDLENGTH = dr["MAXPWDLENGTH"],
+                                  }).FirstOrDefault();
             if (ipsmart_policy != null)
             {
                 pass.NOOFTXTCHAR = ipsmart_policy.NOOFTXTCHAR.retInt();
@@ -464,7 +485,7 @@ namespace Improvar.Controllers
                 sql = "insert into pssw_invalid (user_id, password, login_date, user_ip, user_static_ip) values (";
                 sql += "'" + USERID + "','OTP',SYSDATE,'" + Cn.GetIp() + "','" + Cn.GetStaticIp() + "')";
                 masterHelp.SQLNonQuery(sql);
-                sql = "select count(*) treco from pssw_invalid where user_id='" + USERID + "' and password='OTP' and " ;
+                sql = "select count(*) treco from pssw_invalid where user_id='" + USERID + "' and password='OTP' and ";
                 sql += "to_char(login_date,'yyyy') = to_char(sysdate,'yyyy')";
                 DataTable tblpw = masterHelp.SQLquery(sql);
                 if (tblpw.Rows.Count > 0)
@@ -488,8 +509,8 @@ namespace Improvar.Controllers
                 if (string.IsNullOrEmpty(userdata.EMAIL))
                 {
                     msg += " Email ID No Not Found. ";
-                }           
-     
+                }
+
                 string body = "Hi " + userdata.USER_NAME + ",<br/><br/><b>" + otp + "</b> is your OTP for forgot password on IPSMART ERP. Do not share with anyone. <br/><br/><br/> Thanks and regards<br/> IPSMART TEAM <BR/>PH: 033-4602-1119";
                 if (EmailControl.SendEmailfromIpsmart(userdata.EMAIL, "Forgot Password", body, "") == true)
                 {
@@ -594,7 +615,7 @@ namespace Improvar.Controllers
                 {
                     ViewBag.FlagCS = "0";
                 }
-                ViewBag.Msg = msg;  
+                ViewBag.Msg = msg;
             }
             catch (Exception ex)
             {
@@ -603,5 +624,71 @@ namespace Improvar.Controllers
             }
             return View(Pass);
         }
+        public string LoginAddress(string Lat, string Lng)
+        {
+            string address = "";
+            if (Lat != null)
+            {
+                string url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + Lat + "," + Lng + "&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
+                string jsonstr = ConsumeAPI(url);
+
+                var data = JObject.Parse(jsonstr);
+                string status = data["status"].retStr();
+                if (status == "OK")
+                {
+                    address = data["results"][0]["formatted_address"].retStr();
+                }
+                else
+                {
+                    address = status;
+                }
+            }
+            return address;
+        }
+        public string ConsumeAPI(string url)
+        {
+            if (url == null) return "";
+            string resp = "", hdrString = "";
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                hdrString = url + System.Environment.NewLine;
+                using (HttpClient client = new HttpClient())
+                {
+                    response = client.GetAsync(url).GetAwaiter().GetResult(); //Make sure it is synchonrous  //   response = client.GetAsync(url).Result;                    
+                    resp = response.Content.ReadAsStringAsync().Result;//Make sure it is synchonrous
+                    int StatusCode = (int)response.StatusCode;
+                    Cn.SaveTextFile("Response: " + resp);
+                    if (StatusCode > 200)
+                    {
+                        return "{\"message\":\"" + ErrorAPI(resp).Replace("\"", "") + "\"}";
+                    }
+                    response.EnsureSuccessStatusCode();
+                    return resp;
+                }
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, resp);
+                return "{\"message\":\"" + ex.Message + "\"}";
+            }
+        }
+        private string ErrorAPI(string response)
+        {
+            string resp = "";
+            try
+            {
+                AdqrRespError adqrRespExtractInvoice = JsonConvert.DeserializeObject<AdqrRespError>(response);
+                if (adqrRespExtractInvoice != null)
+                {
+                    return adqrRespExtractInvoice.error_description;
+                }
+            }
+            catch
+            {
+            }
+            return resp;
+        }
+
     }
 }
