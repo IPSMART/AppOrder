@@ -233,12 +233,12 @@ namespace Improvar.Controllers
                         Response.Cookies["UserName"].Value = log.UserName.Trim();
                         Response.Cookies["Password"].Value = log.Password.Trim();
                         Response.Cookies["Rememberme"].Value = Convert.ToString(log.REMEMBERME);
-
+                        string sql = "";
                         //save login address
                         if (log.latitude.retStr() != "")
                         {
                             var currentaddress = LoginAddress(log.latitude, log.longitude);
-                            string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
+                            sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
                             sql += "VALUES('" + log.UserName + "','" + Module.Module_Code + "','" + session_no[1] + "',sysdate,'" + log.latitude + "-" + log.longitude + "','" + currentaddress + "','" + Cn.GetStaticIp() + "') ";
                             masterHelp.SQLNonQuery(sql);
                         }
@@ -249,7 +249,133 @@ namespace Improvar.Controllers
                         }
                         //end save login address
 
-                        return RedirectToAction("CompanySelection", "Home");
+                        //return RedirectToAction("CompanySelection", "Home");
+
+                        #region
+                        INI Handel_Ini = new INI();
+
+                        var comp_table = "SD_COMPANY";
+                        string COMPCD = Handel_Ini.IniReadValue("APPORDER", "COMPCD", Server.MapPath("~/Ipsmart.ini"));
+                        string LOCCD = Handel_Ini.IniReadValue("APPORDER", "LOCCD", Server.MapPath("~/Ipsmart.ini"));
+                        string SCHEMANM = Handel_Ini.IniReadValue("APPORDER", "SCHEMA", Server.MapPath("~/Ipsmart.ini"));
+                        string message = "";
+                        string Userid = log.UserName;
+                        CS = Cn.GetConnectionString();
+                        Cn.con = new OracleConnection(CS);
+                        String finyr = Handel_Ini.IniReadValue("APPORDER", "Fin_year", Server.MapPath("~/Ipsmart.ini"));
+                        string[] yr_frm = finyr.Split('-');
+                        int dataver = Convert.ToInt32(MyGlobal.Databaseversion);
+                        string FINAN = finyr;
+                        string[] FIN = FINAN.Split('-');
+                        //===== version check========
+                        Connection Cn1 = new Connection();
+                        Cn1.con = new OracleConnection(CS);
+                        if (Cn1.con.State == ConnectionState.Closed)
+                        {
+                            Cn1.con.Open();
+                        }
+                        sql = "";
+                        sql = "select distinct MODULE_CODE from " + comp_table + " where SCHEMA_NAME='" + SCHEMANM + "' ";
+                        if (COMPCD.retStr() != "") sql += "and COMPCD='" + COMPCD + "' ";
+                        if (LOCCD.retStr() != "") sql += "and LOCCD='" + LOCCD + "' ";
+                        if (FIN[0].Trim().retStr() != "") sql += "and  FROM_DATE=to_date('" + FIN[0].Trim() + "','dd/mm/yyyy') ";
+                        if (FIN[0].Trim().retStr() != "" && FIN[1].Trim().retStr() != "") sql += "and UPTO_DATE=to_date('" + FIN[1].Trim() + "','dd/mm/yyyy')";
+                        DataTable tbl = masterHelp.SQLquery(sql);
+                        Session.Add("ModuleCode", tbl.Rows[0]["module_code"].ToString());
+
+
+                        string sstr = "select distinct SCHEMA_NAME,sales_schema,fin_schema,invENTORY_schema,pay_schema,compnm,locnm,DATA_VERSION,CLIENT_CODE,YEAR_CODE,import_tag,mirror_tag, prev_schema, next_schema,COMPCD,LOCCD,TO_CHAR(from_date,'DD/MM/YYYY') ||' - '|| TO_CHAR(upto_date,'DD/MM/YYYY') as FINYR ";
+                        sstr += "from " + comp_table + " where SCHEMA_NAME='" + SCHEMANM + "' ";
+                        if (COMPCD.retStr() != "") sstr += "and COMPCD = '" + COMPCD + "' ";
+                        if (LOCCD.retStr() != "") sstr += "and LOCCD = '" + LOCCD + "'  ";
+                        if (FIN[0].Trim().retStr() != "") sstr += "and FROM_DATE = to_date('" + FIN[0].ToString() + "', 'dd/mm/yyyy')  ";
+                        if (FIN[0].Trim().retStr() != "" && FIN[1].Trim().retStr() != "") sstr += "and UPTO_DATE = to_date('" + FIN[1].ToString() + "', 'dd/mm/yyyy')";
+
+                        tbl = masterHelp.SQLquery(sstr);
+                        int version = Convert.ToInt32(WebConfigurationManager.AppSettings["Version"]);
+                        string SESSIONNO = Session["Session_No"].retStr();
+                        string YRCD = tbl.Rows[0]["YEAR_CODE"].ToString();
+                        COMPCD = tbl.Rows[0]["COMPCD"].ToString();
+                        LOCCD = tbl.Rows[0]["LOCCD"].ToString();
+                        finyr = tbl.Rows[0]["FINYR"].ToString();
+
+                        string UNIQUESESSION = COMPCD + LOCCD + YRCD + SESSIONNO;
+                        Session.Add("DatabaseSchemaName" + UNIQUESESSION, tbl.Rows[0]["SCHEMA_NAME"].ToString());
+                        Session.Add("DatabaseSchemaName", tbl.Rows[0]["SCHEMA_NAME"].ToString());
+                        string DatabaseSchemaName = tbl.Rows[0]["SCHEMA_NAME"].ToString();
+                        Session.Add("CompanyName", tbl.Rows[0]["COMPNM"].ToString());
+                        Session.Add("CompanyName" + UNIQUESESSION, tbl.Rows[0]["COMPNM"].ToString());
+                        Session.Add("CompanyLocation", tbl.Rows[0]["LOCNM"].ToString());
+                        Session.Add("CompanyLocation" + UNIQUESESSION, tbl.Rows[0]["LOCNM"].ToString());
+                        Session.Add("CompanyFinancial" + UNIQUESESSION, finyr);
+                        Session.Add("CompanyFinancial", finyr);
+                        Session.Add("SDSCHEMA" + UNIQUESESSION, tbl.Rows[0]["sales_schema"].ToString());
+                        Session.Add("SDSCHEMA", tbl.Rows[0]["sales_schema"].ToString());
+                        Session.Add("PAYSCHEMA" + UNIQUESESSION, tbl.Rows[0]["pay_schema"].ToString());
+                        Session.Add("PAYSCHEMA", tbl.Rows[0]["pay_schema"].ToString());
+                        Session.Add("INVSCHEMA" + UNIQUESESSION, tbl.Rows[0]["invENTORY_schema"].ToString());
+                        Session.Add("INVSCHEMA", tbl.Rows[0]["invENTORY_schema"].ToString());
+                        Session.Add("FINSCHEMA" + UNIQUESESSION, tbl.Rows[0]["fin_schema"].ToString());
+                        Session.Add("FINSCHEMA", tbl.Rows[0]["fin_schema"].ToString());
+                        Session.Add("LastYearSchema" + UNIQUESESSION, tbl.Rows[0]["PREV_SCHEMA"].ToString());
+                        Session.Add("LastYearSchema", tbl.Rows[0]["PREV_SCHEMA"].ToString());
+                        Session.Add("NEXTSCHEMA" + UNIQUESESSION, tbl.Rows[0]["NEXT_SCHEMA"].ToString());
+                        Session.Add("NEXTSCHEMA", tbl.Rows[0]["NEXT_SCHEMA"].ToString());
+                        int dataversion = Convert.ToInt32(tbl.Rows[0]["DATA_VERSION"]);
+                        Session.Add("CompanyLocationCode" + UNIQUESESSION, LOCCD);
+                        Session.Add("CompanyLocationCode", LOCCD);
+                        Session.Add("CompanyCode" + UNIQUESESSION, COMPCD);
+                        Session.Add("CompanyCode", COMPCD);
+
+                        Session.Add("CLIENT_CODE" + UNIQUESESSION, tbl.Rows[0]["CLIENT_CODE"].ToString());
+                        Session.Add("CLIENT_CODE", tbl.Rows[0]["CLIENT_CODE"].ToString());
+                        Session.Add("YEAR_CODE" + UNIQUESESSION, tbl.Rows[0]["YEAR_CODE"].ToString());
+                        Session.Add("YEAR_CODE", tbl.Rows[0]["YEAR_CODE"].ToString());
+                        Session.Add("IMPORT_TAG", tbl.Rows[0]["IMPORT_TAG"].ToString());
+                        Session.Add("MIRROR_TAG", tbl.Rows[0]["MIRROR_TAG"].ToString());
+                        sql = "";
+                        sql = "select GSTNO, nvl(showloccd,loccd) showloccd from " + tbl.Rows[0]["fin_schema"].ToString() + ".M_loca a where loccd='" + LOCCD + "' and compcd='" + COMPCD + "'";
+                        var dt1 = masterHelp.SQLquery(sql);
+                        if (dt1.Rows.Count > 0)
+                        {
+                            Session.Add("GSTNO" + UNIQUESESSION, dt1.Rows[0]["GSTNO"].ToString());
+                            Session.Add("GSTNO", dt1.Rows[0]["GSTNO"].ToString());
+                            Session.Add("SHOWLOCCD" + UNIQUESESSION, dt1.Rows[0]["showloccd"].ToString());
+                            Session.Add("SHOWLOCCD", dt1.Rows[0]["showloccd"].ToString());
+                        }
+
+                        switch (Module.MODULE)
+                        {
+                            case "FINANCE":
+                                Session.Add("MotherMenuIdentifier", "FAIMPROVAR");
+                                break;
+                            case "SALES":
+                                Session.Add("MotherMenuIdentifier", "SDIMPROVAR");
+                                break;
+                            case "PAYROLL":
+                                Session.Add("MotherMenuIdentifier", "PAYIMPROVAR");
+                                break;
+                            case "INVENTORY":
+                                Session.Add("MotherMenuIdentifier", "INVIMPROVAR");
+                                break;
+                        }
+                        Session.Add("ModuleNAME", CommVar.ModuleCode());
+
+                        sql = "select listagg('a.'||a.column_name,', ') within group(order by a.COLUMN_ID) colnm from all_tab_cols a ";
+                        sql += "where table_name = 'M_SYSCNFG' and owner = '" + DatabaseSchemaName + "'";
+                        DataTable rstmp = masterHelp.SQLquery(sql);
+                        if (rstmp.Rows.Count > 0 && rstmp.Rows[0]["colnm"].retStr() != "")
+                        {
+                            sql = "";
+                            sql = "select " + rstmp.Rows[0]["colnm"] + " from " + DatabaseSchemaName + ".m_syscnfg a";
+                            rstmp = masterHelp.SQLquery(sql);
+
+                            Session.Add("M_SYSCNFG", rstmp);
+                        }
+                        Response.BufferOutput = true;
+                        return RedirectToAction("M_GrpMast", "M_GrpMast", new { US = Cn.Encrypt_URL(UNIQUESESSION) });
+
+                        #endregion
                     }
                 }
                 else if (outp == "2")

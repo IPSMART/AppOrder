@@ -32,9 +32,75 @@ namespace Improvar.Controllers
                 }
                 else
                 {
-
-                    ViewBag.formname = "M_GrpMast";
+                    ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
+                    ViewBag.formname = "ORDER TAKEN FROM RETAILER";
+                    ViewBag.Title = "Order";
                     VE.UNQSNO_ENCRYPTED = Cn.Encrypt_URL(UNQSNO);
+
+                    string GCS = Cn.GCS();
+                    string[] linkcd = { "D", "A" };
+
+                    string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
+                    DataTable tbl = new DataTable();
+                    string sql = "";
+                    sql = "select distinct a.slcd, a.slnm,nvl(a.SLAREA,a.DISTRICT)SLAREA ";
+                    sql += "from " + scmf + ".M_SUBLEG a, " + scmf + ".m_cntrl_hdr b, " + scmf + ".M_SUBLEG_LINK c ";
+                    sql += "where a.m_autono=b.m_autono(+) and a.slcd=c.slcd(+) and c.LINKCD in ('D','A')  ";
+                    sql += "and nvl(b.inactive_tag,'N')='N' ";
+                    sql += "order by slnm ";
+                    tbl = masterHelp.SQLquery(sql);
+
+                    VE.ListDistributor = (from DataRow a in tbl.Rows
+                                          select new ListDistributor()
+                                          {
+                                              value = a["SLCD"].retStr(),
+                                              text = a["SLNM"].retStr() + GCS + a["SLAREA"].retStr(),
+                                          }).ToList();
+                    VE.ListRetailer = new List<ListRetailer>();
+
+                    sql = "select distinct a.BRANDCD, a.BRANDNM ";
+                    sql += "from " + scm + ".M_BRAND a, " + scm + ".m_cntrl_hdr b ";
+                    sql += "where a.m_autono=b.m_autono(+)  ";
+                    sql += "and nvl(b.inactive_tag,'N')='N' ";
+                    sql += "order by BRANDNM ";
+                    tbl = masterHelp.SQLquery(sql);
+
+                    VE.ListBrand = (from DataRow a in tbl.Rows
+                                          select new ListBrand()
+                                          {
+                                              value = a["BRANDCD"].retStr(),
+                                              text = a["BRANDNM"].retStr(),
+                                          }).ToList();
+
+
+                    sql = "select distinct a.ITGRPCD, a.ITGRPNM ";
+                    sql += "from " + scm + ".M_GROUP a, " + scm + ".m_cntrl_hdr b ";
+                    sql += "where a.m_autono=b.m_autono(+)  ";
+                    sql += "and nvl(b.inactive_tag,'N')='N' ";
+                    sql += "order by ITGRPNM ";
+                    tbl = masterHelp.SQLquery(sql);
+
+                    VE.ListGroup = (from DataRow a in tbl.Rows
+                                    select new ListGroup()
+                                    {
+                                        value = a["ITGRPCD"].retStr(),
+                                        text = a["ITGRPNM"].retStr(),
+                                    }).ToList();
+
+                    sql = "select distinct a.COLLCD, a.COLLNM ";
+                    sql += "from " + scm + ".M_COLLECTION a, " + scm + ".m_cntrl_hdr b ";
+                    sql += "where a.m_autono=b.m_autono(+)  ";
+                    sql += "and nvl(b.inactive_tag,'N')='N' ";
+                    sql += "order by COLLNM ";
+                    tbl = masterHelp.SQLquery(sql);
+
+                    VE.ListCollection = (from DataRow a in tbl.Rows
+                                    select new ListCollection()
+                                    {
+                                        value = a["COLLCD"].retStr(),
+                                        text = a["COLLNM"].retStr(),
+                                    }).ToList();
+
                     //string brand = "CHOC";// "REVO";
                     //string scm = CommVar.CurSchema(UNQSNO);
                     //string fscm = CommVar.FinSchema(UNQSNO);
@@ -75,7 +141,7 @@ namespace Improvar.Controllers
                     //VE.ImageView = ImageViewlst;
                     //ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
                     //   GetUploadImage(string schema, long AutoNO)
-
+                    VE.DefaultView = true;
                     return View(VE);
 
                 }
@@ -118,7 +184,7 @@ namespace Improvar.Controllers
                                    Dstbrslcd = dr["DSTBRSLCD"].ToString(),
                                    Dstbrslnm = dr["DSTBRSLnm"].ToString(),
                                }).Take(5).ToList();
-                
+
             }
             catch (Exception ex)
             {
@@ -306,141 +372,192 @@ namespace Improvar.Controllers
             }
             return null;
         }
-        public ActionResult GetBrandDetails(VMRetailOrder VE)
+        //public ActionResult GetBrandDetails(VMRetailOrder VE)
+        //{
+        //    string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
+        //    string sql = "";
+
+        //    string BrandCode = VE.BrandCode.retStr().ToUpper().Trim();
+        //    string BrandName = VE.BrandName.retStr().ToUpper().Trim();
+
+        //    sql = "";
+        //    sql += "select distinct a.BRANDCD,a.BRANDNM ";
+        //    sql += "from " + scm + ".M_BRAND a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
+        //    sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
+        //    if (BrandCode.retStr() != "") sql += "and  upper(a.BRANDCD) LIKE '%" + BrandCode + "%'  ";
+        //    if (BrandName.retStr() != "") sql += "and  upper(a.BRANDNM) LIKE '%" + BrandName + "%' ";
+        //    sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
+        //    sql += "nvl(c.inactive_tag,'N') = 'N' ";
+        //    sql += "order by BRANDNM,BRANDCD";
+        //    DataTable tbl = masterHelp.SQLquery(sql);
+        //    if (tbl.Rows.Count > 1)
+        //    {
+        //        System.Text.StringBuilder SB = new System.Text.StringBuilder();
+        //        for (int i = 0; i <= tbl.Rows.Count - 1; i++)
+        //        {
+        //            SB.Append("<tr><td>" + tbl.Rows[i]["BRANDNM"] + "</td><td>" + tbl.Rows[i]["BRANDCD"] + " </td></tr>");
+        //        }
+        //        var hdr = "Brand Name" + Cn.GCS() + "Brand Code";
+        //        return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
+
+        //    }
+        //    else
+        //    {
+        //        if (tbl.Rows.Count > 0)
+        //        {
+        //            string str = masterHelp.ToReturnFieldValues("", tbl);
+        //            return Content(str);
+        //        }
+        //        else
+        //        {
+        //            return Content("Invalid Brand Code ! Please Enter a Valid Brand Code !!");
+        //        }
+        //    }
+        //}
+
+        //public ActionResult GetGrpDetails(VMRetailOrder VE)
+        //{
+        //    string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
+        //    string sql = "";
+
+        //    string GroupCode = VE.GroupCode.retStr().ToUpper().Trim();
+        //    string GroupName = VE.GroupName.retStr().ToUpper().Trim();
+
+        //    sql = "";
+        //    sql += "select distinct a.ITGRPCD,a.ITGRPNM ";
+        //    sql += "from " + scm + ".M_GROUP a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
+        //    sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
+        //    if (GroupCode.retStr() != "") sql += "and  upper(a.ITGRPCD) LIKE '%" + GroupCode + "%'  ";
+        //    if (GroupName.retStr() != "") sql += "and  upper(a.ITGRPNM) LIKE '%" + GroupName + "%' ";
+        //    sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
+        //    sql += "nvl(c.inactive_tag,'N') = 'N' ";
+        //    sql += "order by ITGRPNM,ITGRPCD";
+        //    DataTable tbl = masterHelp.SQLquery(sql);
+        //    if (tbl.Rows.Count > 1)
+        //    {
+        //        System.Text.StringBuilder SB = new System.Text.StringBuilder();
+        //        for (int i = 0; i <= tbl.Rows.Count - 1; i++)
+        //        {
+        //            SB.Append("<tr><td>" + tbl.Rows[i]["ITGRPNM"] + "</td><td>" + tbl.Rows[i]["ITGRPCD"] + " </td></tr>");
+        //        }
+        //        var hdr = "Group Name" + Cn.GCS() + "Group Code";
+        //        return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
+
+        //    }
+        //    else
+        //    {
+        //        if (tbl.Rows.Count > 0)
+        //        {
+        //            string str = masterHelp.ToReturnFieldValues("", tbl);
+        //            return Content(str);
+        //        }
+        //        else
+        //        {
+        //            return Content("Invalid Group Code ! Please Enter a Valid Group Code !!");
+        //        }
+        //    }
+        //}
+        //public ActionResult GetItem(VMRetailOrder VE)
+        //{
+        //    try
+        //    {
+        //        string brand = VE.BrandCode;
+        //        string scm = CommVar.CurSchema(UNQSNO);
+        //        string fscm = CommVar.FinSchema(UNQSNO);
+        //        string comp = CommVar.Compcd(UNQSNO);
+        //        string loc = CommVar.Loccd(UNQSNO);
+        //        string doccd = "";
+
+        //        string sql = "";
+        //        sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
+        //        sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
+        //        sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + brand + "'";
+        //        sql += " group by  a.m_autono,a.itcd,a.styleno";
+
+
+        //        var dt = masterHelp.SQLquery(sql);
+        //        List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            ImageView objImageView = new ImageView();
+        //            objImageView.ITCD = dr["ITCD"].ToString();
+        //            objImageView.Desc = dr["styleno"].ToString();
+        //            objImageView.SIZES = dr["sizes"].ToString();
+        //            //objImageView.Desc = dr["desc"].ToString();
+        //            var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
+        //            if (img.Count > 0)
+        //            {
+        //                var DBImgString = img[0].DOC_FILE;
+        //                var ImageName = img[0].DOC_FILE_NAME;
+        //                var extension = Path.GetExtension(ImageName);
+        //                string filename = objImageView.ITCD + "_0" + extension;
+        //                var folderpath = CommVar.LocalUploadDocPath(filename);
+        //                var link = Cn.SaveImage(DBImgString, folderpath);
+        //                var path = CommVar.WebUploadDocURL(filename);
+        //                objImageView.Url = path;
+        //                ImageViewlst.Add(objImageView);
+        //            }
+        //        }
+        //        VE.ImageView = ImageViewlst;
+        //        return PartialView("_M_GrpMast_Main", VE);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Cn.SaveException(ex, "");
+        //        return Content(ex.Message + ex.InnerException);
+        //    }
+        //}
+        public JsonResult BindRetailerData(string Distributor)
         {
-            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
-            string sql = "";
-           
-            string BrandCode = VE.BrandCode.retStr().ToUpper().Trim();
-            string BrandName = VE.BrandName.retStr().ToUpper().Trim();
-            
-            sql = "";
-            sql += "select distinct a.BRANDCD,a.BRANDNM ";
-            sql += "from " + scm + ".M_BRAND a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
-            sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
-            if (BrandCode.retStr() != "") sql += "and  upper(a.BRANDCD) LIKE '%" + BrandCode + "%'  ";
-            if (BrandName.retStr() != "") sql += "and  upper(a.BRANDNM) LIKE '%" + BrandName + "%' ";
-            sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
-            sql += "nvl(c.inactive_tag,'N') = 'N' ";
-            sql += "order by BRANDNM,BRANDCD";
-            DataTable tbl = masterHelp.SQLquery(sql);
-            if (tbl.Rows.Count > 1)
-            {
-                System.Text.StringBuilder SB = new System.Text.StringBuilder();
-                for (int i = 0; i <= tbl.Rows.Count - 1; i++)
-                {
-                    SB.Append("<tr><td>" + tbl.Rows[i]["BRANDNM"] + "</td><td>" + tbl.Rows[i]["BRANDCD"] + " </td></tr>");
-                }
-                var hdr = "Brand Name" + Cn.GCS() + "Brand Code";
-                return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
-
-            }
-            else
-            {
-                if (tbl.Rows.Count > 0)
-                {
-                    string str = masterHelp.ToReturnFieldValues("", tbl);
-                    return Content(str);
-                }
-                else
-                {
-                    return Content("Invalid Brand Code ! Please Enter a Valid Brand Code !!");
-                }
-            }
-        }
-
-        public ActionResult GetGrpDetails(VMRetailOrder VE)
-        {
-            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
-            string sql = "";
-
-            string GroupCode = VE.GroupCode.retStr().ToUpper().Trim();
-            string GroupName = VE.GroupName.retStr().ToUpper().Trim();
-
-            sql = "";
-            sql += "select distinct a.ITGRPCD,a.ITGRPNM ";
-            sql += "from " + scm + ".M_GROUP a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
-            sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
-            if (GroupCode.retStr() != "") sql += "and  upper(a.ITGRPCD) LIKE '%" + GroupCode + "%'  ";
-            if (GroupName.retStr() != "") sql += "and  upper(a.ITGRPNM) LIKE '%" + GroupName + "%' ";
-            sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
-            sql += "nvl(c.inactive_tag,'N') = 'N' ";
-            sql += "order by ITGRPNM,ITGRPCD";
-            DataTable tbl = masterHelp.SQLquery(sql);
-            if (tbl.Rows.Count > 1)
-            {
-                System.Text.StringBuilder SB = new System.Text.StringBuilder();
-                for (int i = 0; i <= tbl.Rows.Count - 1; i++)
-                {
-                    SB.Append("<tr><td>" + tbl.Rows[i]["ITGRPNM"] + "</td><td>" + tbl.Rows[i]["ITGRPCD"] + " </td></tr>");
-                }
-                var hdr = "Group Name" + Cn.GCS() + "Group Code";
-                return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
-
-            }
-            else
-            {
-                if (tbl.Rows.Count > 0)
-                {
-                    string str = masterHelp.ToReturnFieldValues("", tbl);
-                    return Content(str);
-                }
-                else
-                {
-                    return Content("Invalid Group Code ! Please Enter a Valid Group Code !!");
-                }
-            }
-        }
-        public ActionResult GetItem(VMRetailOrder VE)
-        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
             try
             {
-                string brand = VE.BrandCode;
-                string scm = CommVar.CurSchema(UNQSNO);
-                string fscm = CommVar.FinSchema(UNQSNO);
-                string comp = CommVar.Compcd(UNQSNO);
-                string loc = CommVar.Loccd(UNQSNO);
-                string doccd = "";
+                VMRetailOrder VE = new VMRetailOrder();
+                string GCS = Cn.GCS();
 
+                string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
                 string sql = "";
-                sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
-                sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
-                sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + brand + "'";
-                sql += " group by  a.m_autono,a.itcd,a.styleno";
+                sql = "select distinct a.RTLCD, a.RTLNM,a.LANDMARK ";
+                sql += "from " + scm + ".M_RETAIL a, " + scm + ".m_cntrl_hdr b, " + scm + ".M_RETAIL_LINK c ";
+                sql += "where a.m_autono=b.m_autono(+) and a.RTLCD=c.RTLCD(+) and c.slcd ='" + Distributor + "' ";
+                sql += "and nvl(b.inactive_tag,'N')='N' ";
+                sql += "order by RTLNM ";
+                DataTable tbl = masterHelp.SQLquery(sql);
 
+                VE.ListRetailer = (from DataRow a in tbl.Rows
+                                   select new ListRetailer()
+                                   {
+                                       value = a["RTLCD"].retStr(),
+                                       text = a["RTLNM"].retStr() + GCS + a["LANDMARK"].retStr(),
+                                   }).ToList();
 
-                var dt = masterHelp.SQLquery(sql);
-                List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
-                foreach (DataRow dr in dt.Rows)
-                {
-                    ImageView objImageView = new ImageView();
-                    objImageView.ITCD = dr["ITCD"].ToString();
-                    objImageView.Desc = dr["styleno"].ToString();
-                    objImageView.SIZES = dr["sizes"].ToString();
-                    //objImageView.Desc = dr["desc"].ToString();
-                    var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
-                    if (img.Count > 0)
-                    {
-                        var DBImgString = img[0].DOC_FILE;
-                        var ImageName = img[0].DOC_FILE_NAME;
-                        var extension = Path.GetExtension(ImageName);
-                        string filename = objImageView.ITCD + "_0" + extension;
-                        var folderpath = CommVar.LocalUploadDocPath(filename);
-                        var link = Cn.SaveImage(DBImgString, folderpath);
-                        var path = CommVar.WebUploadDocURL(filename);
-                        objImageView.Url = path;
-                        ImageViewlst.Add(objImageView);
-                    }
-                }
-                VE.ImageView = ImageViewlst;
-                return PartialView("_M_GrpMast_Main", VE);
+                ModelState.Clear();
+                return Json(VE.ListRetailer, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
+                dic.Add("message", ex.Message + ex.InnerException);
                 Cn.SaveException(ex, "");
-                return Content(ex.Message + ex.InnerException);
             }
+            return Json(dic, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GetItem(VMRetailOrder TSP)
+        {
+            TransactionRetailOrder ind = new TransactionRetailOrder();
+            ind.Dstbrslcd = TSP.Dstbrslcd;
+            ind.RetailerCode = TSP.RetailerCode;
+            ind.BrandCode = TSP.BrandCode;
+            ind.GroupCode = TSP.GroupCode;
+            ind.CollCode = TSP.CollCode;
+
+            if (TempData["printparameter"] != null)
+            {
+                TempData.Remove("printparameter");
+            }
+            TempData["printparameter"] = ind;
+            return Content("");
+        }
+
 
     }
 }

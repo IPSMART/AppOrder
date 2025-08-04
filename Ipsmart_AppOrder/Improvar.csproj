@@ -308,6 +308,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MultiviewerController.cs" />
     <Compile Include="Controllers\RPTViewerController.cs" />
+    <Compile Include="Controllers\T_RetailerOrderController.cs" />
     <Compile Include="Controllers\UserRightsController.cs" />
     <Compile Include="Controllers\User_GuideController.cs" />
     <Compile Include="DataTableToList.cs" />
@@ -472,6 +473,7 @@
     <Compile Include="ViewModels\RetailOutletEntry.cs" />
     <Compile Include="ViewModels\SDRQueryReport.cs" />
     <Compile Include="ViewModels\SubLedgerEntry.cs" />
+    <Compile Include="ViewModels\TransactionRetailOrder.cs" />
     <Compile Include="ViewModels\UOMMasterEntry.cs" />
     <Compile Include="ViewModels\UserGroupLinkDetails.cs" />
     <Compile Include="ViewModels\UserGuideImprovar.cs" />
@@ -536,6 +538,7 @@
     <Content Include="Content\MyTree.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Print-A4-Portrait.css" />
+    <Content Include="Content\select2.min.css" />
     <Content Include="Content\swiper-bundle.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -755,6 +758,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\swiper-bundle.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Templates\Email\OSReminder.htm" />
@@ -848,6 +852,8 @@
     <Content Include="Views\M_GrpMast\M_GrpMast.cshtml" />
     <Content Include="Views\M_RetailOutlet\M_RetailOutlet.cshtml" />
     <Content Include="Views\Shared\_M_GrpMast_Main.cshtml" />
+    <Content Include="Views\Shared\_LayoutAppOrder.cshtml" />
+    <Content Include="Views\T_RetailerOrder\T_RetailerOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

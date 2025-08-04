@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Improvar.ViewModels
 {
-    public class VMRetailOrder : Permission
+    public class TransactionRetailOrder : Permission
     {
         public List<ImageView> ImageView { get; set; }
         public bool Checked { get; set; }
@@ -33,50 +33,6 @@ namespace Improvar.ViewModels
         public string GroupCode { get; set; }
         public string GroupName { get; set; }
         public string CollCode { get; set; }
-        public List<ListDistributor> ListDistributor { get; set; }
-        public List<ListRetailer> ListRetailer { get; set; }
-        public List<ListBrand> ListBrand { get; set; }
-        public List<ListGroup> ListGroup { get; set; }
-        public List<ListCollection> ListCollection { get; set; }
-
-    }
-
-    public class ImageView
-    {
-        public string Url { get; set; }
-        public string Desc { get; set; }
-        public string ITCD { get; set; }
-        public string SIZES { get; set; }
-    }
-
-    public class APP_ITEMLIST
-    {
-        public string itcd { get; set; }
-        public string sizes { get; set; }
-    }
-    public class ListDistributor
-    {
-        public string text { get; set; }
-        public string value { get; set; }
-    }
-    public class ListRetailer
-    {
-        public string text { get; set; }
-        public string value { get; set; }
-    }
-    public class ListBrand
-    {
-        public string text { get; set; }
-        public string value { get; set; }
-    }
-    public class ListGroup
-    {
-        public string text { get; set; }
-        public string value { get; set; }
-    }
-    public class ListCollection
-    {
-        public string text { get; set; }
-        public string value { get; set; }
+  
     }
 }
