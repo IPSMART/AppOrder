@@ -931,7 +931,7 @@ namespace Improvar
             return MCH;
         }
 
-        public Models.T_CNTRL_HDR T_CONTROL_HDR(string DCODE, DateTime? DDATE, string DNO, string Auto_Number, string MCODE, string DPATTERN, string ACTION, string DATABASE, string glcd, string slcd, double docamt, string calauto, string yrcd="")
+        public Models.T_CNTRL_HDR T_CONTROL_HDR(string DCODE, DateTime? DDATE, string DNO, string Auto_Number, string MCODE, string DPATTERN, string ACTION, string DATABASE, string glcd, string slcd, double docamt, string calauto, string yrcd = "")
         {
             var UNQSNO = getQueryStringUNQSNO();
             Improvar.Models.ImprovarDB DB = new Models.ImprovarDB(GetConnectionString(), DATABASE);
@@ -2022,7 +2022,7 @@ namespace Improvar
             //=============================================end cheking===================================================
             return ViewClass;
         }
-    
+
         public string dateRangeForMonthlyDoc_Type(object ViewClass, string doccd, string docdt = "")
         {
             MasterHelp masterHelp = new MasterHelp();
@@ -3095,7 +3095,7 @@ namespace Improvar
             }
             return retval;
         }
-        public string MaxDocNumber(string doc_cd, string doc_date, string YR_CD = "")
+        public string MaxDocNumber(string doc_date, string YR_CD = "")
         {
             MasterHelp masterHelp = new MasterHelp();
             var UNQSNO = getQueryStringUNQSNO();
@@ -3107,67 +3107,35 @@ namespace Improvar
             if (YR_CD == "") yrcd = CommVar.YearCode(UNQSNO); else yrcd = YR_CD;
             string sql = "", scm = CommVar.CurSchema(UNQSNO);
 
-            sql += "select nvl(b.maxdocno,0) maxdocno from ";
-            sql += "(select a.docjnrl, a.doccd, (case a.docjnrl when 'M' then nvl(b.mnthcd,a.mnthcd) else a.mnthcd end) mnthcd from ";
-            sql += "(select a.docjnrl, a.doccd, ";
-            sql += "(case a.docjnrl when 'D' then '" + date_code + "' when 'M' then '" + month_code + "' else '0000' end ) mnthcd ";
-            sql += "from " + scm + ".m_doctype a where a.doccd='" + doc_cd + "' ) a, ";
-
-            sql += "(select max(a.mnthcd) mnthcd ";
-            sql += "from " + scm + ".m_month a where to_date('" + doc_date.retDateStr() + "','dd/mm/yyyy') between a.sdate and a.edate ) b ";
-            sql += ") a, ";
-
+            sql = "select nvl(a.maxdocno,0) maxdocno from ";         
             sql += "( select a.mnthcd, max(a.vchrno) maxdocno ";
-            sql += "from " + scm + ".t_cntrl_hdr a ";
-            sql += "where a.doccd='" + doc_cd + "' and ";
-            sql += "a.compcd='" + CommVar.Compcd(UNQSNO) + "' and a.loccd='" + CommVar.Loccd(UNQSNO) + "' and a.yr_cd='" + yrcd + "' ";
-            sql += "group by a.mnthcd) b ";
+            sql += "from " + scm + ".T_RETAILORDER a ";
+            sql += "where a.mnthcd='"+ month_code + "'";
+            //sql += "a.compcd='" + CommVar.Compcd(UNQSNO) + "' and a.loccd='" + CommVar.Loccd(UNQSNO) + "' and a.yr_cd='" + yrcd + "' ";
+            sql += "group by a.mnthcd) a ";
 
-            sql += "where a.mnthcd=b.mnthcd(+) ";
 
             DataTable tbl = masterHelp.SQLquery(sql);
-
-            string DOCNO = Convert.ToString(Convert.ToDouble(tbl.Rows[0]["maxdocno"]) + 1).PadLeft(6, '0');
+            string maxdocno = "0";
+            if(tbl != null && tbl.Rows.Count > 0)
+            {
+                maxdocno = tbl.Rows[0]["maxdocno"].retStr();
+            }
+            string DOCNO = Convert.ToString(Convert.ToDouble(maxdocno) + 1).PadLeft(6, '0') + GCS() + month_code;
             return DOCNO;
         }
-        public string DocPattern(long docno, string doc_type_code, string schema, string FIN_SCHEMAS, string docdt = "", string docpara = "")
+        public string DocPattern(double docno, string mnthcd)
         {
-            MasterHelp masterHelp = new MasterHelp();
             var UNQSNO = getQueryStringUNQSNO();
-            Improvar.Models.ImprovarDB DB = new Models.ImprovarDB(GetConnectionString(), schema);
-            M_DOCTYPE MD = DB.M_DOCTYPE.Find(doc_type_code);
-            string[] pattern = new[] { "&comprefix&", "&locprefix&", "&docprefix&", "&mm&-&docno&", "&mmm&", "&docno&", "&yy&", "&finyr&", "&finyrs&", "&finyrf&", "&docpara&" };
-            string newPattern = MD.DOCNOPATTERN;
-            string docno1 = "";
-            DateTime ddate;
-            if (docdt == "") ddate = DateTime.Now; else ddate = Convert.ToDateTime(docdt);
 
-            if (MD.DOCNOWOZERO == "N")
-            {
-                docno1 = docno.ToString().PadLeft(Convert.ToInt16(MD.DOCNOMAXLENGTH), '0');
-            }
-            else
-            {
-                docno1 = docno.ToString();
-            }
             string[] dfinyr = CommVar.FinPeriod(UNQSNO).Split('-');
-            string finyr = "", finyrs = "", yy = "";
+            string finyr = "", yy = "";
             yy = dfinyr[0].ToString().Trim().Substring(8);
             if (yy == dfinyr[1].ToString().Trim().Substring(8)) finyr = yy;
             else finyr = yy + "-" + dfinyr[1].ToString().Trim().Substring(8);
-            finyrs = finyr.Replace("-", "");
-            string finyrf = dfinyr[0].ToString().Trim().Substring(6) + "-" + yy;
-            Improvar.Models.ImprovarDB DB1 = new Models.ImprovarDB(GetConnectionString(), FIN_SCHEMAS);
-            M_LOCA MLOCA = DB1.M_LOCA.Find(CommVar.Loccd(UNQSNO), CommVar.Compcd(UNQSNO));
-            string[] pattern1 = new[] { CommVar.Compcd(UNQSNO), MLOCA.LOCA_CODE, MD.DOCPRFX, ddate.Month.ToString().PadLeft(2, '0') + "-" + docno1.ToString(), CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(ddate.Month), docno1.ToString(), yy, finyr, finyrs, finyrf, docpara };
-            for (int i = 0; i <= pattern.Length - 1; i++)
-            {
-                int index = newPattern.IndexOf(pattern[i]);
-                if (index >= 0)
-                {
-                    newPattern = newPattern.Replace(pattern[i], pattern1[i]);
-                }
-            }
+
+            string newPattern = "HP/" + mnthcd + "/" + docno + "/" + finyr;
+
             return newPattern;
         }
 

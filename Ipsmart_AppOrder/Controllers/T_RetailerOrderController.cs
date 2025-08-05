@@ -80,7 +80,7 @@ namespace Improvar.Controllers
                     List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
                     foreach (DataRow dr in dt.Rows)
                     {
-                      
+
                         var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
                         if (img.Count > 0)
                         {
@@ -122,41 +122,41 @@ namespace Improvar.Controllers
             }
         }
 
-        public JsonResult GetRetailerInfo(string RetailerName, string RetailerPin, string RetailerGstno, string RetailerCity)
-        {
-            List<TransactionRetailOrder> retlOrdrlst = new List<TransactionRetailOrder>();
-            try
-            {
-                string LOC = CommVar.Loccd(UNQSNO), COM = CommVar.Compcd(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), yrcd = CommVar.YearCode(UNQSNO);
-                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
-                sql = "";
-                sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO,a.DSTBRSLCD,b.slnm DSTBRSLnm  from  " + scm + ".M_RetailOutlet a, " + scmf + ".m_subleg b " + Environment.NewLine;
-                sql += "where  A.DSTBRSLCD=b.slcd " + Environment.NewLine;
-                if (RetailerName.retStr() != "") sql += " and upper(RETLRNM) like '%" + RetailerName.retStr().ToUpper() + "%' ";
-                if (RetailerPin.retStr() != "") sql += "and RETLRPIN like '%" + RetailerPin.retStr() + "%' ";
-                if (RetailerGstno.retStr() != "") sql += "and upper(RETLRGSTNO) like '%" + RetailerGstno.retStr().ToUpper() + "%' ";
-                if (RetailerCity.retStr() != "") sql += "and upper(RETLRCITY) like '%" + RetailerCity.retStr().ToUpper() + "%' ";
-                var txndt = masterHelp.SQLquery(sql);
-                retlOrdrlst = (from DataRow dr in txndt.Rows
-                               select new TransactionRetailOrder
-                               {
-                                   RetailerCode = dr["RETLRCD"].ToString(),
-                                   RetailerGstno = dr["RETLRGSTNO"].ToString(),
-                                   RetailerCity = dr["RETLRCITY"].retDateStr(),
-                                   RetailerName = dr["RETLRNM"].ToString(),
-                                   RetailerPin = dr["RETLRPIN"].ToString(),
-                                   Dstbrslcd = dr["DSTBRSLCD"].ToString(),
-                                   Dstbrslnm = dr["DSTBRSLnm"].ToString(),
-                               }).Take(5).ToList();
+        //public JsonResult GetRetailerInfo(string RetailerName, string RetailerPin, string RetailerGstno, string RetailerCity)
+        //{
+        //    List<TransactionRetailOrder> retlOrdrlst = new List<TransactionRetailOrder>();
+        //    try
+        //    {
+        //        string LOC = CommVar.Loccd(UNQSNO), COM = CommVar.Compcd(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), yrcd = CommVar.YearCode(UNQSNO);
+        //        ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
+        //        sql = "";
+        //        sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO,a.DSTBRSLCD,b.slnm DSTBRSLnm  from  " + scm + ".M_RetailOutlet a, " + scmf + ".m_subleg b " + Environment.NewLine;
+        //        sql += "where  A.DSTBRSLCD=b.slcd " + Environment.NewLine;
+        //        if (RetailerName.retStr() != "") sql += " and upper(RETLRNM) like '%" + RetailerName.retStr().ToUpper() + "%' ";
+        //        if (RetailerPin.retStr() != "") sql += "and RETLRPIN like '%" + RetailerPin.retStr() + "%' ";
+        //        if (RetailerGstno.retStr() != "") sql += "and upper(RETLRGSTNO) like '%" + RetailerGstno.retStr().ToUpper() + "%' ";
+        //        if (RetailerCity.retStr() != "") sql += "and upper(RETLRCITY) like '%" + RetailerCity.retStr().ToUpper() + "%' ";
+        //        var txndt = masterHelp.SQLquery(sql);
+        //        retlOrdrlst = (from DataRow dr in txndt.Rows
+        //                       select new TransactionRetailOrder
+        //                       {
+        //                           RetailerCode = dr["RETLRCD"].ToString(),
+        //                           RetailerGstno = dr["RETLRGSTNO"].ToString(),
+        //                           RetailerCity = dr["RETLRCITY"].retDateStr(),
+        //                           RetailerName = dr["RETLRNM"].ToString(),
+        //                           RetailerPin = dr["RETLRPIN"].ToString(),
+        //                           Dstbrslcd = dr["DSTBRSLCD"].ToString(),
+        //                           Dstbrslnm = dr["DSTBRSLnm"].ToString(),
+        //                       }).Take(5).ToList();
 
-            }
-            catch (Exception ex)
-            {
-                //   dic.Add("message", ex.Message + ex.InnerException);
-                Cn.SaveException(ex, "");
-            }
-            return Json(retlOrdrlst, JsonRequestBehavior.AllowGet);
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //   dic.Add("message", ex.Message + ex.InnerException);
+        //        Cn.SaveException(ex, "");
+        //    }
+        //    return Json(retlOrdrlst, JsonRequestBehavior.AllowGet);
+        //}
         public class AddressComponent
         {
             public string long_name { get; set; }
@@ -181,7 +181,7 @@ namespace Improvar.Controllers
             try
             {
                 string datastring = "";
-                lat = "22.555"; lng = "88.258";
+                //lat = "22.555"; lng = "88.258";
                 var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
                 WebRequest rqst = HttpWebRequest.Create(url);
                 using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
@@ -210,58 +210,80 @@ namespace Improvar.Controllers
             {
                 try
                 {
-                    var address = GetAddress("", "");
                     string DefaultAction = "A";
-                    DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_CNTRL_HDR in  row share mode");
+                    DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_RETAILORDER in  row share mode");
                     if (DefaultAction == "A")
                     {
-                        T_RETAILORDER MREASON = new T_RETAILORDER();
-                        MREASON.CLCD = CommVar.ClientCode(UNQSNO);//DTYPE=RETAILORD
-                        string DOCPATTERN = "", DOCCD = "SORDR", DOCNO = ""; int EMD_NO = 0;
-                        DateTime DOCDT = System.DateTime.Now;
-                        string Ddate = Convert.ToString(DOCDT);
-                        string auto_no = ""; string Month = "", YR_CD = CommVar.YearCode(UNQSNO);
+                        T_RETAILORDER TRETAILORDER = new T_RETAILORDER();
+                        TRETAILORDER.CLCD = CommVar.ClientCode(UNQSNO);
+                        TRETAILORDER.DOCDT = System.DateTime.Now.Date;
+                        string Ddate = Convert.ToString(TRETAILORDER.DOCDT);
+
                         if (DefaultAction == "A")
                         {
-                            EMD_NO = 0;
-                            //  DOCCD = VE.T_TXN.DOCCD;
-                            DOCNO = Cn.MaxDocNumber(DOCCD, Ddate);
+                            TRETAILORDER.EMD_NO = 0;
+                            string DOCNO = Cn.MaxDocNumber(Ddate);
+                            TRETAILORDER.VCHRNO = DOCNO.Split(Convert.ToChar(Cn.GCS()))[0].retInt();
+                            TRETAILORDER.MNTHCD = DOCNO.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
 
-                            DOCPATTERN = Cn.DocPattern(Convert.ToInt32(DOCNO), DOCCD, CommVar.CurSchema(UNQSNO).ToString(), CommVar.FinSchema(UNQSNO), Ddate);
-                            auto_no = Cn.Autonumber_Transaction(CommVar.Compcd(UNQSNO), CommVar.Loccd(UNQSNO), DOCNO, DOCCD, Ddate, "", "", YR_CD);
-                            MREASON.AUTONO = auto_no.Split(Convert.ToChar(Cn.GCS()))[0].ToString();
-                            Month = auto_no.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
+                            TRETAILORDER.DOCNO = Cn.DocPattern(TRETAILORDER.VCHRNO.retDbl(), TRETAILORDER.MNTHCD);
+                            TRETAILORDER.AUTONO = VE.T_RETAILORDER.SLCD + TRETAILORDER.VCHRNO;
+
                         }
-                        //else
-                        //{
-                        //    MREASON.AUTONO = VE.AUTONO;
-                        //    var MAXEMDNO = (from p in DB.T_CNTRL_HDR where p.AUTONO == MREASON.AUTONO select p.EMD_NO).Max();
-                        //    if (MAXEMDNO == null)
-                        //    {
-                        //        MREASON.EMD_NO = 0;
-                        //    }
-                        //    else
-                        //    {
-                        //        MREASON.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
-                        //    }
-                        //    Month = VE.T_CNTRL_HDR.MNTHCD;
-                        //    MREASON.EMD_NO = Convert.ToInt16((VE.T_CNTRL_HDR.EMD_NO == null ? 0 : VE.T_CNTRL_HDR.EMD_NO) + 1);
-                        //    DOCPATTERN = VE.T_CNTRL_HDR.DOCNO;
-                        //    MREASON.DTAG = "E";
-                        //}
-                        MREASON.SLCD = VE.Dstbrslcd;
+                        else
+                        {
+                            var MAXEMDNO = (from p in DB.T_RETAILORDER where p.AUTONO == TRETAILORDER.AUTONO select p.EMD_NO).Max();
+                            if (MAXEMDNO == null)
+                            {
+                                TRETAILORDER.EMD_NO = 0;
+                            }
+                            else
+                            {
+                                TRETAILORDER.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
+                            }
+                            TRETAILORDER.VCHRNO = VE.T_RETAILORDER.VCHRNO;
+                            TRETAILORDER.DOCNO = VE.T_RETAILORDER.AUTONO;
+                            TRETAILORDER.AUTONO = VE.T_RETAILORDER.AUTONO;
+                            TRETAILORDER.MNTHCD = VE.T_RETAILORDER.MNTHCD;
+                            TRETAILORDER.DTAG = "E";
+                        }
+                        TRETAILORDER.RTLCD = VE.T_RETAILORDER.RTLCD;
+                        TRETAILORDER.SLCD = VE.T_RETAILORDER.SLCD;
+                        TRETAILORDER.DOCAMT = VE.T_RETAILORDER.DOCAMT;
 
-                        T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(DOCCD, DOCDT, DOCNO, MREASON.AUTONO, Month, DOCPATTERN, DefaultAction, CommVar.CurSchema(UNQSNO), "", MREASON.SLCD, 0, "", YR_CD);
+                        TRETAILORDER.USR_ID = CommVar.UserID();
+                        TRETAILORDER.USR_ENTDT = System.DateTime.Now;
+                        TRETAILORDER.USR_SIP = Cn.GetStaticIp();
+
+                        //TRETAILORDER.LM_USR_ID = CommVar.UserID();
+                        //TRETAILORDER.LM_USR_ENTDT = System.DateTime.Now;
+                        //TRETAILORDER.LM_USR_SIP = Cn.GetStaticIp();
+                        //TRETAILORDER.LM_REM = "";
+
+                        //TRETAILORDER.DEL_USR_ID = CommVar.UserID();
+                        //TRETAILORDER.DEL_USR_ENTDT = System.DateTime.Now;
+                        //TRETAILORDER.DEL_USR_SIP =Cn.GetStaticIp();
+                        //TRETAILORDER.DEL_REM = "";
+
+                        //TRETAILORDER.CANCEL = "Y";
+                        //TRETAILORDER.CANC_REM = "";
+                        //TRETAILORDER.CANC_USR_ID = CommVar.UserID();
+                        //TRETAILORDER.CANC_USR_ENTDT = System.DateTime.Now;
+                        //TRETAILORDER.CANC_USR_SIP =Cn.GetStaticIp();
+
+                        TRETAILORDER.GPSLAT = VE.T_RETAILORDER.GPSLAT;
+                        TRETAILORDER.GPSLOT = VE.T_RETAILORDER.GPSLOT;
+                        TRETAILORDER.DOCREM = VE.T_RETAILORDER.DOCREM;
+                        TRETAILORDER.GPSNM = GetAddress(VE.T_RETAILORDER.GPSLAT.retStr(), VE.T_RETAILORDER.GPSLOT.retStr());
+
+
                         if (DefaultAction == "A")
                         {
-                            DB.T_CNTRL_HDR.Add(MCH);
-                            DB.SaveChanges();
-                            DB.T_RETAILORDER.Add(MREASON);
+                            DB.T_RETAILORDER.Add(TRETAILORDER);
                         }
                         else if (DefaultAction == "E")
                         {
-                            DB.Entry(MREASON).State = System.Data.Entity.EntityState.Modified;
-                            DB.Entry(MCH).State = System.Data.Entity.EntityState.Modified;
+                            DB.Entry(TRETAILORDER).State = System.Data.Entity.EntityState.Modified;
                         }
                         //List<APP_ITEMLIST> KARTIEMS = new List<ViewModels.APP_ITEMLIST>();
                         //var KARTIEMS1 = new APP_ITEMLIST() { itcd = "F008477", sizes = new List<APP_SIZEDTL>() { new APP_SIZEDTL() { qnty = "323", sizecd = "S" } } };
@@ -270,26 +292,27 @@ namespace Improvar.Controllers
                         int slno = 0;
                         foreach (var v in aPP_ITEMLIST)
                         {
-                            T_RETAILORDERDTL TRETAILORDERDTL = new T_RETAILORDERDTL();
-                            slno++;
-                            TRETAILORDERDTL.CLCD = MREASON.CLCD;
-                            TRETAILORDERDTL.EMD_NO = MREASON.EMD_NO;
-                            TRETAILORDERDTL.AUTONO = MREASON.AUTONO;
-                            TRETAILORDERDTL.ITCD = v.itcd;
-                            TRETAILORDERDTL.SLNO = slno.retShort();
                             var sizes = v.sizes.retStr().Split(',');
                             foreach (var sizeq in sizes)
                             {
                                 var sqn = sizeq.retStr().Split('=');
                                 if (sqn.Length > 1)
                                 {
+                                    slno++;
+                                    T_RETAILORDERDTL TRETAILORDERDTL = new T_RETAILORDERDTL();
+                                    TRETAILORDERDTL.CLCD = TRETAILORDER.CLCD;
+                                    TRETAILORDERDTL.EMD_NO = TRETAILORDER.EMD_NO;
+                                    TRETAILORDERDTL.AUTONO = TRETAILORDER.AUTONO;
+                                    TRETAILORDERDTL.DTAG = TRETAILORDER.DTAG;
+                                    TRETAILORDERDTL.ITCD = v.itcd;
+                                    TRETAILORDERDTL.SLNO = slno.retShort();
                                     TRETAILORDERDTL.SIZECD = sqn[0];
                                     TRETAILORDERDTL.QNTY = sqn[1].retDbl();
+                                    DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
                                 }
-                                DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
                             }
                         }
-                       
+
 
                         DB.SaveChanges();
                         ModelState.Clear();

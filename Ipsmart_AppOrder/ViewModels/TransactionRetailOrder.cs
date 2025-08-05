@@ -10,13 +10,11 @@ namespace Improvar.ViewModels
     {
         public List<ImageView> ImageView { get; set; }
         public bool Checked { get; set; }
-        public string RetailerCode { get; set; }
         public string RetailerName { get; set; }
         public string RetailerPin { get; set; }
         public string RetailerGstno { get; set; }
         public string RetailerCity { get; set; }
 
-        public string Dstbrslcd { get; set; }
         public string Dstbrslnm { get; set; }
         public string SelectedRetailerCode { get; set; }
         public string SelectedRetailerName { get; set; }
@@ -35,5 +33,6 @@ namespace Improvar.ViewModels
         public string[] CollCode { get; set; }
         public string CollName { get; set; }
         public double? NOOFSETS { get; set; }
+        public T_RETAILORDER T_RETAILORDER { get; set; }
     }
 }

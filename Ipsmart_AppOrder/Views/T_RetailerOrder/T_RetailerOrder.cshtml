@@ -129,7 +129,7 @@
         getLocation();
     });
 
-    function GetRetailerInfo() {
+    @*function GetRetailerInfo() {
         debugger;
         var RetailerName = $("#RetailerName").val();
         var RetailerPin = $("#RetailerPin").val();
@@ -157,12 +157,12 @@
                     alert('Use filter to get accurate data. ' + alldata); return;
                 }
                 $.each(result, function (index, itemData) {
-                    $("#SelectedRetailerCode").val(itemData.RetailerCode);
+                    $("#SelectedRTLCD").val(itemData.RTLCD);
                     $("#SelectedRetailerName").val(itemData.RetailerName);
                     //$("#SelectedRetailerPin").val(itemData.RetailerPin);
                     //$("#SelectedRetailerGstno").val(itemData.RetailerGstno);
                     //$("#SelectedRetailerCity").val(itemData.RetailerCity);
-                    $("#Dstbrslcd").val(itemData.Dstbrslcd);
+                    $("#SLCD").val(itemData.SLCD);
                     //$("#Dstbrslnm").val(itemData.Dstbrslnm);
                     $("#divGetRetailerInfo").hide();
 
@@ -174,7 +174,7 @@
                 $("body span h1").remove(); $("#msgbody_error style").remove();
             }
         });
-    }
+    }*@
 </script>
 <script>
     function getLocation() {
@@ -182,8 +182,8 @@
             navigator.geolocation.getCurrentPosition(
                 function (position) {
                     // Success: Set hidden fields
-                    $("#GEOLONGITUDE").val(position.coords.latitude);
-                    $("#GEOLATITUDE").val(position.coords.longitude);
+                    $("#GPSLAT").val(position.coords.latitude);
+                    $("#GPSLOT").val(position.coords.longitude);
                     console.log(position.coords.latitude + ',' + position.coords.longitude);
 
                 },
@@ -201,8 +201,8 @@
         //    navigator.geolocation.getCurrentPosition(function (position) {
         //        var lat = position.coords.latitude;
         //        var lng = position.coords.longitude;
-        //        $("#GEOLONGITUDE").val(lat);
-        //        $("#GEOLATITUDE").val(lng);
+        //        $("#GPSLOT").val(lat);
+        //        $("#GPSLAT").val(lng);
         //        console.log(lat + ',' + lng);
         //    });
         //}
@@ -216,8 +216,8 @@
     //        navigator.geolocation.getCurrentPosition(function (position) {
     //            var lat = position.coords.latitude;
     //            var lng = position.coords.longitude;
-    //            $("#GEOLONGITUDE").val(lat);
-    //            $("#GEOLATITUDE").val(lng);
+    //            $("#GPSLOT").val(lat);
+    //            $("#GPSLAT").val(lng);
     //            console.log(lat + ',' + lng);
     //            var address = '';
     //            var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
@@ -370,19 +370,19 @@
     function SaveData() {
         $("#WaitingMode").show(),
         getLocation();
-        if (!emptyFieldCheck("Location not found,Save again", "GEOLONGITUDE")) {
+        if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
             alert('Please select retailer !');
             getLocation();
             $("#WaitingMode").hide();
             return false;
         }
-        if (!emptyFieldCheck("Location not found,Save again", "GEOLATITUDE")) {
+        if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
             alert('Please select retailer !');
             getLocation();
             $("#WaitingMode").hide();
             return false;
         }
-        if (!emptyFieldCheck("Please select retailer!", "RetailerCode")) {
+        if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
             alert('retailer not found!');
             $("#WaitingMode").hide();
             return false;
@@ -547,13 +547,17 @@
     </div>
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(model => model.GEOLONGITUDE, new { id = "GEOLONGITUDE" })
-        @Html.HiddenFor(model => model.GEOLATITUDE, new { id = "GEOLATITUDE" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.GPSLOT, new { id = "GPSLOT" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.GPSLAT, new { id = "GPSLAT" })
         @*@Html.HiddenFor(model => model.GEOADDRESS)*@
         @Html.HiddenFor(model => model.ITEMDETAIL_JSTR, new { id = "ITEMDETAIL_JSTR" })
-        @Html.HiddenFor(model => model.Dstbrslcd, new { id = "Dstbrslcd" })
-        @Html.HiddenFor(model => model.RetailerCode, new { id = "RetailerCode" })
-  <input type="hidden" id="hdnData" />
+        @Html.HiddenFor(model => model.T_RETAILORDER.SLCD, new { id = "SLCD" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.RTLCD, new { id = "RTLCD" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.AUTONO, new { id = "AUTONO" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.DOCNO, new { id = "DOCNO" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.VCHRNO, new { id = "VCHRNO" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.MNTHCD, new { id = "MNTHCD" })
+<input type="hidden" id="hdnData" />
         <input type="hidden" id="NoOfItem" />
         <input type="hidden" id="TQnty" />
  <div class="row">

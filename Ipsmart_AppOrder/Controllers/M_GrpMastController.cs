@@ -239,140 +239,140 @@ namespace Improvar.Controllers
                 return "";
             }
         }
-        public ActionResult SAVE(FormCollection FC, VMRetailOrder VE)
-        {
-            ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
-            using (var transaction = DB.Database.BeginTransaction())
-            {
-                try
-                {
-                    var address = GetAddress("", "");
-                    string DefaultAction = "A";
-                    DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_CNTRL_HDR in  row share mode");
-                    if (DefaultAction == "A")
-                    {
-                        T_RETAILORDER MREASON = new T_RETAILORDER();
-                        MREASON.CLCD = CommVar.ClientCode(UNQSNO);//DTYPE=RETAILORD
-                        string DOCPATTERN = "", DOCCD = "SORDR", DOCNO = ""; int EMD_NO = 0;
-                        DateTime DOCDT = System.DateTime.Now;
-                        string Ddate = Convert.ToString(DOCDT);
-                        string auto_no = ""; string Month = "", YR_CD = CommVar.YearCode(UNQSNO);
-                        if (DefaultAction == "A")
-                        {
-                            EMD_NO = 0;
-                            //  DOCCD = VE.T_TXN.DOCCD;
-                            DOCNO = Cn.MaxDocNumber(DOCCD, Ddate);
+        //public ActionResult SAVE(FormCollection FC, VMRetailOrder VE)
+        //{
+        //    ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
+        //    using (var transaction = DB.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            var address = GetAddress("", "");
+        //            string DefaultAction = "A";
+        //            DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_CNTRL_HDR in  row share mode");
+        //            if (DefaultAction == "A")
+        //            {
+        //                T_RETAILORDER MREASON = new T_RETAILORDER();
+        //                MREASON.CLCD = CommVar.ClientCode(UNQSNO);//DTYPE=RETAILORD
+        //                string DOCPATTERN = "", DOCCD = "SORDR", DOCNO = ""; int EMD_NO = 0;
+        //                DateTime DOCDT = System.DateTime.Now;
+        //                string Ddate = Convert.ToString(DOCDT);
+        //                string auto_no = ""; string Month = "", YR_CD = CommVar.YearCode(UNQSNO);
+        //                if (DefaultAction == "A")
+        //                {
+        //                    EMD_NO = 0;
+        //                    //  DOCCD = VE.T_TXN.DOCCD;
+        //                    DOCNO = Cn.MaxDocNumber(DOCCD, Ddate);
 
-                            DOCPATTERN = Cn.DocPattern(Convert.ToInt32(DOCNO), DOCCD, CommVar.CurSchema(UNQSNO).ToString(), CommVar.FinSchema(UNQSNO), Ddate);
-                            auto_no = Cn.Autonumber_Transaction(CommVar.Compcd(UNQSNO), CommVar.Loccd(UNQSNO), DOCNO, DOCCD, Ddate, "", "", YR_CD);
-                            MREASON.AUTONO = auto_no.Split(Convert.ToChar(Cn.GCS()))[0].ToString();
-                            Month = auto_no.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
-                        }
-                        //else
-                        //{
-                        //    MREASON.AUTONO = VE.AUTONO;
-                        //    var MAXEMDNO = (from p in DB.T_CNTRL_HDR where p.AUTONO == MREASON.AUTONO select p.EMD_NO).Max();
-                        //    if (MAXEMDNO == null)
-                        //    {
-                        //        MREASON.EMD_NO = 0;
-                        //    }
-                        //    else
-                        //    {
-                        //        MREASON.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
-                        //    }
-                        //    Month = VE.T_CNTRL_HDR.MNTHCD;
-                        //    MREASON.EMD_NO = Convert.ToInt16((VE.T_CNTRL_HDR.EMD_NO == null ? 0 : VE.T_CNTRL_HDR.EMD_NO) + 1);
-                        //    DOCPATTERN = VE.T_CNTRL_HDR.DOCNO;
-                        //    MREASON.DTAG = "E";
-                        //}
-                        MREASON.SLCD = VE.Dstbrslcd;
-                        //List<APP_ITEMLIST> KARTIEMS = new List<ViewModels.APP_ITEMLIST>();
-                        //var KARTIEMS1 = new APP_ITEMLIST() { itcd = "F008477", sizes = new List<APP_SIZEDTL>() { new APP_SIZEDTL() { qnty = "323", sizecd = "S" } } };
-                        //KARTIEMS.Add(KARTIEMS1);
-                        List<APP_ITEMLIST> aPP_ITEMLIST = JsonConvert.DeserializeObject<List<APP_ITEMLIST>>(VE.ITEMDETAIL_JSTR);
-                        int slno = 0;
-                        foreach (var v in aPP_ITEMLIST)
-                        {
-                            T_RETAILORDERDTL TRETAILORDERDTL = new T_RETAILORDERDTL();
-                            slno++;
-                            TRETAILORDERDTL.CLCD = MREASON.CLCD;
-                            TRETAILORDERDTL.EMD_NO = MREASON.EMD_NO;
-                            TRETAILORDERDTL.AUTONO = MREASON.AUTONO;
-                            TRETAILORDERDTL.ITCD = v.itcd;
-                            TRETAILORDERDTL.SLNO = slno.retShort();
-                            var sizes = v.sizes.retStr().Split(',');
-                            foreach (var sizeq in sizes)
-                            {
-                                var sqn = sizeq.retStr().Split('=');
-                                if (sqn.Length > 1)
-                                {
-                                    TRETAILORDERDTL.SIZECD = sqn[0];
-                                    TRETAILORDERDTL.QNTY = sqn[1].retDbl();
-                                }
-                                DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
-                            }
-                        }
-                        //T_CNTRL_HDR MCH = Cn.T_CNTRL_HDR(VE.Checked, "M_GrpMast", MREASON.AUTONO.retInt(), VE.DefaultAction, CommVar.CurSchema(UNQSNO));
-                        T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(DOCCD, DOCDT, DOCNO, MREASON.AUTONO, Month, DOCPATTERN, DefaultAction, CommVar.CurSchema(UNQSNO), "", MREASON.SLCD, 0, "", YR_CD);
-                        if (DefaultAction == "A")
-                        {
-                            DB.T_CNTRL_HDR.Add(MCH);
-                            DB.SaveChanges();
-                            DB.T_RETAILORDER.Add(MREASON);
-                        }
-                        else if (DefaultAction == "E")
-                        {
-                            DB.Entry(MREASON).State = System.Data.Entity.EntityState.Modified;
-                            DB.Entry(MCH).State = System.Data.Entity.EntityState.Modified;
-                        }
+        //                    DOCPATTERN = Cn.DocPattern(Convert.ToInt32(DOCNO), DOCCD, CommVar.CurSchema(UNQSNO).ToString(), CommVar.FinSchema(UNQSNO), Ddate);
+        //                    auto_no = Cn.Autonumber_Transaction(CommVar.Compcd(UNQSNO), CommVar.Loccd(UNQSNO), DOCNO, DOCCD, Ddate, "", "", YR_CD);
+        //                    MREASON.AUTONO = auto_no.Split(Convert.ToChar(Cn.GCS()))[0].ToString();
+        //                    Month = auto_no.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
+        //                }
+        //                //else
+        //                //{
+        //                //    MREASON.AUTONO = VE.AUTONO;
+        //                //    var MAXEMDNO = (from p in DB.T_CNTRL_HDR where p.AUTONO == MREASON.AUTONO select p.EMD_NO).Max();
+        //                //    if (MAXEMDNO == null)
+        //                //    {
+        //                //        MREASON.EMD_NO = 0;
+        //                //    }
+        //                //    else
+        //                //    {
+        //                //        MREASON.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
+        //                //    }
+        //                //    Month = VE.T_CNTRL_HDR.MNTHCD;
+        //                //    MREASON.EMD_NO = Convert.ToInt16((VE.T_CNTRL_HDR.EMD_NO == null ? 0 : VE.T_CNTRL_HDR.EMD_NO) + 1);
+        //                //    DOCPATTERN = VE.T_CNTRL_HDR.DOCNO;
+        //                //    MREASON.DTAG = "E";
+        //                //}
+        //                MREASON.SLCD = VE.Dstbrslcd;
+        //                //List<APP_ITEMLIST> KARTIEMS = new List<ViewModels.APP_ITEMLIST>();
+        //                //var KARTIEMS1 = new APP_ITEMLIST() { itcd = "F008477", sizes = new List<APP_SIZEDTL>() { new APP_SIZEDTL() { qnty = "323", sizecd = "S" } } };
+        //                //KARTIEMS.Add(KARTIEMS1);
+        //                List<APP_ITEMLIST> aPP_ITEMLIST = JsonConvert.DeserializeObject<List<APP_ITEMLIST>>(VE.ITEMDETAIL_JSTR);
+        //                int slno = 0;
+        //                foreach (var v in aPP_ITEMLIST)
+        //                {
+        //                    T_RETAILORDERDTL TRETAILORDERDTL = new T_RETAILORDERDTL();
+        //                    slno++;
+        //                    TRETAILORDERDTL.CLCD = MREASON.CLCD;
+        //                    TRETAILORDERDTL.EMD_NO = MREASON.EMD_NO;
+        //                    TRETAILORDERDTL.AUTONO = MREASON.AUTONO;
+        //                    TRETAILORDERDTL.ITCD = v.itcd;
+        //                    TRETAILORDERDTL.SLNO = slno.retShort();
+        //                    var sizes = v.sizes.retStr().Split(',');
+        //                    foreach (var sizeq in sizes)
+        //                    {
+        //                        var sqn = sizeq.retStr().Split('=');
+        //                        if (sqn.Length > 1)
+        //                        {
+        //                            TRETAILORDERDTL.SIZECD = sqn[0];
+        //                            TRETAILORDERDTL.QNTY = sqn[1].retDbl();
+        //                        }
+        //                        DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
+        //                    }
+        //                }
+        //                //T_CNTRL_HDR MCH = Cn.T_CNTRL_HDR(VE.Checked, "M_GrpMast", MREASON.AUTONO.retInt(), VE.DefaultAction, CommVar.CurSchema(UNQSNO));
+        //                T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(DOCCD, DOCDT, DOCNO, MREASON.AUTONO, Month, DOCPATTERN, DefaultAction, CommVar.CurSchema(UNQSNO), "", MREASON.SLCD, 0, "", YR_CD);
+        //                if (DefaultAction == "A")
+        //                {
+        //                    DB.T_CNTRL_HDR.Add(MCH);
+        //                    DB.SaveChanges();
+        //                    DB.T_RETAILORDER.Add(MREASON);
+        //                }
+        //                else if (DefaultAction == "E")
+        //                {
+        //                    DB.Entry(MREASON).State = System.Data.Entity.EntityState.Modified;
+        //                    DB.Entry(MCH).State = System.Data.Entity.EntityState.Modified;
+        //                }
 
-                        DB.SaveChanges();
-                        ModelState.Clear();
-                        transaction.Commit();
+        //                DB.SaveChanges();
+        //                ModelState.Clear();
+        //                transaction.Commit();
 
-                        string ContentFlg = "";
-                        if (DefaultAction == "A")
-                        {
-                            ContentFlg = "1";
-                        }
-                        else if (DefaultAction == "E")
-                        {
-                            ContentFlg = "2";
-                        }
-                        return Content(ContentFlg);
+        //                string ContentFlg = "";
+        //                if (DefaultAction == "A")
+        //                {
+        //                    ContentFlg = "1";
+        //                }
+        //                else if (DefaultAction == "E")
+        //                {
+        //                    ContentFlg = "2";
+        //                }
+        //                return Content(ContentFlg);
 
-                    }
-                    //else if (DefaultAction == "V")
-                    //{
-                    //    T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(VE.T_CNTRL_HDR.DOCCD, VE.T_CNTRL_HDR.DOCDT, VE.T_CNTRL_HDR.DOCNO, VE.T_RETAILORDER.AUTONO, VE.T_CNTRL_HDR.MNTHCD, VE.T_CNTRL_HDR.DOCNO, "D", CommVar.CurSchema(UNQSNO), "", VE.T_RETAILORDER.SLCD, 0, "", VE.T_CNTRL_HDR.YR_CD);
-                    //    DB.Entry(MCH).State = System.Data.Entity.EntityState.Modified;
-                    //    DB.SaveChanges();
+        //            }
+        //            //else if (DefaultAction == "V")
+        //            //{
+        //            //    T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(VE.T_CNTRL_HDR.DOCCD, VE.T_CNTRL_HDR.DOCDT, VE.T_CNTRL_HDR.DOCNO, VE.T_RETAILORDER.AUTONO, VE.T_CNTRL_HDR.MNTHCD, VE.T_CNTRL_HDR.DOCNO, "D", CommVar.CurSchema(UNQSNO), "", VE.T_RETAILORDER.SLCD, 0, "", VE.T_CNTRL_HDR.YR_CD);
+        //            //    DB.Entry(MCH).State = System.Data.Entity.EntityState.Modified;
+        //            //    DB.SaveChanges();
 
-                    //    DB.T_RETAILORDER.Where(x => x.AUTONO == VE.T_RETAILORDER.AUTONO).ToList().ForEach(x => { x.DTAG = "D"; });
-                    //    DB.SaveChanges();
+        //            //    DB.T_RETAILORDER.Where(x => x.AUTONO == VE.T_RETAILORDER.AUTONO).ToList().ForEach(x => { x.DTAG = "D"; });
+        //            //    DB.SaveChanges();
 
-                    //    DB.T_RETAILORDER.RemoveRange(DB.T_RETAILORDER.Where(x => x.AUTONO == VE.T_RETAILORDER.AUTONO));
-                    //    DB.SaveChanges();
-                    //    DB.T_CNTRL_HDR.RemoveRange(DB.T_CNTRL_HDR.Where(x => x.AUTONO == VE.T_RETAILORDER.AUTONO));
-                    //    DB.SaveChanges();
-                    //    ModelState.Clear();
-                    //    transaction.Commit();
-                    //    return Content("3");
-                    //}
-                    else
-                    {
-                        return Content("");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    Cn.SaveException(ex, "");
-                    return Content(ex.Message + ex.InnerException);
-                }
-            }
-            return null;
-        }
+        //            //    DB.T_RETAILORDER.RemoveRange(DB.T_RETAILORDER.Where(x => x.AUTONO == VE.T_RETAILORDER.AUTONO));
+        //            //    DB.SaveChanges();
+        //            //    DB.T_CNTRL_HDR.RemoveRange(DB.T_CNTRL_HDR.Where(x => x.AUTONO == VE.T_RETAILORDER.AUTONO));
+        //            //    DB.SaveChanges();
+        //            //    ModelState.Clear();
+        //            //    transaction.Commit();
+        //            //    return Content("3");
+        //            //}
+        //            else
+        //            {
+        //                return Content("");
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            transaction.Rollback();
+        //            Cn.SaveException(ex, "");
+        //            return Content(ex.Message + ex.InnerException);
+        //        }
+        //    }
+        //    return null;
+        //}
         //public ActionResult GetBrandDetails(VMRetailOrder VE)
         //{
         //    string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
@@ -545,9 +545,7 @@ namespace Improvar.Controllers
         public ActionResult GetItem(VMRetailOrder TSP)
         {
             TransactionRetailOrder ind = new TransactionRetailOrder();
-            ind.Dstbrslcd = TSP.Dstbrslcd;
             ind.Dstbrslnm = TSP.Dstbrslnm.Split(Convert.ToChar(Cn.GCS()))[0];
-            ind.RetailerCode = TSP.RetailerCode;
             ind.RetailerName = TSP.RetailerName.Split(Convert.ToChar(Cn.GCS()))[0];
             ind.BrandCode = TSP.BrandCode;
             ind.BrandName = TSP.BrandName;
@@ -555,6 +553,11 @@ namespace Improvar.Controllers
             ind.GroupName = TSP.GroupName;
             ind.CollCode = TSP.CollCode;
             ind.CollName = TSP.CollName;
+
+            T_RETAILORDER TRETAILORDER = new T_RETAILORDER();
+            TRETAILORDER.SLCD = TSP.Dstbrslcd;
+            TRETAILORDER.RTLCD = TSP.RetailerCode;
+            ind.T_RETAILORDER = TRETAILORDER;
 
             if (TempData["printparameter"] != null)
             {

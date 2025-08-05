@@ -95,6 +95,8 @@ namespace Improvar.Models
         [StringLength(200)]
         public string DOCREM { get; set; }
         public int VCHRNO { get; set; }
+        [StringLength(4)]
+        public string MNTHCD { get; set; }
 
     }
 }
