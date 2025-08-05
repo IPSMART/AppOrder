@@ -92,5 +92,7 @@ namespace Improvar.Models
         public double? GPSLOT { get; set; }
 
         public long M_AUTONO { get; set; }
+        [StringLength(500)]
+        public string GPSNM { get; set; }
     }
 }

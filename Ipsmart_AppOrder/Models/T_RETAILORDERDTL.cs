@@ -26,17 +26,22 @@ namespace Improvar.Models
         [StringLength(30)]
         public string AUTONO { get; set; }
 
-        [StringLength(10)]
-        public string ITCD { get; set; }
-
-        public double? QNTY { get; set; }
-
-        [StringLength(4)]
-        public string SIZECD { get; set; }
-
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short SLNO { get; set; }
+
+        [Required]
+        [StringLength(10)]
+        public string ITCD { get; set; }
+
+        [StringLength(4)]
+        public string SIZECD { get; set; }
+
+        [StringLength(1)]
+        public string FREESTK { get; set; }
+
+        public double? QNTY { get; set; }
+        
     }
 }
