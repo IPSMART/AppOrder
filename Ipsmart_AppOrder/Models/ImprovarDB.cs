@@ -90,9 +90,8 @@ namespace Improvar.Models
 
         public virtual DbSet<MS_BANKIFSC> MS_BANKIFSC { get; set; }
         public virtual DbSet<M_RETAILOUTLET> M_RETAILOUTLET { get; set; }
-        public virtual DbSet<M_RETAIL> M_RETAIL { get; set; }
-        public virtual DbSet<M_BRAND> M_BRAND { get; set; }
-
+        public virtual DbSet<M_RETAIL> M_RETAIL { get; set; }      
+        public virtual DbSet<M_RETAIL_LINK> M_RETAIL_LINK { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
