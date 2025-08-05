@@ -66,11 +66,11 @@ namespace Improvar.Controllers
                     tbl = masterHelp.SQLquery(sql);
 
                     VE.ListBrand = (from DataRow a in tbl.Rows
-                                          select new ListBrand()
-                                          {
-                                              value = a["BRANDCD"].retStr(),
-                                              text = a["BRANDNM"].retStr(),
-                                          }).ToList();
+                                    select new ListBrand()
+                                    {
+                                        value = a["BRANDCD"].retStr(),
+                                        text = a["BRANDNM"].retStr(),
+                                    }).ToList();
 
 
                     sql = "select distinct a.ITGRPCD, a.ITGRPNM ";
@@ -95,11 +95,11 @@ namespace Improvar.Controllers
                     tbl = masterHelp.SQLquery(sql);
 
                     VE.ListCollection = (from DataRow a in tbl.Rows
-                                    select new ListCollection()
-                                    {
-                                        value = a["COLLCD"].retStr(),
-                                        text = a["COLLNM"].retStr(),
-                                    }).ToList();
+                                         select new ListCollection()
+                                         {
+                                             value = a["COLLCD"].retStr(),
+                                             text = a["COLLNM"].retStr(),
+                                         }).ToList();
 
                     //string brand = "CHOC";// "REVO";
                     //string scm = CommVar.CurSchema(UNQSNO);
@@ -366,6 +366,7 @@ namespace Improvar.Controllers
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     Cn.SaveException(ex, "");
                     return Content(ex.Message + ex.InnerException);
                 }
@@ -545,10 +546,15 @@ namespace Improvar.Controllers
         {
             TransactionRetailOrder ind = new TransactionRetailOrder();
             ind.Dstbrslcd = TSP.Dstbrslcd;
+            ind.Dstbrslnm = TSP.Dstbrslnm.Split(Convert.ToChar(Cn.GCS()))[0];
             ind.RetailerCode = TSP.RetailerCode;
+            ind.RetailerName = TSP.RetailerName.Split(Convert.ToChar(Cn.GCS()))[0];
             ind.BrandCode = TSP.BrandCode;
+            ind.BrandName = TSP.BrandName;
             ind.GroupCode = TSP.GroupCode;
+            ind.GroupName = TSP.GroupName;
             ind.CollCode = TSP.CollCode;
+            ind.CollName = TSP.CollName;
 
             if (TempData["printparameter"] != null)
             {

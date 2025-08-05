@@ -40,8 +40,26 @@ namespace Improvar.Controllers
                     {
                         VE = (TransactionRetailOrder)TempData["printparameter"];
                     }
+                    ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
+                    ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
 
-                    string brand = VE.BrandCode;
+                    ViewBag.DistributorName = VE.Dstbrslnm;
+                    ViewBag.RetailerName = VE.RetailerName;
+                    if (VE.BrandName.retStr() != "")
+                    {
+                        ViewBag.BrandName = "[" + VE.BrandName + "]";
+                    }
+                    if (VE.GroupName.retStr() != "")
+                    {
+                        ViewBag.GroupName = "[" + VE.GroupName + "]";
+                    }
+                    if (VE.CollName.retStr() != "")
+                    {
+                        ViewBag.CollectionName = "[" + VE.CollName + "]";
+                    }
+
+
+                    string brand = VE.BrandCode.retSqlfromStrarray();
                     string scm = CommVar.CurSchema(UNQSNO);
                     string fscm = CommVar.FinSchema(UNQSNO);
                     string comp = CommVar.Compcd(UNQSNO);
@@ -49,24 +67,33 @@ namespace Improvar.Controllers
                     string doccd = "";
 
                     string sql = "";
-                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
+                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE,count(C.SIZECD)SIZE_COUNT,nvl(a.PCSPERBOX,0) PCSPERBOX ";
                     sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
-                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + VE.BrandCode + "' and a.itgrpcd = '" + VE.GroupCode + "'";
-                    sql += " group by  a.m_autono,a.itcd,a.styleno";
+                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd ";
+                    if (VE.BrandCode.retStr() != "") sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") ";
+                    if (VE.GroupCode.retStr() != "") sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") ";
+                    if (VE.CollCode.retStr() != "") sql += "and a.collcd in(" + VE.CollCode.retSqlfromStrarray() + ") ";
+                    sql += " group by  a.m_autono,a.itcd,a.styleno,nvl(a.PCSPERSET,0),a.MIXSIZE,nvl(a.PCSPERBOX,0)  ";
 
 
                     var dt = masterHelp.SQLquery(sql);
                     List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
                     foreach (DataRow dr in dt.Rows)
                     {
-                        ImageView objImageView = new ImageView();
-                        objImageView.ITCD = dr["ITCD"].ToString();
-                        objImageView.Desc = dr["styleno"].ToString();
-                        objImageView.SIZES = dr["sizes"].ToString();
-                        //objImageView.Desc = dr["desc"].ToString();
+                      
                         var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
                         if (img.Count > 0)
                         {
+                            ImageView objImageView = new ImageView();
+                            objImageView.ITCD = dr["ITCD"].ToString();
+                            objImageView.Desc = dr["styleno"].ToString();
+                            objImageView.SIZES = dr["sizes"].ToString();
+                            objImageView.PCSPERSET = dr["PCSPERSET"].retShort();
+                            objImageView.MIXSIZE = dr["MIXSIZE"].ToString();
+                            objImageView.SIZE_COUNT = dr["SIZE_COUNT"].retDbl();
+                            objImageView.PCSPERBOX = dr["PCSPERBOX"].retShort();
+
+                            //objImageView.Desc = dr["desc"].ToString();
                             var DBImgString = img[0].DOC_FILE;
                             var ImageName = img[0].DOC_FILE_NAME;
                             var extension = Path.GetExtension(ImageName);
@@ -223,6 +250,19 @@ namespace Improvar.Controllers
                         //    MREASON.DTAG = "E";
                         //}
                         MREASON.SLCD = VE.Dstbrslcd;
+
+                        T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(DOCCD, DOCDT, DOCNO, MREASON.AUTONO, Month, DOCPATTERN, DefaultAction, CommVar.CurSchema(UNQSNO), "", MREASON.SLCD, 0, "", YR_CD);
+                        if (DefaultAction == "A")
+                        {
+                            DB.T_CNTRL_HDR.Add(MCH);
+                            DB.SaveChanges();
+                            DB.T_RETAILORDER.Add(MREASON);
+                        }
+                        else if (DefaultAction == "E")
+                        {
+                            DB.Entry(MREASON).State = System.Data.Entity.EntityState.Modified;
+                            DB.Entry(MCH).State = System.Data.Entity.EntityState.Modified;
+                        }
                         //List<APP_ITEMLIST> KARTIEMS = new List<ViewModels.APP_ITEMLIST>();
                         //var KARTIEMS1 = new APP_ITEMLIST() { itcd = "F008477", sizes = new List<APP_SIZEDTL>() { new APP_SIZEDTL() { qnty = "323", sizecd = "S" } } };
                         //KARTIEMS.Add(KARTIEMS1);
@@ -249,19 +289,7 @@ namespace Improvar.Controllers
                                 DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
                             }
                         }
-                        //T_CNTRL_HDR MCH = Cn.T_CNTRL_HDR(VE.Checked, "M_GrpMast", MREASON.AUTONO.retInt(), VE.DefaultAction, CommVar.CurSchema(UNQSNO));
-                        T_CNTRL_HDR MCH = Cn.T_CONTROL_HDR(DOCCD, DOCDT, DOCNO, MREASON.AUTONO, Month, DOCPATTERN, DefaultAction, CommVar.CurSchema(UNQSNO), "", MREASON.SLCD, 0, "", YR_CD);
-                        if (DefaultAction == "A")
-                        {
-                            DB.T_CNTRL_HDR.Add(MCH);
-                            DB.SaveChanges();
-                            DB.T_RETAILORDER.Add(MREASON);
-                        }
-                        else if (DefaultAction == "E")
-                        {
-                            DB.Entry(MREASON).State = System.Data.Entity.EntityState.Modified;
-                            DB.Entry(MCH).State = System.Data.Entity.EntityState.Modified;
-                        }
+                       
 
                         DB.SaveChanges();
                         ModelState.Clear();
@@ -303,6 +331,7 @@ namespace Improvar.Controllers
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     Cn.SaveException(ex, "");
                     return Content(ex.Message + ex.InnerException);
                 }
@@ -398,7 +427,7 @@ namespace Improvar.Controllers
         {
             try
             {
-                string brand = VE.BrandCode;
+                string brand = VE.BrandCode.retSqlfromStrarray();
                 string scm = CommVar.CurSchema(UNQSNO);
                 string fscm = CommVar.FinSchema(UNQSNO);
                 string comp = CommVar.Compcd(UNQSNO);
