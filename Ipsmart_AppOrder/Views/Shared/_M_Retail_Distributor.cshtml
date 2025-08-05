@@ -1,0 +1,57 @@
+﻿
+@model Improvar.ViewModels.RetailOutletEntry
+
+<div style="transform: translate(0%, 0%);z-index: 1100;">
+    <div class="table-responsive">
+
+        @if (Model.DefaultView == true)
+        {
+            @Html.ValidationSummary(true)
+            <div class="grid_title">
+                <img src="~/Image/Plus.png" width="20px" height="20px" class="Help_image_buttonAddRemove" id="btnAddPART" title="Add Row" onclick="AddRow()" />
+                <img src="~/Image/Minus.png" width="20px" height="20px" class="Help_image_buttonAddRemove" id="btnDeletePART" title="Delete Row" onclick="DeleteRow()" />
+                <div class="col-md-8">
+                    <input type="text" id="search" name="search" class="grid_title_box textbox_image" value="" placeholder="Filter" onkeyup="filterTable(event, '_M_Retail_Distributor');" />
+                    <img src="~/Image/search.png" title="Help" />
+                </div>
+                <center style="font-size: 11px;color: darkmagenta; border: 1px inset;"><b>Distributor linkup</b></center>
+            </div>
+            
+                    <table id="_M_Retail_Distributor" class="resizable grid_table" cellpadding="0px" cellspacing="0px">
+                        <thead>
+                            <tr style="height:30px">
+                                <th class="grid_th" style="width:20px"></th>
+                                <th class="grid_th" style="width:10px">SL NO.</th>
+                                <th class="grid_th" style="width:100px">Distributor Code.</th>
+                                <th class="grid_th" style="width:300px">Distributor Name.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.MRETAILLINK != null)
+                            {
+                                for (int i = 0; i <= Model.MRETAILLINK.Count - 1; i++)
+                                {
+                                    <tr>
+                                        <td class="grid_td" style="padding-left:7px;padding-right:7px;">
+                                            @Html.CheckBoxFor(model => model.MRETAILLINK[i].Checked, new { htmlAttributes = new { id = "chkid" } })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => Model.MRETAILLINK[i].SLNO, new { id = "SLNO_" + i, @class = " atextBoxFor ", @title = "Only Numeric", @TabIndex = -1, @readonly = "readonly" })
+                                        </td>                                        
+                                        <td class="">
+                                            @Html.EditorFor(model => model.MRETAILLINK[i].SLCD, new { htmlAttributes = new { @class = "atextBoxFor textbox_image", id = "SLCD_" + i, onkeydown = "GetHelpBlur('" + @Url.Action("GetSubLedgerDetails", "M_RetailOutlet") + "','Jobber Details','" + "SLCD_" + i + "','" + "SLCD_" + i + "=SLCD=1/" + "SLNM_" + i + "=SLNM=0','slcdlinkcd')", onblur = "GetHelpBlur('" + @Url.Action("GetSubLedgerDetails", "M_RetailOutlet") + "','Jobber Details','" + "SLCD_" + i + "','" + "SLCD_" + i + "=SLCD=1/" + "SLNM_" + i + "=SLNM=0','slcdlinkcd');", @placeholder = "Code", maxlength = 8 } })
+                                            <img src="~/Image/search.png" id="PARTY_HELP" width="20px" height="20px" class="Help_image_button_grid" title="Help" onmousedown="GetHelpBlur('@Url.Action("GetSubLedgerDetails", "M_RetailOutlet")','Jobber Details','SLCD_@i','SLCD_@i=SLCD=1/SLNM_@i=SLNM=0','slcdlinkcd')" />
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => Model.MRETAILLINK[i].SLNM, new { id = "SLNM_" + i, @class = " atextBoxFor ", @title = "Only Numeric", @TabIndex = -1, @readonly = "readonly" })
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                   
+                    }
+
+                </div>
+            </div>

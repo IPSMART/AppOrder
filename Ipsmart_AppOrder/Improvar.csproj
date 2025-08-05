@@ -353,6 +353,7 @@
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuRightByUser.cs" />
     <Compile Include="Models\MGROUPDOCCD.cs" />
+    <Compile Include="Models\MRETAILLINK.cs" />
     <Compile Include="Models\MSUBLEGCONT.cs" />
     <Compile Include="Models\MSubLegIFSC.cs" />
     <Compile Include="Models\MSUBLEGLOCOTH.cs" />
@@ -394,7 +395,9 @@
     <Compile Include="Models\M_MONTH.cs" />
     <Compile Include="Models\M_PARTYGRP.cs" />
     <Compile Include="Models\M_REPFORMAT.cs" />
+    <Compile Include="Models\M_RETAIL.cs" />
     <Compile Include="Models\M_RETAILOUTLET.cs" />
+    <Compile Include="Models\M_RETAIL_LINK.cs" />
     <Compile Include="Models\M_SDR_QUERY.cs" />
     <Compile Include="Models\M_SDR_USERID.cs" />
     <Compile Include="Models\M_SIGN_AUTH.cs" />
@@ -854,6 +857,7 @@
     <Content Include="Views\Shared\_M_GrpMast_Main.cshtml" />
     <Content Include="Views\Shared\_LayoutAppOrder.cshtml" />
     <Content Include="Views\T_RetailerOrder\T_RetailerOrder.cshtml" />
+    <Content Include="Views\Shared\_M_Retail_Distributor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
