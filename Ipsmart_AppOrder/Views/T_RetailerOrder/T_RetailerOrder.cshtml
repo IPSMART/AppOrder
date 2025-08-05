@@ -4,6 +4,7 @@
     Layout = null;
     string PageControllerName = "T_RetailerOrder";
     string US = Model?.UNQSNO_ENCRYPTED;
+    var VisibleRow = 2;
 }
 <title>@ViewBag.Title</title>
 <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
@@ -11,6 +12,7 @@
 <link href="~/Content/bootstrap.css" rel="stylesheet" />
 <link href="~/Content/layout_misc.css" rel="stylesheet" />
 <link href="~/Content/swiper-bundle.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Content/font-awesome.min.css" />
 <script src="~/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="~/Scripts/bootstrap.js"></script>
 @*<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>*@
@@ -77,6 +79,49 @@
 
         .swiper-slide img {
         }
+    }
+
+    .textbox_image {
+        padding-right: 18px;
+        margin-right: -21px;
+        float: left;
+    }
+
+    .Help_image_button {
+        width: 19px;
+        height: 19px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+</style>
+<style>
+    /*table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    th, td {
+        border: 1px solid #aaa;
+        padding: 8px;
+        text-align: left;
+    }*/
+
+    .hidden {
+        display: none;
+    }
+
+    /*.controls {
+        margin-top: 10px;
+    }*/
+    .toggle-button {
+        margin-top: 10px;
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
+        background: none;
+        border: none;
+        font-size: 16px;
     }
 </style>
 <script>
@@ -205,12 +250,36 @@
 </script>
 <script>
     function TakeOrder() {
+        debugger;
         var index1 = swiper.realIndex;
         var sizes = $("#size_" + index1).html();
         var sizearr = sizes.split(',');
+
+        var NOOFSETS = retFloat($("#NOOFSETS").val());
+        var PCSPERSET = retFloat($("#PCSPERSET_" + index1).html());
+        var MIXSIZE = $("#MIXSIZE_" + index1).html();
+        var PCSPERBOX = retFloat($("#PCSPERBOX_" + index1).html());
+        var SIZE_COUNT = sizearr.length-1;
         $('#tblSizes > tbody').html('');
         $.each(sizearr, function (index, value) {
-            var tr = '<tr><td>' + value + '</td><td> <input type="number" class="form-control"/></td></tr>';
+            var QNTY = 0;
+            if (NOOFSETS != 0 && PCSPERSET != 0) {
+                if (MIXSIZE == "M") {
+                    QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
+                }
+                else {
+                    if (PCSPERBOX != PCSPERSET) {
+                        QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
+                    } else {
+                        QNTY = NOOFSETS * PCSPERSET;
+                    }
+                }
+            }
+            else {
+                QNTY = (NOOFSETS * PCSPERSET)
+            }
+
+            var tr = '<tr><td>' + value + '</td><td> <input type="number" value="' + QNTY + '"  class="form-control"/></td></tr>';
             $('#tblSizes > tbody:last-child').append(tr);
         });
     }
@@ -218,23 +287,86 @@
 <script>
     function AddtoCart() {
         getLocation();
+        if(retFloat($("#NOOFSETS").val()) == 0)
+        { 
+            alert('Enter No. Of Sets !!');
+            return false; 
+        }
+        TakeOrder();
         var index = swiper.realIndex;
         var itcd = $("#itcd_" + index).html();
         var styleno = $("#styleno_" + index).html();
         var sizedt = '';
-        $('#tblSizes > tbody  > tr').each(function () {
-            var SIZE = $(this).find("td").eq(0).html();
-            var QNTY = $(this).find("td:eq(1) input[type='number']").val();
-            if (QNTY != '') {
-                if (sizedt != '') sizedt += ',';
-                sizedt += SIZE + '=' + QNTY;
-            }
-        });
-        var tr = '<tr><td>' + itcd + '</td><td>' + styleno + '</td><td>' + sizedt + '</td></tr>';
-        $('#tblCart > tbody:last-child').append(tr);
-        $('#tblSizes > tbody').html('');
+        var itcdexist=false;
+        if ($('#tblCart > tbody > tr td:contains("' + itcd + '")').length > 0) {
+            itcdexist = true;
+        }
+        if(itcdexist == true)
+        { 
+            $('#tblSizes > tbody').html('');
+            alert('this style already added in cart !!');
+            return false; 
+        }
+        else
+        {
+            var NoOfItem=retFloat($("#NoOfItem").val());
+            NoOfItem++;
+            var TQnty=retFloat($("#TQnty").val());
+            $('#tblSizes > tbody  > tr').each(function () {
+                var SIZE = $(this).find("td").eq(0).html();
+                var QNTY = $(this).find("td:eq(1) input[type='number']").val();
+                if (QNTY != '') {
+                    if (sizedt != '') sizedt += ',';
+                    sizedt += SIZE + '=' + QNTY;
+                    TQnty +=retFloat(QNTY);
+                }
+            });
+            var tr = '<tr><td>' + itcd + '</td><td>' + styleno + '</td><td>' + sizedt + '</td></tr>';
+            $('#tblCart > tbody').prepend(tr);
+            $('#tblSizes > tbody').html('');
+            $("#NOOFSETS").val("");
+            $("#NoOfItem").val(NoOfItem);
+            $("#TQnty").val(TQnty);
+            $('#cartsummary').text(NoOfItem+"("+TQnty+")");
+            updateVisibility(@VisibleRow);
+        }     
     }
+    function toggleRows(btnid) {
+        const button = document.querySelector(".toggle-button");
+        isExpanded = false;
+        if (btnid == "btnShowMore") {
+            ShowMore();
+            $("#btnShowLess").show();
+            $("#btnShowMore").hide();
+        }
+        else {
+            ShowLess();
+            $("#btnShowLess").hide();
+            $("#btnShowMore").show();
+        }
 
+    }
+    function ShowMore() {
+        const rows = document.querySelectorAll('#tblCart tr');
+        visibleCount = rows.length;
+        updateVisibility(visibleCount);
+    }
+    function ShowLess() {
+        visibleCount = @VisibleRow;
+        updateVisibility(visibleCount);
+    }
+    function updateVisibility(visibleCount) {
+        const rows = document.querySelectorAll('#tblCart tr');
+        if (rows.length > 1) {
+            rows.forEach((row, index) => {
+                if (index <= visibleCount) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+    }
     function SaveData() {
         $("#WaitingMode").show(),
         getLocation();
@@ -250,8 +382,8 @@
             $("#WaitingMode").hide();
             return false;
         }
-        if (!emptyFieldCheck("Please select retailer!", "SelectedRetailerCode")) {
-            alert('Please select retailer !');
+        if (!emptyFieldCheck("Please select retailer!", "RetailerCode")) {
+            alert('retailer not found!');
             $("#WaitingMode").hide();
             return false;
         }
@@ -277,6 +409,10 @@
                     alert('Data Saved Successfully !!');
                     location.reload();
                 }
+                else{
+                    alert(result);
+                    $("#WaitingMode").hide();
+                }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 $("#WaitingMode").hide();
@@ -290,42 +426,42 @@
     function GetBrandInfo(id) {
         debugger;
         $.ajax({
-                type: 'POST',
-                beforesend: $("#WaitingMode").show(),
-                url:  "@Url.Action("GetBrandDetails", PageControllerName)",
-                data: $('form').serialize(),
-                success: function (result) {
-                    var MSG = result.indexOf('#helpDIV');
+            type: 'POST',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("GetBrandDetails", PageControllerName)",
+            data: $('form').serialize(),
+            success: function (result) {
+                var MSG = result.indexOf('#helpDIV');
+                if (MSG >= 0) {
+                    ClearAllTextBoxes("BrandCode,BrandName");
+                    $('#SearchFldValue').val("BrandCode");
+                    $('#helpDIV').html(result);
+                    $('#ReferanceFieldID').val("BrandCode,BrandName");
+                    $('#ReferanceColumn').val("1/0");
+                    $('#helpDIV_Header').html("Brand Details");
+                }
+                else {
+                    var MSG = result.indexOf(String.fromCharCode(181));
                     if (MSG >= 0) {
-                        ClearAllTextBoxes("BrandCode,BrandName");
-                        $('#SearchFldValue').val("BrandCode");
-                        $('#helpDIV').html(result);
-                        $('#ReferanceFieldID').val("BrandCode,BrandName");
-                        $('#ReferanceColumn').val("1/0");
-                        $('#helpDIV_Header').html("Brand Details");
+                        $("#BrandCode").val(returncolvalue(result, "BRANDCD"));
+                        $("#BrandName").val(returncolvalue(result, "BRANDNM"));
+                        hlpblurval = "BrandCode";//id;
                     }
                     else {
-                        var MSG = result.indexOf(String.fromCharCode(181));
-                        if (MSG >= 0) {
-                            $("#BrandCode").val(returncolvalue(result, "BRANDCD"));
-                            $("#BrandName").val(returncolvalue(result, "BRANDNM"));
-                            hlpblurval = "BrandCode";//id;
-                        }
-                        else {
-                            $('#helpDIV').html("");
-                            msgInfo("" + result + " !");
-                            ClearAllTextBoxes("BrandCode,BrandName");
-                            message_value = "BrandCode";
-                        }
+                        $('#helpDIV').html("");
+                        msgInfo("" + result + " !");
+                        ClearAllTextBoxes("BrandCode,BrandName");
+                        message_value = "BrandCode";
                     }
-                    $("#WaitingMode").hide();
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $("#WaitingMode").hide();
-                    msgError(XMLHttpRequest.responseText);
-                    $("body span h1").remove(); $("#msgbody_error style").remove();
                 }
-            });
+                $("#WaitingMode").hide();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
     }
 
     function GetGrpInfo(id) {
@@ -333,40 +469,40 @@
         $.ajax({
             type: 'POST',
             beforesend: $("#WaitingMode").show(),
-            url:  "@Url.Action("GetGrpDetails", PageControllerName)",
+            url: "@Url.Action("GetGrpDetails", PageControllerName)",
             data: $('form').serialize(),
-        success: function (result) {
-            var MSG = result.indexOf('#helpDIV');
-            if (MSG >= 0) {
-                ClearAllTextBoxes("GroupCode,GroupName");
-                $('#SearchFldValue').val("GroupCode");
-                $('#helpDIV').html(result);
-                $('#ReferanceFieldID').val("GroupCode,GroupName");
-                $('#ReferanceColumn').val("1/0");
-                $('#helpDIV_Header').html("Brand Details");
-            }
-            else {
-                var MSG = result.indexOf(String.fromCharCode(181));
+            success: function (result) {
+                var MSG = result.indexOf('#helpDIV');
                 if (MSG >= 0) {
-                    $("#GroupCode").val(returncolvalue(result, "ITGRPCD"));
-                    $("#GroupName").val(returncolvalue(result, "ITGRPNM"));
-                    hlpblurval = "GroupCode";//id;
+                    ClearAllTextBoxes("GroupCode,GroupName");
+                    $('#SearchFldValue').val("GroupCode");
+                    $('#helpDIV').html(result);
+                    $('#ReferanceFieldID').val("GroupCode,GroupName");
+                    $('#ReferanceColumn').val("1/0");
+                    $('#helpDIV_Header').html("Brand Details");
                 }
                 else {
-                    $('#helpDIV').html("");
-                    msgInfo("" + result + " !");
-                    ClearAllTextBoxes("GroupCode,GroupName");
-                    message_value = "GroupCode";
+                    var MSG = result.indexOf(String.fromCharCode(181));
+                    if (MSG >= 0) {
+                        $("#GroupCode").val(returncolvalue(result, "ITGRPCD"));
+                        $("#GroupName").val(returncolvalue(result, "ITGRPNM"));
+                        hlpblurval = "GroupCode";//id;
+                    }
+                    else {
+                        $('#helpDIV').html("");
+                        msgInfo("" + result + " !");
+                        ClearAllTextBoxes("GroupCode,GroupName");
+                        message_value = "GroupCode";
+                    }
                 }
+                $("#WaitingMode").hide();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
             }
-            $("#WaitingMode").hide();
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#WaitingMode").hide();
-            msgError(XMLHttpRequest.responseText);
-            $("body span h1").remove(); $("#msgbody_error style").remove();
-        }
-    });
+        });
     }
 </script>
 <script>
@@ -377,17 +513,17 @@
             beforesend: $("#WaitingMode").show(),
             url: "@Url.Action("GetItem", PageControllerName )",
             data: $('form').serialize(),
-        success: function (result) {
-            $("#partialdivDetail").animate({ marginTop: '-10px' }, 50);
-            $("#partialdivDetail").html(result);
-            $("#WaitingMode").hide();
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#WaitingMode").hide();
-            msgError(XMLHttpRequest.responseText);
-            $("body span h1").remove(); $("#msgbody_error style").remove();
-        }
-    });
+            success: function (result) {
+                $("#partialdivDetail").animate({ marginTop: '-10px' }, 50);
+                $("#partialdivDetail").html(result);
+                $("#WaitingMode").hide();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
     }
 </script>
 @*@Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")*@
@@ -398,31 +534,86 @@
     </p>
 </div>
 <div class="container-fluid">
-    <div class="alert alert-info" style="font-size: large;">
-        <strong>ORDER</strong> TAKEN FROM RETAILER
-        <a href="../Home/Logout">
-            <span class="glyphicon glyphicon-off" style="font-size:medium;color:#dc0624f2;float:right;"></span>
-        </a>
+    <div class="alert alert-info" style="padding:5px;margin-bottom:0px;">
+        <div class="row" style="font-size: large;">
+            <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
+            <a href="../Home/Logout">
+                <span class="glyphicon glyphicon-off" style="font-size:medium;color:#dc0624f2;float:right;"></span>
+            </a>
+        </div>
+        <div class="row" style="font-size: small;">
+            @ViewBag.BrandName @ViewBag.GroupName @ViewBag.CollectionName
+        </div>
     </div>
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(model => model.GEOLONGITUDE)
-        @Html.HiddenFor(model => model.GEOLATITUDE)
+        @Html.HiddenFor(model => model.GEOLONGITUDE, new { id = "GEOLONGITUDE" })
+        @Html.HiddenFor(model => model.GEOLATITUDE, new { id = "GEOLATITUDE" })
         @*@Html.HiddenFor(model => model.GEOADDRESS)*@
-        @Html.HiddenFor(model => model.ITEMDETAIL_JSTR)
+        @Html.HiddenFor(model => model.ITEMDETAIL_JSTR, new { id = "ITEMDETAIL_JSTR" })
+        @Html.HiddenFor(model => model.Dstbrslcd, new { id = "Dstbrslcd" })
+        @Html.HiddenFor(model => model.RetailerCode, new { id = "RetailerCode" })
+  <input type="hidden" id="hdnData" />
+        <input type="hidden" id="NoOfItem" />
+        <input type="hidden" id="TQnty" />
+ <div class="row">
+            <table class="table table-striped" id="tblCart">
+                <thead>
+                    <tr style="background-color: #255994;color: white;">
+                        <th>Item</th>
+                        <th>Styleno</th>
+                        <th>
+                            Sizes Qnty
+                            <div style="float:right;">
+                                <i class="fa fa-shopping-cart" style="font-size:medium;color:white;"></i>
+                                <span id="cartsummary" style="font-size:medium;color:white;">0(0)</span>
+
+                                <span id="btnShowMore" title="Show More" class="glyphicon glyphicon-chevron-down"
+                                      style="font-size:medium;color:white;cursor:pointer;"
+                                      onclick="toggleRows('btnShowMore')"></span>
+
+                                <span id="btnShowLess" title="Show Less" class="glyphicon glyphicon-chevron-up"
+                                      style="font-size:medium;color:white;cursor:pointer;display:none;"
+                                      onclick="toggleRows('btnShowLess')"></span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
         <div class="row">
             <div id="partialdivDetail" style="margin-top:0px;">
                 @Html.Partial("_M_GrpMast_Main")
-            </div>           
+            </div>
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="editor-field">
-                    <button onclick="TakeOrder()" class="btn btn-sm" style="background-color:#d5c180;color: darkmagenta;" type="button">Take Order</button>
+                    @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control textbox_image", id = "NOOFSETS", @placeholder = "No. Of Sets", maxlength = 10} })
+                    @*<img src="~/Image/search.png" id="PARTY_HELP" width="20px" height="20px" class="Help_image_button" title="Help" />*@
+                    @*<span id="btnModifyQnty" title="Modify Quantity" class="glyphicon glyphicon-pencil Help_image_button" style="font-size:20px;color:green;cursor:pointer;"  onclick="AddtoCart()"></span>*@
+
+                    @*<button onclick="TakeOrder()" class="btn btn-sm" style="background-color:#d5c180;color: darkmagenta;" type="button">Take Order</button>*@
+                </div>
+            </div>
+            @*<div class="col-md-6" style="width:auto;">
+                    <div class="editor-field">
+                        <i class="fa fa-edit" title="Modify Cart" style="font-size:30px;color:#f0ad4e;cursor:pointer;" ></i>
+                    </div>
+                </div>*@
+            <div class="col-md-6" style="width:auto;">
+                <div class="editor-field">
+                    <i class="fa fa-cart-plus" title="Add to Cart" style="font-size:30px;color:#f0ad4e;cursor:pointer;" onclick="AddtoCart()"></i>
+                </div>
+            </div>
+            <div class="col-md-6" style="width:auto;">
+                <div class="editor-field">
+                    <i class="fa fa-cart-arrow-down" title="Place Order" style="font-size:30px;color:#5cb85c;cursor:pointer;" onclick="SaveData()"></i>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="display:none;">
             <table class="table table-striped" id="tblSizes">
                 <thead>
                     <tr style="background-color: #255994;color: white;"><th>Size</th><th>Qnty</th></tr>
@@ -430,29 +621,29 @@
                 <tbody></tbody>
             </table>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="editor-field">
-                    <button onclick="AddtoCart()" type="button" class="btn btn-sm btn-warning"> Add to Cart </button>
+        @*<div class="row">
+                <div class="col-md-6">
+                    <div class="editor-field">
+                        <button onclick="AddtoCart()" type="button" class="btn btn-sm btn-warning"> Add to Cart </button>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <input type="hidden" id="hdnData" />
-        <div class="row">
-            <table class="table table-striped" id="tblCart">
-                <thead>
-                    <tr style="background-color: #255994;color: white;"><th>Itcd</th><th>Styleno</th><th>Sizes Qnty</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="editor-field">
-                    <button onclick="SaveData()" class="btn btn-sm btn-success" type="button">Place Order</button>
+            </div>*@
+        @*<input type="hidden" id="hdnData" />
+            <div class="row">
+                <table class="table table-striped" id="tblCart">
+                    <thead>
+                        <tr style="background-color: #255994;color: white;"><th>Itcd</th><th>Styleno</th><th>Sizes Qnty</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>*@
+        @*<div class="row">
+                <div class="col-md-6">
+                    <div class="editor-field">
+                        <button onclick="SaveData()" class="btn btn-sm btn-success" type="button">Place Order</button>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </div>*@
         <div class="container">
             <div id="helpDIV">
 
