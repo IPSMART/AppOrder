@@ -94,36 +94,7 @@
         cursor: pointer;
     }
 </style>
-<style>
-    /*table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 10px;
-    }
 
-    th, td {
-        border: 1px solid #aaa;
-        padding: 8px;
-        text-align: left;
-    }*/
-
-    .hidden {
-        display: none;
-    }
-
-    /*.controls {
-        margin-top: 10px;
-    }*/
-    .toggle-button {
-        margin-top: 10px;
-        cursor: pointer;
-        color: blue;
-        text-decoration: underline;
-        background: none;
-        border: none;
-        font-size: 16px;
-    }
-</style>
 <script>
     $(document).ready(function () {
         getLocation();
@@ -332,7 +303,6 @@
         }     
     }
     function toggleRows(btnid) {
-        const button = document.querySelector(".toggle-button");
         isExpanded = false;
         if (btnid == "btnShowMore") {
             ShowMore();
