@@ -44,35 +44,36 @@
     </script>*@
     <script type="text/javascript">
         $(document).ready(function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        // Success: Set hidden fields
-                        $("#latitude").val(position.coords.latitude);
-                        $("#longitude").val(position.coords.longitude);
-                        $("#locationReady").val("true");
-                    },
-                    function (error) {
-                        alert("Location access is required to use this service.");
-                        $("#locationReady").val("false");
-                        // Optional: disable form or redirect
-                        $("#btnLogin").prop("disabled", true);
-                    }
-                );
-            } else {
-                alert("Geolocation is not supported by this browser.");
-                $("#locationReady").val("false");
-                $("#btnLogin").prop("disabled", true);
-            }
+            //need to open
+            //if (navigator.geolocation) {
+            //    navigator.geolocation.getCurrentPosition(
+            //        function (position) {
+            //            // Success: Set hidden fields
+            //            $("#latitude").val(position.coords.latitude);
+            //            $("#longitude").val(position.coords.longitude);
+            //            $("#locationReady").val("true");
+            //        },
+            //        function (error) {
+            //            alert("Location access is required to use this service.");
+            //            $("#locationReady").val("false");
+            //            // Optional: disable form or redirect
+            //            $("#btnLogin").prop("disabled", true);
+            //        }
+            //    );
+            //} else {
+            //    alert("Geolocation is not supported by this browser.");
+            //    $("#locationReady").val("false");
+            //    $("#btnLogin").prop("disabled", true);
+            //}
 
-            // On form submission, ensure location is present
-            $("form").submit(function (e) {
-                if ($("#locationReady").val() !== "true") {
-                    alert("Location is required before Login.");
-                    e.preventDefault();
-                    return false;
-                }
-            });
+            //// On form submission, ensure location is present
+            //$("form").submit(function (e) {
+            //    if ($("#locationReady").val() !== "true") {
+            //        alert("Location is required before Login.");
+            //        e.preventDefault();
+            //        return false;
+            //    }
+            //});
         });
     </script>
     <script>

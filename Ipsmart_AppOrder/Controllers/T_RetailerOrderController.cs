@@ -16,9 +16,8 @@ namespace Improvar.Controllers
 {
     public class T_RetailerOrderController : Controller
     {
-        Connection Cn = new Connection(); string sql = "";
+        Connection Cn = new Connection();
         MasterHelp masterHelp = new MasterHelp();
-        M_CNTRL_HDR sll; M_GENLEG sGEN;
         string UNQSNO = CommVar.getQueryStringUNQSNO();
         // GET: T_RetailerOrder
         public ActionResult T_RetailerOrder(string op = "", string key = "", int Nindex = 0, string searchValue = "")
@@ -70,9 +69,9 @@ namespace Improvar.Controllers
                     sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE,count(C.SIZECD)SIZE_COUNT,nvl(a.PCSPERBOX,0) PCSPERBOX ";
                     sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
                     sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd ";
-                    if (VE.BrandCode.retStr() != "") sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") ";
-                    if (VE.GroupCode.retStr() != "") sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") ";
-                    if (VE.CollCode.retStr() != "") sql += "and a.collcd in(" + VE.CollCode.retSqlfromStrarray() + ") ";
+                    if (VE.BrandCode != null) sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") ";
+                    if (VE.GroupCode != null) sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") ";
+                    if (VE.CollCode != null) sql += "and a.collcd in(" + VE.CollCode.retSqlfromStrarray() + ") ";
                     sql += " group by  a.m_autono,a.itcd,a.styleno,nvl(a.PCSPERSET,0),a.MIXSIZE,nvl(a.PCSPERBOX,0)  ";
 
 
@@ -113,94 +112,8 @@ namespace Improvar.Controllers
 
             catch (Exception ex)
             {
-                //AmountTypeMasterEntry VE = new AmountTypeMasterEntry();
-                //VE.DefaultView = false;
-                //VE.DefaultDay = 0;
-                //ViewBag.ErrorMessage = ex.Message + " " + ex.InnerException;
                 Cn.SaveException(ex, "");
                 return Content(ex.Message + ex.InnerException);
-            }
-        }
-
-        //public JsonResult GetRetailerInfo(string RetailerName, string RetailerPin, string RetailerGstno, string RetailerCity)
-        //{
-        //    List<TransactionRetailOrder> retlOrdrlst = new List<TransactionRetailOrder>();
-        //    try
-        //    {
-        //        string LOC = CommVar.Loccd(UNQSNO), COM = CommVar.Compcd(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), yrcd = CommVar.YearCode(UNQSNO);
-        //        ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
-        //        sql = "";
-        //        sql += " select distinct RETLRCD,RETLRNM,RETLRPIN,RETLRCITY,RETLRGSTNO,a.DSTBRSLCD,b.slnm DSTBRSLnm  from  " + scm + ".M_RetailOutlet a, " + scmf + ".m_subleg b " + Environment.NewLine;
-        //        sql += "where  A.DSTBRSLCD=b.slcd " + Environment.NewLine;
-        //        if (RetailerName.retStr() != "") sql += " and upper(RETLRNM) like '%" + RetailerName.retStr().ToUpper() + "%' ";
-        //        if (RetailerPin.retStr() != "") sql += "and RETLRPIN like '%" + RetailerPin.retStr() + "%' ";
-        //        if (RetailerGstno.retStr() != "") sql += "and upper(RETLRGSTNO) like '%" + RetailerGstno.retStr().ToUpper() + "%' ";
-        //        if (RetailerCity.retStr() != "") sql += "and upper(RETLRCITY) like '%" + RetailerCity.retStr().ToUpper() + "%' ";
-        //        var txndt = masterHelp.SQLquery(sql);
-        //        retlOrdrlst = (from DataRow dr in txndt.Rows
-        //                       select new TransactionRetailOrder
-        //                       {
-        //                           RetailerCode = dr["RETLRCD"].ToString(),
-        //                           RetailerGstno = dr["RETLRGSTNO"].ToString(),
-        //                           RetailerCity = dr["RETLRCITY"].retDateStr(),
-        //                           RetailerName = dr["RETLRNM"].ToString(),
-        //                           RetailerPin = dr["RETLRPIN"].ToString(),
-        //                           Dstbrslcd = dr["DSTBRSLCD"].ToString(),
-        //                           Dstbrslnm = dr["DSTBRSLnm"].ToString(),
-        //                       }).Take(5).ToList();
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //   dic.Add("message", ex.Message + ex.InnerException);
-        //        Cn.SaveException(ex, "");
-        //    }
-        //    return Json(retlOrdrlst, JsonRequestBehavior.AllowGet);
-        //}
-        public class AddressComponent
-        {
-            public string long_name { get; set; }
-            public string short_name { get; set; }
-            public List<string> types { get; set; }
-        }
-
-        public class Result
-        {
-            public List<AddressComponent> address_components { get; set; }
-            public string formatted_address { get; set; }
-        }
-
-        public class GeoLocation
-        {
-            public List<Result> results { get; set; }
-            public string status { get; set; }
-        }
-
-        public string GetAddress(string lat, string lng)
-        {
-            try
-            {
-                string datastring = "";
-                //lat = "22.555"; lng = "88.258";
-                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
-                WebRequest rqst = HttpWebRequest.Create(url);
-                using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
-                {
-                    Stream strm = (Stream)rspns.GetResponseStream();
-                    StreamReader strmrdr = new StreamReader(strm);
-                    datastring = strmrdr.ReadToEnd();
-                    strm.Close();
-                    strmrdr.Close();
-                    rspns.Close();
-                }
-                GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
-                var address = geoLocation.results[0].formatted_address;
-                return address;
-            }
-            catch (Exception ex)
-            {
-                Cn.SaveException(ex, "");
-                return "";
             }
         }
         public ActionResult SAVE(FormCollection FC, TransactionRetailOrder VE)
@@ -285,9 +198,6 @@ namespace Improvar.Controllers
                         {
                             DB.Entry(TRETAILORDER).State = System.Data.Entity.EntityState.Modified;
                         }
-                        //List<APP_ITEMLIST> KARTIEMS = new List<ViewModels.APP_ITEMLIST>();
-                        //var KARTIEMS1 = new APP_ITEMLIST() { itcd = "F008477", sizes = new List<APP_SIZEDTL>() { new APP_SIZEDTL() { qnty = "323", sizecd = "S" } } };
-                        //KARTIEMS.Add(KARTIEMS1);
                         List<APP_ITEMLIST> aPP_ITEMLIST = JsonConvert.DeserializeObject<List<APP_ITEMLIST>>(VE.ITEMDETAIL_JSTR);
                         int slno = 0;
                         foreach (var v in aPP_ITEMLIST)
@@ -361,141 +271,54 @@ namespace Improvar.Controllers
             }
             return null;
         }
-        public ActionResult GetBrandDetails(TransactionRetailOrder VE)
-        {
-            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
-            string sql = "";
-
-            string BrandCode = VE.BrandCode.retStr().ToUpper().Trim();
-            string BrandName = VE.BrandName.retStr().ToUpper().Trim();
-
-            sql = "";
-            sql += "select distinct a.BRANDCD,a.BRANDNM ";
-            sql += "from " + scm + ".M_BRAND a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
-            sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
-            if (BrandCode.retStr() != "") sql += "and  upper(a.BRANDCD) LIKE '%" + BrandCode + "%'  ";
-            if (BrandName.retStr() != "") sql += "and  upper(a.BRANDNM) LIKE '%" + BrandName + "%' ";
-            sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
-            sql += "nvl(c.inactive_tag,'N') = 'N' ";
-            sql += "order by BRANDNM,BRANDCD";
-            DataTable tbl = masterHelp.SQLquery(sql);
-            if (tbl.Rows.Count > 1)
-            {
-                System.Text.StringBuilder SB = new System.Text.StringBuilder();
-                for (int i = 0; i <= tbl.Rows.Count - 1; i++)
-                {
-                    SB.Append("<tr><td>" + tbl.Rows[i]["BRANDNM"] + "</td><td>" + tbl.Rows[i]["BRANDCD"] + " </td></tr>");
-                }
-                var hdr = "Brand Name" + Cn.GCS() + "Brand Code";
-                return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
-
-            }
-            else
-            {
-                if (tbl.Rows.Count > 0)
-                {
-                    string str = masterHelp.ToReturnFieldValues("", tbl);
-                    return Content(str);
-                }
-                else
-                {
-                    return Content("Invalid Brand Code ! Please Enter a Valid Brand Code !!");
-                }
-            }
-        }
-
-        public ActionResult GetGrpDetails(TransactionRetailOrder VE)
-        {
-            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
-            string sql = "";
-
-            string GroupCode = VE.GroupCode.retStr().ToUpper().Trim();
-            string GroupName = VE.GroupName.retStr().ToUpper().Trim();
-
-            sql = "";
-            sql += "select distinct a.ITGRPCD,a.ITGRPNM ";
-            sql += "from " + scm + ".M_GROUP a, " + scm + ".m_cntrl_hdr c, " + scm + ".m_cntrl_loca d ";
-            sql += "where a.m_autono=c.m_autono(+) and a.m_autono=d.m_autono(+) ";
-            if (GroupCode.retStr() != "") sql += "and  upper(a.ITGRPCD) LIKE '%" + GroupCode + "%'  ";
-            if (GroupName.retStr() != "") sql += "and  upper(a.ITGRPNM) LIKE '%" + GroupName + "%' ";
-            sql += "and (d.compcd='" + COM + "' or d.compcd is null) and (d.loccd='" + LOC + "' or d.loccd is null) and ";
-            sql += "nvl(c.inactive_tag,'N') = 'N' ";
-            sql += "order by ITGRPNM,ITGRPCD";
-            DataTable tbl = masterHelp.SQLquery(sql);
-            if (tbl.Rows.Count > 1)
-            {
-                System.Text.StringBuilder SB = new System.Text.StringBuilder();
-                for (int i = 0; i <= tbl.Rows.Count - 1; i++)
-                {
-                    SB.Append("<tr><td>" + tbl.Rows[i]["ITGRPNM"] + "</td><td>" + tbl.Rows[i]["ITGRPCD"] + " </td></tr>");
-                }
-                var hdr = "Group Name" + Cn.GCS() + "Group Code";
-                return PartialView("_Help2", (masterHelp.Generate_help(hdr, SB.ToString())));
-
-            }
-            else
-            {
-                if (tbl.Rows.Count > 0)
-                {
-                    string str = masterHelp.ToReturnFieldValues("", tbl);
-                    return Content(str);
-                }
-                else
-                {
-                    return Content("Invalid Group Code ! Please Enter a Valid Group Code !!");
-                }
-            }
-        }
-        public ActionResult GetItem(TransactionRetailOrder VE)
+        public string GetAddress(string lat, string lng)
         {
             try
             {
-                string brand = VE.BrandCode.retSqlfromStrarray();
-                string scm = CommVar.CurSchema(UNQSNO);
-                string fscm = CommVar.FinSchema(UNQSNO);
-                string comp = CommVar.Compcd(UNQSNO);
-                string loc = CommVar.Loccd(UNQSNO);
-                string doccd = "";
-
-                string sql = "";
-                sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes";
-                sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
-                sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and b.brandcd = '" + brand + "'";
-                sql += " group by  a.m_autono,a.itcd,a.styleno";
-
-
-                var dt = masterHelp.SQLquery(sql);
-                List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
-                foreach (DataRow dr in dt.Rows)
+                string datastring = "";
+                //lat = "22.555"; lng = "88.258";
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
+                WebRequest rqst = HttpWebRequest.Create(url);
+                using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
                 {
-                    ImageView objImageView = new ImageView();
-                    objImageView.ITCD = dr["ITCD"].ToString();
-                    objImageView.Desc = dr["styleno"].ToString();
-                    objImageView.SIZES = dr["sizes"].ToString();
-                    //objImageView.Desc = dr["desc"].ToString();
-                    var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
-                    if (img.Count > 0)
-                    {
-                        var DBImgString = img[0].DOC_FILE;
-                        var ImageName = img[0].DOC_FILE_NAME;
-                        var extension = Path.GetExtension(ImageName);
-                        string filename = objImageView.ITCD + "_0" + extension;
-                        var folderpath = CommVar.LocalUploadDocPath(filename);
-                        var link = Cn.SaveImage(DBImgString, folderpath);
-                        var path = CommVar.WebUploadDocURL(filename);
-                        objImageView.Url = path;
-                        ImageViewlst.Add(objImageView);
-                    }
+                    Stream strm = (Stream)rspns.GetResponseStream();
+                    StreamReader strmrdr = new StreamReader(strm);
+                    datastring = strmrdr.ReadToEnd();
+                    strm.Close();
+                    strmrdr.Close();
+                    rspns.Close();
                 }
-                VE.ImageView = ImageViewlst;
-                return PartialView("_M_GrpMast_Main", VE);
+                GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
+                var address = geoLocation.results[0].formatted_address;
+                return address;
             }
             catch (Exception ex)
             {
                 Cn.SaveException(ex, "");
-                return Content(ex.Message + ex.InnerException);
+                return "";
             }
         }
+
+        public class AddressComponent
+        {
+            public string long_name { get; set; }
+            public string short_name { get; set; }
+            public List<string> types { get; set; }
+        }
+
+        public class Result
+        {
+            public List<AddressComponent> address_components { get; set; }
+            public string formatted_address { get; set; }
+        }
+
+        public class GeoLocation
+        {
+            public List<Result> results { get; set; }
+            public string status { get; set; }
+        }
+
+
 
 
     }

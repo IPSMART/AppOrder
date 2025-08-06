@@ -94,58 +94,46 @@
         cursor: pointer;
     }
 </style>
+<style>
+      .top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 55px;
+        z-index: 1000;
+    }
 
+    .sub-top {
+        position: fixed;
+        top: 55px; /* offset by the height of .top */
+        left: 0;
+        width: 100%;
+        height: 40px;
+        z-index: 999; /* slightly lower than .top */
+    }
+
+    .content {
+        margin-top: 175px; /* push content below both fixed divs */
+        padding: 1rem;
+        padding-bottom: 70px; /* space to avoid hiding content under footer */
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #d9edf7;
+        color: #3a87ad;
+        line-height: 60px;
+        z-index: 1000;
+    }
+</style>
 <script>
     $(document).ready(function () {
-        getLocation();
+        //getLocation();
     });
-
-    @*function GetRetailerInfo() {
-        debugger;
-        var RetailerName = $("#RetailerName").val();
-        var RetailerPin = $("#RetailerPin").val();
-        var RetailerGstno = $("#RetailerGstno").val();
-        var RetailerCity = $("#RetailerCity").val();
-        $.ajax({
-            type: 'GET',
-            url: "@Url.Action("GetRetailerInfo", PageControllerName)",
-            data: {
-                RetailerName: RetailerName,
-                RetailerPin: RetailerPin,
-                RetailerGstno: RetailerGstno,
-                RetailerCity: RetailerCity,
-            },
-            contentType: "application/json",
-            success: function (result) {
-                if (result.length == 0) {
-                    alert('No retailer found !'); return;
-                }
-                else if (result.length > 1) {
-                    var alldata = '';
-                    $.each(result, function (index, itemData) {
-                        alldata += ((index + 1) + ". Name:" + itemData.RetailerName + " Pin:" + itemData.RetailerPin + " Gst:" + itemData.RetailerGstno + " City:" + itemData.RetailerCity + " ... ");
-                    });
-                    alert('Use filter to get accurate data. ' + alldata); return;
-                }
-                $.each(result, function (index, itemData) {
-                    $("#SelectedRTLCD").val(itemData.RTLCD);
-                    $("#SelectedRetailerName").val(itemData.RetailerName);
-                    //$("#SelectedRetailerPin").val(itemData.RetailerPin);
-                    //$("#SelectedRetailerGstno").val(itemData.RetailerGstno);
-                    //$("#SelectedRetailerCity").val(itemData.RetailerCity);
-                    $("#SLCD").val(itemData.SLCD);
-                    //$("#Dstbrslnm").val(itemData.Dstbrslnm);
-                    $("#divGetRetailerInfo").hide();
-
-                });
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $("#WaitingMode").hide();
-                msgError(XMLHttpRequest.responseText);
-                $("body span h1").remove(); $("#msgbody_error style").remove();
-            }
-        });
-    }*@
 </script>
 <script>
     function getLocation() {
@@ -166,58 +154,9 @@
         } else {
             alert("Geolocation is not supported by this browser.");
 
-        }
-        //if (navigator.geolocation) {
-        //    handlePermission();
-        //    navigator.geolocation.getCurrentPosition(function (position) {
-        //        var lat = position.coords.latitude;
-        //        var lng = position.coords.longitude;
-        //        $("#GPSLOT").val(lat);
-        //        $("#GPSLAT").val(lng);
-        //        console.log(lat + ',' + lng);
-        //    });
-        //}
-        //else {
-        //    console.log("Geolocation is not supported by this browser.");
-        //}
+        }      
     }
-    //function getLocation() {
-    //    if (navigator.geolocation) {
-    //        handlePermission();
-    //        navigator.geolocation.getCurrentPosition(function (position) {
-    //            var lat = position.coords.latitude;
-    //            var lng = position.coords.longitude;
-    //            $("#GPSLOT").val(lat);
-    //            $("#GPSLAT").val(lng);
-    //            console.log(lat + ',' + lng);
-    //            var address = '';
-    //            var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
-    //            var xhr = new XMLHttpRequest();
-    //            xhr.open('GET', url, true);
-    //            xhr.onload = function () {
-    //                if (xhr.readyState == 4 && xhr.status == 200) {
-    //                    var response = JSON.parse(xhr.responseText);
-    //                    address = response.results[0].formatted_address;
-    //                    $("#GEOADDRESS").val(address);
-    //                }
-    //            };
-    //            xhr.send(null);
-
-    //        });
-    //    }
-    //    else {
-    //        console.log("Geolocation is not supported by this browser.");
-    //    }
-    //}
-    function handlePermission() {
-        navigator.permissions.query({ name: 'geolocation' }).then(function (result) {
-            console.log(result.state);
-            if (result.state == 'denied') {
-                alert('Please allow your location permission');
-            }
-        });
-    }
-
+  
 </script>
 <script>
     function TakeOrder() {
@@ -254,10 +193,8 @@
             $('#tblSizes > tbody:last-child').append(tr);
         });
     }
-</script>
-<script>
     function AddtoCart() {
-        getLocation();
+        //getLocation();
         if(retFloat($("#NOOFSETS").val()) == 0)
         { 
             alert('Enter No. Of Sets !!');
@@ -314,8 +251,9 @@
             $("#btnShowLess").hide();
             $("#btnShowMore").show();
         }
-
     }
+</script>
+<script>
     function ShowMore() {
         const rows = document.querySelectorAll('#tblCart tr');
         visibleCount = rows.length;
@@ -337,21 +275,23 @@
             });
         }
     }
+</script>
+<script>
     function SaveData() {
-        $("#WaitingMode").show(),
-        getLocation();
-        if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            alert('Please select retailer !');
-            getLocation();
-            $("#WaitingMode").hide();
-            return false;
-        }
-        if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            alert('Please select retailer !');
-            getLocation();
-            $("#WaitingMode").hide();
-            return false;
-        }
+        $("#WaitingMode").show();
+        //getLocation();
+        //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+        //    alert('Location not found,Save again!');
+        //    //getLocation();
+        //    $("#WaitingMode").hide();
+        //    return false;
+        //}
+        //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+        //    alert('Location not found,Save again!');
+        //    //getLocation();
+        //    $("#WaitingMode").hide();
+        //    return false;
+        //}
         if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
             alert('retailer not found!');
             $("#WaitingMode").hide();
@@ -374,126 +314,28 @@
             type: 'post',
             url: "@Url.Action("SAVE", PageControllerName)",
             data: $('form').serialize(),
-            success: function (result) {
-                if (result == '1') {
-                    alert('Data Saved Successfully !!');
-                    location.reload();
+        success: function (result) {
+            if (result == '1') {
+                alert('Data Saved Successfully !!');
+                window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
+                if (newWindow) {
+                    window.open('', '_self'); // Required for some browsers
+                    window.close(); // Attempt to close current window
+                } else {
+                    alert("Popup blocked! Please allow popups for this website.");
                 }
-                else{
-                    alert(result);
-                    $("#WaitingMode").hide();
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $("#WaitingMode").hide();
-                msgError(XMLHttpRequest.responseText);
-                $("body span h1").remove(); $("#msgbody_error style").remove();
             }
-        });
-    }
-</script>
-<script>
-    function GetBrandInfo(id) {
-        debugger;
-        $.ajax({
-            type: 'POST',
-            beforesend: $("#WaitingMode").show(),
-            url: "@Url.Action("GetBrandDetails", PageControllerName)",
-            data: $('form').serialize(),
-            success: function (result) {
-                var MSG = result.indexOf('#helpDIV');
-                if (MSG >= 0) {
-                    ClearAllTextBoxes("BrandCode,BrandName");
-                    $('#SearchFldValue').val("BrandCode");
-                    $('#helpDIV').html(result);
-                    $('#ReferanceFieldID').val("BrandCode,BrandName");
-                    $('#ReferanceColumn').val("1/0");
-                    $('#helpDIV_Header').html("Brand Details");
-                }
-                else {
-                    var MSG = result.indexOf(String.fromCharCode(181));
-                    if (MSG >= 0) {
-                        $("#BrandCode").val(returncolvalue(result, "BRANDCD"));
-                        $("#BrandName").val(returncolvalue(result, "BRANDNM"));
-                        hlpblurval = "BrandCode";//id;
-                    }
-                    else {
-                        $('#helpDIV').html("");
-                        msgInfo("" + result + " !");
-                        ClearAllTextBoxes("BrandCode,BrandName");
-                        message_value = "BrandCode";
-                    }
-                }
+            else{
+                alert(result);
                 $("#WaitingMode").hide();
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $("#WaitingMode").hide();
-                msgError(XMLHttpRequest.responseText);
-                $("body span h1").remove(); $("#msgbody_error style").remove();
             }
-        });
-    }
-
-    function GetGrpInfo(id) {
-        debugger;
-        $.ajax({
-            type: 'POST',
-            beforesend: $("#WaitingMode").show(),
-            url: "@Url.Action("GetGrpDetails", PageControllerName)",
-            data: $('form').serialize(),
-            success: function (result) {
-                var MSG = result.indexOf('#helpDIV');
-                if (MSG >= 0) {
-                    ClearAllTextBoxes("GroupCode,GroupName");
-                    $('#SearchFldValue').val("GroupCode");
-                    $('#helpDIV').html(result);
-                    $('#ReferanceFieldID').val("GroupCode,GroupName");
-                    $('#ReferanceColumn').val("1/0");
-                    $('#helpDIV_Header').html("Brand Details");
-                }
-                else {
-                    var MSG = result.indexOf(String.fromCharCode(181));
-                    if (MSG >= 0) {
-                        $("#GroupCode").val(returncolvalue(result, "ITGRPCD"));
-                        $("#GroupName").val(returncolvalue(result, "ITGRPNM"));
-                        hlpblurval = "GroupCode";//id;
-                    }
-                    else {
-                        $('#helpDIV').html("");
-                        msgInfo("" + result + " !");
-                        ClearAllTextBoxes("GroupCode,GroupName");
-                        message_value = "GroupCode";
-                    }
-                }
-                $("#WaitingMode").hide();
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $("#WaitingMode").hide();
-                msgError(XMLHttpRequest.responseText);
-                $("body span h1").remove(); $("#msgbody_error style").remove();
-            }
-        });
-    }
-</script>
-<script>
-    function GetItemData() {
-        debugger;
-        $.ajax({
-            type: 'post',
-            beforesend: $("#WaitingMode").show(),
-            url: "@Url.Action("GetItem", PageControllerName )",
-            data: $('form').serialize(),
-            success: function (result) {
-                $("#partialdivDetail").animate({ marginTop: '-10px' }, 50);
-                $("#partialdivDetail").html(result);
-                $("#WaitingMode").hide();
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $("#WaitingMode").hide();
-                msgError(XMLHttpRequest.responseText);
-                $("body span h1").remove(); $("#msgbody_error style").remove();
-            }
-        });
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
     }
 </script>
 @*@Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")*@
@@ -504,7 +346,7 @@
     </p>
 </div>
 <div class="container-fluid">
-    <div class="alert alert-info" style="padding:5px;margin-bottom:0px;">
+    <div class="alert alert-info top" style="padding:5px;margin-bottom:0px;">
         <div class="row" style="font-size: large;">
             <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
             <a href="../Home/Logout">
@@ -530,7 +372,7 @@
 <input type="hidden" id="hdnData" />
         <input type="hidden" id="NoOfItem" />
         <input type="hidden" id="TQnty" />
- <div class="row">
+ <div class="row sub-top">
             <table class="table table-striped" id="tblCart">
                 <thead>
                     <tr style="background-color: #255994;color: white;">
@@ -539,7 +381,7 @@
                         <th>
                             Sizes Qnty
                             <div style="float:right;">
-                                <i class="fa fa-shopping-cart" style="font-size:medium;color:white;"></i>
+                                <i class="fa fa-shopping-cart" title="Place Order" style="font-size:medium;color:greenyellow;cursor:pointer;" onclick="SaveData()"></i>
                                 <span id="cartsummary" style="font-size:medium;color:white;">0(0)</span>
 
                                 <span id="btnShowMore" title="Show More" class="glyphicon glyphicon-chevron-down"
@@ -556,35 +398,9 @@
                 <tbody></tbody>
             </table>
         </div>
-        <div class="row">
+        <div class="row content">
             <div id="partialdivDetail" style="margin-top:0px;">
                 @Html.Partial("_M_GrpMast_Main")
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control textbox_image", id = "NOOFSETS", @placeholder = "No. Of Sets", maxlength = 10} })
-                    @*<img src="~/Image/search.png" id="PARTY_HELP" width="20px" height="20px" class="Help_image_button" title="Help" />*@
-                    @*<span id="btnModifyQnty" title="Modify Quantity" class="glyphicon glyphicon-pencil Help_image_button" style="font-size:20px;color:green;cursor:pointer;"  onclick="AddtoCart()"></span>*@
-
-                    @*<button onclick="TakeOrder()" class="btn btn-sm" style="background-color:#d5c180;color: darkmagenta;" type="button">Take Order</button>*@
-                </div>
-            </div>
-            @*<div class="col-md-6" style="width:auto;">
-                    <div class="editor-field">
-                        <i class="fa fa-edit" title="Modify Cart" style="font-size:30px;color:#f0ad4e;cursor:pointer;" ></i>
-                    </div>
-                </div>*@
-            <div class="col-md-6" style="width:auto;">
-                <div class="editor-field">
-                    <i class="fa fa-cart-plus" title="Add to Cart" style="font-size:30px;color:#f0ad4e;cursor:pointer;" onclick="AddtoCart()"></i>
-                </div>
-            </div>
-            <div class="col-md-6" style="width:auto;">
-                <div class="editor-field">
-                    <i class="fa fa-cart-arrow-down" title="Place Order" style="font-size:30px;color:#5cb85c;cursor:pointer;" onclick="SaveData()"></i>
-                </div>
             </div>
         </div>
         <div class="row" style="display:none;">
@@ -594,30 +410,21 @@
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
-        @*<div class="row">
-                <div class="col-md-6">
-                    <div class="editor-field">
-                        <button onclick="AddtoCart()" type="button" class="btn btn-sm btn-warning"> Add to Cart </button>
-                    </div>
-                </div>
-            </div>*@
-        @*<input type="hidden" id="hdnData" />
+        </div>      
+        <div class="footer" style="padding:5px;">
             <div class="row">
-                <table class="table table-striped" id="tblCart">
-                    <thead>
-                        <tr style="background-color: #255994;color: white;"><th>Itcd</th><th>Styleno</th><th>Sizes Qnty</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>*@
-        @*<div class="row">
                 <div class="col-md-6">
                     <div class="editor-field">
-                        <button onclick="SaveData()" class="btn btn-sm btn-success" type="button">Place Order</button>
+                        @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control", id = "NOOFSETS", @placeholder = "No. Of Sets", maxlength = 10 } })
                     </div>
                 </div>
-            </div>*@
+                <div class="col-md-6" style="width:auto;">
+                    <div class="editor-field" style="margin-top:3px;">
+                        <button type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;width:100%" class="btn btn-sm btn-warning" onclick="AddtoCart()" title="Add to Cart">Add to Cart <i class="fa fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div id="helpDIV">
 

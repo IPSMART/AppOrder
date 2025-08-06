@@ -7,7 +7,7 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
-        getLocation();
+        //getLocation();
 
         function formatResult(item) {
             if (!item.id) return item.text;
@@ -153,12 +153,22 @@
     function GetItemData() {
         debugger;
         let values = $('#BrandCode').val();
+        if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
+        if (!emptyFieldCheck("Please Select Retailer Name", "RetailerCode")) { return false; }
+        if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
         $.ajax({
             type: 'post',
+            beforesend: $("#WaitingMode").show(),
             url: "@Url.Action("GetItem", PageControllerName)",
             data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
             success: function (result) {
-                window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
+                window.location.href = "@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })";
+                if (newWindow) {
+                    window.open('', '_self'); // Required for some browsers
+                    window.close(); // Attempt to close current window
+                } else {
+                    alert("Popup blocked! Please allow popups for this website.");
+                }
             }
         });
     }
@@ -184,6 +194,7 @@
                 <div class="col-md-5">
                     <div class="editor-field" style="margin-top: 4px;">
                         @Html.Label("", "Distributor Name")
+                        <b style="color:Red;">*</b>
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -198,6 +209,7 @@
                 <div class="col-md-5">
                     <div class="editor-field" style="margin-top: 4px;">
                         @Html.Label("", "Retailer Name")
+                        <b style="color:Red;">*</b>
                         <a href="../M_RetailOutlet/M_RetailOutlet?op=V&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=@US&DC=&MP=" target="_blank">
                             <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>
                         </a>
@@ -214,6 +226,7 @@
                 <div class="col-md-5">
                     <div class="editor-field" style="margin-top: 4px;">
                         @Html.Label("", "Brand")
+                        <b style="color:Red;">*</b>
                     </div>
                 </div>
                 <div class="col-lg-5">
