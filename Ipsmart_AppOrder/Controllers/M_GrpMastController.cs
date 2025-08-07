@@ -173,13 +173,20 @@ namespace Improvar.Controllers
                 sql += "and nvl(b.inactive_tag,'N')='N' ";
                 sql += "order by RTLNM ";
                 DataTable tbl = masterHelp.SQLquery(sql);
-
-                VE.ListRetailer = (from DataRow a in tbl.Rows
-                                   select new ListRetailer()
-                                   {
-                                       value = a["RTLCD"].retStr(),
-                                       text = a["RTLNM"].retStr() + GCS + a["LANDMARK"].retStr(),
-                                   }).ToList();
+                if(tbl != null && tbl.Rows.Count > 0)
+                {
+                    VE.ListRetailer = (from DataRow a in tbl.Rows
+                                       select new ListRetailer()
+                                       {
+                                           value = a["RTLCD"].retStr(),
+                                           text = a["RTLNM"].retStr() + GCS + a["LANDMARK"].retStr(),
+                                       }).ToList();
+                }
+                else
+                {
+                    VE.ListRetailer = new List<ListRetailer>();
+                }
+               
 
                 ModelState.Clear();
                 return Json(VE.ListRetailer, JsonRequestBehavior.AllowGet);

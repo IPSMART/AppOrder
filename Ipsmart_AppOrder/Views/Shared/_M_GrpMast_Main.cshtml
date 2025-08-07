@@ -1,5 +1,7 @@
 ﻿@model Improvar.ViewModels.TransactionRetailOrder
-
+@{
+    var tt = System.DateTime.Now.retStr();
+}
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
         @if (Model.ImageView != null)
@@ -13,8 +15,9 @@
                     <span style="display: none" id="MIXSIZE_@i">@Model.ImageView[i].MIXSIZE</span>
                     <span style="display: none" id="SIZE_COUNT_@i">@Model.ImageView[i].SIZE_COUNT</span>
                     <span style="display: none" id="PCSPERBOX_@i">@Model.ImageView[i].PCSPERBOX</span>
- <div class="title" id="styleno_@i">@Model.ImageView[i].Desc</div>
-                    <img src="@Model.ImageView[i].Url" />
+                    <div class="title" id="styleno_@i">@Model.ImageView[i].Desc</div>
+                    <img src="@Model.ImageView[i].Url?@tt" />
+
                 </div>
             }
         }

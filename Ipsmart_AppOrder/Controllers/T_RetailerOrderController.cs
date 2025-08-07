@@ -11,6 +11,8 @@ using System.Net.Sockets;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Web.Hosting;
+using System.Configuration;
 
 namespace Improvar.Controllers
 {
@@ -68,7 +70,8 @@ namespace Improvar.Controllers
                     string sql = "";
                     sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE,count(C.SIZECD)SIZE_COUNT,nvl(a.PCSPERBOX,0) PCSPERBOX ";
                     sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
-                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd ";
+                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and ";
+                    sql += " a.m_autono in (select m_autono from " + CommVar.CurSchema(UNQSNO) + ".M_CNTRL_HDR_DOC ) ";
                     if (VE.BrandCode != null) sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") ";
                     if (VE.GroupCode != null) sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") ";
                     if (VE.CollCode != null) sql += "and a.collcd in(" + VE.CollCode.retSqlfromStrarray() + ") ";
@@ -79,30 +82,37 @@ namespace Improvar.Controllers
                     List<ImageView> ImageViewlst = new List<ViewModels.ImageView>();
                     foreach (DataRow dr in dt.Rows)
                     {
+                        string itcd = dr["ITCD"].ToString();
 
-                        var img = Cn.GetUploadImage(scm, dr["m_autono"].retInt());
-                        if (img.Count > 0)
+                        string ITEMIMGPATH = @ConfigurationManager.AppSettings["ITEMIMGPATH"].retStr();
+                        string physicalPath = ITEMIMGPATH + "/ItemImages/"; //@"D:" + "/ItemImages/";
+
+                        DirectoryInfo di = new DirectoryInfo(physicalPath);
+                        var totalfiles = di.GetFiles(itcd + "_*")
+                                        .Select(file => new { filenm = file.Name }).ToList();
+
+                        if (totalfiles != null && totalfiles.Count > 0)
                         {
-                            ImageView objImageView = new ImageView();
-                            objImageView.ITCD = dr["ITCD"].ToString();
-                            objImageView.Desc = dr["styleno"].ToString();
-                            objImageView.SIZES = dr["sizes"].ToString();
-                            objImageView.PCSPERSET = dr["PCSPERSET"].retShort();
-                            objImageView.MIXSIZE = dr["MIXSIZE"].ToString();
-                            objImageView.SIZE_COUNT = dr["SIZE_COUNT"].retDbl();
-                            objImageView.PCSPERBOX = dr["PCSPERBOX"].retShort();
+                            foreach (var file in totalfiles)
+                            {
+                                ImageView objImageView = new ImageView();
+                                objImageView.ITCD = dr["ITCD"].ToString();
+                                objImageView.Desc = dr["styleno"].ToString();
+                                objImageView.SIZES = dr["sizes"].ToString();
+                                objImageView.PCSPERSET = dr["PCSPERSET"].retShort();
+                                objImageView.MIXSIZE = dr["MIXSIZE"].ToString();
+                                objImageView.SIZE_COUNT = dr["SIZE_COUNT"].retDbl();
+                                objImageView.PCSPERBOX = dr["PCSPERBOX"].retShort();
 
-                            //objImageView.Desc = dr["desc"].ToString();
-                            var DBImgString = img[0].DOC_FILE;
-                            var ImageName = img[0].DOC_FILE_NAME;
-                            var extension = Path.GetExtension(ImageName);
-                            string filename = objImageView.ITCD + "_0" + extension;
-                            var folderpath = CommVar.LocalUploadDocPath(filename);
-                            var link = Cn.SaveImage(DBImgString, folderpath);
-                            var path = CommVar.WebUploadDocURL(filename);
-                            objImageView.Url = path;
-                            ImageViewlst.Add(objImageView);
+
+                                string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority); // http://000.000.000.00
+                                string imageUrl = baseUrl + "/ItemImages/" + file.filenm.retStr();
+
+                                objImageView.Url = imageUrl;
+                                ImageViewlst.Add(objImageView);
+                            }
                         }
+
                     }
                     VE.ImageView = ImageViewlst;
                     return View(VE);
