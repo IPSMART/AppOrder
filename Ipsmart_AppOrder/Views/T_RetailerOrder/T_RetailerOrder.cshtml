@@ -95,7 +95,7 @@
     }
 </style>
 <style>
-      .top {
+    .top {
         position: fixed;
         top: 0;
         left: 0;
@@ -119,6 +119,9 @@
         padding-bottom: 70px; /* space to avoid hiding content under footer */
     }
 
+    
+</style>
+<style>
     .footer {
         position: fixed;
         bottom: 0;
@@ -129,7 +132,19 @@
         line-height: 60px;
         z-index: 1000;
     }
+    .quantity-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap;
+        background-color: #e4f2fb;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
 </style>
+
 <script>
     $(document).ready(function () {
         //getLocation();
@@ -154,9 +169,9 @@
         } else {
             alert("Geolocation is not supported by this browser.");
 
-        }      
+        }
     }
-  
+
 </script>
 <script>
     function TakeOrder() {
@@ -196,9 +211,9 @@
     function AddtoCart() {
         //getLocation();
         if(retFloat($("#NOOFSETS").val()) == 0)
-        { 
+        {
             alert('Enter No. Of Sets !!');
-            return false; 
+            return false;
         }
         TakeOrder();
         var index = swiper.realIndex;
@@ -210,10 +225,10 @@
             itcdexist = true;
         }
         if(itcdexist == true)
-        { 
+        {
             $('#tblSizes > tbody').html('');
             alert('this style already added in cart !!');
-            return false; 
+            return false;
         }
         else
         {
@@ -237,7 +252,7 @@
             $("#TQnty").val(TQnty);
             $('#cartsummary').text(NoOfItem+"("+TQnty+")");
             updateVisibility(@VisibleRow);
-        }     
+        }
     }
     function toggleRows(btnid) {
         isExpanded = false;
@@ -314,28 +329,38 @@
             type: 'post',
             url: "@Url.Action("SAVE", PageControllerName)",
             data: $('form').serialize(),
-        success: function (result) {
-            if (result == '1') {
-                alert('Data Saved Successfully !!');
-                window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
-                if (newWindow) {
-                    window.open('', '_self'); // Required for some browsers
-                    window.close(); // Attempt to close current window
-                } else {
-                    alert("Popup blocked! Please allow popups for this website.");
+            success: function (result) {
+                if (result == '1') {
+                    alert('Data Saved Successfully !!');
+                    window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
+                    if (newWindow) {
+                        window.open('', '_self'); // Required for some browsers
+                        window.close(); // Attempt to close current window
+                    } else {
+                        alert("Popup blocked! Please allow popups for this website.");
+                    }
                 }
-            }
-            else{
-                alert(result);
+                else{
+                    alert(result);
+                    $("#WaitingMode").hide();
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
             }
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#WaitingMode").hide();
-            msgError(XMLHttpRequest.responseText);
-            $("body span h1").remove(); $("#msgbody_error style").remove();
-        }
-    });
+        });
+    }
+</script>
+<script>
+    function increment(id) {
+        var input = document.getElementById(id);
+        input.stepUp();
+    }
+    function decrement(id) {
+        var input = document.getElementById(id);
+        input.stepDown();
     }
 </script>
 @*@Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")*@
@@ -369,10 +394,10 @@
         @Html.HiddenFor(model => model.T_RETAILORDER.DOCNO, new { id = "DOCNO" })
         @Html.HiddenFor(model => model.T_RETAILORDER.VCHRNO, new { id = "VCHRNO" })
         @Html.HiddenFor(model => model.T_RETAILORDER.MNTHCD, new { id = "MNTHCD" })
-<input type="hidden" id="hdnData" />
+        <input type="hidden" id="hdnData" />
         <input type="hidden" id="NoOfItem" />
         <input type="hidden" id="TQnty" />
- <div class="row sub-top">
+        <div class="row sub-top">
             <table class="table table-striped" id="tblCart">
                 <thead>
                     <tr style="background-color: #255994;color: white;">
@@ -400,7 +425,7 @@
         </div>
         <div class="row content">
             <div id="partialdivDetail" style="margin-top:0px;">
-                @Html.Partial("_M_GrpMast_Main")
+                @Html.Partial("_T_RetailerOrder_Main")
             </div>
         </div>
         <div class="row" style="display:none;">
@@ -410,19 +435,13 @@
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>      
+        </div>
         <div class="footer" style="padding:5px;">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control", id = "NOOFSETS", @placeholder = "No. Of Sets", maxlength = 10 } })
-                    </div>
-                </div>
-                <div class="col-md-6" style="width:auto;">
-                    <div class="editor-field" style="margin-top:3px;">
-                        <button type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;width:100%" class="btn btn-sm btn-warning" onclick="AddtoCart()" title="Add to Cart">Add to Cart <i class="fa fa-cart-plus"></i></button>
-                    </div>
-                </div>
+            <div class="quantity-row">
+                <i class="fa fa-minus-circle" style="font-size:25px;color:#428bca;cursor:pointer;" onclick="decrement('NOOFSETS')"></i>
+                @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control", id = "NOOFSETS", @placeholder = "No. Of Sets", maxlength = 10, @onkeypress = "return numericOnly(this);", min = "1", @style = "text-align:center;font-weight:bold;font-size:20px;height:33px;" } })
+                <i class="fa fa-plus-circle" style="font-size:25px;color:#428bca;cursor:pointer;" onclick="increment('NOOFSETS')"></i>
+                <button type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;width:100%;font-size:20px;" class="btn btn-sm btn-warning" onclick="AddtoCart()" title="Add to Cart">Add to Cart <i class="fa fa-cart-plus" style="color:#428bca;"></i></button>
             </div>
         </div>
         <div class="container">

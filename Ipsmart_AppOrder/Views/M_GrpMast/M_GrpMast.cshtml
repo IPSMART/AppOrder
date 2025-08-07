@@ -169,6 +169,9 @@
                 } else {
                     alert("Popup blocked! Please allow popups for this website.");
                 }
+
+                @*window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
+                $("#WaitingMode").hide();*@
             }
         });
     }

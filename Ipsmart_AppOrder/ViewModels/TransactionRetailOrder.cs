@@ -32,7 +32,7 @@ namespace Improvar.ViewModels
         public string GroupName { get; set; }
         public string[] CollCode { get; set; }
         public string CollName { get; set; }
-        public double? NOOFSETS { get; set; }
+        public int? NOOFSETS { get; set; }
         public T_RETAILORDER T_RETAILORDER { get; set; }
     }
 }

@@ -1,0 +1,36 @@
+﻿@model Improvar.ViewModels.TransactionRetailOrder
+@{
+    var tt = System.DateTime.Now.retStr();
+}
+<div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+        @if (Model.ImageView != null)
+            {
+                for (int i = 0; i < Model.ImageView.Count; i++)
+                {
+                <div class="swiper-slide">
+                    <span style="display: none" id="itcd_@i">@Model.ImageView[i].ITCD</span>
+                    <span style="display: none" id="size_@i">@Model.ImageView[i].SIZES</span>
+                    <span style="display: none" id="PCSPERSET_@i">@Model.ImageView[i].PCSPERSET</span>
+                    <span style="display: none" id="MIXSIZE_@i">@Model.ImageView[i].MIXSIZE</span>
+                    <span style="display: none" id="SIZE_COUNT_@i">@Model.ImageView[i].SIZE_COUNT</span>
+                    <span style="display: none" id="PCSPERBOX_@i">@Model.ImageView[i].PCSPERBOX</span>
+                    <div class="title" id="styleno_@i">@Model.ImageView[i].Desc</div>
+                    <img src="@Model.ImageView[i].Url?@tt" />
+
+                </div>
+            }
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        // autoHeight: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+</script>
