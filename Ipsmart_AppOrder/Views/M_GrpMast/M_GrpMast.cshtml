@@ -27,6 +27,11 @@
             templateSelection: formatSelection,
         });
 
+        $('#Dstbrslcd').change(function () {
+            debugger;
+            var selectedText = $("#Dstbrslcd option:selected").text();
+            $('#Dstbrslnm').val(selectedText);
+        });
 
         $('#RetailerCode').select2({
             width: '100%',
@@ -35,38 +40,18 @@
             templateResult: formatResult,
             templateSelection: formatSelection,
         });
-        $('#BrandCode').select2({
-            width: '100%',
-            placeholder: "Select Brand",
-            allowClear: true,
-            closeOnSelect: false,
-        });
-
-        $('#GroupCode').select2({
-            width: '100%',
-            placeholder: "Select Group",
-            allowClear: true,
-            closeOnSelect: false,
-        });
-
-        $('#CollCode').select2({
-            width: '100%',
-            placeholder: "Select Collection",
-            allowClear: true,
-            closeOnSelect: false,
-        });
-
-
-        $('#Dstbrslcd').change(function () {
-            debugger;
-            var selectedText = $("#Dstbrslcd option:selected").text();
-            $('#Dstbrslnm').val(selectedText);
-        });
 
         $('#RetailerCode').change(function () {
             debugger;
             var selectedText = $("#RetailerCode option:selected").text();
             $('#RetailerName').val(selectedText);
+        });
+
+        $('#BrandCode').select2({
+            width: '100%',
+            placeholder: "Select Brand",
+            allowClear: true,
+            closeOnSelect: false,
         });
 
         $('#BrandCode').change(function () {
@@ -79,6 +64,13 @@
 
         });
 
+        $('#GroupCode').select2({
+            width: '100%',
+            placeholder: "Select Group",
+            allowClear: true,
+            closeOnSelect: false,
+        });
+
         $('#GroupCode').change(function () {
             debugger;
             var selectedTexts = $('#GroupCode option:selected').map(function () {
@@ -89,6 +81,13 @@
 
         });
 
+        $('#CollCode').select2({
+            width: '100%',
+            placeholder: "Select Collection",
+            allowClear: true,
+            closeOnSelect: false,
+        });
+
         $('#CollCode').change(function () {
             debugger;
             var selectedTexts = $('#CollCode option:selected').map(function () {
@@ -97,7 +96,7 @@
 
             $('#CollName').val(selectedTexts);
 
-        });
+        });    
     });
 </script>
 <script>
@@ -234,7 +233,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), "Select", new { @class = "form-control select2", id = "BrandCode", multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple" })
                         @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
                     </div>
                 </div>
@@ -247,7 +246,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.GroupCode, new SelectList(Model.ListGroup, "Value", "Text", Model.GroupCode), "Select", new { @class = "form-control select2", id = "GroupCode", multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.GroupCode, new SelectList(Model.ListGroup, "Value", "Text", Model.GroupCode),  new { @class = "form-control select2", id = "GroupCode", multiple = "multiple" })
                         @Html.HiddenFor(model => model.GroupName, new { id = "GroupName" })
                     </div>
                 </div>
@@ -260,7 +259,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode), "Select", new { @class = "form-control select2", id = "CollCode", multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode),  new { @class = "form-control select2", id = "CollCode", multiple = "multiple" })
                         @Html.HiddenFor(model => model.CollName, new { id = "CollName" })
                     </div>
                 </div>

@@ -68,14 +68,15 @@ namespace Improvar.Controllers
                     string doccd = "";
 
                     string sql = "";
-                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE,count(C.SIZECD)SIZE_COUNT,nvl(a.PCSPERBOX,0) PCSPERBOX ";
-                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c";
-                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and ";
-                    sql += " a.m_autono in (select m_autono from " + CommVar.CurSchema(UNQSNO) + ".M_CNTRL_HDR_DOC ) ";
-                    if (VE.BrandCode != null) sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") ";
-                    if (VE.GroupCode != null) sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") ";
-                    if (VE.CollCode != null) sql += "and a.collcd in(" + VE.CollCode.retSqlfromStrarray() + ") ";
-                    sql += " group by  a.m_autono,a.itcd,a.styleno,nvl(a.PCSPERSET,0),a.MIXSIZE,nvl(a.PCSPERBOX,0)  ";
+                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE, " + Environment.NewLine;
+                    sql += "count(C.SIZECD)SIZE_COUNT,nvl(a.PCSPERBOX,0) PCSPERBOX " + Environment.NewLine;
+                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c " + Environment.NewLine;
+                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and " + Environment.NewLine;
+                    sql += " a.m_autono in (select m_autono from " + CommVar.CurSchema(UNQSNO) + ".M_CNTRL_HDR_DOC ) " + Environment.NewLine;
+                    if (VE.BrandCode != null) sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") " + Environment.NewLine;
+                    if (VE.GroupCode != null) sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") " + Environment.NewLine;
+                    if (VE.CollCode != null) sql += "and a.collcd in(" + VE.CollCode.retSqlfromStrarray() + ") " + Environment.NewLine;
+                    sql += " group by  a.m_autono,a.itcd,a.styleno,nvl(a.PCSPERSET,0),a.MIXSIZE,nvl(a.PCSPERBOX,0)  " + Environment.NewLine;
 
 
                     var dt = masterHelp.SQLquery(sql);
