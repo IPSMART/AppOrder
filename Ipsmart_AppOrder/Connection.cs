@@ -3323,12 +3323,17 @@ namespace Improvar
             VE.DefaultView = true;
             VE.ExitMode = 1;
         }
-        public void SaveTextFile(string message)
+        public void SaveTextFile(string message, string savefilename = "", string savefilepath = "")
         {
             try
             {
                 var line = Environment.NewLine + Environment.NewLine;
-                string filepath = @"C:/IPSMART/ErrorLog/" + "ERROR LOG " + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";   //Text File Name
+                //string filepath = @"C:/IPSMART/ErrorLog/" + "ERROR LOG " + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";   //Text File Name
+                //string filepath = @"C:/IPSMART/Irn/" + "IRN " + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";   //Text File Name
+                if (savefilepath.retStr() == "") savefilepath = @"C:/IPSMART/Irn";
+                if (savefilename.retStr() == "") savefilename = "IRN " + DateTime.Today.ToString("yyyy-MM-dd");
+                string filepath = savefilepath + "/" + savefilename + ".txt";
+
                 if (!Directory.Exists(Path.GetDirectoryName(filepath)))
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(filepath));
@@ -3339,6 +3344,7 @@ namespace Improvar
                 }
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
+                    sw.WriteLine("-----------Details on " + " " + DateTime.Now.ToString() + "-----------------");
                     sw.WriteLine(message);
                     sw.WriteLine("--------------------------------*End*--------------------------------------");
                     sw.WriteLine(line);

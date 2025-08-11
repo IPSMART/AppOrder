@@ -1586,3 +1586,23 @@ function scrollToEnd(Id) {
     var chatList = document.getElementById(Id);
     chatList.scrollTop = chatList.scrollHeight;
 }
+function getLocation(callback) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                console.log(position.coords.latitude + ',' + position.coords.longitude);
+                var latlot = "";
+                latlot += "^LAT=^" + position.coords.latitude + String.fromCharCode(181);
+                latlot += "^LOT=^" + position.coords.longitude + String.fromCharCode(181);
+                callback(latlot); // Pass the value back
+            },
+            function (error) {
+                alert("Location access is required to use this service.");
+                callback(""); // Return empty string
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
+        callback("");
+    }
+}

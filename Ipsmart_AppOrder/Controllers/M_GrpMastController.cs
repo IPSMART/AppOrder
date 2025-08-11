@@ -228,7 +228,7 @@ namespace Improvar.Controllers
             try
             {
                 string datastring = "";
-                lat = "22.555"; lng = "88.258";
+                //lat = "22.555"; lng = "88.258";
                 var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
                 WebRequest rqst = HttpWebRequest.Create(url);
                 using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())

@@ -10,7 +10,6 @@ namespace Improvar.ViewModels
     {
         public M_CNTRL_HDR M_CNTRL_HDR { get; set; }
         public bool Checked { get; set; }
-        public string DSTBRSLNM { get; set; }
         public string DSTBRGSTNO { get; set; }
         public string DSTBRAREA { get; set; }
         public M_RETAIL M_RETAIL { get; set; }
@@ -20,9 +19,13 @@ namespace Improvar.ViewModels
         public M_RETAIL_LINK M_RETAIL_LINK { get; set; }
         public List<ListState> ListState { get; set; }
         public List<ListCountry> ListCountry { get; set; }
+        public bool IsAPIEnabled { get; set; }
+        public List<DropDown_list_Distributor> DropDown_list_Distributor { get; set; }
+        public List<string> Dstbrslcd { get; set; }
+        public string Dstbrslnm { get; set; }
 
     }
-        public class ListState
+    public class ListState
         {
             public string text { get; set; }
             public string value { get; set; }

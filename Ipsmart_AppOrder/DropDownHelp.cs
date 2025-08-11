@@ -42,9 +42,13 @@ namespace Improvar
             List<DropDown_list_SLCD> dropDownlistsLCD = new List<DropDown_list_SLCD>();
             using (ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO)))
             {
-                dropDownlistsLCD = (from j in DBF.M_SUBLEG select new DropDown_list_SLCD() { text = j.SLNM, value = j.SLCD,
-                    //City = j.DISTRICT
-                }).OrderBy(s => s.text).ToList();
+                dropDownlistsLCD = (from j in DBF.M_SUBLEG
+                                    select new DropDown_list_SLCD()
+                                    {
+                                        text = j.SLNM,
+                                        value = j.SLCD,
+                                        //City = j.DISTRICT
+                                    }).OrderBy(s => s.text).ToList();
             }
             return dropDownlistsLCD;
         }
@@ -57,7 +61,7 @@ namespace Improvar
             }
             return dropDownlistsLClass1;
         }
-     
+
         public List<DropDown_list_SLCD> GetSlcdforSelection(string linkcd)
         {
             List<DropDown_list_SLCD> sllist = new List<DropDown_list_SLCD>();
@@ -153,20 +157,20 @@ namespace Improvar
             }
             return sllist;
         }
- 
-        public List<DropDown_list_SubLegGrp> GetSubLegGrpforSelection(string grpcd="")
+
+        public List<DropDown_list_SubLegGrp> GetSubLegGrpforSelection(string grpcd = "")
         {
             List<DropDown_list_SubLegGrp> sllist = new List<DropDown_list_SubLegGrp>();
             string sql = "", scmf = CommVar.FinSchema(UNQSNO);
 
             sql += "select a.grpcd, b.grpnm, a.slcdgrpcd, a.slcdgrpnm, b.class1cd from ";
             sql += "(select a.grpcd, a.slcdgrpcd, decode(nvl(b.slcdgrpnm,''),'','',b.slcdgrpnm||' - ')||a.slcdgrpnm slcdgrpnm, a.grpcdfull ";
-            sql += "from "+  scmf + ".m_subleg_grp a, " + scmf + ".m_subleg_grp b ";
+            sql += "from " + scmf + ".m_subleg_grp a, " + scmf + ".m_subleg_grp b ";
             //sql += "where a.parentcd=b.slcdgrpcd(+) and a.slcd is null and a.parentcd is not null ) a, ";
             sql += "where a.parentcd=b.slcdgrpcd(+) and a.slcd is null ) a, ";
 
             sql += "(select a.grpcd, a.grpnm, b.class1cd ";
-            sql += "from " + scmf + ".m_subleg_grphdr a, "+ scmf + ".m_subleg_grpclass1 b ";
+            sql += "from " + scmf + ".m_subleg_grphdr a, " + scmf + ".m_subleg_grpclass1 b ";
             sql += "where a.grpcd=b.grpcd(+) ) b ";
             sql += "where a.grpcd=b.grpcd(+) ";
 
@@ -182,6 +186,30 @@ namespace Improvar
                       }).ToList();
             return sllist;
         }
+        public List<DropDown_list_Distributor> GetDistributorforSelection(string linkcd)
+        {
+            string GCS = Cn.GCS();
+            List<DropDown_list_Distributor> sllist = new List<DropDown_list_Distributor>();
+            string sql = "", scmf = CommVar.FinSchema(UNQSNO);
+            if (linkcd.retStr() != "" && linkcd.IndexOf("'") < 0) linkcd = "'" + linkcd + "'";
+
+            sql = "select distinct a.slcd, a.slnm,nvl(a.SLAREA,a.DISTRICT)SLAREA ";
+            sql += "from " + scmf + ".M_SUBLEG a, " + scmf + ".m_cntrl_hdr b, " + scmf + ".M_SUBLEG_LINK c ";
+            sql += "where a.m_autono=b.m_autono(+) and a.slcd=c.slcd(+) ";
+            if (linkcd.retStr() != "") sql += "and c.LINKCD in (" + linkcd + ")  ";
+            sql += "and nvl(b.inactive_tag,'N')='N' ";
+            sql += "order by slnm ";
+            DataTable tbl = masterHelp.SQLquery(sql);
+
+            sllist = (from DataRow a in tbl.Rows
+                      select new DropDown_list_Distributor()
+                      {
+                          Value = a["SLCD"].retStr(),
+                          Text = a["SLNM"].retStr() + GCS + a["SLAREA"].retStr(),
+                      }).ToList();
+            return sllist;
+        }
+
 
     }
 }

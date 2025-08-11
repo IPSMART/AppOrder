@@ -66,19 +66,36 @@ namespace Improvar
         }
 
         #region //E-Invoice
-        public Dictionary<string, string> AdaequareIRNHeader(Dictionary<string, string> optHeader = null)
+        public Dictionary<string, string> AdaequareIRNHeader(Dictionary<string, string> optHeader = null, bool OnlyGstInfo = false)
         {
             GSTTYPE = "TIN";
             if (AppType == "LIVE") GSTTYPE = "INV";
             string gstno = CommVar.GSTNO(UNQSNO);
-            if (CommVar.FinSchema(UNQSNO) == "")
+            if (OnlyGstInfo == true)
             {
-                sql = "select gstuid,gstpw from M_compgstin where gstno='" + gstno + "' and GSTTYPE='" + GSTTYPE + "' ";
+                if (CommVar.FinSchema(UNQSNO) == "")
+                {
+                    sql = "select gstuid,gstpw,gstno from M_compgstin where GSTTYPE='" + GSTTYPE + "' ";
+                    if (gstno.retStr() != "") sql += "and gstno='" + gstno + "'  ";
+                }
+                else
+                {
+                    sql = "select gstuid,gstpw,gstno from  " + CommVar.FinSchema(UNQSNO) + ".M_compgstin where GSTTYPE='" + GSTTYPE + "' ";
+                    if (gstno.retStr() != "") sql += "and gstno='" + gstno + "'  ";
+                }
             }
             else
             {
-                sql = "select gstuid,gstpw from  " + CommVar.FinSchema(UNQSNO) + ".M_compgstin where gstno='" + gstno + "'  and GSTTYPE='" + GSTTYPE + "' ";
+                if (CommVar.FinSchema(UNQSNO) == "")
+                {
+                    sql = "select gstuid,gstpw from M_compgstin where gstno='" + gstno + "' and GSTTYPE='" + GSTTYPE + "' ";
+                }
+                else
+                {
+                    sql = "select gstuid,gstpw from  " + CommVar.FinSchema(UNQSNO) + ".M_compgstin where gstno='" + gstno + "'  and GSTTYPE='" + GSTTYPE + "' ";
+                }
             }
+
             var dt = masterHelp.SQLquery(sql);
             Dictionary<string, string> dic = new Dictionary<string, string>();
             if (dt.Rows.Count > 0)
@@ -90,6 +107,10 @@ namespace Improvar
             {
                 Cn.SaveTextFile(GSTTYPE + " Please add a row in M_compgstin table. #" + gstno);
                 return null;
+            }
+            if (OnlyGstInfo == true && gstno.retStr() == "")
+            {
+                gstno = dt.Rows[0]["gstno"].ToString();
             }
             dic.Add("GSTIN", gstno);
             dic.Add("requestid", GetRequestId());
@@ -124,7 +145,7 @@ namespace Improvar
                     AdqrRespGenIRNfail GenIRNfail = JsonConvert.DeserializeObject<AdqrRespGenIRNfail>(jsonstr);
                     adqrRespGENEWAYBILL.success = GenIRNfail.success;
                     adqrRespGENEWAYBILL.message = GenIRNfail.message;
-                    if (adqrRespGENEWAYBILL.message == "2150 : Duplicate IRN")
+                    if (adqrRespGENEWAYBILL.message == "2150 : Duplicate IRN" || adqrRespGENEWAYBILL.message == "2295 : IRN is already generated and registered with GSTN Lookup Portal by other IRP")
                     {
                         if (GenIRNfail.result != null && GenIRNfail.result[0] != null && GenIRNfail.result[0].Desc != null && GenIRNfail.result[0].Desc.Irn != null)
                         {
@@ -132,7 +153,7 @@ namespace Improvar
                             adqrRsltGenIRN.AckNo = GenIRNfail.result[0].Desc.AckNo;
                             adqrRsltGenIRN.AckDt = GenIRNfail.result[0].Desc.AckDt;
                             AdqrRespInvoiceByIRN InvByIRN = AdqrGetInvoicebyIRN(adqrRsltGenIRN.Irn);
-                            if (InvByIRN != null && InvByIRN.result != null )
+                            if (InvByIRN != null && InvByIRN.result != null)
                             {
                                 adqrRsltGenIRN.SignedInvoice = InvByIRN.result.SignedInvoice;
                                 adqrRsltGenIRN.SignedQRCode = InvByIRN.result.SignedQRCode;
@@ -180,6 +201,7 @@ namespace Improvar
                 if (string.IsNullOrEmpty(AI.SellerDtls.Em) || CommFunc.IsValidEmail(AI.SellerDtls.Em) == false) { AI.SellerDtls.Em = null; }
 
                 // BuyerDtls
+                if (string.IsNullOrEmpty(AI.BuyerDtls.Addr1)) msg += "(" + AI.BuyerDtls.Addr1 + ")BuyerDtls.Addr1 should not empty. ";
                 if (AI.BuyerDtls.Addr1.retStr().Length > 100) { AI.BuyerDtls.Addr1 = AI.BuyerDtls.Addr1.Substring(0, 100); }
                 if (AI.BuyerDtls.Addr2.retStr().Length > 100) { AI.BuyerDtls.Addr2 = AI.BuyerDtls.Addr2.Substring(0, 100); }
                 if (string.IsNullOrEmpty(AI.BuyerDtls.Gstin)) { AI.BuyerDtls.Gstin = null; }
@@ -194,6 +216,7 @@ namespace Improvar
                 //DispDtls
                 if (AI.DispDtls != null)
                 {
+                    if (string.IsNullOrEmpty(AI.DispDtls.Addr1)) msg += "(" + AI.DispDtls.Addr1 + ")DispDtls.Addr1 should not empty. ";
                     if (AI.DispDtls.Addr1.retStr().Length > 100) { AI.DispDtls.Addr1 = AI.DispDtls.Addr1.Substring(0, 100); }
                     if (AI.DispDtls.Addr2.retStr().Length > 100) { AI.DispDtls.Addr2 = AI.DispDtls.Addr2.Substring(0, 100); }
                     if (AI.DispDtls.Addr1.Trim() == "") { msg += "DispDtls.Addr1 should not blank; "; }
@@ -293,7 +316,7 @@ namespace Improvar
         public AdqrRespGstInfo AdqrGstInfo(string gstin)
         {
             IPSAPICODE = "GSTINFO";
-            Dictionary<string, string> AdaequareIRNHdr = AdaequareIRNHeader();
+            Dictionary<string, string> AdaequareIRNHdr = AdaequareIRNHeader(null, true);
             url = "https://gsp.adaequare.com/test/enriched/ei/api/master/gstin?gstin=" + gstin + "";
             if (AppType == "LIVE") url = "https://gsp.adaequare.com/enriched/ei/api/master/gstin?gstin=" + gstin + ""; ;
             string jsonstr = ConsumeAdqrAPI(url, "", AdaequareIRNHdr);
@@ -356,6 +379,7 @@ namespace Improvar
             IPSAPICODE = "GSTINFO";
             Dictionary<string, string> AdaequareIRNHdr = AdaequareIRNHeaderTest();
             url = "https://gsp.adaequare.com/test/enriched/ei/api/master/gstin?gstin=" + gstin + "";
+            //url = "https://gsp.adaequare.com/test/enriched/ewb/master/GetGSTINDetails?GSTIN=" + gstin + "";
             string jsonstr = ConsumeAdqrAPI(url, "", AdaequareIRNHdr);
             AdqrRespGstInfo adqrRespExtractInvoice = JsonConvert.DeserializeObject<AdqrRespGstInfo>(jsonstr);
             return adqrRespExtractInvoice;
@@ -408,7 +432,7 @@ namespace Improvar
         }
         #endregion //E-Waybill end
 
-        public string ConsumeAdqrAPI(string url, string jsonStr, Dictionary<string, string> headerdic)
+        public string ConsumeAdqrAPI(string url, string jsonStr, Dictionary<string, string> headerdic, string method = "", string FileNm = "")
         {
             if (headerdic == null) return "";
             string resp = "", hdrString = "";
@@ -425,18 +449,25 @@ namespace Improvar
                         hdrString += item.Key + " :" + item.Value + System.Environment.NewLine;
                     }
                     hdrString += jsonStr;
-                    Cn.SaveTextFile(hdrString);
+                    Cn.SaveTextFile(hdrString, FileNm);
                     if (jsonStr == "")
                     {
-                        response = client.PostAsync(url, data).GetAwaiter().GetResult(); //Make sure it is synchonrous  //   response = client.GetAsync(url).Result;
+                        response = client.GetAsync(url).GetAwaiter().GetResult(); //Make sure it is synchonrous  //   response = client.GetAsync(url).Result;
                     }
                     else
                     {
-                        response = client.PostAsync(url, data).GetAwaiter().GetResult(); //Make sure it is synchonrous
+                        if (method == "PUT")
+                        {
+                            response = client.PutAsync(url, data).GetAwaiter().GetResult(); //Make sure it is synchonrous
+                        }
+                        else
+                        {
+                            response = client.PostAsync(url, data).GetAwaiter().GetResult(); //Make sure it is synchonrous
+                        }
                     }
                     resp = response.Content.ReadAsStringAsync().Result;//Make sure it is synchonrous
                     int StatusCode = (int)response.StatusCode;
-                    Cn.SaveTextFile("Response: " + resp);
+                    Cn.SaveTextFile("Response: " + resp, FileNm);
                     if (StatusCode > 200)
                     {
                         return "{\"message\":\"" + ErrorAdqrAPI(resp).Replace("\"", "") + "\"}";

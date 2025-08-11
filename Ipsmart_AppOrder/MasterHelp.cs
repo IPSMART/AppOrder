@@ -11,6 +11,9 @@ using System.Text;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
 using System.Reflection;
+using System.Net;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Improvar
 {
@@ -1143,5 +1146,49 @@ namespace Improvar
             }
 
         }
+        public string GetAddress(string lat, string lng)
+        {
+            try
+            {
+                string datastring = "";
+                //lat = "22.555"; lng = "88.258";
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBDxBcnd3Jf8nDInK1xxCSvtRwSiWB4mck";
+                WebRequest rqst = HttpWebRequest.Create(url);
+                using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
+                {
+                    Stream strm = (Stream)rspns.GetResponseStream();
+                    StreamReader strmrdr = new StreamReader(strm);
+                    datastring = strmrdr.ReadToEnd();
+                    strm.Close();
+                    strmrdr.Close();
+                    rspns.Close();
+                }
+                GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
+                var address = geoLocation.results[0].formatted_address;
+                return address;
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return "";
+            }
+        }
+        public class GeoLocation
+        {
+            public List<Result> results { get; set; }
+            public string status { get; set; }
+        }
+        public class Result
+        {
+            public List<AddressComponent> address_components { get; set; }
+            public string formatted_address { get; set; }
+        }
+        public class AddressComponent
+        {
+            public string long_name { get; set; }
+            public string short_name { get; set; }
+            public List<string> types { get; set; }
+        }
+
     }
 }

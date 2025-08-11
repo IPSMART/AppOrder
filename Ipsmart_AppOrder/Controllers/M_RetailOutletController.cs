@@ -13,6 +13,7 @@ namespace Improvar.Controllers
     {
         Connection Cn = new Connection(); MasterHelp Master_Help = new MasterHelp(); M_RETAIL sl; M_CNTRL_HDR sll; M_CNTRL_HDR_REM MCHR;
         MasterHelpFa Master_HelpFa = new MasterHelp();
+        DropDownHelp DropDown_Help = new DropDownHelp();
         string UNQSNO = CommVar.getQueryStringUNQSNO();
         // GET: M_RETAIL
         public ActionResult M_RetailOutlet(string op = "", string key = "", int Nindex = 0, string searchValue = "")
@@ -50,67 +51,73 @@ namespace Improvar.Controllers
                                     }).ToList();
 
                     DataTable tbl1 = new DataTable();
-                    string sql1 = "";
-                    sql1 = "select distinct CNCD, CNAME ";
-                    sql1 += "from " + scm + ".MS_COUNTRY ";
-                    sql1 += "order by CNAME ";
-                    tbl = Master_Help.SQLquery(sql1);
+                    sql = "select distinct CNCD, CNAME ";
+                    sql += "from " + scm + ".MS_COUNTRY ";
+                    sql += "order by CNAME ";
+                    tbl = Master_Help.SQLquery(sql);
 
                     VE.ListCountry = (from DataRow a in tbl.Rows
-                                    select new ListCountry()
-                                    {
-                                        value = a["CNCD"].retStr(),
-                                        text = a["CNAME"].retStr() + GCS + a["CNCD"].retStr(),
-                                    }).ToList();
-
+                                      select new ListCountry()
+                                      {
+                                          value = a["CNCD"].retStr(),
+                                          text = a["CNAME"].retStr() + GCS + a["CNCD"].retStr(),
+                                      }).ToList();
+                    VE.DropDown_list_Distributor = DropDown_Help.GetDistributorforSelection("'D','A'");
                     var doctP = (from i in DB1.MS_DOCCTG select new DocumentType() { value = i.DOC_CTG, text = i.DOC_CTG }).OrderBy(s => s.text).ToList();
+
+                    sql = "select NVL(GSPCLIENTAPP,GSPAPPID) GSPCLIENTAPP from ms_ipsmart";
+                    DataTable dt = Master_Help.SQLquery(sql);
+                    if (dt != null && dt.Rows.Count > 0 && dt.Rows[0]["GSPCLIENTAPP"].ToString() != "")
+                    {
+                        VE.IsAPIEnabled = true;
+                    }
                     if (op.Length != 0)
                     {
                         VE.IndexKey = (from p in DB.M_RETAIL orderby p.M_AUTONO select new IndexKey() { Navikey = p.RTLCD }).ToList();
                         if (op == "E" || op == "D" || op == "V")
-                    {
-                            
+                        {
+
                             if (searchValue.Length != 0)
-                        {
-                            VE.Index = Nindex;
-                            VE = Navigation(VE, DB, 0, searchValue);
-                        }
-                        else
-                        {
-                            if (key == "F")
                             {
-                                VE.Index = 0;
+                                VE.Index = Nindex;
                                 VE = Navigation(VE, DB, 0, searchValue);
                             }
-                            else if (key == "" || key == "L")
+                            else
                             {
-                                VE.Index = VE.IndexKey.Count - 1;
-                                VE = Navigation(VE, DB, VE.IndexKey.Count - 1, searchValue);
-                            }
-                            else if (key == "P")
-                            {
-                                Nindex -= 1;
-                                if (Nindex < 0)
+                                if (key == "F")
                                 {
-                                    Nindex = 0;
+                                    VE.Index = 0;
+                                    VE = Navigation(VE, DB, 0, searchValue);
                                 }
-                                VE.Index = Nindex;
-                                VE = Navigation(VE, DB, Nindex, searchValue);
-                            }
-                            else if (key == "N")
-                            {
-                                Nindex += 1;
-                                if (Nindex > VE.IndexKey.Count - 1)
+                                else if (key == "" || key == "L")
                                 {
-                                    Nindex = VE.IndexKey.Count - 1;
+                                    VE.Index = VE.IndexKey.Count - 1;
+                                    VE = Navigation(VE, DB, VE.IndexKey.Count - 1, searchValue);
                                 }
-                                VE.Index = Nindex;
-                                VE = Navigation(VE, DB, Nindex, searchValue);
+                                else if (key == "P")
+                                {
+                                    Nindex -= 1;
+                                    if (Nindex < 0)
+                                    {
+                                        Nindex = 0;
+                                    }
+                                    VE.Index = Nindex;
+                                    VE = Navigation(VE, DB, Nindex, searchValue);
+                                }
+                                else if (key == "N")
+                                {
+                                    Nindex += 1;
+                                    if (Nindex > VE.IndexKey.Count - 1)
+                                    {
+                                        Nindex = VE.IndexKey.Count - 1;
+                                    }
+                                    VE.Index = Nindex;
+                                    VE = Navigation(VE, DB, Nindex, searchValue);
+                                }
                             }
-                        }
-                        VE.M_RETAIL = sl;
-                        VE.M_CNTRL_HDR = sll;
-                        VE.M_CNTRL_HDR_REM = MCHR;
+                            VE.M_RETAIL = sl;
+                            VE.M_CNTRL_HDR = sll;
+                            VE.M_CNTRL_HDR_REM = MCHR;
 
                             List<UploadDOC> UploadDOC1 = new List<UploadDOC>();
                             UploadDOC UPL = new UploadDOC();
@@ -118,23 +125,23 @@ namespace Improvar.Controllers
                             UploadDOC1.Add(UPL);
                             VE.UploadDOC = UploadDOC1;
                         }
-                    if (op.ToString() == "A")
-                    {
+                        if (op.ToString() == "A")
+                        {
                             M_RETAIL MRETAIL = new M_RETAIL();
                             VE.M_RETAIL = MRETAIL;
-                        List<MRETAILLINK> MRETAILLINK = new List<MRETAILLINK>();
-                        for (int i = 0; i <= 4; i++)
-                        {
-                            MRETAILLINK DOCCD = new MRETAILLINK();
-                            DOCCD.SLNO = Convert.ToByte(i + 1);
-                            MRETAILLINK.Add(DOCCD);
-                        }
-                        VE.MRETAILLINK = MRETAILLINK;
+                            List<MRETAILLINK> MRETAILLINK = new List<MRETAILLINK>();
+                            for (int i = 0; i <= 4; i++)
+                            {
+                                MRETAILLINK DOCCD = new MRETAILLINK();
+                                DOCCD.SLNO = Convert.ToByte(i + 1);
+                                MRETAILLINK.Add(DOCCD);
+                            }
+                            VE.MRETAILLINK = MRETAILLINK;
 
-                                             
-                    }
-                    VE.DefaultView = true;
-                    return View(VE);
+
+                        }
+                        VE.DefaultView = true;
+                        return View(VE);
                     }
                     else
                     {
@@ -172,19 +179,19 @@ namespace Improvar.Controllers
                 {
                     aa = searchValue.Split(Convert.ToChar(Cn.GCS()));
                 }
-                
+
                 sl = DB.M_RETAIL.Find(aa[0].Trim());
                 sll = DB.M_CNTRL_HDR.Find(sl.M_AUTONO);
                 if (sll.INACTIVE_TAG == "Y")
                 {
-                    VE.Checked = true;                   
+                    VE.Checked = true;
                 }
                 else
                 {
                     VE.Checked = false;
                 }
 
-                
+
 
                 VE.UploadDOC = Cn.GetUploadImage(CommVar.CurSchema(UNQSNO).ToString(), Convert.ToInt32(sl.M_AUTONO));
 
@@ -197,22 +204,23 @@ namespace Improvar.Controllers
                     VE.UploadDOC = UploadDOC1;
                 }
             }
-            
+
             if (sl != null)
-            {               
+            {
                 string scm = CommVar.CurSchema(UNQSNO);
                 string scmf = CommVar.FinSchema(UNQSNO);
                 string sql = "select distinct a.M_AUTONO,a.SLNO,a.SLCD,a.EFFDT,b.SLNM from " + scm + ".M_RETAIL_LINK a," + scmf + ".m_subleg b ";
                 sql += "where a.slcd=b.slcd and a.M_AUTONO='" + sl.M_AUTONO + "' order by a.M_AUTONO   ";
                 DataTable tbl = Master_Help.SQLquery(sql);
-                VE.MRETAILLINK = (from DataRow dr in tbl.Rows
-                                         select new MRETAILLINK()
-                                         {
-                                             SLNO = dr["SLNO"].retDbl(),
-                                             SLCD = dr["SLCD"].retStr(),
-                                             SLNM = dr["SLNM"].retStr(),                                             
-                                         }).ToList();
-                               
+                //VE.MRETAILLINK = (from DataRow dr in tbl.Rows
+                //                  select new MRETAILLINK()
+                //                  {
+                //                      SLNO = dr["SLNO"].retDbl(),
+                //                      SLCD = dr["SLCD"].retStr(),
+                //                      SLNM = dr["SLNM"].retStr(),
+                //                  }).ToList();
+                VE.Dstbrslcd = (from DataRow dr in tbl.Rows
+                                select dr["SLCD"].retStr().Trim()).ToList();
                 MCHR = Cn.GetMasterReamrks(CommVar.FinSchema(UNQSNO), Convert.ToInt32(sl.M_AUTONO));
                 VE.UploadDOC = Cn.GetUploadImage(CommVar.FinSchema(UNQSNO).ToString(), Convert.ToInt32(sl.M_AUTONO));
             }
@@ -221,23 +229,27 @@ namespace Improvar.Controllers
         }
         public ActionResult SearchPannelData()
         {
-            ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
-            var MDT = (from j in DB.M_RETAIL
-                       join p in DB.M_CNTRL_HDR on j.M_AUTONO equals (p.M_AUTONO)
-                       where (p.M_AUTONO == j.M_AUTONO)
-                       select new
-                       {
-                           RTLCD = j.RTLCD,
-                           RTLNM = j.RTLNM
-                       }).Distinct().OrderBy(s => s.RTLCD).ToList();
-            System.Text.StringBuilder SB = new System.Text.StringBuilder();
-            var hdr = "Retail Code" + Cn.GCS() + "Retail Name";
-            for (int j = 0; j <= MDT.Count - 1; j++)
+            try
             {
-                SB.Append("<tr><td>" + MDT[j].RTLCD + "</td><td>" + MDT[j].RTLNM + "</td></tr>");
+                var UNQSNO = Cn.getQueryStringUNQSNO();
+                string scm = CommVar.CurSchema(UNQSNO);
+                string scmc = CommVar.CommSchema();
+                string sql = "select j.RTLCD,j.RTLNM,j.GSTNO,j.PIN,j.STATECD,p.STATENM from " + scm + ".M_RETAIL j ," + scm + ".M_CNTRL_HDR o," + scmc + ".MS_STATE p where j.M_AUTONO=o.M_AUTONO(+) and j.STATECD=p.STATECD(+)   ";
+                DataTable MDT = Master_Help.SQLquery(sql);
+                System.Text.StringBuilder SB = new System.Text.StringBuilder();
+                var hdr = "Retailer Code" + Cn.GCS() + "Retailer Name" + Cn.GCS() + "GST" + Cn.GCS() + "PIN" + Cn.GCS() + "State";
+                for (int j = 0; j <= MDT.Rows.Count - 1; j++)
+                {
+                    SB.Append("<tr><td>" + MDT.Rows[j]["RTLCD"].retStr() + "</td><td>" + MDT.Rows[j]["RTLNM"].retStr() + " </td><td> " + MDT.Rows[j]["GSTNO"].retStr() + "</td><td> " + MDT.Rows[j]["PIN"].retStr() + "</td><td> " + MDT.Rows[j]["STATENM"].retStr() + "</td></tr>");
+                }
+                return PartialView("_SearchPannel2", Master_Help.Generate_SearchPannel(hdr, SB.ToString(), "0"));
             }
-            return PartialView("_SearchPannel2", Master_Help.Generate_SearchPannel(hdr, SB.ToString(), "0"));
-        }       
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message + ex.InnerException);
+            }
+        }
         public ActionResult GetPartyDetails(RetailOutletEntry VE)
         {
             string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO);
@@ -246,7 +258,7 @@ namespace Improvar.Controllers
             string linkcd = LINK_CD.retSqlformat();
             //string valsrch = val.ToUpper().Trim();
             //string slcd = VE.M_RETAIL.DSTBRSLCD.retStr().ToUpper().Trim();
-            string slnm = VE.DSTBRSLNM.retStr().ToUpper().Trim();
+            string slnm = "";// VE.DSTBRSLNM.retStr().ToUpper().Trim();
             string gstno = VE.DSTBRGSTNO.retStr().ToUpper().Trim();
             string area = VE.DSTBRAREA.retStr().ToUpper().Trim();
 
@@ -303,12 +315,12 @@ namespace Improvar.Controllers
                         string YEAR = CommVar.YearCode(UNQSNO);
                         string NAME_CHAR = VE.M_RETAIL.RTLNM.Substring(0, 1).ToUpper().Trim();
                         //string YEAR_CHAR = System.DateTime.Now.ToString("YY"); // YEAR.Substring(2, 2).retStr().Trim();
-                        string YEAR_CHAR = YEAR.Substring(2, 2).retStr().Trim();  
+                        string YEAR_CHAR = YEAR.Substring(2, 2).retStr().Trim();
                         if (VE.DefaultAction == "A")
                         {
                             MRETAILOUTLET.EMD_NO = 0;
-                            MRETAILOUTLET.M_AUTONO = Cn.M_AUTONO(CommVar.CurSchema(UNQSNO));                            
-                            var MAXJOBCD = DB.M_RETAIL.Where(a => a.RTLCD.Substring(0, 3) == YEAR_CHAR+NAME_CHAR).Max(a => a.RTLCD);
+                            MRETAILOUTLET.M_AUTONO = Cn.M_AUTONO(CommVar.CurSchema(UNQSNO));
+                            var MAXJOBCD = DB.M_RETAIL.Where(a => a.RTLCD.Substring(0, 3) == YEAR_CHAR + NAME_CHAR).Max(a => a.RTLCD);
                             if (MAXJOBCD == null)
                             {
                                 string R = YEAR_CHAR + NAME_CHAR + "00001";
@@ -325,7 +337,7 @@ namespace Improvar.Controllers
                                 {
                                     Console.WriteLine("Something weired happened");
                                 }
-                               
+
                                 string newStr = YEAR_CHAR + letters + (++number).ToString().PadLeft(5, '0');
                                 MRETAILOUTLET.RTLCD = newStr.ToString();
                             }
@@ -367,7 +379,7 @@ namespace Improvar.Controllers
                         MRETAILOUTLET.LANDMARK = VE.M_RETAIL.LANDMARK;
                         MRETAILOUTLET.CITY = VE.M_RETAIL.CITY;
                         MRETAILOUTLET.PIN = VE.M_RETAIL.PIN;
-                        MRETAILOUTLET.STATECD = VE.M_RETAIL.STATECD;                        
+                        MRETAILOUTLET.STATECD = VE.M_RETAIL.STATECD;
                         MRETAILOUTLET.CNCD = VE.M_RETAIL.CNCD;
                         MRETAILOUTLET.COUNTRY = VE.M_RETAIL.COUNTRY;
                         MRETAILOUTLET.REGMOBILE = VE.M_RETAIL.REGMOBILE;
@@ -376,7 +388,10 @@ namespace Improvar.Controllers
                         MRETAILOUTLET.CMOB1 = VE.M_RETAIL.CMOB1;
                         MRETAILOUTLET.CMOB2 = VE.M_RETAIL.CMOB2;
                         MRETAILOUTLET.REMARKS = VE.M_RETAIL.REMARKS;
-                        
+                        MRETAILOUTLET.GPSNM = VE.M_RETAIL.GPSNM;
+                        MRETAILOUTLET.GPSLAT = VE.M_RETAIL.GPSLAT;
+                        MRETAILOUTLET.GPSLOT = VE.M_RETAIL.GPSLOT;
+
                         M_CNTRL_HDR MCH = Cn.M_CONTROL_HDR(VE.Checked, "M_RETAIL", MRETAILOUTLET.M_AUTONO, VE.DefaultAction, CommVar.CurSchema(UNQSNO));
                         if (VE.DefaultAction == "A")
                         {
@@ -406,22 +421,25 @@ namespace Improvar.Controllers
 
                             }
                         }
-                        if (VE.MRETAILLINK != null)
+                        if (VE.Dstbrslcd != null)
                         {
-                            for (int i = 0; i <= VE.MRETAILLINK.Count - 1; i++)
+                            int slno = 1;
+                            for (int i = 0; i <= VE.Dstbrslcd.Count() - 1; i++)
                             {
-                                if (VE.MRETAILLINK[i].SLNO.retDbl() != 0 && VE.MRETAILLINK[i].SLCD.retStr() != "")
+                                if (VE.Dstbrslcd[i].retStr() != "")
                                 {
 
                                     M_RETAIL_LINK RETAILLINK = new M_RETAIL_LINK();
-                                    RETAILLINK.SLNO = VE.MRETAILLINK[i].SLNO;
-                                    RETAILLINK.SLCD = VE.MRETAILLINK[i].SLCD;
+                                    RETAILLINK.SLNO = slno;
+                                    RETAILLINK.SLCD = VE.Dstbrslcd[i].retStr();
                                     RETAILLINK.EFFDT = System.DateTime.Now;
                                     RETAILLINK.RTLCD = MRETAILOUTLET.RTLCD;
                                     RETAILLINK.CLCD = MRETAILOUTLET.CLCD;
                                     RETAILLINK.EMD_NO = MRETAILOUTLET.EMD_NO;
                                     RETAILLINK.M_AUTONO = MRETAILOUTLET.M_AUTONO;
                                     DB.M_RETAIL_LINK.Add(RETAILLINK);
+
+                                    slno++;
                                 }
                             }
                         }
@@ -658,5 +676,100 @@ namespace Improvar.Controllers
                 return Content(ex.Message + ex.InnerException);
             }
         }
+        public JsonResult GetGstInfo(string GSTNO)
+        {
+            try
+            {
+                AdaequareGSP adaequareGSP = new AdaequareGSP();
+                ImprovarDB DB1 = new ImprovarDB(Cn.GetConnectionString(), Cn.Getschema);
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                //var AdqrRespGstInfo = adaequareGSP.AdqrGstInfoTestMode(GSTNO);
+                var AdqrRespGstInfo = adaequareGSP.AdqrGstInfo(GSTNO);
+                if (AdqrRespGstInfo.success == true && AdqrRespGstInfo.result != null)
+                {
+                    dic.Add("message", "ok");
+                    dic.Add("Gstin", AdqrRespGstInfo.result.Gstin);
+                    string StateCd = AdqrRespGstInfo.result.Gstin.Substring(0, 2);
+                    string StateNm = DB1.MS_STATE.Find(StateCd)?.STATENM;
+                    string panno = AdqrRespGstInfo.result.Gstin.Substring(2, 10);
+                    string comtype = panno.Substring(3, 1);
+                    dic.Add("StateCd", StateCd);
+                    dic.Add("StateNm", StateNm);
+                    dic.Add("Panno", panno);
+                    //dic.Add("Comptype", Getcomptype(comtype));
+                    dic.Add("TradeName", AdqrRespGstInfo.result.TradeName);
+                    if (AdqrRespGstInfo.result.TradeName == AdqrRespGstInfo.result.LegalName)
+                    {
+                        dic.Add("LegalName", "");
+                    }
+                    else
+                    {
+                        dic.Add("LegalName", AdqrRespGstInfo.result.LegalName);
+                    }
+                    dic.Add("AddrBnm", AdqrRespGstInfo.result.AddrBnm);
+                    dic.Add("AddrBno", AdqrRespGstInfo.result.AddrBno);
+                    dic.Add("AddrFlno", AdqrRespGstInfo.result.AddrFlno);
+                    dic.Add("AddrSt", AdqrRespGstInfo.result.AddrSt.retStr());
+                    dic.Add("AddrLoc", AdqrRespGstInfo.result.AddrLoc);
+                    dic.Add("AddrPncd", AdqrRespGstInfo.result.AddrPncd.retStr());
+                    dic.Add("TxpType", AdqrRespGstInfo.result.TxpType);
+                }
+                else
+                {
+                    dic.Add("message", AdqrRespGstInfo.message);
+                }
+                ModelState.Clear();
+                return Json(dic, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Json(ex.Message + ex.InnerException, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public string CheckSubledgerName(string val)
+        {
+            try
+            {
+                var UNQSNO = Cn.getQueryStringUNQSNO();
+                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
+                var query = (from c in DB.M_RETAIL where (c.RTLNM == val) select c);
+                if (query.Any())
+                {
+                    string str = "<table class='table-bordered' border='2px'><tr><th style='border: 1px solid #b1ac05;padding-right:2px'>ID</th><th style='border: 1px solid #b1ac05;padding-right:2px'>Name</th><th style='border: 1px solid #b1ac05;padding-right:2px'>Address</th><th style='border: 1px solid #b1ac05;padding-right:2px'>GST</th></tr>";
+                    foreach (var i in query)
+                    {
+                        str = str + "<tr><td style='border: 1px solid #a11818;'>" + i.RTLCD + "</td><td style='border: 1px solid #a11818;'>" + i.RTLNM + "</td><td style='border: 1px solid #a11818;'>" + i.ADD1 + i.ADD2 + i.ADD3 + i.ADD4 + "</td><td style='border: 1px solid #a11818;'>" + i.GSTNO + "</td></tr>";
+                    }
+                    str = str + "</table><br /> Retailer : <u>" + val + "</u>  Allready Entered";
+                    return str;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return ex.Message + ex.InnerException;
+            }
+        }
+        public string GetRetailAddress(string lat, string lot)
+        {
+            try
+            {
+                string add = Master_Help.GetAddress(lat, lot);
+                return add;
+
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return ex.Message + ex.InnerException;
+            }
+        }
+
+
     }
 }
