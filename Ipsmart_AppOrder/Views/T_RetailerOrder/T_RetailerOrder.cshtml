@@ -147,7 +147,7 @@
 
 <script>
     $(document).ready(function () {
-        //getLocation();
+        getLocation();
     });
 </script>
 <script>
@@ -208,8 +208,7 @@
             $('#tblSizes > tbody:last-child').append(tr);
         });
     }
-    function AddtoCart() {
-        //getLocation();
+    function AddtoCart() {        
         if(retFloat($("#NOOFSETS").val()) == 0)
         {
             alert('Enter No. Of Sets !!');
@@ -232,6 +231,7 @@
         }
         else
         {
+            getLocation();
             var NoOfItem=retFloat($("#NoOfItem").val());
             NoOfItem++;
             var TQnty=retFloat($("#TQnty").val());
@@ -294,19 +294,19 @@
 <script>
     function SaveData() {
         $("#WaitingMode").show();
-        //getLocation();
-        //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-        //    alert('Location not found,Save again!');
-        //    //getLocation();
-        //    $("#WaitingMode").hide();
-        //    return false;
-        //}
-        //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-        //    alert('Location not found,Save again!');
-        //    //getLocation();
-        //    $("#WaitingMode").hide();
-        //    return false;
-        //}
+        getLocation();
+        if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+            alert('Location not found,Save again!');
+            getLocation();
+            $("#WaitingMode").hide();
+            return false;
+        }
+        if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+            alert('Location not found,Save again!');
+            getLocation();
+            $("#WaitingMode").hide();
+            return false;
+        }
         if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
             alert('retailer not found!');
             $("#WaitingMode").hide();

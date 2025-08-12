@@ -5,7 +5,7 @@
     string US = Model?.UNQSNO_ENCRYPTED;
 
 }
-<script>
+<script>   
     window.addEventListener("unload", function () { });
     debugger;
     // If this page loads and reloadOnBack flag is set, refresh
@@ -16,7 +16,7 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        //getLocation();
+        getLocation();
 
         function formatResult(item) {
             if (!item.id) return item.text;
