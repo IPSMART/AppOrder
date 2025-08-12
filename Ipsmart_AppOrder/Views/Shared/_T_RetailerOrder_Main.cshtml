@@ -2,6 +2,22 @@
 @{
     var tt = System.DateTime.Now.retStr();
 }
+<script>
+    $(document).ready(function () {
+        document.querySelector('.swiper-button-next').addEventListener('click', function() {
+            // Custom logic before navigating
+            $("#NOOFSETS").val("");
+            swiper.slideNext(); // Navigate to the next slide
+            // Custom logic after navigating
+        });
+        document.querySelector('.swiper-button-prev').addEventListener('click', function () {
+            // Custom logic before navigating
+            $("#NOOFSETS").val("");
+            swiper.slidePrev(); // Navigate to the next slide
+            // Custom logic after navigating
+        });
+    });
+</script>
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
         @if (Model.ImageView != null)

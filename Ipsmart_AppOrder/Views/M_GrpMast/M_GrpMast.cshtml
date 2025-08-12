@@ -5,6 +5,15 @@
     string US = Model?.UNQSNO_ENCRYPTED;
 
 }
+<script>
+    window.addEventListener("unload", function () { });
+    debugger;
+    // If this page loads and reloadOnBack flag is set, refresh
+    if (sessionStorage.getItem("reloadOnBack") === "true") {
+        sessionStorage.removeItem("reloadOnBack");
+        location.reload();
+    }
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         //getLocation();
@@ -149,31 +158,28 @@
     }
 </script>
 <script>
-    function GetItemData() {
-        debugger;
-        let values = $('#BrandCode').val();
-        if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
-        if (!emptyFieldCheck("Please Select Retailer Name", "RetailerCode")) { return false; }
-        if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
-        $.ajax({
-            type: 'post',
-            beforesend: $("#WaitingMode").show(),
-            url: "@Url.Action("GetItem", PageControllerName)",
-            data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
-            success: function (result) {
-                window.location.href = "@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })";
-                if (newWindow) {
-                    window.open('', '_self'); // Required for some browsers
-                    window.close(); // Attempt to close current window
-                } else {
-                    alert("Popup blocked! Please allow popups for this website.");
-                }
+function GetItemData() {
+    debugger;
+    if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
+    if (!emptyFieldCheck("Please Select Retailer Name", "RetailerCode")) { return false; }
+    if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
+    $.ajax({
+        type: 'post',
+        beforesend: $("#WaitingMode").show(),
+        url: "@Url.Action("GetItem", PageControllerName)",
+        data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
+        success: function (result) {
+            sessionStorage.setItem("reloadOnBack", "true");
+            window.location.href = '@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })';
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+}
 
-                @*window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
-                $("#WaitingMode").hide();*@
-            }
-        });
-    }
 </script>
 @using (Html.BeginForm())
 {
