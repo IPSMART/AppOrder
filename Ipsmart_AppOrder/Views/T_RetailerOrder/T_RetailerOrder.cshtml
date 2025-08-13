@@ -6,6 +6,8 @@
     string US = Model?.UNQSNO_ENCRYPTED;
     var VisibleRow = 2;
 }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@ViewBag.Title</title>
 <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
 <link rel="icon" href="~/favicon.ico" type="image/x-icon">
@@ -118,8 +120,6 @@
         padding: 1rem;
         padding-bottom: 70px; /* space to avoid hiding content under footer */
     }
-
-    
 </style>
 <style>
     .footer {
@@ -132,6 +132,7 @@
         line-height: 60px;
         z-index: 1000;
     }
+
     .quantity-row {
         display: flex;
         align-items: center;
@@ -144,33 +145,62 @@
         overflow-x: auto;
     }
 </style>
+<style>
+    @@media (max-width: 768px) {
+        .truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 1; /* show only one line */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            cursor: pointer;
+        }
+
+            .truncate.expanded {
+                -webkit-line-clamp: unset;
+                max-height: 80px; /* fixed height when expanded */
+                overflow-y: auto; /* scroll inside */
+                padding-right: 5px; /* space for scrollbar */
+                box-shadow: inset 0 -1px 0 #ddd; /* optional styling */
+            }
+    }
+</style>
 
 <script>
     $(document).ready(function () {
-        getLocation();
+        //getLocation();
+        document.getElementById('header-text').addEventListener('click', function () {
+            const isExpanded = this.classList.toggle('expanded'); // true if expanded now
+            if (isExpanded) {
+                $("#headertitle").css("white-space", "normal"); // Allow wrapping when expanded
+            } else {
+                $("#headertitle").css("white-space", "nowrap"); // Keep it single-line when collapsed
+            }
+        });
     });
 </script>
 <script>
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    // Success: Set hidden fields
-                    $("#GPSLAT").val(position.coords.latitude);
-                    $("#GPSLOT").val(position.coords.longitude);
-                    console.log(position.coords.latitude + ',' + position.coords.longitude);
+    //function getLocation() {
+    //    if (navigator.geolocation) {
+    //        navigator.geolocation.getCurrentPosition(
+    //            function (position) {
+    //                // Success: Set hidden fields
+    //                $("#GPSLAT").val(position.coords.latitude);
+    //                $("#GPSLOT").val(position.coords.longitude);
+    //                console.log(position.coords.latitude + ',' + position.coords.longitude);
 
-                },
-                function (error) {
-                    alert("Location access is required to use this service.");
+    //            },
+    //            function (error) {
+    //                alert("Location access is required to use this service.");
 
-                }
-            );
-        } else {
-            alert("Geolocation is not supported by this browser.");
+    //            }
+    //        );
+    //    } else {
+    //        alert("Geolocation is not supported by this browser.");
 
-        }
-    }
+    //    }
+    //}
 
 </script>
 <script>
@@ -208,7 +238,7 @@
             $('#tblSizes > tbody:last-child').append(tr);
         });
     }
-    function AddtoCart() {        
+    function AddtoCart() {
         if(retFloat($("#NOOFSETS").val()) == 0)
         {
             alert('Enter No. Of Sets !!');
@@ -231,7 +261,7 @@
         }
         else
         {
-            getLocation();
+            //getLocation();
             var NoOfItem=retFloat($("#NoOfItem").val());
             NoOfItem++;
             var TQnty=retFloat($("#TQnty").val());
@@ -294,41 +324,49 @@
 <script>
     function SaveData() {
         $("#WaitingMode").show();
-        getLocation();
-        if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            alert('Location not found,Save again!');
-            getLocation();
-            $("#WaitingMode").hide();
-            return false;
-        }
-        if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            alert('Location not found,Save again!');
-            getLocation();
-            $("#WaitingMode").hide();
-            return false;
-        }
-        if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
-            alert('retailer not found!');
-            $("#WaitingMode").hide();
-            return false;
-        }
-        var hdnData1 = '';
-        $('#tblCart > tbody  > tr').each(function () {
-            var ITCD = $(this).find("td").eq(0).html();
-            var QNTY = $(this).find("td").eq(1).html();
-            var SIZE = $(this).find("td").eq(2).html();
-            if (hdnData1 != '') hdnData1 += ',';
-            hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "'  }";
-        });
+        getLocation(function (latlot) {
+            if (latlot != "") {
+                var LAT = returncolvalue(latlot, "LAT");
+                var LOT = returncolvalue(latlot, "LOT");
 
-        console.log(hdnData1);
-        if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
-        $("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+                $("#GPSLAT").val(LAT);
+                $("#GPSLOT").val(LOT);
+            }
+            //need to open
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
+                alert('retailer not found!');
+                $("#WaitingMode").hide();
+                return false;
+            }
+            var hdnData1 = '';
+            $('#tblCart > tbody  > tr').each(function () {
+                var ITCD = $(this).find("td").eq(0).html();
+                var QNTY = $(this).find("td").eq(1).html();
+                var SIZE = $(this).find("td").eq(2).html();
+                if (hdnData1 != '') hdnData1 += ',';
+                hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "'  }";
+            });
 
-        $.ajax({
-            type: 'post',
-            url: "@Url.Action("SAVE", PageControllerName)",
-            data: $('form').serialize(),
+            console.log(hdnData1);
+            if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
+            $("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+
+            $.ajax({
+                type: 'post',
+                url: "@Url.Action("SAVE", PageControllerName)",
+                data: $('form').serialize(),
             success: function (result) {
                 if (result == '1') {
                     alert('Data Saved Successfully !!');
@@ -351,6 +389,8 @@
                 $("body span h1").remove(); $("#msgbody_error style").remove();
             }
         });
+        });
+     
     }
 </script>
 <script>
@@ -371,8 +411,8 @@
     </p>
 </div>
 <div class="container-fluid">
-    <div class="alert alert-info top" style="padding:5px;margin-bottom:0px;">
-        <div class="row" style="font-size: large;">
+    <div class="truncate alert alert-info top" id="header-text" style="padding:5px;margin-bottom:0px;">
+        <div class="row" id="headertitle" style="font-size: large;white-space:nowrap;">
             <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
             <a href="../Home/Logout">
                 <span class="glyphicon glyphicon-off" style="font-size:medium;color:#dc0624f2;float:right;"></span>
