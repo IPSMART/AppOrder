@@ -171,6 +171,11 @@ function GetItemData() {
         success: function (result) {
             sessionStorage.setItem("reloadOnBack", "true");
             window.location.href = '@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })';
+
+            @*//testing
+            window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
+            $("#WaitingMode").hide();*@
+
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             $("#WaitingMode").hide();

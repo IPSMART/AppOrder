@@ -116,6 +116,8 @@ namespace Improvar.Controllers
 
                     }
                     VE.ImageView = ImageViewlst;
+                    T_RETAILORDER TRETAILORDER = new T_RETAILORDER();
+                    VE.T_RETAILORDER = TRETAILORDER;
                     return View(VE);
 
                 }

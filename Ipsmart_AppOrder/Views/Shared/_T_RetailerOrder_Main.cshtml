@@ -32,7 +32,7 @@
                     <span style="display: none" id="SIZE_COUNT_@i">@Model.ImageView[i].SIZE_COUNT</span>
                     <span style="display: none" id="PCSPERBOX_@i">@Model.ImageView[i].PCSPERBOX</span>
                     <div class="title" id="styleno_@i">@Model.ImageView[i].Desc</div>
-                    <img src="@Model.ImageView[i].Url?@tt" />
+                    <img src="@Model.ImageView[i].Url?@tt" id="img_@i" onclick="openimg(this.id);"/>
 
                 </div>
             }
