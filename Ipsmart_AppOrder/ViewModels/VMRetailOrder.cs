@@ -1,6 +1,7 @@
 ﻿using Improvar.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -52,12 +53,15 @@ namespace Improvar.ViewModels
         public string MIXSIZE { get; set; }
         public double SIZE_COUNT { get; set; }
         public short PCSPERBOX { get; set; }
+        [StringLength(50)]
+        public string ITREM { get; set; }
     }
 
     public class APP_ITEMLIST
     {
         public string itcd { get; set; }
         public string sizes { get; set; }
+        public string itrem { get; set; }
     }
     public class ListDistributor
     {

@@ -97,6 +97,7 @@ namespace Improvar.Models
         public int VCHRNO { get; set; }
         [StringLength(4)]
         public string MNTHCD { get; set; }
-
+        [StringLength(8)]
+        public string SLMSLCD { get; set; }
     }
 }

@@ -59,8 +59,6 @@
 
         .swiper-slide .title {
             position: absolute;
-            /*top: 210px;
-                    left: 10px;*/
             bottom: 40px;
             color: white;
             font-weight: bold;
@@ -68,11 +66,6 @@
             font-family: 'Mark Bold' !important;
         }
 
-    /*@@media (min-width: 1200px) {
-        body {
-            margin-bottom: 24px;
-        }
-    }*/
 
     @@media (max-width: 800px) {
         .mySwiper {
@@ -169,15 +162,10 @@
     }
 </style>
 <style>
-    /*body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background: #f8f9fa;
-    }*/
-
     .table-wrapper {
         width: 100%;
-        overflow-x: auto; /* ✅ horizontal scroll */
+        max-height: 300px; /* Control vertical height inside modal */
+        overflow: auto; /* Enable scroll both vertically and horizontally */
         border: 1px solid #ddd;
         border-radius: 6px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -186,17 +174,56 @@
     table {
         border-collapse: collapse;
         width: 100%;
-        min-width: 700px; /* ✅ force scroll */
+        min-width: 700px; /* Forces horizontal scroll when narrow */
     }
 
     th, td {
         border: 1px solid #ddd;
-        padding: 10px 14px;
         text-align: left;
         white-space: nowrap;
+        font-size: 12px;
     }
 
+    th {
+        padding: 10px 14px;
+    }
+   tbody td {
+    padding: 0px !important;
+}
+    /* Sticky header */
     thead th {
+        background: #255994;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 3;
+    }
+
+    /* Sticky first column */
+    .sticky-col-left {
+        position: sticky;
+        left: 0;
+        background: white;
+        z-index: 2;
+    }
+
+    /* Sticky last column */
+    .sticky-col-right {
+        position: sticky;
+        right: 0;
+        background: white;
+        z-index: 2;
+    }
+
+    /* Keep sticky header columns above rows */
+    thead .sticky-col-left {
+        z-index: 4;
+        background: #255994;
+        color: white;
+    }
+
+    thead .sticky-col-right {
+        z-index: 4;
         background: #255994;
         color: white;
     }
@@ -204,70 +231,84 @@
     tbody tr:nth-child(even) {
         background: #f2f2f2;
     }
-
-    body, table, th, td {
-        font-size: 12px !important;
-    }
-.table-header-custom th {
-  background-color: #25599a;
-  color: white;
-  position: sticky;
-  top: 0;     
-  z-index: 20; /* stay above rows */
-}
-
-/* Sticky Last Column */
-.sticky-col {
-  position: sticky;
-  right: 0;  /* sticks to right edge */
-  background-color: #fff; /* prevents overlap transparency */
-  z-index: 15;
-}
 </style>
 <style>
-    .menu a{
-  text-align:center;
-	float: left;
-	width: 20px;
-	height: 20px;
-	border-radius: 100%;
-	margin-right: 7px; /*space between*/
-    display: flex;
-    align-items: flex-start;
-    transition: all 0.4s;
-    -webkit-transition: all 0.4s;
-} 
-.menu a i{
-	font-size: 15px;
-    align-self:center;
-    transition: all 0.4s;
-    -webkit-transition: all 0.4s;
-    margin: 0 auto;
-}
-</style>
-<style>
-   /* Simple popup */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+    .menu a {
+        text-align: center;
+        float: left;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        margin-right: 7px; /*space between*/
+        display: flex;
+        align-items: flex-start;
+        transition: all 0.4s;
+        -webkit-transition: all 0.4s;
     }
 
-    #popup img {
-      max-width: 90%;
-      max-height: 90%;
-      border: 5px solid #fff;
-      border-radius: 10px;
+        .menu a i {
+            font-size: 15px;
+            align-self: center;
+            transition: all 0.4s;
+            -webkit-transition: all 0.4s;
+            margin: 0 auto;
+        }
+</style>
+<style>
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .modal-content {
+        background: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        width: 600px;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .modal-header, .modal-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+        margin-top: 0px;
+    }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+    .modal-body {
+        padding: 0px;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
     }
 </style>
 <script>
     $(document).ready(function () {
-        //getLocation();
         document.getElementById('header-text').addEventListener('click', function () {
             const isExpanded = this.classList.toggle('expanded'); // true if expanded now
             if (isExpanded) {
@@ -276,33 +317,7 @@
                 $("#headertitle").css("white-space", "nowrap"); // Keep it single-line when collapsed
             }
         });
-        document.getElementById("popup").onclick = () => {
-            document.getElementById("popup").style.display = "none";
-        }
     });
-</script>
-<script>
-    //function getLocation() {
-    //    if (navigator.geolocation) {
-    //        navigator.geolocation.getCurrentPosition(
-    //            function (position) {
-    //                // Success: Set hidden fields
-    //                $("#GPSLAT").val(position.coords.latitude);
-    //                $("#GPSLOT").val(position.coords.longitude);
-    //                console.log(position.coords.latitude + ',' + position.coords.longitude);
-
-    //            },
-    //            function (error) {
-    //                alert("Location access is required to use this service.");
-
-    //            }
-    //        );
-    //    } else {
-    //        alert("Geolocation is not supported by this browser.");
-
-    //    }
-    //}
-
 </script>
 <script>
     function TakeOrder() {
@@ -312,6 +327,7 @@
         var sizearr = sizes.split(',');
 
         var NOOFSETS = retFloat($("#NOOFSETS").val());
+        var ITREM = $("#ITREM").val();
         var PCSPERSET = retFloat($("#PCSPERSET_" + index1).html());
         var MIXSIZE = $("#MIXSIZE_" + index1).html();
         var PCSPERBOX = retFloat($("#PCSPERBOX_" + index1).html());
@@ -335,7 +351,7 @@
                 QNTY = (NOOFSETS * PCSPERSET)
             }
 
-            var tr = '<tr><td>' + value + '</td><td> <input type="number" value="' + QNTY + '"  class="form-control"/></td></tr>';
+            var tr = '<tr><td>' + value + '</td><td> <input type="number" value="' + QNTY + '"  class="form-control"/></td><td> <input type="text" value="' + ITREM + '"  class="form-control"/></td></tr>';
             $('#tblSizes > tbody:last-child').append(tr);
         });
     }
@@ -347,8 +363,10 @@
         }
         TakeOrder();
         var index = swiper.realIndex;
+        var itrem =  $("#ITREM").val();
         var itcd = $("#itcd_" + index).html();
         var styleno = $("#styleno_" + index).html();
+        var sizes = $("#size_" + index).html();
         var sizedt = '';
         var itcdexist=false;
         if ($('#tblCart > tbody > tr td:contains("' + itcd + '")').length > 0) {
@@ -362,10 +380,10 @@
         }
         else
         {
-            //getLocation();
             var NoOfItem=retFloat($("#NoOfItem").val());
             NoOfItem++;
             var TQnty=retFloat($("#TQnty").val());
+            var qnty=0;
             $('#tblSizes > tbody  > tr').each(function () {
                 var SIZE = $(this).find("td").eq(0).html();
                 var QNTY = $(this).find("td:eq(1) input[type='number']").val();
@@ -373,14 +391,33 @@
                     if (sizedt != '') sizedt += ',';
                     sizedt += SIZE + '=' + QNTY;
                     TQnty +=retFloat(QNTY);
+                    qnty +=retFloat(QNTY);
                 }
             });
-            var tr = '<tr><td>' + styleno + '</td><td>' + sizedt + '</td><td colspan="2">' + itcd + '</td></tr>';
+            var icon ='<div class="menu" style="float:right;">';
+            icon +='<a onclick="ModifyCart(\'' + itcd + '\');" style="border:2px solid #5cb85c;width:20px;height:20px;">';
+            icon +='<i class="fa fa-pencil" style="color:#5cb85c;font-size:15px;"></i>';
+            icon +='</a>';
+            icon +='<a onclick="DeleteCart(\'' + itcd + '\');" style="border:2px solid red;width:20px;height:20px;">';
+            icon +='<i class="fa fa-minus" style="color:red;font-size:15px;"></i>';
+            icon +='</a>';
+            icon +='</div>';
+            var tr = '<tr data-qnty='+qnty+' data-allsizes='+sizes+' >';
+            tr += '<td>' + styleno + '</td>';
+            tr += '<td>' + sizedt + '</td>';
+            //tr += '<td>' + itrem + '</td>';
+            tr += '<td><input type="text" value="' + itrem + '" style="width:100%;margin-top: 0px;" class="form-control" ></td>';
+
+            //tr += '<td><input class="form-control  text-box single-line" data-val="true" data-val-length="The field popupITREM must be a string with a maximum length of 50." data-val-length-max="50" id="popupITREM" maxlength="50" name="popupITREM" placeholder="Remarks" style="font-weight:bold;font-size:15px;" type="text" value="' + itrem + '"></td>';
+            tr += '<td>' + itcd + '</td>';
+            tr += '<td class="sticky-col-right">'+icon+'</td>';
+            tr += '</tr>';
             $('#tblCart > tbody').prepend(tr);
             $('#tblSizes > tbody').html('');
             $("#NOOFSETS").val("");
-            $("#NoOfItem").val(NoOfItem);
+            $("#ITREM").val("");
             $("#TQnty").val(TQnty);
+            $("#NoOfItem").val(NoOfItem);
             $('#cartsummary').text(NoOfItem+"("+TQnty+")");
             updateVisibility(@VisibleRow);
         }
@@ -397,6 +434,120 @@
             $("#btnShowLess").hide();
             $("#btnShowMore").show();
         }
+    }
+    function ModifyCart(itcd)
+    {
+        debugger;
+
+        $("#UpdateItcd").val(itcd);
+        var styleno="",itrem="";
+        var tr = "";
+        $('#tblCart > tbody  > tr').each(function () {
+            let row = $(this);
+            row.find("td").each(function () {
+                if ($(this).text().trim() === itcd) { // exact match
+                    styleno=row.find("td").eq(0).text();
+                    var allsizearr= row[0].dataset.allsizes.split(',');
+                    //var sizearr = row.find("td").eq(1).text().split(',');
+
+                    let sizearr = {};
+                    row.find("td").eq(1).text().replace(/[{}]/g, "").split(",").forEach(item => {
+                        let parts = item.split("=");
+                        let size = parts[0];
+                        let qty = parseInt(parts[1], 10);
+                        sizearr[size] = qty;
+                    });
+
+                    $.each(allsizearr, function (index, value) {
+                        //var size=value.split('=')[0];
+                        //var qnty=value.split('=')[1];
+                        let qnty = sizearr[value];
+                        var size=value;
+                        tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;"/></td></tr>';
+                        itrem = row.find("td").eq(2).find('input').val();
+                    });
+                }
+            });
+        });
+        var table = "";
+
+        table += '<div class="table-responsive row" style="max-height:60%; overflow-y:auto;margin-bottom:0px;">';
+        table += '<table class="table table-striped" id="popuptblSizes">';
+        table += '<thead class="table-header-custom">';
+        table += '<tr style="background-color: #255994;color: white;">';
+        table += '<th class="sticky-col-left" style="width:50px;">Size</th>';
+        table += '<th>Qnty</th>';
+        table += '</tr>';
+        table += '</thead>';
+        table += '<tbody>'+tr+'</tbody>';
+        table += '</table>';
+        table += '</div>';
+        $("#popupSize").html(table);
+        $("#popupITREM").val(itrem);
+        document.getElementById('popupTitle').textContent = styleno;
+        document.getElementById("popup").style.display = "flex";
+    }
+    function ClosePopup(){
+        document.getElementById("popup").style.display = "none";
+
+    }
+    function UpdateCart() {
+        debugger;
+        var itcd = $("#UpdateItcd").val();
+        var itrem =  $("#popupITREM").val();
+        var sizedt ="";
+
+        var qnty=0;
+        $('#popuptblSizes > tbody  > tr').each(function () {
+            var SIZE = $(this).find("td").eq(0).html();
+            var QNTY = $(this).find("td:eq(1) input[type='number']").val();
+            if (retFloat(QNTY) != 0) {
+                if (sizedt != '') sizedt += ',';
+                sizedt += SIZE + '=' + retFloat(QNTY);
+                TQnty +=retFloat(QNTY);
+                qnty +=retFloat(QNTY);
+
+            }
+        });
+        var TQnty=0,NoOfItem=0;
+
+        $('#tblCart > tbody  > tr').each(function () {
+            let row = $(this);
+            NoOfItem++;
+            row.find("td").each(function () {
+                if ($(this).text().trim() === itcd) { // exact match
+                    row.find("td").eq(1).text(sizedt);
+                    row.find("td").eq(2).find('input').val(itrem);
+                    row[0].dataset.qnty=qnty;
+                }
+            });
+            TQnty += retFloat(row[0].dataset.qnty);
+
+        });
+        $("#TQnty").val(TQnty);
+        $("#NoOfItem").val(NoOfItem);
+        $('#cartsummary').text(NoOfItem+"("+TQnty+")");
+        updateVisibility(@VisibleRow);
+        ClosePopup();
+    }
+    function DeleteCart(itcd)
+    {
+        debugger;
+        var TQnty=0,NoOfItem=0;
+        $("#tblCart tbody tr").each(function() {
+            if ($(this).find("td").eq(3).text().trim() === itcd) {
+                $(this).remove();
+            }
+            else
+            {
+                TQnty += retFloat($(this)[0].dataset.qnty);
+                NoOfItem++;
+            }
+        });
+        $("#TQnty").val(TQnty);
+        $("#NoOfItem").val(NoOfItem);
+        $('#cartsummary').text(NoOfItem+"("+TQnty+")");
+        updateVisibility(@VisibleRow);
     }
 </script>
 <script>
@@ -453,11 +604,13 @@
             }
             var hdnData1 = '';
             $('#tblCart > tbody  > tr').each(function () {
-                var ITCD = $(this).find("td").eq(0).html();
-                var QNTY = $(this).find("td").eq(1).html();
-                var SIZE = $(this).find("td").eq(2).html();
+                var ITCD = $(this).find("td").eq(3).html();
+                //var QNTY = $(this).find("td").eq(1).html();
+                var SIZE = $(this).find("td").eq(1).html();
+                var ITREM = $(this).find("td").eq(2).find('input').val();
+
                 if (hdnData1 != '') hdnData1 += ',';
-                hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "'  }";
+                hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "', 'itrem': '" + ITREM + "'  }";
             });
 
             console.log(hdnData1);
@@ -505,22 +658,14 @@
     }
 </script>
 <script>
-   function OpenHome(){
-       window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
-       if (newWindow) {
-           window.open('', '_self'); // Required for some browsers
-           window.close(); // Attempt to close current window
-       } else {
-           alert("Popup blocked! Please allow popups for this website.");
-       }
-    }
-</script>
-<script>
-    function openimg(id){
-        var documentsrc = document.getElementById(id).src;
-
-        document.getElementById("popupImg").src = documentsrc;
-        document.getElementById("popup").style.display = "flex";
+    function OpenHome(){
+        window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
+        if (newWindow) {
+            window.open('', '_self'); // Required for some browsers
+            window.close(); // Attempt to close current window
+        } else {
+            alert("Popup blocked! Please allow popups for this website.");
+        }
     }
 </script>
 @*@Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")*@
@@ -534,9 +679,6 @@
     <div class="truncate alert alert-info top" id="header-text" style="padding:5px;margin-bottom:0px;">
         <div class="row" id="headertitle" style="font-size: large;white-space:nowrap;">
             <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
-            @*<a href="../Home/Logout">
-                <span class="glyphicon glyphicon-off" style="font-size:medium;color:#dc0624f2;float:right;"></span>
-            </a>*@
             <div class="menu" style="float:right;">
                 <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
                 <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
@@ -558,17 +700,22 @@
         @Html.HiddenFor(model => model.T_RETAILORDER.DOCNO, new { id = "DOCNO" })
         @Html.HiddenFor(model => model.T_RETAILORDER.VCHRNO, new { id = "VCHRNO" })
         @Html.HiddenFor(model => model.T_RETAILORDER.MNTHCD, new { id = "MNTHCD" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.SLMSLCD, new { id = "SLMSLCD" })
+
         <input type="hidden" id="hdnData" />
         <input type="hidden" id="NoOfItem" />
         <input type="hidden" id="TQnty" />
+        <input type="hidden" id="UpdateItcd" />
+
         <div class="table-responsive row sub-top" style="max-height:60%; overflow-y:auto;">
             <table class="table table-striped" id="tblCart">
                 <thead class="table-header-custom">
                     <tr style="background-color: #255994;color: white;">
                         <th>Styleno</th>
                         <th>Sizes Qnty</th>
+                        <th>Remarks</th>
                         <th>Item</th>
-                        <th class="sticky-col" style="width:95px;">
+                        <th class="sticky-col-right" style="width:95px;">
                             <i class="fa fa-shopping-cart" title="Place Order" style="font-size:medium;color:greenyellow;cursor:pointer;" onclick="SaveData()"></i>
                             <span id="cartsummary" style="font-size:medium;color:white;">0(0)</span>
 
@@ -591,24 +738,25 @@
                 @Html.Partial("_T_RetailerOrder_Main")
             </div>
         </div>
-        <div class="row" style="display:none;">
-            <table class="table table-striped" id="tblSizes">
+        <div class="row">
+            <table class="table table-striped" id="tblSizes" style="display:none;">
                 <thead>
-                    <tr style="background-color: #255994;color: white;"><th>Size</th><th>Qnty</th></tr>
+                    <tr style="background-color: #255994;color: white;"><th>Size</th><th>Qnty</th><th>Remarks</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
+        <div id="popup_size" class="row" style="margin-top: 11px;top:15%;left:15%;position:absolute;">
+        </div>
         <div class="footer" style="padding:5px;">
             <div class="quantity-row">
                 <i class="fa fa-minus-circle" style="font-size:25px;color:#428bca;cursor:pointer;" onclick="decrement('NOOFSETS')"></i>
-                @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control", id = "NOOFSETS", @placeholder = "No. Of Sets", maxlength = 10, @onkeypress = "return numericOnly(this);", min = "1", @style = "text-align:center;font-weight:bold;font-size:20px;height:33px;" } })
+                @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control", id = "NOOFSETS", @placeholder = "Sets", maxlength = 10, @onkeypress = "return numericOnly(this);", min = "1", @style = "text-align:center;font-weight:bold;font-size:20px;height:33px;width:55px;" } })
                 <i class="fa fa-plus-circle" style="font-size:25px;color:#428bca;cursor:pointer;" onclick="increment('NOOFSETS')"></i>
-                <button type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;width:100%;font-size:20px;" class="btn btn-sm btn-warning" onclick="AddtoCart()" title="Add to Cart">Add to Cart <i class="fa fa-cart-plus" style="color:#428bca;"></i></button>
-            </div>
-            <div class="quantity-row">
-                <i class="fa fa-pencil-square" style="font-size:25px;color:#428bca;"></i>
-                @Html.EditorFor(model => model.T_RETAILORDER.DOCREM, new { htmlAttributes = new { @class = "form-control ", id = "DOCREM", @placeholder = "Remarks", maxlength = 200 } })
+                @Html.EditorFor(model => model.ITREM, new { htmlAttributes = new { @class = "form-control ", id = "ITREM", @placeholder = "Remarks", maxlength = 50, @style = "font-weight:bold;font-size:20px;height:33px;" } })
+                <div class="menu" style="float:right;">
+                    <a onclick="AddtoCart();" style="border: 2px solid #f0ad4e;width:30px;height:30px;"><i class="fa fa-cart-plus" style="color:#f0ad4e;font-size:20px;"></i></a>
+                </div>
             </div>
         </div>
         <div class="container">
@@ -616,9 +764,20 @@
 
             </div>
         </div>
-        <!-- Popup -->
-        <div id="popup">
-            <img id="popupImg" src="">
+        <div id="popup" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="popupTitle">Default Title</h2>
+                    <span class="close-btn" onclick="ClosePopup();">&times;</span>
+                </div>
+                <div id="popupSize" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <input class="form-control  text-box single-line" data-val="true" data-val-length="The field popupITREM must be a string with a maximum length of 50." data-val-length-max="50" id="popupITREM" maxlength="50" name="popupITREM" placeholder="Remarks" style="font-weight:bold;font-size:15px;" type="text" value="">
+                    <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-warning" onclick="UpdateCart()" title="Add to Cart">Update <i class="fa fa-arrow-right"></i></button>
+                </div>
+            </div>
         </div>
     }
 </div>

@@ -42,6 +42,8 @@ namespace Improvar.Models
         public string FREESTK { get; set; }
 
         public double? QNTY { get; set; }
-        
+
+        [StringLength(50)]
+        public string ITREM { get; set; }
     }
 }

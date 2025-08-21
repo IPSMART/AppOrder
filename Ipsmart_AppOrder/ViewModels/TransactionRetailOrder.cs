@@ -1,6 +1,7 @@
 ﻿using Improvar.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -34,5 +35,7 @@ namespace Improvar.ViewModels
         public string CollName { get; set; }
         public int? NOOFSETS { get; set; }
         public T_RETAILORDER T_RETAILORDER { get; set; }
+        [StringLength(50)]
+        public string ITREM { get; set; }
     }
 }

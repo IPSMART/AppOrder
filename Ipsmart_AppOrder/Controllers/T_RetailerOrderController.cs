@@ -115,9 +115,7 @@ namespace Improvar.Controllers
                         }
 
                     }
-                    VE.ImageView = ImageViewlst;
-                    T_RETAILORDER TRETAILORDER = new T_RETAILORDER();
-                    VE.T_RETAILORDER = TRETAILORDER;
+                    VE.ImageView = ImageViewlst;                   
                     return View(VE);
 
                 }
@@ -175,6 +173,7 @@ namespace Improvar.Controllers
                         }
                         TRETAILORDER.RTLCD = VE.T_RETAILORDER.RTLCD;
                         TRETAILORDER.SLCD = VE.T_RETAILORDER.SLCD;
+                        TRETAILORDER.SLMSLCD = "ED00036";// VE.T_RETAILORDER.SLMSLCD;
                         TRETAILORDER.DOCAMT = VE.T_RETAILORDER.DOCAMT;
 
                         TRETAILORDER.USR_ID = CommVar.UserID();
@@ -231,6 +230,7 @@ namespace Improvar.Controllers
                                     TRETAILORDERDTL.SLNO = slno.retShort();
                                     TRETAILORDERDTL.SIZECD = sqn[0];
                                     TRETAILORDERDTL.QNTY = sqn[1].retDbl();
+                                    TRETAILORDERDTL.ITREM = v.itrem;
                                     DB.T_RETAILORDERDTL.Add(TRETAILORDERDTL);
                                 }
                             }

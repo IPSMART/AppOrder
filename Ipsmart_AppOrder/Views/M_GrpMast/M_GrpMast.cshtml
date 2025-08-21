@@ -16,7 +16,7 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        getLocation();
+        //getLocation();
 
         function formatResult(item) {
             if (!item.id) return item.text;
@@ -158,15 +158,15 @@
     }
 </script>
 <script>
-function GetItemData() {
-    debugger;
-    if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
-    if (!emptyFieldCheck("Please Select Retailer Name", "RetailerCode")) { return false; }
-    if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
-    $.ajax({
-        type: 'post',
-        beforesend: $("#WaitingMode").show(),
-        url: "@Url.Action("GetItem", PageControllerName)",
+    function GetItemData() {
+        debugger;
+        if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
+        if (!emptyFieldCheck("Please Select Retailer Name", "RetailerCode")) { return false; }
+        if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
+        $.ajax({
+            type: 'post',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("GetItem", PageControllerName)",
         data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
         success: function (result) {
             sessionStorage.setItem("reloadOnBack", "true");
