@@ -3851,6 +3851,11 @@ namespace Improvar
                 return "";
             }
         }
-
+        public double Roundoff(double amt, int dec = 2)
+        {
+            double ramt = 0;
+            ramt = Math.Round(amt, dec, MidpointRounding.AwayFromZero);
+            return ramt;
+        }
     }
 }

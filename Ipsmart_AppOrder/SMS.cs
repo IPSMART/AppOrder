@@ -13,17 +13,20 @@ namespace Improvar
         Connection Cn = new Connection();
         M_SUBLEG MSUBLEG;
         MasterHelp masterHelp = new MasterHelp();
-        public string SMSsend(string mobno, string msg, string TemplateID)
+        Salesfunc salesfunc = new Salesfunc();
+        public string SMSsend(string mobno, string msg, string TemplateID, string anothermobno = "")
         {
             var UNQSNO = Cn.getQueryStringUNQSNO();
             string sql = "", scmf = CommVar.FinSchema(UNQSNO);
             string smsurl = "", smsurlsend = "";
             try
             {
-                sql = "select a.smsurl from " + scmf + ".m_sms_config a where (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) order by slno";
+                sql = "select a.smsurl from " + scmf + ".m_sms_config a where (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) and smstype='S' order by slno";
                 DataTable tbl = masterHelp.SQLquery(sql);
                 if (tbl.Rows.Count > 0) smsurl = tbl.Rows[0]["smsurl"].ToString();
                 string datastring = "";
+                if (anothermobno.retStr() != "") mobno += "," + anothermobno;
+
                 smsurlsend = smsurl;
                 smsurlsend = smsurlsend.Replace("#MOBILENO#", mobno);
                 smsurlsend = smsurlsend.Replace("#MESSAGE#", msg);
@@ -86,13 +89,15 @@ namespace Improvar
             var UNQSNO = Cn.getQueryStringUNQSNO();
             ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
             string sql = "", scmf = CommVar.FinSchema(UNQSNO); string tempid = "";
-            string smsmsg = "", smsmsgsend = "";
-            sql = "select a.smsmsg,tempid from " + scmf + ".m_sms_dtl a where a.reptype='" + reptype + "' and (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) order by slno";
+            string smsmsg = "", smsmsgsend = "", altmobno = "", autosend = "";
+            sql = "select a.smsmsg,tempid,ALTMOBNO, AUTOSEND from " + scmf + ".m_sms_dtl a where a.reptype='" + reptype + "' and (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) order by slno";
             DataTable tbl = masterHelp.SQLquery(sql);
             if (tbl.Rows.Count > 0)
             {
                 smsmsg = tbl.Rows[0]["smsmsg"].ToString();
                 tempid = tbl.Rows[0]["tempid"].ToString();
+                altmobno = tbl.Rows[0]["altmobno"].ToString();
+                autosend = tbl.Rows[0]["autosend"].ToString();
             }
             smsmsgsend = smsmsg;
             for (int i = 0; i <= (smsvar.Length / 2) - 1; i++)
@@ -104,12 +109,16 @@ namespace Improvar
             {
                 MSUBLEG = DBF.M_SUBLEG.Find(slcd);
                 if (MSUBLEG != null) slnm = MSUBLEG.FULLNAME == null ? MSUBLEG.SLNM : MSUBLEG.FULLNAME;
-                slnm = CommFunc.TruncateWord(slnm, 25);
+                System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex("[^a-zA-Z0-9 -]");
+                slnm = rgx.Replace(slnm, "");
+                slnm = CommFunc.TruncateWord(slnm, 28);
             }
             smsmsgsend = smsmsgsend.Replace("&slnm&", slnm);
             List<string> smslist = new List<string>();
             smslist.Add(smsmsgsend);
             smslist.Add(tempid);
+            smslist.Add(altmobno);
+            smslist.Add(autosend);
             return smslist;
         }
         public void insT_TXNSTATUS(string Auto_Number, string ststype, string flag1, string stsrem)
@@ -155,7 +164,7 @@ namespace Improvar
             string sql = "", scmf = CommVar.FinSchema(UNQSNO);
             string smsautosend = "N", smsurl = "", smsretval = "", slcdregmob = "";
 
-            sql = "select a.smsurl from " + scmf + ".m_sms_config a where (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) order by slno";
+            sql = "select a.smsurl from " + scmf + ".m_sms_config a where (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) and smstype='S' order by slno";
             DataTable tbl = masterHelp.SQLquery(sql);
             if (tbl.Rows.Count > 0) smsurl = "Y";
 
@@ -192,5 +201,119 @@ namespace Improvar
             return rval;
         }
 
-}
+        #region whatsapp
+
+        public string WHATSAPPsend(string mobno, string msg, string TemplateID, List<string> pdffilenm = null, List<string> imgfilenm = null)
+        {
+            //mobno = "9073223344";
+            var UNQSNO = Cn.getQueryStringUNQSNO();
+            string sql = "", scmf = CommVar.FinSchema(UNQSNO);
+            string smsurl = "", smsurlsend = "";
+            try
+            {
+
+                sql = "select a.smsurl from " + scmf + ".m_sms_config a where (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) and smstype='W' order by slno";
+                DataTable tbl = masterHelp.SQLquery(sql);
+                if (tbl.Rows.Count > 0) smsurl = tbl.Rows[0]["smsurl"].ToString();
+                //smsurl = "http://wapp.nkinfo.in/wapp/v2/api/send?apikey=794d881c42bc4917add81745a87a90b2&mobile=#MOBILENO#&msg=#MESSAGE#";
+                string datastring = "";
+                string sendfilenmp = "", sendfilenmi = "";
+                double cnt = 0;
+                int pdfindex = 0, imgindex = 0;
+                while (true)
+                {
+                    if (cnt != 0)
+                    {
+                        msg = " ";
+                    }
+                    smsurlsend = smsurl;
+                    smsurlsend = smsurlsend.Replace("#MOBILENO#", mobno);
+                    smsurlsend = smsurlsend.Replace("#MESSAGE#", msg);
+                    smsurlsend = smsurlsend.Replace("#TEMPID#", TemplateID);
+
+                    if (pdffilenm.Count() > 0 && pdfindex < pdffilenm.Count())
+                    {
+                        string path = salesfunc.GetWhatsappFilePath() + pdffilenm[pdfindex].retStr();
+                        sendfilenmp += "<br/>" + pdffilenm[pdfindex].retStr();
+                        smsurlsend += "&pdf=" + path;
+                        pdfindex++;
+                    }
+                    else
+                    {
+                        if (imgfilenm.Count() > 0)
+                        {
+                            for (int a = 0; a < 4; a++)
+                            {
+                                string path = salesfunc.GetWhatsappFilePath() + imgfilenm[imgindex].retStr();
+                                sendfilenmi += "<br/>" + imgfilenm[imgindex].retStr();
+                                smsurlsend += "&img" + (a + 1) + "=" + path;
+                                imgindex++;
+                                if (imgindex >= imgfilenm.Count()) break;
+                            }
+                        }
+                    }
+
+
+                    WebRequest rqst = HttpWebRequest.Create(smsurlsend);
+                    HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse();
+                    Stream strm = (Stream)rspns.GetResponseStream();
+                    StreamReader strmrdr = new StreamReader(strm);
+                    datastring = strmrdr.ReadToEnd();
+                    rspns.Close();
+                    strm.Close();
+                    strmrdr.Close();
+                    Cn.SaveTextFile(smsurlsend, "ERROR LOG WHATSAPP" + DateTime.Today.ToString("yyyy-MM-dd"), @"C:/IPSMART/ErrorLogWhatsapp");
+                    if (imgindex >= imgfilenm.Count() && pdfindex >= pdffilenm.Count()) break;
+                    cnt++;
+
+                }
+                return "=Sending File : " + sendfilenmp + sendfilenmi;
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveTextFile(smsurlsend, "ERROR LOG WHATSAPP" + DateTime.Today.ToString("yyyy-MM-dd"), @"C:/IPSMART/ErrorLogWhatsapp");
+                Cn.SaveException(ex, smsurl + "    " + smsurlsend);
+                return ex.Message + "=" + smsurlsend;
+            }
+        }
+        public List<string> WHATSAPPMessContectGen(string slcd, string reptype, string[,] smsvar)
+        {
+            var UNQSNO = Cn.getQueryStringUNQSNO();
+            ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
+            string sql = "", scmf = CommVar.FinSchema(UNQSNO); string tempid = "";
+            string smsmsg = "", smsmsgsend = "", altmobno = "", autosend = "";
+            sql = "select a.smsmsg,tempid,ALTMOBNO, AUTOSEND from " + scmf + ".m_sms_dtl a where a.reptype='" + reptype + "' and (a.compcd='" + CommVar.Compcd(UNQSNO) + "' or a.compcd is null ) order by slno";
+            DataTable tbl = masterHelp.SQLquery(sql);
+            if (tbl.Rows.Count > 0)
+            {
+                smsmsg = tbl.Rows[0]["smsmsg"].ToString();
+                tempid = tbl.Rows[0]["tempid"].ToString();
+                altmobno = tbl.Rows[0]["altmobno"].ToString();
+                autosend = tbl.Rows[0]["autosend"].ToString();
+            }
+            smsmsgsend = smsmsg;
+            for (int i = 0; i <= (smsvar.Length / 2) - 1; i++)
+            {
+                smsmsgsend = smsmsgsend.Replace(smsvar[i, 0], smsvar[i, 1]);
+            }
+            string slnm = "";
+            if (!string.IsNullOrEmpty(slcd))
+            {
+                MSUBLEG = DBF.M_SUBLEG.Find(slcd);
+                if (MSUBLEG != null) slnm = MSUBLEG.FULLNAME == null ? MSUBLEG.SLNM : MSUBLEG.FULLNAME;
+                System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex("[^a-zA-Z0-9 -]");
+                slnm = rgx.Replace(slnm, "");
+                slnm = CommFunc.TruncateWord(slnm, 28);
+            }
+            smsmsgsend = smsmsgsend.Replace("&slnm&", slnm);
+            List<string> smslist = new List<string>();
+            smslist.Add(smsmsgsend);
+            smslist.Add(tempid);
+            smslist.Add(altmobno);
+            smslist.Add(autosend);
+            return smslist;
+        }
+        #endregion
+
+    }
 }

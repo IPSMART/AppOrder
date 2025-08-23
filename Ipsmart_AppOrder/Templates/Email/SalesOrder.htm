@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Email</title>
+</head>
+<body>
+    To,<br />
+    {rtlnm}<br />
+    {rtladd}<br /><br />
+    Dear Sir/Madam,
+    <br /><br />
+    <p align="justify">
+        Thanks for your valuable order.We will process your order.
+    </p>
+    <!--<p align="justify">
+        Thanks for your valuable order.This is to inform you that a sum of Rs. <b style="color:red;">{osamt}</b> /- is due for more than <b style="color:red;">{chkday}</b> days as per below details out of total dues <b>Rs. {totalosamt} /-</b> as on date. Hence you are requested to clear the over dues immediately so our system can process your order.
+    </p>-->
+    <br /><br />
+    <table>
+        <thead>
+            <tr>
+                <th>Order Date &nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th style="padding-right: 6px;">Order No &nbsp;&nbsp;&nbsp;&nbsp;</th>               
+                <th style="text-align:right">&nbsp;&nbsp;Quantity&nbsp;&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {tbody}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <!--<th style="text-align:center;">Total</th>
+                <th style="text-align:right;">{totalosamt}</th>-->
+            </tr>
+        </tfoot>
+    </table>
+    <br /><br /><br />
+    Thanks & Regards,<br /><br />
+
+    {username}<br />
+    {compname}<br />
+    <!--Ashoka House<br />
+    3A Hare Street<br />
+    Kolkata- 700 001<br />
+    Mobile No: 93319 04942<br />-->
+    <!--<img src="{compfixlogo}" alt="" name="Company fix Logo" style="width: 30px;height: 30px;" /> <img src="{complogo}" alt="" name="Company Logo" style="width: 128px;height: 30px;" />-->
+
+</body>
+</html>

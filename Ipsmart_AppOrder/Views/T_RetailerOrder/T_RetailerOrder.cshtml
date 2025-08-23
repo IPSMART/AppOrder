@@ -625,8 +625,9 @@
                 url: "@Url.Action("SAVE", PageControllerName)",
                 data: $('form').serialize(),
                 success: function (result) {
-                    if (result == '1') {
-                        alert('Data Saved Successfully !!');
+                    var res = result.split("~");
+                    if (res[0] == '1') {
+                        alert('Data Saved Successfully !!'+res[1]);
                         window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
                         if (newWindow) {
                             window.open('', '_self'); // Required for some browsers
