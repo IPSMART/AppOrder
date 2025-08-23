@@ -187,9 +187,10 @@
     th {
         padding: 10px 14px;
     }
-   tbody td {
-    padding: 0px !important;
-}
+
+    tbody td {
+        padding: 0px !important;
+    }
     /* Sticky header */
     thead th {
         background: #255994;
@@ -402,9 +403,9 @@
             icon +='<i class="fa fa-minus" style="color:red;font-size:15px;"></i>';
             icon +='</a>';
             icon +='</div>';
-            var tr = '<tr data-qnty='+qnty+' data-allsizes='+sizes+' >';
+            var tr = '<tr data-qnty='+qnty+' data-allsizes='+sizes+' data-sizeqnty='+sizedt+' >';
             tr += '<td>' + styleno + '</td>';
-            tr += '<td>' + sizedt + '</td>';
+            tr += '<td><span style="font-weight: bold;">'+qnty+'</span> (<span style="font-size: 10px;">'+ sizedt + '</span>)</td>';
             //tr += '<td>' + itrem + '</td>';
             tr += '<td><input type="text" value="' + itrem + '" style="width:100%;margin-top: 0px;" class="form-control" ></td>';
 
@@ -451,7 +452,7 @@
                     //var sizearr = row.find("td").eq(1).text().split(',');
 
                     let sizearr = {};
-                    row.find("td").eq(1).text().replace(/[{}]/g, "").split(",").forEach(item => {
+                    row[0].dataset.sizeqnty.replace(/[{}]/g, "").split(",").forEach(item => {
                         let parts = item.split("=");
                         let size = parts[0];
                         let qty = parseInt(parts[1], 10);
@@ -516,9 +517,11 @@
             NoOfItem++;
             row.find("td").each(function () {
                 if ($(this).text().trim() === itcd) { // exact match
-                    row.find("td").eq(1).text(sizedt);
+                    var sizes='<span style="font-weight: bold;">'+qnty+'</span> (<span style="font-size: 10px;">'+sizedt+'</span>)';
+                    row.find("td").eq(1).html(sizes);
                     row.find("td").eq(2).find('input').val(itrem);
                     row[0].dataset.qnty=qnty;
+                    row[0].dataset.sizeqnty=sizedt;
                 }
             });
             TQnty += retFloat(row[0].dataset.qnty);
@@ -606,7 +609,7 @@
             $('#tblCart > tbody  > tr').each(function () {
                 var ITCD = $(this).find("td").eq(3).html();
                 //var QNTY = $(this).find("td").eq(1).html();
-                var SIZE = $(this).find("td").eq(1).html();
+                var SIZE = $(this)[0].dataset.sizeqnty;// $(this).find("td").eq(1).html();
                 var ITREM = $(this).find("td").eq(2).find('input').val();
 
                 if (hdnData1 != '') hdnData1 += ',';

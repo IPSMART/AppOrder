@@ -68,10 +68,10 @@ namespace Improvar.Controllers
                     string doccd = "";
 
                     string sql = "";
-                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE, " + Environment.NewLine;
+                    sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd,d.PRINT_SEQ) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE, " + Environment.NewLine;
                     sql += "count(C.SIZECD)SIZE_COUNT,nvl(a.PCSPERBOX,0) PCSPERBOX " + Environment.NewLine;
-                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c " + Environment.NewLine;
-                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and " + Environment.NewLine;
+                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c, " + CommVar.CurSchema(UNQSNO) + ".M_SIZE d " + Environment.NewLine;
+                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and C.SIZECD=d.SIZECD(+) and " + Environment.NewLine;
                     sql += " a.m_autono in (select m_autono from " + CommVar.CurSchema(UNQSNO) + ".M_CNTRL_HDR_DOC ) " + Environment.NewLine;
                     if (VE.BrandCode != null) sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") " + Environment.NewLine;
                     if (VE.GroupCode != null) sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") " + Environment.NewLine;
