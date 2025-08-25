@@ -30,7 +30,16 @@ namespace Improvar.Controllers
                     ViewBag.Title = "Retail Outlet Master";
                     ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO).ToString());
                     ImprovarDB DB1 = new ImprovarDB(Cn.GetConnectionString(), Cn.Getschema);
-                    RetailOutletEntry VE = new RetailOutletEntry();
+                    RetailOutletEntry VE;
+                    if (TempData["OrderFilterRetail"] == null)
+                    {
+                        VE = new RetailOutletEntry();
+                    }
+                    else
+                    {
+                        VE = (RetailOutletEntry)TempData["OrderFilterRetail"];
+                        TempData.Keep();
+                    }
                     string scm = CommVar.CommSchema();
                     Cn.getQueryString(VE);
                     Cn.ValidateMenuPermission(VE);
@@ -127,8 +136,8 @@ namespace Improvar.Controllers
                         }
                         if (op.ToString() == "A")
                         {
-                            M_RETAIL MRETAIL = new M_RETAIL();
-                            VE.M_RETAIL = MRETAIL;
+                            //M_RETAIL MRETAIL = new M_RETAIL();
+                            //VE.M_RETAIL = MRETAIL;
                             List<MRETAILLINK> MRETAILLINK = new List<MRETAILLINK>();
                             for (int i = 0; i <= 4; i++)
                             {
@@ -219,8 +228,9 @@ namespace Improvar.Controllers
                 //                      SLCD = dr["SLCD"].retStr(),
                 //                      SLNM = dr["SLNM"].retStr(),
                 //                  }).ToList();
-                VE.Dstbrslcd = (from DataRow dr in tbl.Rows
-                                select dr["SLCD"].retStr().Trim()).ToList();
+                //VE.Dstbrslcd = (from DataRow dr in tbl.Rows
+                //                select dr["SLCD"].retStr().Trim()).ToList();
+                VE.Dstbrslcd = tbl.Rows[0]["SLCD"].retStr();
                 MCHR = Cn.GetMasterReamrks(CommVar.FinSchema(UNQSNO), Convert.ToInt32(sl.M_AUTONO));
                 VE.UploadDOC = Cn.GetUploadImage(CommVar.FinSchema(UNQSNO).ToString(), Convert.ToInt32(sl.M_AUTONO));
             }
@@ -391,6 +401,8 @@ namespace Improvar.Controllers
                         MRETAILOUTLET.GPSNM = VE.M_RETAIL.GPSNM;
                         MRETAILOUTLET.GPSLAT = VE.M_RETAIL.GPSLAT;
                         MRETAILOUTLET.GPSLOT = VE.M_RETAIL.GPSLOT;
+                        MRETAILOUTLET.REGWHATSAPPNO = VE.M_RETAIL.REGWHATSAPPNO;
+                        MRETAILOUTLET.SLMSLCD = VE.M_RETAIL.SLMSLCD;
 
                         M_CNTRL_HDR MCH = Cn.M_CONTROL_HDR(VE.Checked, "M_RETAIL", MRETAILOUTLET.M_AUTONO, VE.DefaultAction, CommVar.CurSchema(UNQSNO));
                         if (VE.DefaultAction == "A")
@@ -421,27 +433,22 @@ namespace Improvar.Controllers
 
                             }
                         }
-                        if (VE.Dstbrslcd != null)
+                        if (VE.Dstbrslcd.retStr() != "")
                         {
                             int slno = 1;
-                            for (int i = 0; i <= VE.Dstbrslcd.Count() - 1; i++)
-                            {
-                                if (VE.Dstbrslcd[i].retStr() != "")
-                                {
 
-                                    M_RETAIL_LINK RETAILLINK = new M_RETAIL_LINK();
-                                    RETAILLINK.SLNO = slno;
-                                    RETAILLINK.SLCD = VE.Dstbrslcd[i].retStr();
-                                    RETAILLINK.EFFDT = System.DateTime.Now;
-                                    RETAILLINK.RTLCD = MRETAILOUTLET.RTLCD;
-                                    RETAILLINK.CLCD = MRETAILOUTLET.CLCD;
-                                    RETAILLINK.EMD_NO = MRETAILOUTLET.EMD_NO;
-                                    RETAILLINK.M_AUTONO = MRETAILOUTLET.M_AUTONO;
-                                    DB.M_RETAIL_LINK.Add(RETAILLINK);
+                            M_RETAIL_LINK RETAILLINK = new M_RETAIL_LINK();
+                            RETAILLINK.SLNO = slno;
+                            RETAILLINK.SLCD = VE.Dstbrslcd;
+                            RETAILLINK.EFFDT = System.DateTime.Now.Date;
+                            RETAILLINK.RTLCD = MRETAILOUTLET.RTLCD;
+                            RETAILLINK.CLCD = MRETAILOUTLET.CLCD;
+                            RETAILLINK.EMD_NO = MRETAILOUTLET.EMD_NO;
+                            RETAILLINK.M_AUTONO = MRETAILOUTLET.M_AUTONO;
+                            DB.M_RETAIL_LINK.Add(RETAILLINK);
 
-                                    slno++;
-                                }
-                            }
+                            slno++;
+
                         }
                         DB.SaveChanges();
                         ModelState.Clear();

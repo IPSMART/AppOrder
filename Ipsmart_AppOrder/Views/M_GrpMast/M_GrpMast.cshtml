@@ -5,7 +5,7 @@
     string US = Model?.UNQSNO_ENCRYPTED;
 
 }
-<script>   
+<script>
     window.addEventListener("unload", function () { });
     debugger;
     // If this page loads and reloadOnBack flag is set, refresh
@@ -105,7 +105,7 @@
 
             $('#CollName').val(selectedTexts);
 
-        });    
+        });
     });
 </script>
 <script>
@@ -133,19 +133,47 @@
         debugger;
 
         var Dstbrslcd = $("#Dstbrslcd").val();
-        $('#RetailerCode').empty().append('<option value="">Select Retailer</option>');
-
         if (Dstbrslcd) {
+            $('#BtnAddRtl').css('pointer-events', 'auto');
+            $('#BtnAddRtl').css('color', '#428bca');
+        }
+        else {
+            $('#BtnAddRtl').css('pointer-events', 'none');
+            $('#BtnAddRtl').css('color', 'rgba(66, 139, 202, 0.55)');
+        }
+        $('#RetailerCode').empty().append('<option value="">Select Retailer</option>');
+        $.ajax({
+            url: "@Url.Action("BindRetailerData", PageControllerName)",
+            type: 'POST',
+        beforesend: $("#WaitingMode").show(),
+        data: { Distributor: Dstbrslcd },
+        success: function (result) {
+            $.each(result, function (index, ListRetailer) {
+                $('#RetailerCode').append('<option value="' + ListRetailer.value + '">' + ListRetailer.text + '</option>');
+            });
+            $('#RetailerCode').trigger('change'); // Refresh Select2
+            $("#WaitingMode").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
+    function BindGroup() {
+        debugger;
+        $('#GroupCode').empty().append('<option value="">Select Group</option>');
             $.ajax({
-                url: "@Url.Action("BindRetailerData", PageControllerName)",
+                url: "@Url.Action("BindGroupData", PageControllerName)",
                 type: 'POST',
                 beforesend: $("#WaitingMode").show(),
-                data: { Distributor: Dstbrslcd },
+                data: $('form').serialize(),
                 success: function (result) {
-                    $.each(result, function (index, ListRetailer) {
-                        $('#RetailerCode').append('<option value="' + ListRetailer.value + '">' + ListRetailer.text + '</option>');
+                    $.each(result, function (index, ListGroup) {
+                        $('#GroupCode').append('<option value="' + ListGroup.value + '">' + ListGroup.text + '</option>');
                     });
-                    $('#RetailerCode').trigger('change'); // Refresh Select2
+                    $('#GroupCode').trigger('change.select2'); // Refresh Select2
                     $("#WaitingMode").hide();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -154,7 +182,6 @@
                     $("body span h1").remove(); $("#msgbody_error style").remove();
                 }
             });
-        }
     }
 </script>
 <script>
@@ -167,14 +194,43 @@
             type: 'post',
             beforesend: $("#WaitingMode").show(),
             url: "@Url.Action("GetItem", PageControllerName)",
-        data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
-        success: function (result) {
-            sessionStorage.setItem("reloadOnBack", "true");
-            window.location.href = '@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })';
+            data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
+            success: function (result) {
+                sessionStorage.setItem("reloadOnBack", "true");
+                window.location.href = '@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })';
 
-            @*//testing
+                @*//testing
             window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
             $("#WaitingMode").hide();*@
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
+    }
+    function RetailMaster() {
+        debugger;
+        if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
+        $.ajax({
+            type: 'post',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("OpenRetailMaster", PageControllerName)",
+            data: $('form').serialize() ,
+        success: function (result) {
+            sessionStorage.setItem("reloadOnBack", "true");
+            let op = "A";
+            let mnudet = encodeURIComponent("UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=");
+            let us = '@Model.UNQSNO_ENCRYPTED';
+            let dc = "";
+            let mp = "";
+            window.location.href = `/M_RetailOutlet/M_RetailOutlet?op=${op}&MNUDET=${mnudet}&US=${us}&DC=${dc}&MP=${mp}`;
+
+            @*//testing
+        window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
+        $("#WaitingMode").hide();*@
 
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -183,8 +239,7 @@
             $("body span h1").remove(); $("#msgbody_error style").remove();
         }
     });
-}
-
+    }
 </script>
 @using (Html.BeginForm())
 {
@@ -214,6 +269,8 @@
                     <div class="editor-field">
                         @Html.DropDownListFor(model => model.Dstbrslcd, new SelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), "Select", new { @class = "form-control select2", id = "Dstbrslcd", @onchange = "BindRetailer();" })
                         @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
+                        @Html.HiddenFor(model => model.SLMSLCD, new { id = "SLMSLCD" })
+
 
                     </div>
                 </div>
@@ -223,9 +280,12 @@
                     <div class="editor-field" style="margin-top: 4px;">
                         @Html.Label("", "Retailer Name")
                         <b style="color:Red;">*</b>
-                        <a href="../M_RetailOutlet/M_RetailOutlet?op=A&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=@US&DC=&MP=" target="_blank">
+                        <a onclick="RetailMaster();" style="pointer-events:none;color:#428bca8c" id="BtnAddRtl">
                             <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>
                         </a>
+                        @*<a href="../M_RetailOutlet/M_RetailOutlet?op=A&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=@US&DC=&MP=" target="_blank" style="pointer-events:none;color:#428bca8c" id="BtnAddRtl">
+                            <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>
+                        </a>*@
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -244,7 +304,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple", @onchange = "BindGroup();" })
                         @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
                     </div>
                 </div>
@@ -257,7 +317,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.GroupCode, new SelectList(Model.ListGroup, "Value", "Text", Model.GroupCode),  new { @class = "form-control select2", id = "GroupCode", multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.GroupCode, new SelectList(Model.ListGroup, "Value", "Text", Model.GroupCode), new { @class = "form-control select2", id = "GroupCode", multiple = "multiple" })
                         @Html.HiddenFor(model => model.GroupName, new { id = "GroupName" })
                     </div>
                 </div>
@@ -270,7 +330,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode),  new { @class = "form-control select2", id = "CollCode", multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode), new { @class = "form-control select2", id = "CollCode", multiple = "multiple" })
                         @Html.HiddenFor(model => model.CollName, new { id = "CollName" })
                     </div>
                 </div>

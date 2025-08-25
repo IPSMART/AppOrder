@@ -21,7 +21,7 @@ namespace Improvar.ViewModels
         public List<ListCountry> ListCountry { get; set; }
         public bool IsAPIEnabled { get; set; }
         public List<DropDown_list_Distributor> DropDown_list_Distributor { get; set; }
-        public List<string> Dstbrslcd { get; set; }
+        public string Dstbrslcd { get; set; }
         public string Dstbrslnm { get; set; }
 
     }

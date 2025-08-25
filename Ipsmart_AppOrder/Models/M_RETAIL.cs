@@ -94,5 +94,7 @@ namespace Improvar.Models
         public long M_AUTONO { get; set; }
         [StringLength(500)]
         public string GPSNM { get; set; }
+        [StringLength(8)]
+        public string SLMSLCD { get; set; }
     }
 }

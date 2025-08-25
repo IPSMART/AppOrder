@@ -36,13 +36,13 @@ namespace Improvar.Controllers
                 else
                 {
                     TransactionRetailOrder VE;
-                    if (TempData["printparameter"] == null)
+                    if (TempData["OrderFilter"] == null)
                     {
                         VE = new TransactionRetailOrder();
                     }
                     else
                     {
-                        VE = (TransactionRetailOrder)TempData["printparameter"];
+                        VE = (TransactionRetailOrder)TempData["OrderFilter"];
                     }
                     ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
                     ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
@@ -73,8 +73,8 @@ namespace Improvar.Controllers
                     string sql = "";
                     sql += " select a.m_autono,a.itcd,a.styleno, listagg(C.SIZECD, ',') within group (order by a.itcd,d.PRINT_SEQ) as sizes,nvl(a.PCSPERSET,0)PCSPERSET,a.MIXSIZE, " + Environment.NewLine;
                     sql += "count(C.SIZECD)SIZE_COUNT,nvl(a.PCSPERBOX,0) PCSPERBOX " + Environment.NewLine;
-                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c, " + CommVar.CurSchema(UNQSNO) + ".M_SIZE d " + Environment.NewLine;
-                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and C.SIZECD=d.SIZECD(+) and " + Environment.NewLine;
+                    sql += " from " + CommVar.CurSchema(UNQSNO) + ".m_sitem a, " + CommVar.CurSchema(UNQSNO) + ".m_group b, " + CommVar.CurSchema(UNQSNO) + ".m_sitem_size c, " + CommVar.CurSchema(UNQSNO) + ".M_SIZE d, " + CommVar.CurSchema(UNQSNO) + ".m_itemorder e " + Environment.NewLine;
+                    sql += " where a.itgrpcd = b.itgrpcd and a.itcd = c.itcd and C.SIZECD=d.SIZECD(+) and a.itcd=e.itcd and " + Environment.NewLine;
                     sql += " a.m_autono in (select m_autono from " + CommVar.CurSchema(UNQSNO) + ".M_CNTRL_HDR_DOC ) " + Environment.NewLine;
                     if (VE.BrandCode != null) sql += "and b.brandcd in(" + VE.BrandCode.retSqlfromStrarray() + ") " + Environment.NewLine;
                     if (VE.GroupCode != null) sql += "and a.itgrpcd in(" + VE.GroupCode.retSqlfromStrarray() + ") " + Environment.NewLine;
@@ -176,7 +176,7 @@ namespace Improvar.Controllers
                         }
                         TRETAILORDER.RTLCD = VE.T_RETAILORDER.RTLCD;
                         TRETAILORDER.SLCD = VE.T_RETAILORDER.SLCD;
-                        TRETAILORDER.SLMSLCD = "ED00036";// VE.T_RETAILORDER.SLMSLCD;
+                        TRETAILORDER.SLMSLCD = VE.T_RETAILORDER.SLMSLCD;
                         TRETAILORDER.DOCAMT = VE.T_RETAILORDER.DOCAMT;
 
                         TRETAILORDER.USR_ID = CommVar.UserID();

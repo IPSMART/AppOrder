@@ -40,6 +40,8 @@ namespace Improvar.ViewModels
         public List<ListBrand> ListBrand { get; set; }
         public List<ListGroup> ListGroup { get; set; }
         public List<ListCollection> ListCollection { get; set; }
+        [StringLength(8)]
+        public string SLMSLCD { get; set; }
 
     }
 

@@ -31,7 +31,7 @@
             templateResult: formatResult,
             templateSelection: formatSelection,
         });
-        var preselected = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Dstbrslcd));
+        @*var preselected = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Dstbrslcd));
 
         $('#Dstbrslcd').select2({
             width: '100%',
@@ -39,7 +39,7 @@
             allowClear: true,
             closeOnSelect: false,
         });
-        $('#Dstbrslcd').val(preselected).trigger('change');
+        $('#Dstbrslcd').val(preselected).trigger('change');*@
 
         if ("@Model.DefaultAction" == "V" || "@Model.DefaultAction" == "D") {
             modeView();
@@ -51,6 +51,7 @@
         }
         else if ("@Model.DefaultAction" == "A") {
             getLocation(function (latlot) {
+                $("#WaitingMode").show();
                 if (latlot != "") {
                     var LAT = returncolvalue(latlot, "LAT");
                     var LOT = returncolvalue(latlot, "LOT");
@@ -60,6 +61,7 @@
 
                     $.ajax({
                         type: 'POST',
+                        beforesend: $("#WaitingMode").show(),
                         url: "@Url.Action("GetRetailAddress", PageControllerName)",
                         data: { lat: LAT, lot: LOT },
                         success: function (result) {
@@ -458,14 +460,13 @@
             @Html.HiddenFor(s => s.DefaultAction)
             @Html.HiddenFor(a => a.M_RETAIL.M_AUTONO)
 
-            @*<ul class="nav nav-tabs">
+            <ul class="nav nav-tabs">
                     <li class="active"> <a data-toggle="tab" href="#Main">Main</a></li>
-                    <li><a data-toggle="tab" href="#Distributorlinkup">Distributor Linkup</a></li>
                     <li><a data-toggle="tab" href="#Documents">Document</a></li>
-                </ul>*@
+                </ul>
 
-            @*<div class="tab-content">*@
-            @*<div id="Main" class="tab-pane fade in active" style="margin-top: 10px;">*@
+            <div class="tab-content">
+            <div id="Main" class="tab-pane fade in active" style="margin-top: 10px;">
             <div class="row">
                 <div class="col-md-5">
                     <div class="editor-field" style="margin-top: 4px;">
@@ -475,6 +476,10 @@
                 <div class="col-md-5">
                     <div class="editor-field">
                         @Html.EditorFor(model => model.M_RETAIL.RTLCD, new { htmlAttributes = new { @class = "form-control ", id = "RTLCD", @placeholder = "Code", maxlength = 8, @TabIndex = -1, @readonly = "readonly" } })
+                        @Html.HiddenFor(model => model.M_RETAIL.SLMSLCD, new { id = "SLMSLCD" })
+                        @Html.HiddenFor(model => model.Dstbrslcd, new { id = "Dstbrslcd" })
+
+
                     </div>
                 </div>
             </div>
@@ -506,17 +511,17 @@
 
                 @if (Model.DefaultAction != "V" && Model.IsAPIEnabled == true)
                 {
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" style="width:auto;">
                         <button type="button" style="margin-top:5px;padding-right:1px" name="button" class="btn-info" onclick="GetGstInfo();">Get Gst Info</button>
                     </div>
                 }
 
-                <div class="col-md-1">
+                <div class="col-md-1" style="width:auto;">
                     <div class="editor-label" style="margin-top: 6px;">
                         @Html.Label("", "PAN #")
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" style="width:auto;">
                     <div class="editor-field">
                         @Html.EditorFor(model => model.M_RETAIL.PAN, new { htmlAttributes = new { @class = "form-control", Id = "PAN", @style = "text-transform:uppercase", maxlength = 10, @placeholder = "PAN No." } })
                     </div>
@@ -608,7 +613,7 @@
                         <b style="color:red"><sup>*</sup></b>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="editor-field">
                         @Html.EditorFor(model => model.M_RETAIL.CITY, new { htmlAttributes = new { @class = "form-control", id = "CITY", @placeholder = "City", maxlength = 50 } })
                     </div>
@@ -662,7 +667,19 @@
                 </div>
                 <div class="col-md-4">
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.M_RETAIL.REGMOBILE, new { htmlAttributes = new { @class = "form-control", id = "REGMOBILE", @placeholder = "Mobile Number", @onkeypress = "return numericOnly(this)", maxlength = 11 } })
+                        @Html.EditorFor(model => model.M_RETAIL.REGMOBILE, new { htmlAttributes = new { @class = "form-control", id = "REGMOBILE", @placeholder = "Mobile Number", @onkeypress = "return numericOnly(this)", maxlength = 10 } })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="editor-label" style="margin-top: 6px;">
+                        @Html.Label("", "Whatsapp No")
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.M_RETAIL.REGWHATSAPPNO, new { htmlAttributes = new { @class = "form-control", id = "REGWHATSAPPNO", @placeholder = "Whatsapp No", @onkeypress = "return numericOnly(this)", maxlength = 10 } })
                     </div>
                 </div>
             </div>
@@ -672,7 +689,7 @@
                         @Html.Label("", "Email ID")
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="editor-field">
                         @Html.EditorFor(model => model.M_RETAIL.REGEMAIL, new { htmlAttributes = new { @class = "form-control", id = "REGEMAIL", @placeholder = "Emain ID", maxlength = 100 } })
                     </div>
@@ -684,7 +701,7 @@
                         @Html.Label("", "Contact person")
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-lg-4">
                     <div class="editor-field">
                         @Html.EditorFor(model => model.M_RETAIL.CPERSON, new { htmlAttributes = new { @class = "form-control", id = "CPERSON", @placeholder = "Contact Person", maxlength = 60 } })
                     </div>
@@ -714,26 +731,26 @@
                         @Html.Label("", "Remarks")
                     </div>
                 </div>
-                <div class="col-md-10">
+                <div class="col-lg-4">
                     <div class="editor-field">
                         @Html.TextAreaFor(model => Model.M_RETAIL.REMARKS, new { @class = "form-control", id = "REMARKS", @style = "font-size:11px;height:32px", @placeholder = "Description", maxlength = 1000 })
                     </div>
                 </div>
             </div>
-            <div class="row">
+            @*<div class="row">
                 <div class="col-md-5">
                     <div class="editor-field" style="margin-top: 4px;">
                         @Html.Label("", "Distributor")
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <div class="editor-field" style="margin-top: 4px;">
                         @Html.DropDownListFor(model => model.Dstbrslcd, new MultiSelectList(Model.DropDown_list_Distributor, "Value", "Text", Model.Dstbrslcd), new { @class = "form-control select2", id = "Dstbrslcd", multiple = "multiple" })
                         @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
                     </div>
                 </div>
+            </div>*@
             </div>
-            @*</div>*@
             @*<div id="Distributorlinkup" class="tab-pane fade" style="margin-top: 10px;margin-left: 11px;">
                     <div class="row" style="margin-top: 11px;width:320px;height:auto;background-color:#c4b9b9">
                         <div>
@@ -744,7 +761,7 @@
                     </div>
                 </div>*@
 
-            @*<div id="Documents" class="tab-pane fade" style="margin-top: 10px;">
+            <div id="Documents" class="tab-pane fade" style="margin-top: 10px;">
                     <div class="row" style="background-color:#c4b9b9;border:5px groove;">
                         <div>
                             <div id="partialdivUpload" style="margin-top:0px;">
@@ -752,9 +769,9 @@
                             </div>
                         </div>
                     </div>
-                </div>*@
+                </div>
 
-            @*</div>*@
+            </div>
         </div>
     }
     else
