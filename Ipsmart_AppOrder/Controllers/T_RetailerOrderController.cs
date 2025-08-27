@@ -288,7 +288,7 @@ namespace Improvar.Controllers
             }
             return null;
         }
-        public string SendEmailWhatsapp(string autonum)
+        public dynamic SendEmailWhatsapp(string autonum, bool onlyprint = false)
         {
             try
             {
@@ -627,6 +627,11 @@ namespace Improvar.Controllers
 
                         Stream stream = reportdocument.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
                         stream.Seek(0, SeekOrigin.Begin);
+                        if (onlyprint == true)
+                        {
+                            reportdocument.Close(); reportdocument.Dispose(); GC.Collect();
+                            return new FileStreamResult(stream, "application/pdf");
+                        }
                         if (!System.IO.Directory.Exists(path_Save)) { System.IO.Directory.CreateDirectory(path_Save); }
                         var edocno = (Regex.Replace(billno, @"[^0-9a-zA-Z_]+", ""));
                         path_Save = path_Save + "\\" + edocno + ".pdf";
@@ -776,7 +781,19 @@ namespace Improvar.Controllers
                 return "";
             }
         }
-
+        [HttpPost]
+        public ActionResult T_RetailerOrder(TransactionRetailOrder VE, FormCollection FC, string submitbutton)
+        {
+            try
+            {
+                return SendEmailWhatsapp("DA000821", true);
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message);
+            }
+        }
         public class AddressComponent
         {
             public string long_name { get; set; }

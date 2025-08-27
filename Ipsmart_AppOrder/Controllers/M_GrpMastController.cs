@@ -69,11 +69,11 @@ namespace Improvar.Controllers
                     if (VE.SLMSLCD.retStr() != "")
                     {
                         sql = "";
-                        sql += "select a.slmslcd, a.agslcd slcd, b.slnm, nvl(b.slarea, b.district) slarea from " + Environment.NewLine;
+                        sql += "select a.slmslcd, a.DISTSLCD , b.slnm DISTSLnm, nvl(b.slarea, b.district) slarea from " + Environment.NewLine;
                         sql += "" + scm + ".m_slsmn_agent a," + scmf + ".m_subleg b " + Environment.NewLine;
-                        sql += "where a.agslcd = b.slcd(+) " + Environment.NewLine;
+                        sql += "where a.DISTSLCD  = b.slcd(+) " + Environment.NewLine;
                         sql += "and a.effdt=(select a.effdt from " + Environment.NewLine;
-                        sql += "(select a.slmslcd, a.agslcd, a.effdt, " + Environment.NewLine;
+                        sql += "(select a.slmslcd, a.effdt, " + Environment.NewLine;
                         sql += "row_number() over(partition by a.slmslcd order by a.effdt desc) rno " + Environment.NewLine;
                         sql += "from " + scm + ".m_slsmn_agent a " + Environment.NewLine;
                         sql += "where a.effdt <= to_date('" + tdt + "', 'dd/mm/yyyy') and " + Environment.NewLine;
@@ -87,8 +87,8 @@ namespace Improvar.Controllers
                         VE.ListDistributor = (from DataRow a in tbl.Rows
                                               select new ListDistributor()
                                               {
-                                                  value = a["SLCD"].retStr(),
-                                                  text = a["SLNM"].retStr() + GCS + a["SLAREA"].retStr(),
+                                                  value = a["DISTSLCD"].retStr(),
+                                                  text = a["DISTSLnm"].retStr() + GCS + a["SLAREA"].retStr(),
                                               }).ToList();
                         VE.ListRetailer = new List<ListRetailer>();
 

@@ -226,8 +226,9 @@
             let us = '@Model.UNQSNO_ENCRYPTED';
             let dc = "";
             let mp = "";
-            window.location.href = `/M_RetailOutlet/M_RetailOutlet?op=${op}&MNUDET=${mnudet}&US=${us}&DC=${dc}&MP=${mp}`;
-
+            //window.location.href = `/M_RetailOutlet/M_RetailOutlet?op=${op}&MNUDET=${mnudet}&US=${us}&DC=${dc}&MP=${mp}`;
+            window.location.href = '@Url.Action("M_RetailOutlet", "M_RetailOutlet")'
+    + `?op=${op}&MNUDET=${mnudet}&US=${us}&DC=${dc}&MP=${mp}`;
             @*//testing
         window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
         $("#WaitingMode").hide();*@

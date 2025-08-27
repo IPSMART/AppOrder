@@ -672,6 +672,13 @@
         }
     }
 </script>
+<script>
+    function Print() {
+        debugger;
+        jQuery("form").attr("target", "_blank");
+        jQuery("form").submit();
+    }
+</script>
 @*@Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")*@
 <div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
     <p style="position: absolute; color: White; top: 46%; left: 47%;">
@@ -686,6 +693,7 @@
             <div class="menu" style="float:right;">
                 <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
                 <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
+                @*<a onclick="Print();" style="border: 2px solid blue;"><i class="fa fa-print fa-lg" style="color:revert-layer;"></i></a>*@
             </div>
         </div>
         <div class="row" style="font-size: small;">
