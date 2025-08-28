@@ -283,6 +283,7 @@ namespace Improvar.Controllers
                 TempData.Remove("OrderFilterRetail");
             }
             TempData["OrderFilterRetail"] = ind;
+
             return Content("");
         }
 

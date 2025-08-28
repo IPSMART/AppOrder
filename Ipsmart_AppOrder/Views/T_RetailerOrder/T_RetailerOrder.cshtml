@@ -18,11 +18,13 @@
 <script src="~/Scripts/bootstrap.js"></script>
 @*<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>*@
 <script src="~/Scripts/swiper-bundle.min.js"></script>
-<script src="~/Scripts/Custom.js"></script>
 <link rel="stylesheet" href="~/Content/datatables.min.css" />
 <script src="~/Scripts/datatables.min.js"></script>
 @Scripts.Render("~/bundles/jqueryui")
 @Styles.Render("~/Content/bootstrap.css?Ver=" + Module.ContentVersion)
+@Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])
+
+
 
 
 <script src="~/Scripts/jquery.mobile-events.js"></script>
@@ -661,7 +663,7 @@
         input.stepDown();
     }
 </script>
-<script>
+@*<script>
     function OpenHome(){
         window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
         if (newWindow) {
@@ -671,7 +673,7 @@
             alert("Popup blocked! Please allow popups for this website.");
         }
     }
-</script>
+</script>*@
 <script>
     function Print() {
         debugger;

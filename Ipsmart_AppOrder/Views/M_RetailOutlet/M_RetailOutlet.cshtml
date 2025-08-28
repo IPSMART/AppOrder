@@ -1,6 +1,6 @@
 ﻿@model Improvar.ViewModels.RetailOutletEntry
 @{
-    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
     string PageControllerName = "M_RetailOutlet";
 }
 <link href="~/Content/select2.min.css" rel="stylesheet" />
@@ -483,20 +483,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Outlet")
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.M_RETAIL.GPSNM, new { htmlAttributes = new { @class = "form-control ", id = "GPSNM", maxlength = 500, @TabIndex = -1 } })
-                        @Html.HiddenFor(model => model.M_RETAIL.GPSLAT, new { id = "GPSLAT" })
-                        @Html.HiddenFor(model => model.M_RETAIL.GPSLOT, new { id = "GPSLOT" })
-                    </div>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="col-md-5">
                     <div class="editor-label" style="margin-top: 6px;">
@@ -737,6 +724,20 @@
                     </div>
                 </div>
             </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "GPS Coordinates")
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.M_RETAIL.GPSNM, new { htmlAttributes = new { @class = "form-control ", id = "GPSNM", maxlength = 500, @TabIndex = -1, @readonly = "readonly" } })
+                            @Html.HiddenFor(model => model.M_RETAIL.GPSLAT, new { id = "GPSLAT" })
+                            @Html.HiddenFor(model => model.M_RETAIL.GPSLOT, new { id = "GPSLOT" })
+                        </div>
+                    </div>
+                </div>
             @*<div class="row">
                 <div class="col-md-5">
                     <div class="editor-field" style="margin-top: 4px;">

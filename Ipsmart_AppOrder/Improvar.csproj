@@ -861,10 +861,11 @@
     <Content Include="Views\M_GrpMast\M_GrpMast.cshtml" />
     <Content Include="Views\M_RetailOutlet\M_RetailOutlet.cshtml" />
     <Content Include="Views\Shared\_T_RetailerOrder_Main.cshtml" />
-    <Content Include="Views\Shared\_LayoutAppOrder.cshtml" />
+    <Content Include="Views\Shared\_LayoutReport.cshtml" />
     <Content Include="Views\T_RetailerOrder\T_RetailerOrder.cshtml" />
     <Content Include="Views\Shared\_M_Retail_Distributor.cshtml" />
     <Content Include="Views\Shared\_MobileLayout.cshtml" />
+    <Content Include="Views\Shared\_LayoutMaster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,281 @@
+﻿@model Improvar.Models.Permission
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+    <link rel="stylesheet" href="~/Content/layout_misc.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/GridView.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/jquery.stickytable.css" />
+    <link rel="stylesheet" href="~/Content/cstable.css" />
+    <script src="~/Scripts/GridView.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/datatables.min.css" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/datatables.min.js"></script>
+    <script src="~/Scripts/CustomCombo.js"></script>
+
+    <script src="~/Scripts/select2.min.js"></script>
+    @Styles.Render("~/Content/MyStyle.css?Ver=" + Module.ContentVersion)
+    @Styles.Render("~/Content/themes/base/core.css")
+    @Styles.Render("~/Content/themes/base/accordion.css")
+    @Styles.Render("~/Content/themes/base/autocomplete.css")
+    @Styles.Render("~/Content/themes/base/button.css")
+    @Styles.Render("~/Content/themes/base/datepicker.css")
+    @Styles.Render("~/Content/themes/base/dialog.css")
+    @Styles.Render("~/Content/themes/base/draggable.css")
+    @Styles.Render("~/Content/themes/base/menu.css")
+    @Styles.Render("~/Content/themes/base/progressbar.css")
+    @Styles.Render("~/Content/themes/base/resizable.css")
+    @Styles.Render("~/Content/themes/base/selectable.css")
+    @Styles.Render("~/Content/themes/base/selectmenu.css")
+    @Styles.Render("~/Content/themes/base/sortable.css")
+    @Styles.Render("~/Content/themes/base/slider.css")
+    @Styles.Render("~/Content/themes/base/spinner.css")
+    @Styles.Render("~/Content/themes/base/tabs.css")
+    @Styles.Render("~/Content/themes/base/tooltip.css")
+    @Styles.Render("~/Content/themes/base/theme.css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script>
+        function winclose() {
+            if (confirm("Close Window?")) {
+                window.close();
+            }
+        }
+        $(document).mouseup(function (e) {
+            var tab = $("#csTableid").val();
+            var container = $("#" + tab);
+
+            // if the target of the click isn't the container nor a descendant of the container
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.hide();
+            }
+        });
+        $(document).keyup(function (e) {
+            if (e.keyCode == 27) {
+                var tab = $("#csTableid").val();
+                var container = $("#" + tab);
+                container.hide();
+
+            }
+        });
+    </script>
+    <script>
+        function close_box(id) {
+            $(id).hide();
+            var will_go = message_value;
+            $("#" + will_go).focus();
+        }
+        function divfocus(e, id, id1, id2) {
+            //alert('gdgggggg');
+            if (e.keyCode == 32) {
+                //alert('gd');
+                closeDiv(id, id1);
+                close_box(id2);
+            }
+        }
+        $(document).mouseup(function (e) {
+            var tab = $("#csTableid").val();
+            var container = $("#" + tab);
+
+            // if the target of the click isn't the container nor a descendant of the container
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.hide();
+            }
+        });
+        $(document).keyup(function (e) {
+            if (e.keyCode == 27) {
+                var tab = $("#csTableid").val();
+                var container = $("#" + tab);
+                container.hide();
+
+            }
+        });
+    </script>
+    <script>
+        function DocumentDateCHK(dateField, auto, current_date_auto_if_blank) {
+            auto = auto || true;
+            current_date_auto_if_blank = current_date_auto_if_blank || false;
+            var currentYEAR = new Date().getFullYear().toString();
+            var currentMONTH = (new Date().getMonth() + 1).toString();
+            currentMONTH = currentMONTH.padStart(2, '0');
+            var min = $("#" + dateField.id).datepicker("option", "minDate");
+            var max = $("#" + dateField.id).datepicker("option", "maxDate");
+            var maxdate = null;
+            var mindate = null;
+            if (max == null || max == "") {
+                maxdate = new Date("2040-03-31");
+            }
+            else {
+                var dateParts = max.split("/");
+                maxdate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+            }
+            if (min == null || min == "") {
+                mindate = new Date("2008-04-01");
+            }
+            else {
+                var dateParts1 = min.split("/");
+                mindate = new Date(dateParts1[2], dateParts1[1] - 1, dateParts1[0]);
+            }
+            var dateParts2 = dateField.value.split("/");
+            if (auto == true) {
+                if (dateParts2[0].length == 0) {
+                    if (current_date_auto_if_blank == true) {
+                        dateParts2[0] = new Date().getDate().toString().padStart(2, '0');
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else if (dateParts2[0].length == 1) {
+                    dateParts2[0] = dateParts2[0].padStart(2, '0');
+                }
+                else {
+                    var ddt = parseInt(dateParts2[0]);
+                    if (ddt <= 31) {
+                        dateParts2[0] = dateParts2[0].padStart(2, '0');
+                    }
+                    else {
+                        dateParts2[0] = new Date().getDate().toString().padStart(2, '0');
+                    }
+                }
+                if (dateParts2[1] == null) {
+                    dateParts2[1] = currentMONTH;
+                }
+                else if (dateParts2[1].length == 1) {
+                    dateParts2[1] = dateParts2[1].padStart(2, '0');
+                }
+                else {
+                    var ddt = parseInt(dateParts2[1]);
+                    if (ddt <= 12) {
+                        dateParts2[1] = dateParts2[1].padStart(2, '0');
+                    }
+                    else {
+                        dateParts2[1] = currentMONTH;
+                    }
+                }
+                if (dateParts2[2] == null) {
+                    dateParts2[2] = currentYEAR;
+                }
+                else (dateParts2[2].length < 4)
+                {
+                    dateParts2[2] = dateParts2[2].padStart(4, '20');;
+                }
+            }
+            var inputdate = new Date(dateParts2[2], dateParts2[1] - 1, dateParts2[0]);
+            var invalid = inputdate.toString();
+            if (invalid == "Invalid Date") {
+                msgInfo("Invalid Date [Date Put In Hand].Retype Date to the date box. !!");
+                message_value = dateField.id;
+                return false;
+            }
+            if (inputdate < mindate || inputdate > maxdate) {
+                msgInfo("Date not correct or Date not valid between permission date .[Date Put In Hand].Retype Date to the date box. !! ");
+                message_value = dateField.id;
+                return false;
+            }
+            if (auto == true) {
+                var day = inputdate.getDate().toString().padStart(2, '0');
+                var mon = (inputdate.getMonth() + 1).toString().padStart(2, '0');
+                var yy = inputdate.getFullYear().toString();
+                dateField.value = day + "/" + mon + "/" + yy;
+            }
+        }
+    </script>
+</head>
+<body style="padding-top:0px;padding-bottom:0px;" onload="inputfocus();">
+    <input type="hidden" id="tempHDD" name="tempHDD" value="" />
+    <input type="hidden" id="SearchFldValue" value="" />
+    <input type="hidden" id="csTableid" value="csTableidVal" />
+    <input type="hidden" id="csTableidVal" value="" />
+    <div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
+        <p style="position: absolute; color: White; top: 46%; left: 47%;">
+            Loading, please wait...<br />
+            <span> <img src="~/Image/ajax_loader.gif" width="60px" height="60px"></span>
+        </p>
+    </div>
+
+
+
+    <div class="container_box_outer">
+        <div class="body-content container_box">
+            @*required border*@
+            <div style="background-color: #d9edf7; border-color: #bce8f1;   height: 23px;  padding-left: 15px;padding-right: 15px;  vertical-align: middle;    font-size: medium; font-weight:bold;  color: #3a87ad;">
+                @ViewBag.formname
+                <a href="../Home/Logout">
+                    <span class="glyphicon glyphicon-off" style="font-size:medium;color:#dc0624f2;float:right;"></span>
+                </a>
+            </div>
+            <div class="container_box_inner">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <div class="bottomDiv">
+        <div class="bottom-button-row">
+            <button type="button" class="bottombutton btn btn-success" onclick="return pageValidation('A');">
+                <i class="fa fa-save"></i> Save
+            </button>
+            <a onclick="Reload();" style="border: 2px solid #3a87ad;width:25px;"><i class="fa fa-refresh" style="color:#f0ad4e;font-size:25px;"></i></a>
+            <a onclick="OpenHome();" style="border: 2px solid #3a87ad;width:25px;"><i class="fa fa-home" style="font-size:25px;"></i></a>
+
+        </div>
+    </div>
+    <div id="Msgdiv1" style="display:none">
+        <div id="back_cover">
+            @Html.Partial("_MessageBox")
+        </div>
+    </div>
+    <script>
+        function HideConfirmOk() {
+            $('#Msgdiv1').hide();
+            $('#confirm').hide();
+            deletePageData();
+            return false;
+        }
+        function HideConfirmCancel() {
+            $('#Msgdiv1').hide();
+            $('#confirm').hide();
+            return false;
+        }
+        function delete1() {
+            function ok() {
+                console.log('deleted');
+                HideConfirmOk();
+            }
+            function cancel() {
+                console.log('delete cancelled');
+                HideConfirmCancel();
+            }
+            ConfirmInDiv('Are you sure to delete?', ok, cancel);
+        }
+    </script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/datatables.js")
+    @Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])
+    @Scripts.Render("~/bundles/jqueryui")
+    <script>
+        $(function () {
+            $(".jqueryui-marker-datepicker").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeYear: true,
+                showOn: "button",
+                maxDate: '0',
+            }).css("display", "inline-block")
+            .next("button").button({
+                icons: { primary: "ui-icon-calendar" },
+                label: "Select date",
+                text: false
+            });
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
