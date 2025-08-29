@@ -1,6 +1,6 @@
 ﻿@model Improvar.ViewModels.VMRetailOrder
 @{
-    Layout = "~/Views/Shared/_LayoutAppOrder.cshtml";
+    Layout = "~/Views/Shared/_LayoutReport.cshtml";
     string PageControllerName = "M_GrpMast";
     string US = Model?.UNQSNO_ENCRYPTED;
 
@@ -201,8 +201,8 @@
 
                 @*//testing
             window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
-            $("#WaitingMode").hide();*@
-
+            *@
+                $("#WaitingMode").hide();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 $("#WaitingMode").hide();
@@ -226,12 +226,14 @@
             let us = '@Model.UNQSNO_ENCRYPTED';
             let dc = "";
             let mp = "";
-            //window.location.href = `/M_RetailOutlet/M_RetailOutlet?op=${op}&MNUDET=${mnudet}&US=${us}&DC=${dc}&MP=${mp}`;
             window.location.href = '@Url.Action("M_RetailOutlet", "M_RetailOutlet")'
     + `?op=${op}&MNUDET=${mnudet}&US=${us}&DC=${dc}&MP=${mp}`;
+
             @*//testing
-        window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
-        $("#WaitingMode").hide();*@
+       let url = '@Url.Action("M_RetailOutlet", "M_RetailOutlet")'
+    + `?op=${op}&MNUDET=${mnudet}&US=${us}&DC=${dc}&MP=${mp}`;
+window.open(url, '_blank');*@
+        $("#WaitingMode").hide();
 
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

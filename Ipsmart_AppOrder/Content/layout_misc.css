@@ -25,6 +25,7 @@
     width: 99%;
     margin: 0.5%;
     border-color: #999999;*/
+    /*height: 94.8vh;*/
     height: 90vh;
     margin: 0.01%;
 }
@@ -37,6 +38,7 @@
     border-color: steelblue;
     border-color: #999999;*/
     overflow: auto;
+    /*height: 95.7%;*/
     height: 93.7%;
     padding: 0.5%;
 }
@@ -76,18 +78,37 @@
 
 .bottomDiv {
     width: 100%;
-    background-color: rgba(111, 163, 208, 1);
+    background-color: rgba(217, 237, 247, 1);
     float: left;
     bottom: 0;
     margin-bottom: 0;
     position: fixed;
     right: 0;
     left: 0;
+    padding: 5px;
 }
 
 .TextAreaRemarks {
     width: 800px;
     height: 425px;
+}
+
+.bottom-button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.bottombutton {
+    flex: 1; /* buttons take equal space */
+    min-width: 100px; /* optional: prevents shrinking too small */
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 @media (max-width: 775px) {
@@ -138,13 +159,14 @@
 
     .bottomDiv {
         width: 100%;
-        background-color: rgb(111, 163, 208);
+        background-color: rgb(217, 237, 247);
         float: left;
         bottom: 0;
         margin-bottom: 0;
         position: unset;
         right: 0;
         left: 0;
+        padding: 5px;
     }
 
     .container_box_outer {

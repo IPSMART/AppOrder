@@ -1606,3 +1606,15 @@ function getLocation(callback) {
         callback("");
     }
 }
+function OpenHome(){
+    window.location.href = "../M_GrpMast/M_GrpMast";
+    if (newWindow) {
+        window.open('', '_self'); // Required for some browsers
+        window.close(); // Attempt to close current window
+    } else {
+        alert("Popup blocked! Please allow popups for this website.");
+    }
+}
+function Reload() {
+    location.reload();
+}
