@@ -122,7 +122,7 @@ namespace Improvar.Controllers
                         for (int j = 0; j <= VE.ListPendOrdPopup.Count - 1; j++)
                         {
                             string ITCD = VE.ListPendOrdPopup[j].ITCD;
-                            VE.ListPendOrdPopup[j].SLNO = (i + 1).retShort();
+                            VE.ListPendOrdPopup[j].SLNO = (j + 1).retShort();
                             VE.ListPendOrdPopup[j].TRTLBOX = Salesfunc.ConvPcstoBox(VE.ListPendOrdPopup[j].TRTLQNTY, VE.ListPendOrdPopup[j].PCSPERBOX);
                             VE.ListPendOrdPopup[j].TRTLSET = Salesfunc.ConvPcstoSet(VE.ListPendOrdPopup[j].TRTLQNTY, VE.ListPendOrdPopup[j].PCSPERSET);
 
@@ -413,8 +413,16 @@ namespace Improvar.Controllers
             ListPendOrd query = (from c in VE.ListPendOrd where (c.SLNO == ParentSerialNo) select c).SingleOrDefault();
             if (VE.ListPendOrdPopup != null)
             {
+                double totbox = 0, totset = 0;
+                foreach (var v in VE.ListPendOrdPopup)
+                {
+                    totbox += Salesfunc.ConvPcstoBox(v.QNTY, v.PCSPERBOX);
+                    totset += Salesfunc.ConvPcstoSet(v.QNTY, v.PCSPERSET);
+                }
                 if (query != null)
                 {
+
+                    query.ORDDET = "Box=" + totbox + ",Set=" + totset;
                     var javaScriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                     string JR = javaScriptSerializer.Serialize(VE.ListPendOrdPopup);
                     query.ChildData = JR;

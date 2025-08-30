@@ -45,7 +45,7 @@ namespace Improvar.Models
 
         public double TRTLQNTY { get; set; }
 
-        public double TSTKQNTY { get; set; }
+        public double? TSTKQNTY { get; set; }
 
     }
 }

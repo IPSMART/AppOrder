@@ -1,7 +1,7 @@
 ﻿@model Improvar.ViewModels.TransactionDistOrder
 
-<div class="table-responsive row sub-top" style="max-height:60%; overflow-y:auto;">
-    <table class="table table-striped" id="tblCart">
+<div class="table-responsive row sub-top" style="max-height:90%; overflow-y:auto;">
+    <table class="table" id="tblCart">
         <thead class="table-header-custom">
             <tr style="background-color: #255994;color: white;">
                 <th>Sl</th>
@@ -22,35 +22,37 @@
             {
                 for (int i = 0; i <= Model.ListPendOrd.Count - 1; i++)
                 {
-                    <tr>
-                        <td>
-                            @Html.TextBoxFor(model => Model.ListPendOrd[i].SLNO, new { id = "SLNO_" + i, @class = " atextBoxFor ", @style = "text-align:center;" })
+                    <tr style="background-color:white;">
+                        <td data-label="Sl">
+                            @Html.TextBoxFor(model => Model.ListPendOrd[i].SLNO, new { id = "SLNO_" + i, @class = "form-control", @readonly = "readonly", @TabIndex = -1 })
                         </td>
-                        <td>
-                            @Html.TextBoxFor(model => Model.ListPendOrd[i].RTLNM, new { id = "RTLNM_" + i, @class = " atextBoxFor " })
+                        <td data-label="Retail Outlet">
+                            @Html.TextBoxFor(model => Model.ListPendOrd[i].RTLNM, new { id = "RTLNM_" + i, @class = "form-control", @readonly = "readonly", @TabIndex = -1 })
                             @Html.HiddenFor(model => Model.ListPendOrd[i].RTLCD, new { id = "RTLCD_" + i })
                             @Html.HiddenFor(model => Model.ListPendOrd[i].RTLAUTONO, new { id = "RTLAUTONO_" + i })
                             @Html.HiddenFor(model => Model.ListPendOrd[i].ChildData, new { id = "ChildData_" + i })
                         </td>
-                        <td>
-                            @Html.TextBoxFor(model => Model.ListPendOrd[i].RTLAREA, new { id = "RTLAREA_" + i, @class = " atextBoxFor " })
+                        <td data-label="Area">
+                            @Html.TextBoxFor(model => Model.ListPendOrd[i].RTLAREA, new { id = "RTLAREA_" + i, @class = "form-control", @readonly = "readonly", @TabIndex = -1 })
                         </td>
-                        <td>
-                            @Html.TextBoxFor(model => Model.ListPendOrd[i].BRANDNM, new { id = "BRANDNM_" + i, @class = " atextBoxFor " })
+                        <td data-label="Brand">
+                            @Html.TextBoxFor(model => Model.ListPendOrd[i].BRANDNM, new { id = "BRANDNM_" + i, @class = "form-control", @readonly = "readonly", @TabIndex = -1 })
                             @Html.HiddenFor(model => Model.ListPendOrd[i].BRANDCD, new { id = "BRANDCD_" + i })
                         </td>
-                        <td style="text-align: right;">
-                            @Html.TextBoxFor(model => Model.ListPendOrd[i].SET, new { id = "SET_" + i, @class = " atextBoxFor " })
+                        <td data-label="T.Sets">
+                            @Html.TextBoxFor(model => Model.ListPendOrd[i].SET, new { id = "SET_" + i, @class = "form-control", @readonly = "readonly", @TabIndex = -1 })
                         </td>
-                        <td style="text-align: right;">
-                            @Html.TextBoxFor(model => Model.ListPendOrd[i].BOX, new { id = "BOX_" + i, @class = " atextBoxFor " })
+                        <td data-label="T.Box">
+                            @Html.TextBoxFor(model => Model.ListPendOrd[i].BOX, new { id = "BOX_" + i, @class = "form-control", @readonly = "readonly", @TabIndex = -1 })
                             @Html.HiddenFor(model => Model.ListPendOrd[i].QNTY, new { id = "QNTY_" + i })
                         </td>
-                        <td>
-                            <a onclick="OpenSizeDet('@i');" style="border:2px solid #5cb85c;width:20px;height:20px;"><i class="fa fa-eye" style="color:#5cb85c;font-size:15px;"></i></a>
-                            @Html.TextBoxFor(model => Model.ListPendOrd[i].ORDDET, new { id = "ORDDET_" + i, @class = " atextBoxFor " })
+                        <td data-label="Ord.Det">
+                            <div class="menu">
+                                <a onclick="OpenSizeDet('@i');" style="border: 2px solid #28558a;"><i class="fa fa-eye fa-lg" style="color:#28558a;"></i></a>
+                            </div>
+                            @Html.TextBoxFor(model => Model.ListPendOrd[i].ORDDET, new { id = "ORDDET_" + i, @class = "form-control", @readonly = "readonly", @TabIndex = -1 })
                         </td>
-                        <td class="sticky-col-right">
+                        <td data-label="Skip Order">
                             @Html.CheckBoxFor(model => Model.ListPendOrd[i].CheckedORDSKIP, new { id = "CheckedORDSKIP_" + i, @TabIndex = -1 })
                         </td>
                     </tr>
