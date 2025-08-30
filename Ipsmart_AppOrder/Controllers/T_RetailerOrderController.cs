@@ -306,13 +306,15 @@ namespace Improvar.Controllers
                 sql += Environment.NewLine + " a.usr_id,a.usr_entdt,''ordamt, ''delvtypedsc, ''rateprint,''slno,''stylno,''stktype, ";
                 sql += Environment.NewLine + "''docth1, ''docth2, ''docth3, ''paytrmcd, ''paytrmnm, ''delvins, ''duedays, ''cod, ''prefno, ''prefdt, ";
 
-                sql += Environment.NewLine + "a.RTLCD,d.RTLNM,a.slcd,e.slnm,e.REGEMAILID,d.SLMSLCD,f.slnm SLMSLNM,d.add1,d.add2,d.add3,d.add4,d.landmark,d.city,d.pin,g.statenm, ";
-                sql += Environment.NewLine + " d.GSTNO, d.REGMOBILE, d.REGEMAIL,b.SIZECD,b.QNTY,d.pan,d.REGWHATSAPPNO from ";
+                sql += Environment.NewLine + "a.RTLCD,d.RTLNM,a.slcd,e.slnm,e.add1 sladd1,e.add3 sladd2,e.add3 sladd3,e.add4 sladd4,e.add5 sladd5, ";
+                sql += Environment.NewLine + "e.add6 sladd6,e.add7 sladd7,e.state slstate,e.REGEMAILID,e.PANNO slpanno,e.TANNO sltanno,e.REGEMAILID slemail, ";
+                sql += Environment.NewLine + "e.REGMOBILE slmobile,e.GSTNO slgstno,d.SLMSLCD,f.slnm SLMSLNM,d.add1,d.add2,d.add3,d.add4,d.landmark,d.city,d.pin,g.statenm, ";
+                sql += Environment.NewLine + "e.DISTRICT sldistrict,e.PIN slpin, d.GSTNO, d.REGMOBILE, d.REGEMAIL,b.SIZECD,b.QNTY,d.pan,d.REGWHATSAPPNO,k.BRANDNM from ";
 
                 sql += Environment.NewLine + scm + ".T_RETAILORDER a, " + scm + ".T_RETAILORDERDTL b, " + scm + ".t_cntrl_hdr c, " + scm + ".M_RETAIL d, ";
-                sql += Environment.NewLine + scmf + ".m_subleg e, " + scmf + ".m_subleg f, " + scm + ".m_sitem h, " + csm + ".ms_state g, " + scm + ".M_SITEM i ";
+                sql += Environment.NewLine + scmf + ".m_subleg e, " + scmf + ".m_subleg f, " + scm + ".m_sitem h, " + csm + ".ms_state g, " + scm + ".M_SITEM i, " + scm + ".M_GROUP j, " + scm + ".M_BRAND k ";
                 sql += Environment.NewLine + "where a.autono=b.autono(+) and a.autono=c.autono(+) and a.RTLCD=d.RTLCD(+) and a.slcd=e.slcd(+) and d.SLMSLCD=f.slcd(+) ";
-                sql += Environment.NewLine + " and b.itcd = h.itcd(+) and d.STATECD = g.STATECD(+) and b.itcd = i.itcd(+) ";
+                sql += Environment.NewLine + " and b.itcd = h.itcd(+) and d.STATECD = g.STATECD(+) and b.itcd = i.itcd(+) and i.itgrpcd=j.itgrpcd(+) and j.brandcd = k.brandcd(+) ";
                 sql += Environment.NewLine + "and a.autono in ('" + autonum + "') ";
                 sql += Environment.NewLine + "order by a.docdt,c.doconlyno ";
                 rstbl = masterHelp.SQLquery(sql);
@@ -321,7 +323,7 @@ namespace Improvar.Controllers
 
                 DataTable IR = new DataTable();
 
-                IR.Columns.Add("docno", typeof(string), "");
+                IR.Columns.Add("docno", typeof(string), ""); 
                 IR.Columns.Add("docdt", typeof(string), "");
                 IR.Columns.Add("slnm", typeof(string), "");
                 IR.Columns.Add("slcd", typeof(string), "");
@@ -351,7 +353,7 @@ namespace Improvar.Controllers
                 IR.Columns.Add("prceffdt", typeof(string), "");
                 IR.Columns.Add("discrtcd", typeof(string), "");
                 IR.Columns.Add("discrteffdt", typeof(string), "");
-                IR.Columns.Add("district", typeof(string), "");
+                IR.Columns.Add("sldistrict", typeof(string), "");
                 IR.Columns.Add("crslnm", typeof(string), "");
                 IR.Columns.Add("pcstyle", typeof(string), "");
                 IR.Columns.Add("usr_id", typeof(string), "");
@@ -367,6 +369,7 @@ namespace Improvar.Controllers
                 IR.Columns.Add("SIZECD", typeof(string), "");
                 IR.Columns.Add("boxpcs", typeof(string), "");
                 IR.Columns.Add("tbox", typeof(double), "");
+                IR.Columns.Add("tset", typeof(double), "");
                 IR.Columns.Add("tpcs", typeof(double), "");
                 IR.Columns.Add("rate", typeof(double), "");
                 IR.Columns.Add("obldt1", typeof(string), "");
@@ -385,6 +388,21 @@ namespace Improvar.Controllers
                 IR.Columns.Add("ADD2", typeof(string), "");
                 IR.Columns.Add("ADD3", typeof(string), "");
                 IR.Columns.Add("ADD4", typeof(string), "");
+                IR.Columns.Add("sladd", typeof(string), "");
+                IR.Columns.Add("sladd1", typeof(string), "");
+                IR.Columns.Add("sladd2", typeof(string), "");
+                IR.Columns.Add("sladd3", typeof(string), "");
+                IR.Columns.Add("sladd4", typeof(string), "");
+                IR.Columns.Add("sladd5", typeof(string), "");
+                IR.Columns.Add("sladd6", typeof(string), "");
+                IR.Columns.Add("sladd7", typeof(string), "");
+                IR.Columns.Add("slstate", typeof(string), "");
+                IR.Columns.Add("slmobile", typeof(string), "");
+                IR.Columns.Add("slemail", typeof(string), "");
+                IR.Columns.Add("sltanno", typeof(string), "");
+                IR.Columns.Add("slpanno", typeof(string), "");
+                IR.Columns.Add("slgstno", typeof(string), "");
+                IR.Columns.Add("brandnm", typeof(string), "");
                 IR.Columns.Add("LANDMARK", typeof(string), "");
                 IR.Columns.Add("CITY", typeof(string), "");
                 IR.Columns.Add("PIN", typeof(string), "");
@@ -401,13 +419,13 @@ namespace Improvar.Controllers
                 Int32 maxR = rstbl.Rows.Count - 1;
                 Int32 i = 0; double partytotos = 0, totbox = 0, totset = 0, approxvalue = 0;
                 string billno = "", slcd = "";
+                int slno = 0;
                 while (i <= maxR)
                 {
                     string autono = rstbl.Rows[i]["autono"].ToString();
                     string docdt = rstbl.Rows[i]["docdt"].ToString().retDateStr();
                     billno = rstbl.Rows[i]["docno"].ToString();
-                    slcd = rstbl.Rows[i]["RTLCD"].ToString();
-                    int slno = 0;
+                    slcd = rstbl.Rows[i]["RTLCD"].ToString();                    
                     double tset = 0;
 
 
@@ -438,7 +456,7 @@ namespace Improvar.Controllers
                     Row1["prccd"] = rstbl.Rows[i]["prccd"].ToString();
                     Row1["discrtcd"] = rstbl.Rows[i]["discrtcd"].ToString();
                     Row1["discrteffdt"] = rstbl.Rows[i]["discrteffdt"].ToString();
-                    Row1["district"] = rstbl.Rows[i]["district"].ToString();
+                    Row1["sldistrict"] = " "+rstbl.Rows[i]["sldistrict"].ToString()+" - "+ rstbl.Rows[i]["slpin"].ToString()+", " + rstbl.Rows[i]["slstate"].ToString();
                     Row1["crslnm"] = rstbl.Rows[i]["crslnm"].ToString();
                     Row1["RTLREGEMAIL"] = rstbl.Rows[i]["REGEMAIL"].ToString();
                     Row1["DISREGEMAILID"] = rstbl.Rows[i]["REGEMAILID"].ToString();
@@ -467,7 +485,50 @@ namespace Improvar.Controllers
                     Row1["ADD2"] = rstbl.Rows[i]["ADD2"].ToString();
                     Row1["ADD3"] = rstbl.Rows[i]["ADD3"].ToString();
                     Row1["ADD4"] = rstbl.Rows[i]["ADD4"].ToString();
+
+                    Row1["sladd1"] = rstbl.Rows[i]["sladd1"].ToString();
+                    Row1["sladd2"] = rstbl.Rows[i]["sladd2"].ToString();
+                    Row1["sladd3"] = rstbl.Rows[i]["sladd3"].ToString();
+                    Row1["sladd4"] = rstbl.Rows[i]["sladd4"].ToString();
+                    Row1["sladd5"] = rstbl.Rows[i]["sladd5"].ToString();
+                    Row1["sladd6"] = rstbl.Rows[i]["sladd6"].ToString();
+                    Row1["sladd7"] = rstbl.Rows[i]["sladd7"].ToString();
+                    Row1["sladd"] = rstbl.Rows[i]["sladd1"].ToString() + " " + rstbl.Rows[i]["sladd2"].ToString() + " " + rstbl.Rows[i]["sladd3"].ToString() + " " + rstbl.Rows[i]["sladd4"].ToString() + " " + rstbl.Rows[i]["sladd5"].ToString()+" ";
+                    //if (!string.IsNullOrEmpty(add))
+                    //{
+                    //Row1["sladd"] = add;
+                    //}
+                    //else
+                    //{
+                    //    Row1["sladd"] = "";
+                    //}
+                    Row1["slstate"] = rstbl.Rows[i]["slstate"].ToString();
+                    Row1["slmobile"] = rstbl.Rows[i]["slmobile"].ToString();
+                    Row1["slemail"] = rstbl.Rows[i]["slemail"].ToString();
+                    //Row1["sltanno"] = rstbl.Rows[i]["sltanno"].ToString();
+                    string tan = rstbl.Rows[i]["sltanno"].ToString();
+                    if (!string.IsNullOrEmpty(tan))
+                    {
+                        Row1["sltanno"] = "TAN#" + tan;
+                    }
+                    else
+                    {
+                        Row1["sltanno"] = "";
+                    }
+                    //Row1["slpanno"] = rstbl.Rows[i]["slpanno"].ToString();
+                    string pan = rstbl.Rows[i]["slpanno"].ToString();
+                    if (!string.IsNullOrEmpty(pan))
+                    {
+                        Row1["slpanno"] = "PAN#" + pan;
+                    }
+                    else
+                    {
+                        Row1["slpanno"] = "";
+                    }
+                    Row1["slgstno"] = rstbl.Rows[i]["slgstno"].ToString();
+
                     Row1["LANDMARK"] = rstbl.Rows[i]["LANDMARK"].ToString();
+                    Row1["brandnm"] = rstbl.Rows[i]["brandnm"].ToString();
                     Row1["CITY"] = rstbl.Rows[i]["CITY"].ToString();
                     Row1["PIN"] = rstbl.Rows[i]["PIN"].ToString();
                     Row1["STATENM"] = rstbl.Rows[i]["STATENM"].ToString();
@@ -512,6 +573,7 @@ namespace Improvar.Controllers
                     Row1["SIZECD"] = sizes;
                     Row1["boxpcs"] = boxes;
                     Row1["tbox"] = tbox;
+                    Row1["tset"] = tset;
                     Row1["tpcs"] = tpcs;
                     Row1["rate"] = rate;
 
@@ -786,7 +848,7 @@ namespace Improvar.Controllers
         {
             try
             {
-                return SendEmailWhatsapp("DA000821", true);
+                return SendEmailWhatsapp("DA000825", true);
             }
             catch (Exception ex)
             {
