@@ -71,7 +71,7 @@ namespace Improvar.Controllers
                                           value = a["CNCD"].retStr(),
                                           text = a["CNAME"].retStr() + GCS + a["CNCD"].retStr(),
                                       }).ToList();
-                    VE.DropDown_list_Distributor = DropDown_Help.GetDistributorforSelection("'D','A'");
+                    VE.ListDistributor = DropDown_Help.GetDistributorforSelection(System.DateTime.Now.Date.retDateStr(), VE.M_RETAIL.SLMSLCD.retSqlformat());
                     var doctP = (from i in DB1.MS_DOCCTG select new DocumentType() { value = i.DOC_CTG, text = i.DOC_CTG }).OrderBy(s => s.text).ToList();
 
                     sql = "select NVL(GSPCLIENTAPP,GSPAPPID) GSPCLIENTAPP from ms_ipsmart";

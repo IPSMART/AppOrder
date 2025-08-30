@@ -373,7 +373,8 @@ namespace Improvar.Controllers
                             Session.Add("M_SYSCNFG", rstmp);
                         }
                         Response.BufferOutput = true;
-                        return RedirectToAction("M_GrpMast", "M_GrpMast", new { US = Cn.Encrypt_URL(UNIQUESESSION) });
+                        //return RedirectToAction("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Cn.Encrypt_URL(UNIQUESESSION) });
+                        return RedirectToAction("multiVu", "Multiviewer", new { US = Cn.Encrypt_URL(UNIQUESESSION) });
 
                         #endregion
                     }

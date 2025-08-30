@@ -739,18 +739,18 @@
                     </div>
                 </div>
             @*<div class="row">
-                <div class="col-md-5">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Distributor")
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.Dstbrslcd, new MultiSelectList(Model.DropDown_list_Distributor, "Value", "Text", Model.Dstbrslcd), new { @class = "form-control select2", id = "Dstbrslcd", multiple = "multiple" })
-                        @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
-                    </div>
-                </div>
-            </div>*@
+        <div class="col-md-5">
+            <div class="editor-field" style="margin-top: 4px;">
+                @Html.Label("", "Distributor")
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="editor-field" style="margin-top: 4px;">
+                @Html.DropDownListFor(model => model.Dstbrslcd, new MultiSelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), new { @class = "form-control select2", id = "Dstbrslcd", multiple = "multiple" })
+                @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
+            </div>
+        </div>
+    </div>*@
             </div>
             @*<div id="Distributorlinkup" class="tab-pane fade" style="margin-top: 10px;margin-left: 11px;">
                     <div class="row" style="margin-top: 11px;width:320px;height:auto;background-color:#c4b9b9">

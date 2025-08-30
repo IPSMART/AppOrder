@@ -326,6 +326,102 @@ namespace Improvar
             string WebHostPath = @ConfigurationManager.AppSettings["WhtsappSendIp"].retStr() + "/" + foldernm + "Whatsapp/";
             return WebHostPath;
         }
+        public string GetSalesman(string tdt, string uid)
+        {
+            string SLMSLCD = "";
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmp = CommVar.PaySchema(UNQSNO);
+
+            string sql = "";
+            sql += "select a.slmslcd, a.effdt, a.enm, b.agslcd, c.slnm agslnm from " + Environment.NewLine;
+            sql += "(select a.slmslcd, a.effdt, a.enm from( " + Environment.NewLine;
+            sql += "select a.slmslcd, a.effdt, b.enm, " + Environment.NewLine;
+            sql += "row_number() over(partition by a.slmslcd order by a.effdt desc) rno " + Environment.NewLine;
+            sql += "from " + scm + ".m_slsmn_hdr a, " + scmp + ".m_empmas b " + Environment.NewLine;
+            sql += "where a.slmslcd = b.empcd(+) and b.dol is null and " + Environment.NewLine;
+            sql += "a.effdt <= to_date('" + tdt + "', 'dd/mm/yyyy') and " + Environment.NewLine;
+            sql += "b.impvr_loginid = '" + uid + "') a " + Environment.NewLine;
+            sql += "where rno = 1) a, " + Environment.NewLine;
+            sql += " " + Environment.NewLine;
+            sql += "(select a.slmslcd, a.effdt, a.agslcd " + Environment.NewLine;
+            sql += "from " + scm + ".m_slsmn_agent a ) b, " + Environment.NewLine;
+            sql += "" + scmf + ".m_subleg c " + Environment.NewLine;
+            sql += "where a.slmslcd = b.slmslcd(+) and a.effdt = b.effdt(+) and b.agslcd = c.slcd(+) " + Environment.NewLine;
+            sql += "order by slmslcd, agslnm " + Environment.NewLine;
+            DataTable tbl = SQLquery(sql);
+            if (tbl != null && tbl.Rows.Count > 0)
+            {
+                SLMSLCD = tbl.Rows[0]["slmslcd"].retStr();
+            }
+            return SLMSLCD;
+
+        }
+        public DataTable GetDistributor(string tdt, string SLMSLCD)
+        {
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmp = CommVar.PaySchema(UNQSNO);
+
+            string sql = "";
+            sql += "select a.slmslcd, a.DISTSLCD , b.slnm DISTSLnm, nvl(b.slarea, b.district) slarea from " + Environment.NewLine;
+            sql += "" + scm + ".m_slsmn_agent a," + scmf + ".m_subleg b " + Environment.NewLine;
+            sql += "where a.DISTSLCD  = b.slcd(+) " + Environment.NewLine;
+            sql += "and a.effdt=(select a.effdt from " + Environment.NewLine;
+            sql += "(select a.slmslcd, a.effdt, " + Environment.NewLine;
+            sql += "row_number() over(partition by a.slmslcd order by a.effdt desc) rno " + Environment.NewLine;
+            sql += "from " + scm + ".m_slsmn_agent a " + Environment.NewLine;
+            sql += "where a.effdt <= to_date('" + tdt + "', 'dd/mm/yyyy') and " + Environment.NewLine;
+            sql += "a.slmslcd in (" + SLMSLCD + ")) a " + Environment.NewLine;
+            sql += "where rno = 1 )  " + Environment.NewLine;
+            sql += "and a.slmslcd in (" + SLMSLCD + ") " + Environment.NewLine;
+            sql += "order by slnm " + Environment.NewLine;
+
+            DataTable tbl = SQLquery(sql);
+            return tbl;
+        }
+        public DataTable GetBrand(string tdt, string SLMSLCD)
+        {
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmp = CommVar.PaySchema(UNQSNO);
+
+            string sql = "";
+            sql = "";
+            sql += "select a.slmslcd, a.brandcd, b.brandnm from " + Environment.NewLine;
+            sql += "" + scm + ".m_slsmn_brand a," + scm + ".m_brand b where a.effdt = " + Environment.NewLine;
+            sql += "(select a.effdt from " + Environment.NewLine;
+            sql += "(select a.slmslcd, a.brandcd, a.effdt, " + Environment.NewLine;
+            sql += "row_number() over(partition by a.slmslcd order by a.effdt desc) rno " + Environment.NewLine;
+            sql += "from " + scm + ".m_slsmn_brand a " + Environment.NewLine;
+            sql += "where a.effdt <= to_date('" + tdt + "', 'dd/mm/yyyy') and " + Environment.NewLine;
+            sql += "a.slmslcd in (" + SLMSLCD + ")) a " + Environment.NewLine;
+            sql += "where rno = 1 ) " + Environment.NewLine;
+            sql += "and a.brandcd = b.brandcd(+) " + Environment.NewLine;
+            sql += "and a.slmslcd in (" + SLMSLCD + ") " + Environment.NewLine;
+            sql += "order by brandnm " + Environment.NewLine;
+
+            DataTable tbl = SQLquery(sql);
+            return tbl;
+        }
+        public DataTable GetPendingOrder(string distslcd, string brandcd, string rtlautono = "")
+        {
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmp = CommVar.PaySchema(UNQSNO);
+
+            string sql = "";
+            sql += "select a.autono, a.slno, a.itcd, a.sizecd, a.qnty, a.itrem, a.freestk, " + Environment.NewLine;
+            sql += "b.slcd, d.slnm, b.slmslcd, b.rtlcd, e.rtlnm, e.city, e.landmark, nvl(e.regwhatsappno, e.regmobile) regmobile, " + Environment.NewLine;
+            sql += "f.brandcd, g.brandnm, c.styleno, c.pcsperbox, c.pcsperset,c.MIXSIZE from " + Environment.NewLine;
+            sql += "(select a.autono, a.slno, a.itcd, a.sizecd, a.qnty, a.itrem, a.freestk " + Environment.NewLine;
+            sql += "from " + scm + ".t_retailorderdtl a, " + scm + ".t_distordlink b " + Environment.NewLine;
+            sql += "where a.autono = b.rtlautono(+) and a.slno = b.slno(+) and " + Environment.NewLine;
+            sql += "b.autono is null ) a, " + Environment.NewLine;
+            sql += "" + scm + ".t_retailorder b, " + scm + ".m_sitem c, " + scmf + ".m_subleg d, " + scm + ".m_retail e, " + Environment.NewLine;
+            sql += "" + scm + ".m_group f, " + scm + ".m_brand g " + Environment.NewLine;
+            sql += "where a.autono = b.autono(+) and a.itcd = c.itcd(+) and b.slcd = d.slcd(+) and b.rtlcd = e.rtlcd(+) and " + Environment.NewLine;
+            sql += "c.itgrpcd = f.itgrpcd(+) and f.brandcd = g.brandcd(+) " + Environment.NewLine;
+            if (distslcd.retStr() != "") sql += "and b.slcd in (" + distslcd + ")  " + Environment.NewLine;
+            if (brandcd.retStr() != "") sql += "and f.brandcd in (" + brandcd + ")  " + Environment.NewLine;
+            if (rtlautono.retStr() != "") sql += "and a.autono in (" + rtlautono + ")  " + Environment.NewLine;
+            DataTable dt = SQLquery(sql);
+
+            return dt;
+
+        }
 
     }
 }

@@ -1,0 +1,184 @@
+﻿@model Improvar.ViewModels.VMDistOrder
+@{
+    Layout = "~/Views/Shared/_LayoutReport.cshtml";
+    string PageControllerName = "T_DistOrderFilter";
+    string US = Model?.UNQSNO_ENCRYPTED;
+
+}
+<script>
+    window.addEventListener("unload", function () { });
+    debugger;
+    // If this page loads and reloadOnBack flag is set, refresh
+    if (sessionStorage.getItem("reloadOnBack") === "true") {
+        sessionStorage.removeItem("reloadOnBack");
+        location.reload();
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //getLocation();
+
+        function formatResult(item) {
+            if (!item.id) return item.text;
+            var parts = item.text.split(String.fromCharCode(181));
+            return $('<div><strong>' + parts[0] + '</strong><br/><small>' + parts[1] + '</small></div>');
+        }
+
+        function formatSelection(item) {
+            return item.text.split(String.fromCharCode(181))[0];
+        }
+
+        $('#Dstbrslcd').select2({
+            width: '100%',
+            placeholder: "Select Distributor",
+            allowClear: true,
+            templateResult: formatResult,
+            templateSelection: formatSelection,
+        });
+
+        $('#Dstbrslcd').change(function () {
+            debugger;
+            var selectedText = $("#Dstbrslcd option:selected").text();
+            $('#Dstbrslnm').val(selectedText);
+        });
+
+      
+
+        $('#BrandCode').select2({
+            width: '100%',
+            placeholder: "Select Brand",
+            allowClear: true,
+            closeOnSelect: false,
+        });
+
+        $('#BrandCode').change(function () {
+            debugger;
+            var selectedTexts = $('#BrandCode option:selected').map(function () {
+                return $(this).text();
+            }).get().join(', '); // You can change delimiter if needed
+
+            $('#BrandName').val(selectedTexts);
+
+        });       
+    });
+</script>
+<script>
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    // Success: Set hidden fields
+                    $("#GEOLONGITUDE").val(position.coords.latitude);
+                    $("#GEOLATITUDE").val(position.coords.longitude);
+                    console.log(position.coords.latitude + ',' + position.coords.longitude);
+
+                },
+                function (error) {
+                    alert("Location access is required to use this service.");
+
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+
+        }
+    }
+</script>
+<script>
+    function GetItemData() {
+        debugger;
+        if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
+        if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
+        $.ajax({
+            type: 'post',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("GetItem", PageControllerName)",
+            data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
+            success: function (result) {
+                sessionStorage.setItem("reloadOnBack", "true");
+                window.location.href = '@Url.Action("T_DistOrder", "T_DistOrder", new { US = Model.UNQSNO_ENCRYPTED })';
+
+                @*//testing
+            window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
+            *@
+                $("#WaitingMode").hide();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
+    }
+</script>
+@using (Html.BeginForm())
+{
+    if (Model.DefaultView == true)
+    {
+        @Html.HiddenFor(a => Model.maxdate)
+        @Html.HiddenFor(a => Model.mindate)
+        <div class="form-horizontal" style="padding-left:5px;padding-right:5px;">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" id="btnSave" value="@Url.Action("SAVE", PageControllerName)" />
+            <input type="hidden" id="MetalCode" value="@Url.Action("CheckCode", PageControllerName)" />
+            <input type="hidden" id="srhpnl" value="@Url.Action("SearchPannelData", PageControllerName)" />
+            <input type="hidden" id="add_doc_url" value="@Url.Action("AddDOCRow", PageControllerName )" />
+            <input type="hidden" id="del_doc_url" value="@Url.Action("DeleteDOCRow", PageControllerName )" />
+            @Html.HiddenFor(model => model.GEOLONGITUDE)
+            @Html.HiddenFor(model => model.GEOLATITUDE)
+            @*@Html.HiddenFor(model => model.GEOADDRESS)*@
+            @Html.HiddenFor(model => model.ITEMDETAIL_JSTR)
+            <div class="row" id="divGetRetailerInfo">
+                <div class="col-md-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "Distributor Name")
+                        <b style="color:Red;">*</b>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.Dstbrslcd, new SelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), "Select", new { @class = "form-control select2", id = "Dstbrslcd" })
+                        @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
+                        @Html.HiddenFor(model => model.SLMSLCD, new { id = "SLMSLCD" })
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "Brand")
+                        <b style="color:Red;">*</b>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple", @onchange = "BindGroup();" })
+                        @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5" style="width:auto;">
+                    <div class="editor-label" style="margin-top: 0px;">
+                        <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="GetItemData()" class="btn btn-sm btn-success" value="Get Pending Data" />
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    }
+    else
+    {
+        @ViewBag.ErrorMessage
+    }
+
+    <div class="container">
+        <div id="helpDIV">
+
+        </div>
+    </div>
+}
+
+

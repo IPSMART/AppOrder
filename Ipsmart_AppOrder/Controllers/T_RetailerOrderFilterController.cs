@@ -14,14 +14,14 @@ using Newtonsoft.Json;
 
 namespace Improvar.Controllers
 {
-    public class M_GrpMastController : Controller
+    public class T_RetailerOrderFilterController : Controller
     {
         Connection Cn = new Connection(); string sql = "";
         MasterHelp masterHelp = new MasterHelp();
         M_CNTRL_HDR sll; M_GENLEG sGEN;
         string UNQSNO = CommVar.getQueryStringUNQSNO();
-        // GET: M_GrpMast
-        public ActionResult M_GrpMast(string op = "", string key = "", int Nindex = 0, string searchValue = "")
+        // GET: T_RetailerOrderFilter
+        public ActionResult T_RetailerOrderFilter(string op = "", string key = "", int Nindex = 0, string searchValue = "")
         {//k
             VMRetailOrder VE = new VMRetailOrder();
             try

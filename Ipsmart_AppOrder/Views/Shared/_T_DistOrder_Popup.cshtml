@@ -1,0 +1,68 @@
+﻿@model Improvar.ViewModels.TransactionDistOrder
+
+<div class="table-responsive row" style="max-height:60%; overflow-y:auto;margin-bottom:0px;">
+    <table class="table table-striped" id="popuptblSizes">
+        <thead class="table-header-custom">
+            <tr style="background-color: #255994;color: white;">
+                <th class="sticky-col-left" style="width:50px;">Sl</th>
+                <th class="sticky-col-left" style="width:50px;">Style No</th>
+                <th style="width:50px;text-align: right;">T.Sets</th>
+                <th style="width:50px;text-align: right;">T.Box</th>
+                <th>Order Set</th>
+                <th>Order Qnty</th>
+                <th>Sizes</th>
+                <th>Stkqnty</th>
+                <th>Reason</th>
+                <th>Remark</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ListPendOrdPopup != null)
+            {
+                for (int i = 0; i <= Model.ListPendOrdPopup.Count - 1; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].SLNO, new { id = "popup_SLNO_" + i, @class = " atextBoxFor ", @style = "text-align:center;" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].STYLENO, new { id = "popup_STYLENO_" + i, @class = " atextBoxFor " })
+                            @Html.HiddenFor(model => model.ListPendOrdPopup[i].RTLAUTONO, new { id = "popup_RTLAUTONO_" + i })
+                            @Html.HiddenFor(model => model.ListPendOrdPopup[i].ITCD, new { id = "popup_ITCD_" + i })
+                        </td>
+                        <td style="text-align: right;">
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].TRTLSET, new { id = "popup_TRTLSET_" + i, @class = " atextBoxFor " })
+                            @Html.HiddenFor(model => model.ListPendOrdPopup[i].TRTLQNTY, new { id = "popup_TRTLQNTY_" + i })
+                        </td>
+                        <td style="text-align: right;">
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].TRTLBOX, new { id = "popup_TRTLBOX_" + i, @class = " atextBoxFor " })
+                        </td>
+
+                        <td style="text-align: right;">
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].SET, new { id = "popup_SET_" + i, @class = " atextBoxFor ", onchange = "CalculateQnty(" + i + ");" })
+                            @Html.HiddenFor(model => model.ListPendOrdPopup[i].PCSPERSET, new { id = "popup_PCSPERSET_" + i })
+                            @Html.HiddenFor(model => model.ListPendOrdPopup[i].PCSPERBOX, new { id = "popup_PCSPERBOX_" + i })
+                            @Html.HiddenFor(model => model.ListPendOrdPopup[i].SIZE_COUNT, new { id = "popup_SIZE_COUNT_" + i })
+                            @Html.HiddenFor(model => model.ListPendOrdPopup[i].MIXSIZE, new { id = "popup_MIXSIZE_" + i })
+</td>
+                        <td style="text-align: right;">
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].QNTY, new { id = "popup_QNTY_" + i, @class = " atextBoxFor " })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].SIZECD, new { id = "popup_SIZECD_" + i, @class = " atextBoxFor " })
+                        </td>
+                        <td style="text-align: right;">
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].TSTKQNTY, new { id = "popup_TSTKQNTY_" + i, @class = " atextBoxFor " })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].ORDSKIPREASON, new { id = "popup_ORDSKIPREASON_" + i, @class = " atextBoxFor " })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => Model.ListPendOrdPopup[i].ITREM, new { id = "popup_ITREM_" + i, @class = " atextBoxFor " })
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

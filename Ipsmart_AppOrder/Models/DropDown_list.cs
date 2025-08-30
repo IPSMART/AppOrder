@@ -203,4 +203,29 @@ namespace Improvar.Models
         public string Text { get; set; }
         public string Value { get; set; }
     }
+    public class ListDistributor
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
+    public class ListRetailer
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
+    public class ListBrand
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
+    public class ListGroup
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
+    public class ListCollection
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
 }

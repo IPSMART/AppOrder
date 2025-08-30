@@ -92,6 +92,11 @@ namespace Improvar.Models
         public virtual DbSet<M_RETAILOUTLET> M_RETAILOUTLET { get; set; }
         public virtual DbSet<M_RETAIL> M_RETAIL { get; set; }      
         public virtual DbSet<M_RETAIL_LINK> M_RETAIL_LINK { get; set; }
+        public virtual DbSet<T_DISTORDER> T_DISTORDER { get; set; }
+        public virtual DbSet<T_DISTORDERDTL> T_DISTORDERDTL { get; set; }
+        public virtual DbSet<T_DISTORDLINK> T_DISTORDLINK { get; set; }
+        public virtual DbSet<T_DISTORDPICKUP> T_DISTORDPICKUP { get; set; }
+        public virtual DbSet<M_SITEM_SIZE> M_SITEM_SIZE { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Improvar.ViewModels
 {
-    public class VMRetailOrder : Permission
+    public class VMDistOrder : Permission
     {
         public List<ImageView> ImageView { get; set; }
         public bool Checked { get; set; }
@@ -45,25 +45,5 @@ namespace Improvar.ViewModels
 
     }
 
-    public class ImageView
-    {
-        public string Url { get; set; }
-        public string Desc { get; set; }
-        public string ITCD { get; set; }
-        public string SIZES { get; set; }
-        public short PCSPERSET { get; set; }
-        public string MIXSIZE { get; set; }
-        public double SIZE_COUNT { get; set; }
-        public short PCSPERBOX { get; set; }
-        [StringLength(50)]
-        public string ITREM { get; set; }
-    }
-
-    public class APP_ITEMLIST
-    {
-        public string itcd { get; set; }
-        public string sizes { get; set; }
-        public string itrem { get; set; }
-    }
- 
+    
 }

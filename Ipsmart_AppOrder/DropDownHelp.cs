@@ -13,6 +13,7 @@ namespace Improvar
     {
         Connection Cn = new Connection();
         MasterHelp masterHelp = new MasterHelp();
+        Salesfunc salesfunc = new Salesfunc();
         string UNQSNO = CommVar.getQueryStringUNQSNO();
         public List<DropDown_list_GLCD> DropDown_list_GLCD(string linkcd = "", string slcdmust = "N,Y")
         {
@@ -186,26 +187,33 @@ namespace Improvar
                       }).ToList();
             return sllist;
         }
-        public List<DropDown_list_Distributor> GetDistributorforSelection(string linkcd)
+
+        public List<ListDistributor> GetDistributorforSelection(string tdt, string SLMSLCD)
         {
             string GCS = Cn.GCS();
-            List<DropDown_list_Distributor> sllist = new List<DropDown_list_Distributor>();
-            string sql = "", scmf = CommVar.FinSchema(UNQSNO);
-            if (linkcd.retStr() != "" && linkcd.IndexOf("'") < 0) linkcd = "'" + linkcd + "'";
-
-            sql = "select distinct a.slcd, a.slnm,nvl(a.SLAREA,a.DISTRICT)SLAREA ";
-            sql += "from " + scmf + ".M_SUBLEG a, " + scmf + ".m_cntrl_hdr b, " + scmf + ".M_SUBLEG_LINK c ";
-            sql += "where a.m_autono=b.m_autono(+) and a.slcd=c.slcd(+) ";
-            if (linkcd.retStr() != "") sql += "and c.LINKCD in (" + linkcd + ")  ";
-            sql += "and nvl(b.inactive_tag,'N')='N' ";
-            sql += "order by slnm ";
-            DataTable tbl = masterHelp.SQLquery(sql);
+            List<ListDistributor> sllist = new List<ListDistributor>();
+            DataTable tbl = salesfunc.GetDistributor(tdt, SLMSLCD);
 
             sllist = (from DataRow a in tbl.Rows
-                      select new DropDown_list_Distributor()
+                      select new ListDistributor()
                       {
-                          Value = a["SLCD"].retStr(),
-                          Text = a["SLNM"].retStr() + GCS + a["SLAREA"].retStr(),
+                          value = a["DISTSLCD"].retStr(),
+                          text = a["DISTSLnm"].retStr() + GCS + a["SLAREA"].retStr(),
+                      }).ToList();
+            return sllist;
+        }
+
+        public List<ListBrand> GetBrandforSelection(string tdt, string SLMSLCD)
+        {
+            string GCS = Cn.GCS();
+            List<ListBrand> sllist = new List<ListBrand>();
+            DataTable tbl = salesfunc.GetBrand(tdt, SLMSLCD);
+
+            sllist = (from DataRow a in tbl.Rows
+                      select new ListBrand()
+                      {
+                          value = a["BRANDCD"].retStr(),
+                          text = a["BRANDNM"].retStr(),
                       }).ToList();
             return sllist;
         }

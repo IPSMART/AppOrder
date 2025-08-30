@@ -1,0 +1,571 @@
+﻿@model Improvar.ViewModels.TransactionDistOrder
+@{
+    ViewBag.Title = "Order";
+    Layout = null;
+    string PageControllerName = "T_DistOrder";
+    string US = Model?.UNQSNO_ENCRYPTED;
+    var VisibleRow = 2;
+}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@ViewBag.Title</title>
+<link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+<link rel="icon" href="~/favicon.ico" type="image/x-icon">
+<link href="~/Content/layout_misc.css" rel="stylesheet" />
+<link href="~/Content/swiper-bundle.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Content/font-awesome.min.css" />
+<script src="~/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+@*<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>*@
+<script src="~/Scripts/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/datatables.min.js"></script>
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/bootstrap.css?Ver=" + Module.ContentVersion)
+@Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])
+
+
+
+
+<script src="~/Scripts/jquery.mobile-events.js"></script>
+<style>
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide .title {
+            position: absolute;
+            bottom: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 12pt;
+            font-family: 'Mark Bold' !important;
+        }
+
+
+    @@media (max-width: 800px) {
+        .mySwiper {
+            display: block;
+            width: 100%;
+            height: 50%;
+        }
+
+        .swiper-slide img {
+        }
+    }
+
+    .textbox_image {
+        padding-right: 18px;
+        margin-right: -21px;
+        float: left;
+    }
+
+    .Help_image_button {
+        width: 19px;
+        height: 19px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+</style>
+<style>
+    .top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 55px;
+        z-index: 1000;
+    }
+
+    .sub-top {
+        position: fixed;
+        top: 55px; /* offset by the height of .top */
+        left: 0;
+        width: 100%;
+        /*height: 40px;*/
+        z-index: 999; /* slightly lower than .top */
+    }
+
+    .content {
+        margin-top: 175px; /* push content below both fixed divs */
+        padding: 1rem;
+        padding-bottom: 70px; /* space to avoid hiding content under footer */
+    }
+</style>
+<style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #d9edf7;
+        color: #3a87ad;
+        line-height: 60px;
+        z-index: 1000;
+    }
+
+    .quantity-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap;
+        background-color: #e4f2fb;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+</style>
+<style>
+    @@media (max-width: 768px) {
+        .truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 1; /* show only one line */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            cursor: pointer;
+        }
+
+            .truncate.expanded {
+                -webkit-line-clamp: unset;
+                max-height: 80px; /* fixed height when expanded */
+                overflow-y: auto; /* scroll inside */
+                padding-right: 5px; /* space for scrollbar */
+                box-shadow: inset 0 -1px 0 #ddd; /* optional styling */
+            }
+    }
+</style>
+<style>
+    .table-wrapper {
+        width: 100%;
+        max-height: 300px; /* Control vertical height inside modal */
+        overflow: auto; /* Enable scroll both vertically and horizontally */
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 700px; /* Forces horizontal scroll when narrow */
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        text-align: left;
+        white-space: nowrap;
+        font-size: 12px;
+    }
+
+    th {
+        padding: 10px 14px;
+    }
+
+    tbody td {
+        padding: 0px !important;
+    }
+    /* Sticky header */
+    thead th {
+        background: #255994;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 3;
+    }
+
+    /* Sticky first column */
+    .sticky-col-left {
+        position: sticky;
+        left: 0;
+        background: white;
+        z-index: 2;
+    }
+
+    /* Sticky last column */
+    .sticky-col-right {
+        position: sticky;
+        right: 0;
+        background: white;
+        z-index: 2;
+    }
+
+    /* Keep sticky header columns above rows */
+    thead .sticky-col-left {
+        z-index: 4;
+        background: #255994;
+        color: white;
+    }
+
+    thead .sticky-col-right {
+        z-index: 4;
+        background: #255994;
+        color: white;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #f2f2f2;
+    }
+</style>
+<style>
+    .menu a {
+        text-align: center;
+        float: left;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        margin-right: 7px; /*space between*/
+        display: flex;
+        align-items: flex-start;
+        transition: all 0.4s;
+        -webkit-transition: all 0.4s;
+    }
+
+        .menu a i {
+            font-size: 15px;
+            align-self: center;
+            transition: all 0.4s;
+            -webkit-transition: all 0.4s;
+            margin: 0 auto;
+        }
+</style>
+<style>
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .modal-content {
+        background: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        width: 600px;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .modal-header, .modal-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+        margin-top: 0px;
+    }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+    .modal-body {
+        padding: 0px;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.getElementById('header-text').addEventListener('click', function () {
+            const isExpanded = this.classList.toggle('expanded'); // true if expanded now
+            if (isExpanded) {
+                $("#headertitle").css("white-space", "normal"); // Allow wrapping when expanded
+            } else {
+                $("#headertitle").css("white-space", "nowrap"); // Keep it single-line when collapsed
+            }
+        });
+    });
+</script>
+<script>
+    function SaveData() {
+        $("#WaitingMode").show();
+        getLocation(function (latlot) {
+            if (latlot != "") {
+                var LAT = returncolvalue(latlot, "LAT");
+                var LOT = returncolvalue(latlot, "LOT");
+
+                $("#GPSLAT").val(LAT);
+                $("#GPSLOT").val(LOT);
+            }
+            //need to open
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
+            //    alert('retailer not found!');
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //var hdnData1 = '';
+            //$('#tblCart > tbody  > tr').each(function () {
+            //    var ITCD = $(this).find("td").eq(3).html();
+            //    //var QNTY = $(this).find("td").eq(1).html();
+            //    var SIZE = $(this)[0].dataset.sizeqnty;// $(this).find("td").eq(1).html();
+            //    var ITREM = $(this).find("td").eq(2).find('input').val();
+
+            //    if (hdnData1 != '') hdnData1 += ',';
+            //    hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "', 'itrem': '" + ITREM + "'  }";
+            //});
+
+            //console.log(hdnData1);
+            //if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
+            //$("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+
+            $.ajax({
+                type: 'post',
+                url: "@Url.Action("SAVE", PageControllerName)",
+                data: $('form').serialize(),
+                success: function (result) {
+                    var res = result.split("~");
+                    if (res[0] == '1') {
+                        alert('Data Saved Successfully !!'+res[1]);
+                        window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                        if (newWindow) {
+                            window.open('', '_self'); // Required for some browsers
+                            window.close(); // Attempt to close current window
+                        } else {
+                            alert("Popup blocked! Please allow popups for this website.");
+                        }
+                    }
+                    else{
+                        alert(result);
+                        $("#WaitingMode").hide();
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#WaitingMode").hide();
+                    msgError(XMLHttpRequest.responseText);
+                    $("body span h1").remove(); $("#msgbody_error style").remove();
+                }
+            });
+        });
+
+    }
+</script>
+<script>
+    function increment(id) {
+        var input = document.getElementById(id);
+        input.stepUp();
+    }
+    function decrement(id) {
+        var input = document.getElementById(id);
+        input.stepDown();
+    }
+</script>
+<script>
+    function OpenSizeDet(index) {
+        debugger;       
+        var SerialNo = $("#SLNO_" + index).val();
+        $("#hiddenindex").val(index);
+        $.ajax({
+            type: 'post',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("OpenPopupSize", PageControllerName)",
+            data: $('form').serialize() + "&ParentSerialNo=" + SerialNo + "&Rowindexno=" + index,
+            success: function (result) 
+            {
+            $("#WaitingMode").hide();
+            $('#popupSize').html(result);
+            //document.getElementById('popupTitle').textContent = styleno;
+            document.getElementById("popup").style.display = "flex";
+            },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
+
+    function CloseSizeDet() {
+        debugger;
+        var index = $("#hiddenindex").val();
+        var SerialNo = $("#SLNO_" + index).val();
+        $.ajax({
+            type: 'post',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("ClosePopupSize", PageControllerName)",
+            data: $('form').serialize() + "&ParentSerialNo=" + SerialNo,
+        success: function (result) {
+            $("#WaitingMode").hide();
+            $('#partialdivMain').html(result);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+        document.getElementById("popup").style.display = "none";
+    }
+    function ClosePopup(){
+        document.getElementById("popup").style.display = "none";
+
+    }
+</script>
+<script>
+    function CalculateQnty(index)
+    {
+        var QNTY = 0;
+        var NOOFSETS = retFloat($("#popup_SET_" + index).val());
+        var PCSPERSET = retFloat($("#popup_PCSPERSET_" + index).val());
+        var SIZE_COUNT = retFloat($("#popup_SIZE_COUNT_" + index).val());
+        var PCSPERBOX = retFloat($("#popup_PCSPERBOX_" + index).val());
+        var MIXSIZE = $("#popup_MIXSIZE_" + index).val();
+
+        if (NOOFSETS != 0 && PCSPERSET != 0) {
+            if (MIXSIZE == "M") {
+                QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
+            }
+            else {
+                if (PCSPERBOX != PCSPERSET) {
+                    QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
+                } else {
+                    QNTY = NOOFSETS * PCSPERSET;
+                }
+            }
+        }
+        else {
+            QNTY = (NOOFSETS * PCSPERSET)
+        }
+        $("#popup_QNTY_" + index).val(QNTY);
+    }
+</script>
+@*@Html.ActionLink("T_RetailerOrderFilter", "T_RetailerOrderFilter", "T_RetailerOrderFilter")*@
+<div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
+    <p style="position: absolute; color: White; top: 46%; left: 47%;">
+        Loading, please wait...<br />
+        <span> <img src="~/Image/ajax_loader.gif" width="60px" height="60px"></span>
+    </p>
+</div>
+<div class="container-fluid">
+    <div class="truncate alert alert-info top" id="header-text" style="padding:5px;margin-bottom:0px;">
+        <div class="row" id="headertitle" style="font-size: large;white-space:nowrap;">
+            <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
+            <div class="menu" style="float:right;">
+                <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
+                <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
+                @*<a onclick="Print();" style="border: 2px solid blue;"><i class="fa fa-print fa-lg" style="color:revert-layer;"></i></a>*@
+            </div>
+        </div>
+        <div class="row" style="font-size: small;">
+            @ViewBag.BrandName @ViewBag.GroupName @ViewBag.CollectionName
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.T_DISTORDER.GPSLOT, new { id = "GPSLOT" })
+        @Html.HiddenFor(model => model.T_DISTORDER.GPSLAT, new { id = "GPSLAT" })
+        @*@Html.HiddenFor(model => model.GEOADDRESS)*@
+        @Html.HiddenFor(model => model.ITEMDETAIL_JSTR, new { id = "ITEMDETAIL_JSTR" })
+        @Html.HiddenFor(model => model.T_DISTORDER.SLCD, new { id = "SLCD" })
+        @Html.HiddenFor(model => model.T_DISTORDER.RTLCD, new { id = "RTLCD" })
+        @Html.HiddenFor(model => model.T_DISTORDER.AUTONO, new { id = "AUTONO" })
+        @Html.HiddenFor(model => model.T_DISTORDER.DOCNO, new { id = "DOCNO" })
+        @Html.HiddenFor(model => model.T_DISTORDER.VCHRNO, new { id = "VCHRNO" })
+        @Html.HiddenFor(model => model.T_DISTORDER.MNTHCD, new { id = "MNTHCD" })
+        @Html.HiddenFor(model => model.T_DISTORDER.SLMSLCD, new { id = "SLMSLCD" })
+        @Html.HiddenFor(model => model.BrandCode, new { id = "BrandCode" })
+        <input type="hidden" id="hiddenindex" name="hiddenindex" value="" />
+
+        <input type="hidden" id="hdnData" />
+        <input type="hidden" id="NoOfItem" />
+        <input type="hidden" id="TQnty" />
+        <input type="hidden" id="UpdateItcd" />
+
+        <div class="table-responsive row sub-top" id="partialdivMain" style="max-height:60%; overflow-y:auto;">
+            @Html.Partial("_T_DistOrder_Main")
+        </div>
+        <div class="row">
+            <table class="table table-striped" id="tblSizes" style="display:none;">
+                <thead>
+                    <tr style="background-color: #255994;color: white;"><th>Size</th><th>Qnty</th><th>Remarks</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="popup_size" class="row" style="margin-top: 11px;top:15%;left:15%;position:absolute;">
+        </div>
+        <div class="footer" style="padding:5px;">
+            <div class="quantity-row">
+                <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-warning" onclick="SaveData()" title="Add to Cart">Save <i class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+        <div class="container">
+            <div id="helpDIV">
+
+            </div>
+        </div>
+        <div id="popup" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="popupTitle">Default Title</h2>
+                    <span class="close-btn" onclick="ClosePopup();">&times;</span>
+                </div>
+                <div id="popupSize" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-warning" onclick="CloseSizeDet()" title="Add to Cart">Update <i class="fa fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+

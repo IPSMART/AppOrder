@@ -295,7 +295,9 @@
     <Compile Include="Controllers\DatalockController.cs" />
     <Compile Include="Controllers\DOCPASS_STRGYController.cs" />
     <Compile Include="Controllers\DOCPASS_AUTHController.cs" />
-    <Compile Include="Controllers\M_GrpMastController.cs" />
+    <Compile Include="Controllers\T_DistOrderController.cs" />
+    <Compile Include="Controllers\T_DistOrderFilterController.cs" />
+    <Compile Include="Controllers\T_RetailerOrderFilterController.cs" />
     <Compile Include="Controllers\M_RetailOutletController.cs" />
     <Compile Include="Controllers\M_USR_ACS_DOCCDController.cs" />
     <Compile Include="Controllers\M_USR_ACS_GRPDTLController.cs" />
@@ -341,6 +343,8 @@
     <Compile Include="Models\IndexKey.cs" />
     <Compile Include="Models\IndexKey1.cs" />
     <Compile Include="Models\IndexKey2.cs" />
+    <Compile Include="Models\ListPendOrdPopup.cs" />
+    <Compile Include="Models\ListPendOrd.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationMaster.cs" />
     <Compile Include="Models\Login.cs" />
@@ -406,6 +410,7 @@
     <Compile Include="Models\M_SITEMBOM.cs" />
     <Compile Include="Models\M_SITEMBOMDTL.cs" />
     <Compile Include="Models\M_SITEMBOMSFDTL.cs" />
+    <Compile Include="Models\M_SITEM_SIZE.cs" />
     <Compile Include="Models\M_SUBLEG.cs" />
     <Compile Include="Models\M_SUBLEG_BUSNAT.cs" />
     <Compile Include="Models\M_SUBLEG_CONT.cs" />
@@ -445,6 +450,10 @@
     <Compile Include="Models\T_CNTRL_HDR_DOC.cs" />
     <Compile Include="Models\T_CNTRL_HDR_DOC_DTL.cs" />
     <Compile Include="Models\T_CNTRL_HDR_REM.cs" />
+    <Compile Include="Models\T_DISTORDER.cs" />
+    <Compile Include="Models\T_DISTORDERDTL.cs" />
+    <Compile Include="Models\T_DISTORDLINK.cs" />
+    <Compile Include="Models\T_DISTORDPICKUP.cs" />
     <Compile Include="Models\T_RETAILORDER.cs" />
     <Compile Include="Models\T_RETAILORDERDTL.cs" />
     <Compile Include="Models\T_TXNEINV.cs" />
@@ -483,12 +492,14 @@
     <Compile Include="ViewModels\RetailOutletEntry.cs" />
     <Compile Include="ViewModels\SDRQueryReport.cs" />
     <Compile Include="ViewModels\SubLedgerEntry.cs" />
+    <Compile Include="ViewModels\TransactionDistOrder.cs" />
     <Compile Include="ViewModels\TransactionRetailOrder.cs" />
     <Compile Include="ViewModels\UOMMasterEntry.cs" />
     <Compile Include="ViewModels\UserGroupLinkDetails.cs" />
     <Compile Include="ViewModels\UserGuideImprovar.cs" />
     <Compile Include="ViewModels\UserRight.cs" />
     <Compile Include="ViewModels\UserWiseDocumentTypeRightsEntry.cs" />
+    <Compile Include="ViewModels\VMDistOrder.cs" />
     <Compile Include="ViewModels\VMRetailOrder.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -497,6 +508,7 @@
     <Content Include="Content\Admin\bootstrap.css" />
     <Content Include="Content\Admin\ie10-viewport-bug-workaround.css" />
     <Content Include="Content\Admin\navbar.css" />
+    <Content Include="Content\all.min.css" />
     <Content Include="Content\bootstrap-float-label.min.css" />
     <Content Include="Content\bootstrap-select.css" />
     <Content Include="Content\bootstrap-select.min.css" />
@@ -714,7 +726,7 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Metadata\deploymentTemplates\apiappconfig.azureresource.json" />
+    <Content Include="Models\Metadata\deploymentTemplates\apiappconfig.azureresource.json" />
     <Content Include="apiapp.json" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -858,7 +870,7 @@
     <Content Include="Views\User_Guide\User_Guide.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\M_GrpMast\M_GrpMast.cshtml" />
+    <Content Include="Views\T_RetailerOrderFilter\T_RetailerOrderFilter.cshtml" />
     <Content Include="Views\M_RetailOutlet\M_RetailOutlet.cshtml" />
     <Content Include="Views\Shared\_T_RetailerOrder_Main.cshtml" />
     <Content Include="Views\Shared\_LayoutReport.cshtml" />
@@ -866,6 +878,10 @@
     <Content Include="Views\Shared\_M_Retail_Distributor.cshtml" />
     <Content Include="Views\Shared\_MobileLayout.cshtml" />
     <Content Include="Views\Shared\_LayoutMaster.cshtml" />
+    <Content Include="Views\T_DistOrderFilter\T_DistOrderFilter.cshtml" />
+    <Content Include="Views\T_DistOrder\T_DistOrder.cshtml" />
+    <Content Include="Views\Shared\_T_DistOrder_Main.cshtml" />
+    <Content Include="Views\Shared\_T_DistOrder_Popup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

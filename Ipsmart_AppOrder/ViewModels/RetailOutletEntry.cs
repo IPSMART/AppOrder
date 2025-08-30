@@ -23,6 +23,8 @@ namespace Improvar.ViewModels
         public List<DropDown_list_Distributor> DropDown_list_Distributor { get; set; }
         public string Dstbrslcd { get; set; }
         public string Dstbrslnm { get; set; }
+        public List<ListDistributor> ListDistributor { get; set; }
+
 
     }
     public class ListState

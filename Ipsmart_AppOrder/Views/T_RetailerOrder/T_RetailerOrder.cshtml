@@ -630,7 +630,7 @@
                     var res = result.split("~");
                     if (res[0] == '1') {
                         alert('Data Saved Successfully !!'+res[1]);
-                        window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
+                        window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
                         if (newWindow) {
                             window.open('', '_self'); // Required for some browsers
                             window.close(); // Attempt to close current window
@@ -664,16 +664,16 @@
     }
 </script>
 @*<script>
-    function OpenHome(){
-        window.location.href = "@Url.Action("M_GrpMast", "M_GrpMast", new { US = Model.UNQSNO_ENCRYPTED })";
-        if (newWindow) {
-            window.open('', '_self'); // Required for some browsers
-            window.close(); // Attempt to close current window
-        } else {
-            alert("Popup blocked! Please allow popups for this website.");
+        function OpenHome(){
+            window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+            if (newWindow) {
+                window.open('', '_self'); // Required for some browsers
+                window.close(); // Attempt to close current window
+            } else {
+                alert("Popup blocked! Please allow popups for this website.");
+            }
         }
-    }
-</script>*@
+    </script>*@
 <script>
     function Print() {
         debugger;
@@ -681,7 +681,7 @@
         jQuery("form").submit();
     }
 </script>
-@*@Html.ActionLink("M_GrpMast", "M_GrpMast", "M_GrpMast")*@
+@*@Html.ActionLink("T_RetailerOrderFilter", "T_RetailerOrderFilter", "T_RetailerOrderFilter")*@
 <div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
     <p style="position: absolute; color: White; top: 46%; left: 47%;">
         Loading, please wait...<br />
