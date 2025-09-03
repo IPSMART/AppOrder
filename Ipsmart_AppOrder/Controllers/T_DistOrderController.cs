@@ -64,14 +64,14 @@ namespace Improvar.Controllers
                     }
 
                     var dt = Salesfunc.GetPendingOrder(VE.T_DISTORDER.SLCD.retSqlformat(), VE.BrandCode.retSqlfromStrarray());
-                    dt.Columns.Add("SET", typeof(double), "");
-                    dt.Columns.Add("BOX", typeof(double), "");
-                    for (int i = 0; i <= dt.Rows.Count - 1; i++)
-                    {
-                        double qnty = dt.Rows[i]["QNTY"].retDbl();
-                        dt.Rows[i]["SET"] = Salesfunc.ConvPcstoSet(qnty, dt.Rows[i]["PCSPERSET"].retDbl());
-                        dt.Rows[i]["BOX"] = Salesfunc.ConvPcstoBox(qnty, dt.Rows[i]["PCSPERBOX"].retDbl());
-                    }
+                    //dt.Columns.Add("SET", typeof(double), "");
+                    //dt.Columns.Add("BOX", typeof(double), "");
+                    //for (int i = 0; i <= dt.Rows.Count - 1; i++)
+                    //{
+                    //    double qnty = dt.Rows[i]["QNTY"].retDbl();
+                    //    dt.Rows[i]["SET"] = Salesfunc.ConvPcstoSet(qnty, dt.Rows[i]["PCSPERSET"].retDbl());
+                    //    dt.Rows[i]["BOX"] = Salesfunc.ConvPcstoBox(qnty, dt.Rows[i]["PCSPERBOX"].retDbl());
+                    //}
                     VE.ListPendOrd = (from DataRow dr in dt.Rows
                                       group dr by new
                                       {
@@ -87,38 +87,50 @@ namespace Improvar.Controllers
                                       {
                                           RTLCD = X.Key.RTLCD.retStr(),
                                           RTLAUTONO = X.Key.RTLAUTONO.retStr(),
-                                          RTLNM = X.Key.RTLNM.retStr(),
+                                          RTLNM = X.Key.RTLNM.retStr() + " [" + X.Key.RTLAREA.retStr() + "]",
                                           RTLAREA = X.Key.RTLAREA.retStr(),
                                           BRANDNM = X.Key.BRANDNM.retStr(),
                                           BRANDCD = X.Key.BRANDCD.retStr(),
                                           QNTY = X.Sum(Z => Z.Field<double>("QNTY").retDbl()),
-                                          SET = X.Sum(Z => Z.Field<double>("SET").retDbl()),
-                                          BOX = X.Sum(Z => Z.Field<double>("BOX").retDbl()),
+                                          //SET = X.Sum(Z => Z.Field<double>("SET").retDbl()),
+                                          //BOX = X.Sum(Z => Z.Field<double>("BOX").retDbl()),
                                       }).ToList();
 
                     for (int i = 0; i <= VE.ListPendOrd.Count() - 1; i++)
                     {
                         VE.ListPendOrd[i].SLNO = (i + 1).retShort();
-                        VE.ListPendOrd[i].ORDDET = "Box=" + VE.ListPendOrd[i].BOX + ",Set=" + VE.ListPendOrd[i].SET;
                         string RTLAUTONO = VE.ListPendOrd[i].RTLAUTONO;
                         string BRANDCD = VE.ListPendOrd[i].BRANDCD;
 
                         VE.ListPendOrdPopup = (from DataRow dr in dt.Rows
                                                where dr["AUTONO"].retStr() == RTLAUTONO && dr["BRANDCD"].retStr() == BRANDCD
-                                               select new ListPendOrdPopup()
+                                               group dr by new
                                                {
-                                                   ParentSerialNo = (i + 1).retShort(),
                                                    STYLENO = dr["STYLENO"].retStr(),
                                                    RTLAUTONO = dr["AUTONO"].retStr(),
                                                    ITCD = dr["ITCD"].retStr(),
-                                                   TRTLQNTY = dr["QNTY"].retDbl(),
                                                    PCSPERBOX = dr["PCSPERBOX"].retDbl(),
                                                    PCSPERSET = dr["PCSPERSET"].retDbl(),
-                                                   SIZECD = dr["SIZECD"].retStr(),
+                                                   //SIZECD = dr["SIZECD"].retStr(),
                                                    ITREM = dr["ITREM"].retStr(),
                                                    MIXSIZE = dr["MIXSIZE"].retStr(),
-                                               }).OrderBy(a => a.ITCD).ToList();
+                                               } into X
 
+                                               select new ListPendOrdPopup
+                                               {
+                                                   ParentSerialNo = (i + 1).retShort(),
+                                                   STYLENO = X.Key.STYLENO.retStr(),
+                                                   RTLAUTONO = X.Key.RTLAUTONO.retStr(),
+                                                   ITCD = X.Key.ITCD.retStr(),
+                                                   PCSPERBOX = X.Key.PCSPERBOX.retDbl(),
+                                                   PCSPERSET = X.Key.PCSPERSET.retDbl(),
+                                                   ITREM = X.Key.ITREM.retStr(),
+                                                   MIXSIZE = X.Key.MIXSIZE.retStr(),
+                                                   SIZEDET = string.Join(",", X.GroupBy(z => z["SIZECD"].retStr()).Select(g => $"{g.Key}={g.Sum(z => z["QNTY"].retDbl())}")),
+                                                   ALLSIZES = string.Join(",", X.GroupBy(z => z["SIZECD"].retStr()).Select(g => $"{g.Key}")),
+                                                   TRTLQNTY = X.Sum(Z => Z.Field<double>("QNTY").retDbl()),
+                                               }).OrderBy(a => a.ITCD).ToList();
+                        double set = 0, box = 0;
                         for (int j = 0; j <= VE.ListPendOrdPopup.Count - 1; j++)
                         {
                             string ITCD = VE.ListPendOrdPopup[j].ITCD;
@@ -129,7 +141,15 @@ namespace Improvar.Controllers
                             VE.ListPendOrdPopup[j].SET = VE.ListPendOrdPopup[j].TRTLSET;
                             VE.ListPendOrdPopup[j].QNTY = VE.ListPendOrdPopup[j].TRTLQNTY;
                             VE.ListPendOrdPopup[j].SIZE_COUNT = (from a in DB.M_SITEM_SIZE where a.ITCD == ITCD select a.SIZECD).Count();
+
+                            set += VE.ListPendOrdPopup[j].TRTLSET;
+                            box += VE.ListPendOrdPopup[j].TRTLBOX;
+
                         }
+                        VE.ListPendOrd[i].SET = set;
+                        VE.ListPendOrd[i].BOX = box;
+                        VE.ListPendOrd[i].ORDDET = "Box=" + VE.ListPendOrd[i].BOX + ", Set=" + VE.ListPendOrd[i].SET;
+
                         var javaScriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                         string JR = javaScriptSerializer.Serialize(VE.ListPendOrdPopup);
                         VE.ListPendOrd[i].ChildData = JR;
@@ -165,7 +185,7 @@ namespace Improvar.Controllers
                         if (DefaultAction == "A")
                         {
                             TDISTORDER.EMD_NO = 0;
-                            string DOCNO = Cn.MaxDocNumber(Ddate);
+                            string DOCNO = Cn.MaxDocNumber(Ddate, "T_DISTORDER");
                             TDISTORDER.VCHRNO = DOCNO.Split(Convert.ToChar(Cn.GCS()))[0].retInt();
                             TDISTORDER.MNTHCD = DOCNO.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
 
@@ -232,47 +252,74 @@ namespace Improvar.Controllers
                         int slno = 0;
                         for (int i = 0; i <= VE.ListPendOrd.Count - 1; i++)
                         {
-
-                            if (VE.ListPendOrd[i].ChildData != null && VE.ListPendOrd[i].ChildData != "[]")
+                            if (VE.ListPendOrd[i].CheckedORDSKIP == true)
                             {
-                                string data = VE.ListPendOrd[i].ChildData;
-                                var helpM = new List<Improvar.Models.ListPendOrdPopup>();
-                                var javaScriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                                helpM = javaScriptSerializer.Deserialize<List<Improvar.Models.ListPendOrdPopup>>(data);
-                                for (int j = 0; j <= helpM.Count - 1; j++)
+                                if(VE.ListPendOrd[i].ORDSKIPREASON.retStr() == "")
                                 {
-                                    if (helpM[j].QNTY != 0)
+                                    transaction.Rollback();
+                                    return Content("Enter Reason for Skip Order");
+                                }
+                                slno++;
+                                T_DISTORDLINK TDISTORDLINK = new T_DISTORDLINK();
+                                TDISTORDLINK.CLCD = TDISTORDER.CLCD;
+                                TDISTORDLINK.EMD_NO = TDISTORDER.EMD_NO;
+                                TDISTORDLINK.AUTONO = TDISTORDER.AUTONO;
+                                TDISTORDLINK.DTAG = TDISTORDER.DTAG;
+                                TDISTORDLINK.RTLAUTONO = VE.ListPendOrd[i].RTLAUTONO;
+                                TDISTORDLINK.SLNO = slno.retShort();
+                                TDISTORDLINK.ORDSKIPREASON = VE.ListPendOrd[i].ORDSKIPREASON;
+                                DB.T_DISTORDLINK.Add(TDISTORDLINK);
+                            }
+                            else
+                            {
+                                if (VE.ListPendOrd[i].ChildData != null && VE.ListPendOrd[i].ChildData != "[]")
+                                {
+                                    string data = VE.ListPendOrd[i].ChildData;
+                                    var helpM = new List<Improvar.Models.ListPendOrdPopup>();
+                                    var javaScriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                                    helpM = javaScriptSerializer.Deserialize<List<Improvar.Models.ListPendOrdPopup>>(data);
+                                    for (int j = 0; j <= helpM.Count - 1; j++)
                                     {
-                                        slno++;
-                                        T_DISTORDERDTL TDISTORDERDTL = new T_DISTORDERDTL();
-                                        TDISTORDERDTL.CLCD = TDISTORDER.CLCD;
-                                        TDISTORDERDTL.EMD_NO = TDISTORDER.EMD_NO;
-                                        TDISTORDERDTL.AUTONO = TDISTORDER.AUTONO;
-                                        TDISTORDERDTL.DTAG = TDISTORDER.DTAG;
-                                        TDISTORDERDTL.ITCD = helpM[j].ITCD;
-                                        TDISTORDERDTL.SLNO = slno.retShort();
-                                        TDISTORDERDTL.SIZECD = helpM[j].SIZECD;
-                                        TDISTORDERDTL.FREESTK = "";
-                                        TDISTORDERDTL.QNTY = helpM[j].QNTY;
-                                        TDISTORDERDTL.TRTLQNTY = helpM[j].TRTLQNTY;
-                                        TDISTORDERDTL.TSTKQNTY = helpM[j].TSTKQNTY;
-                                        DB.T_DISTORDERDTL.Add(TDISTORDERDTL);
+                                        var sizes = helpM[j].SIZEDET.retStr().Split(',');
+                                        foreach (var sizeq in sizes)
+                                        {
+                                            var sqn = sizeq.retStr().Split('=');
+                                            if (sqn.Length > 1)
+                                            {
+                                                if (sqn[1].retDbl() != 0)
+                                                {
+                                                    slno++;
 
+                                                    T_DISTORDERDTL TDISTORDERDTL = new T_DISTORDERDTL();
+                                                    TDISTORDERDTL.CLCD = TDISTORDER.CLCD;
+                                                    TDISTORDERDTL.EMD_NO = TDISTORDER.EMD_NO;
+                                                    TDISTORDERDTL.AUTONO = TDISTORDER.AUTONO;
+                                                    TDISTORDERDTL.DTAG = TDISTORDER.DTAG;
+                                                    TDISTORDERDTL.ITCD = helpM[j].ITCD;
+                                                    TDISTORDERDTL.SLNO = slno.retShort();
+                                                    TDISTORDERDTL.SIZECD = sqn[0];
+                                                    TDISTORDERDTL.FREESTK = "";
+                                                    TDISTORDERDTL.QNTY = sqn[1].retDbl();
+                                                    TDISTORDERDTL.TRTLQNTY = helpM[j].TRTLQNTY;
+                                                    TDISTORDERDTL.TSTKQNTY = helpM[j].TSTKQNTY;
+                                                    DB.T_DISTORDERDTL.Add(TDISTORDERDTL);
 
-                                        T_DISTORDLINK TDISTORDLINK = new T_DISTORDLINK();
-                                        TDISTORDLINK.CLCD = TDISTORDER.CLCD;
-                                        TDISTORDLINK.EMD_NO = TDISTORDER.EMD_NO;
-                                        TDISTORDLINK.AUTONO = TDISTORDER.AUTONO;
-                                        TDISTORDLINK.DTAG = TDISTORDER.DTAG;
-                                        TDISTORDLINK.RTLAUTONO = helpM[j].RTLAUTONO;
-                                        TDISTORDLINK.SLNO = slno.retShort();
-                                        TDISTORDLINK.ORDSKIPREASON = helpM[j].ORDSKIPREASON;
-                                        DB.T_DISTORDLINK.Add(TDISTORDLINK);
+                                                    T_DISTORDLINK TDISTORDLINK = new T_DISTORDLINK();
+                                                    TDISTORDLINK.CLCD = TDISTORDER.CLCD;
+                                                    TDISTORDLINK.EMD_NO = TDISTORDER.EMD_NO;
+                                                    TDISTORDLINK.AUTONO = TDISTORDER.AUTONO;
+                                                    TDISTORDLINK.DTAG = TDISTORDER.DTAG;
+                                                    TDISTORDLINK.RTLAUTONO = helpM[j].RTLAUTONO;
+                                                    TDISTORDLINK.SLNO = slno.retShort();
+                                                    TDISTORDLINK.ORDSKIPREASON = helpM[j].ORDSKIPREASON;
+                                                    DB.T_DISTORDLINK.Add(TDISTORDLINK);
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-
-
                             }
+
                         }
 
 
@@ -328,71 +375,23 @@ namespace Improvar.Controllers
             ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
             try
             {
-                //Cn.getQueryString(VE);
                 ListPendOrd query = (from c in VE.ListPendOrd where (c.SLNO == ParentSerialNo) select c).SingleOrDefault();
                 if (query != null)
                 {
-                    string brandcd = query.BRANDCD.retSqlformat();
-                    string RTLAUTONO = query.RTLAUTONO.retSqlformat();
-                    if (query.ChildData == null || query.ChildData == "[]")
+                    var helpM1 = new List<Improvar.Models.ListPendOrdPopup>();
+                    var javaScriptSerializer1 = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    if (query.ChildData != null)
                     {
-                        DataTable tbl = Salesfunc.GetPendingOrder(VE.T_DISTORDER.SLCD.retSqlformat(), brandcd, RTLAUTONO);
-                        if (tbl != null && tbl.Rows.Count > 0)
-                        {
-                            VE.ListPendOrdPopup = (from DataRow dr in tbl.Rows
-                                                   select new ListPendOrdPopup()
-                                                   {
-                                                       ParentSerialNo = ParentSerialNo,
-                                                       STYLENO = dr["STYLENO"].retStr(),
-                                                       RTLAUTONO = dr["AUTONO"].retStr(),
-                                                       ITCD = dr["ITCD"].retStr(),
-                                                       TRTLQNTY = dr["QNTY"].retDbl(),
-                                                       PCSPERBOX = dr["PCSPERBOX"].retDbl(),
-                                                       PCSPERSET = dr["PCSPERSET"].retDbl(),
-                                                       SIZECD = dr["SIZECD"].retStr(),
-                                                       ITREM = dr["ITREM"].retStr(),
-                                                       MIXSIZE = dr["MIXSIZE"].retStr(),
-                                                   }).OrderBy(a => a.ITCD).ToList();
-
-                            for (int i = 0; i <= VE.ListPendOrdPopup.Count - 1; i++)
-                            {
-                                string ITCD = VE.ListPendOrdPopup[i].ITCD;
-
-                                VE.ListPendOrdPopup[i].SLNO = (i + 1).retShort();
-                                VE.ListPendOrdPopup[i].TRTLBOX = Salesfunc.ConvPcstoBox(VE.ListPendOrdPopup[i].TRTLQNTY, VE.ListPendOrdPopup[i].PCSPERBOX);
-                                VE.ListPendOrdPopup[i].TRTLSET = Salesfunc.ConvPcstoSet(VE.ListPendOrdPopup[i].TRTLQNTY, VE.ListPendOrdPopup[i].PCSPERSET);
-
-                                VE.ListPendOrdPopup[i].SET = VE.ListPendOrdPopup[i].TRTLSET;
-                                VE.ListPendOrdPopup[i].QNTY = VE.ListPendOrdPopup[i].TRTLQNTY;
-                                VE.ListPendOrdPopup[i].SIZE_COUNT = (from a in DB.M_SITEM_SIZE where a.ITCD == ITCD select a.SIZECD).Count();
-                            }
-                        }
-                        else
-                        {
-                            List<ListPendOrdPopup> ListPendOrdPopup = new List<ListPendOrdPopup>();
-                            VE.ListPendOrdPopup = ListPendOrdPopup;
-                        }
-
-
-                        var javaScriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                        string JR = javaScriptSerializer.Serialize(VE.ListPendOrdPopup);
-                        query.ChildData = JR;
-
-
+                        helpM1 = javaScriptSerializer1.Deserialize<List<Improvar.Models.ListPendOrdPopup>>(query.ChildData);
                     }
-                    else
+                    if (helpM1 != null)
                     {
-                        var helpM1 = new List<Improvar.Models.ListPendOrdPopup>();
-                        var javaScriptSerializer1 = new System.Web.Script.Serialization.JavaScriptSerializer();
-                        if (query.ChildData != null)
+                        if (helpM1.Count > 0)
                         {
-                            helpM1 = javaScriptSerializer1.Deserialize<List<Improvar.Models.ListPendOrdPopup>>(query.ChildData);
-                        }
-                        if (helpM1 != null)
-                        {
-                            if (helpM1.Count > 0)
+                            VE.ListPendOrdPopup = helpM1;
+                            if (VE.ListPendOrdPopup != null && VE.ListPendOrdPopup.Count > 0)
                             {
-                                VE.ListPendOrdPopup = helpM1;
+                                VE.ListPendOrdPopup[0].CheckedORDSKIP = query.CheckedORDSKIP == true ? "Y" : "N";
                             }
                         }
                     }
@@ -496,6 +495,34 @@ namespace Improvar.Controllers
             string newPattern = "HP/DOR/" + docno.retStr().PadLeft(5, '0') + "/" + finyr;
 
             return newPattern;
+        }
+        public ActionResult DeleteRow(TransactionDistOrder VE, int SerialNo)
+        {
+            try
+            {
+                List<ListPendOrd> ListPendOrd = new List<ListPendOrd>();
+                int count = 0;
+                for (int i = 0; i <= VE.ListPendOrd.Count - 1; i++)
+                {
+                    if (VE.ListPendOrd[i].SLNO != SerialNo)
+                    {
+                        count += 1;
+                        ListPendOrd item = new ListPendOrd();
+                        item = VE.ListPendOrd[i];
+                        item.SLNO = Convert.ToInt16(count);
+                        ListPendOrd.Add(item);
+                    }
+                }
+                VE.ListPendOrd = ListPendOrd;
+                ModelState.Clear();
+                VE.DefaultView = true;
+                return PartialView("_T_DistOrder_Main", VE);
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message + ex.InnerException);
+            }
         }
 
 

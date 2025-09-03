@@ -176,7 +176,7 @@
     table {
         border-collapse: collapse;
         width: 100%;
-        padding:10px;
+        padding: 10px;
     }
 
     th, td {
@@ -310,35 +310,70 @@
         }
     }
 </style>
+@*<style>
+        @@media (max-width: 600px) {
+          table, thead, tbody, th, td, tr {
+            display: block;
+            width: 100%;
+          }
+          thead {
+            display: none;
+          }
+          tr {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 8px;
+          }
+          td {
+            text-align: left;
+            padding: 6px;
+            position: relative;
+          }
+          td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+          }
+           .table-responsive > .table {
+               background-color:#fffed9;
+        }
+        }
+    </style>*@
 <style>
-    @@media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
+    #tblMain,
+    #tblItem {
+        table-layout: auto; /* Let the browser decide widths dynamically */
         width: 100%;
-      }
-      thead {
-        display: none;
-      }
-      tr {
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 8px;
-      }
-      td {
-        text-align: left;
-        padding: 6px;
-        position: relative;
-      }
-      td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-      }
-       .table-responsive > .table {
-           background-color:#fffed9;
+        border-collapse: collapse;
     }
+
+        #tblMain th,
+        #tblMain td,
+        #tblItem th,
+        #tblItem td {
+            white-space: normal; /* Allow normal wrapping */
+            word-break: keep-all; /* Keep words together */
+            overflow-wrap: break-word; /* Break only when necessary */
+        }
+
+            #tblMain td input.form-control,
+            #tblItem td input.form-control {
+                width: 100%;
+                height: auto;
+                border: none; /* remove border */
+                background: transparent; /* transparent background */
+                padding: 0; /* remove padding */
+                margin: 0;
+                font-size: 12px;
+                line-height: 1.4;
+                outline: none; /* no blue border on focus */
+                box-shadow: none; /* remove extra effects */
+            }
+
+    .readonly-td {
+        background-color: #eeeeee; /* light red */
     }
 </style>
 <script>
@@ -383,7 +418,7 @@
             //    return false;
             //}
             //var hdnData1 = '';
-            //$('#tblCart > tbody  > tr').each(function () {
+            //$('#tblMain > tbody  > tr').each(function () {
             //    var ITCD = $(this).find("td").eq(3).html();
             //    //var QNTY = $(this).find("td").eq(1).html();
             //    var SIZE = $(this)[0].dataset.sizeqnty;// $(this).find("td").eq(1).html();
@@ -404,7 +439,7 @@
                 success: function (result) {
                     var res = result.split("~");
                     if (res[0] == '1') {
-                        alert('Data Saved Successfully !!'+res[1]);
+                        alert('Data Saved Successfully !!' + res[1]);
                         window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
                         if (newWindow) {
                             window.open('', '_self'); // Required for some browsers
@@ -413,7 +448,7 @@
                             alert("Popup blocked! Please allow popups for this website.");
                         }
                     }
-                    else{
+                    else {
                         alert(result);
                         $("#WaitingMode").hide();
                     }
@@ -440,7 +475,7 @@
 </script>
 <script>
     function OpenSizeDet(index) {
-        debugger;       
+        debugger;
         var SerialNo = $("#SLNO_" + index).val();
         $("#hiddenindex").val(index);
         var RTLNM = $("#RTLNM_" + index).val();
@@ -452,19 +487,26 @@
             beforesend: $("#WaitingMode").show(),
             url: "@Url.Action("OpenPopupSize", PageControllerName)",
             data: $('form').serialize() + "&ParentSerialNo=" + SerialNo + "&Rowindexno=" + index,
-            success: function (result) 
-            {
-            $("#WaitingMode").hide();
-            $('#popupSize').html(result);
-            document.getElementById('popupTitle').textContent = RTLNM + " " + RTLAREA + " (" + BRANDNM+")";
-            document.getElementById("popup").style.display = "flex";
+            success: function (result) {
+                $("#WaitingMode").hide();
+                $('#popupItem').html(result);
+                document.getElementById('popupTitle').textContent = RTLNM + " " + RTLAREA + " (" + BRANDNM + ")";
+                document.getElementById("popup").style.display = "flex";
+                if ($("#popup_CheckedORDSKIP_0").val() == 'Y')
+                {
+                    document.getElementById("Itemfooter").style.display = "none";
+                }
+                else
+                {
+                    document.getElementById("Itemfooter").style.display = "";
+                }
             },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#WaitingMode").hide();
-            msgError(XMLHttpRequest.responseText);
-            $("body span h1").remove(); $("#msgbody_error style").remove();
-        }
-    });
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
     }
 
     function CloseSizeDet() {
@@ -476,26 +518,25 @@
             beforesend: $("#WaitingMode").show(),
             url: "@Url.Action("ClosePopupSize", PageControllerName)",
             data: $('form').serialize() + "&ParentSerialNo=" + SerialNo,
-        success: function (result) {
-            $("#WaitingMode").hide();
-            $('#partialdivMain').html(result);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#WaitingMode").hide();
-            msgError(XMLHttpRequest.responseText);
-            $("body span h1").remove(); $("#msgbody_error style").remove();
-        }
-    });
+            success: function (result) {
+                $("#WaitingMode").hide();
+                $('#partialdivMain').html(result);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
         document.getElementById("popup").style.display = "none";
     }
-    function ClosePopup(){
-        document.getElementById("popup").style.display = "none";
+    function ClosePopup(id) {
+        document.getElementById(id).style.display = "none";
 
     }
 </script>
 <script>
-    function CalculateQnty(index)
-    {
+    function CalculateQnty(index) {
         var QNTY = 0;
         var NOOFSETS = retFloat($("#popup_SET_" + index).val());
         var PCSPERSET = retFloat($("#popup_PCSPERSET_" + index).val());
@@ -503,22 +544,155 @@
         var PCSPERBOX = retFloat($("#popup_PCSPERBOX_" + index).val());
         var MIXSIZE = $("#popup_MIXSIZE_" + index).val();
 
-        if (NOOFSETS != 0 && PCSPERSET != 0) {
-            if (MIXSIZE == "M") {
-                QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
-            }
-            else {
-                if (PCSPERBOX != PCSPERSET) {
+        var sizedt = "";
+        var TQNTY = 0;
+        var sizes = $("#popup_ALLSIZES_" + index).val();
+        var sizearr = sizes.split(',');
+        $.each(sizearr, function (index1, value) {
+            var QNTY = 0;
+            if (NOOFSETS != 0 && PCSPERSET != 0) {
+                if (MIXSIZE == "M") {
                     QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
-                } else {
-                    QNTY = NOOFSETS * PCSPERSET;
+                }
+                else {
+                    if (PCSPERBOX != PCSPERSET) {
+                        QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
+                    } else {
+                        QNTY = NOOFSETS * PCSPERSET;
+                    }
                 }
             }
+            else {
+                QNTY = (NOOFSETS * PCSPERSET);
+            }
+
+            if (sizedt != '') sizedt += ',';
+            sizedt += value + '=' + QNTY;
+
+            TQNTY += QNTY;
+        });
+        $("#popup_QNTY_" + index).val(TQNTY);
+        $("#popup_SIZEDET_" + index).val(sizedt);
+    }
+</script>
+<script>
+    function DeleteRowData(index) {
+        var SLNO = $("#SLNO_" + index).val();
+
+        $.ajax({
+            type: 'POST',
+            beforesend: $("#WaitingMode").show(),
+            url: "@Url.Action("DeleteRow", PageControllerName)",
+            data: $('form').serialize() + "&SerialNo=" + SLNO,
+            success: function (result) {
+                $("#partialdivMain").animate({ marginTop: '0px' }, 50);
+                $("#partialdivMain").html(result);
+                $("#WaitingMode").hide();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#WaitingMode").hide();
+                msgError(XMLHttpRequest.responseText);
+                $("body span h1").remove(); $("#msgbody_error style").remove();
+            }
+        });
+
+    }
+    function ModifySizeData(index) {
+        $("#hiddenindexitem").val(index);
+        var SLNO = $("#popup_SLNO_" + index).val();
+        var CheckedORDSKIP = $("#popup_CheckedORDSKIP_0").val();
+
+        var itrem = $("#popup_ORDSKIPREASON_" + index).val();;
+        var tr = "";
+        var styleno = $("#popup_STYLENO_" + index).val();
+        var allsizearr = $("#popup_ALLSIZES_" + index).val().split(',');
+
+        let sizearr = {};
+        $("#popup_SIZEDET_" + index).val().replace(/[{}]/g, "").split(",").forEach(item => {
+            let parts = item.split("=");
+            let size = parts[0];
+            let qty = parseInt(parts[1], 10);
+            sizearr[size] = qty;
+        });
+
+        $.each(allsizearr, function (index, value) {
+            let qnty = sizearr[value];
+            var size = value;
+            tr += '<tr><td class="sticky-col-left readonly-td">' + size + '</td>';
+            if (CheckedORDSKIP == 'Y')
+            {
+                tr += '<td class="readonly-td"> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" readonly="readonly"/></td>';
+            }
+            else
+            {
+                tr += '<td> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;"/></td>';
+            }
+            tr += '</tr>';
+        });
+        var table = "";
+
+        table += '<div class="table-responsive row" style="max-height:60%; overflow-y:auto;margin-bottom:0px;">';
+        table += '<table class="table table-striped" id="popuptblSizes">';
+        table += '<thead class="table-header-custom">';
+        table += '<tr style="background-color: #255994;color: white;">';
+        table += '<th class="sticky-col-left" style="width:50px;">Size</th>';
+        table += '<th>Qnty</th>';
+        table += '</tr>';
+        table += '</thead>';
+        table += '<tbody>' + tr + '</tbody>';
+        table += '</table>';
+        table += '</div>';
+        $("#popupSize").html(table);
+        $("#popupITREM").val(itrem);
+        document.getElementById('popupTitle1').textContent = styleno;
+        document.getElementById("popup1").style.display = "flex";
+        if (CheckedORDSKIP == 'Y') {
+            document.getElementById("Sizefooter").style.display = "none";
         }
         else {
-            QNTY = (NOOFSETS * PCSPERSET)
+            document.getElementById("Sizefooter").style.display = "";
         }
-        $("#popup_QNTY_" + index).val(QNTY);
+    }
+    function UpdateItemSize() {
+        debugger;
+        var indexitem = $("#hiddenindexitem").val();
+        var itrem = $("#popupITREM").val();
+
+        var sizedt = "";
+        var tqnty = 0;
+        $('#popuptblSizes > tbody  > tr').each(function () {
+            var SIZE = $(this).find("td").eq(0).html();
+            var QNTY = $(this).find("td:eq(1) input[type='number']").val();
+            if (retFloat(QNTY) != 0) {
+                if (sizedt != '') sizedt += ',';
+                sizedt += SIZE + '=' + retFloat(QNTY);
+                tqnty += retFloat(QNTY);
+
+            }
+        });
+
+        var PCSPERSET = retFloat($("#popup_PCSPERSET_" + indexitem).val());
+        var set = ConvPcstoSet(tqnty, PCSPERSET);
+
+        var ALLSIZES = $("#popup_ALLSIZES_" + indexitem).val();
+        var str = "";
+        str += '<div class="menu">';
+        str += '<a onclick="ModifySizeData(' + indexitem + ');" style="border:2px solid green;width:20px;height:20px;">';
+        str += '<i class="fa fa-pencil" style="color:green;font-size:15px;"></i>';
+        str += '</a>';
+        str += sizedt;
+        str += '<input id="popup_ALLSIZES_' + indexitem + '" name="ListPendOrdPopup[' + indexitem + '].ALLSIZES" type="hidden" value="' + ALLSIZES + '">';
+        str += '<input id="popup_SIZEDET_' + indexitem + '" name="ListPendOrdPopup[' + indexitem + '].SIZEDET" type="hidden" value="">';
+        str += '</div>';
+        $("#sizecol_" + indexitem).html(str);
+
+        $("#popup_SIZEDET_" + indexitem).val(sizedt);
+        $("#popup_QNTY_" + indexitem).val(tqnty);
+        $("#popup_SET_" + indexitem).val(set);
+        $("#popup_ORDSKIPREASON_" + indexitem).val(itrem);
+     
+
+        ClosePopup('popup1');
     }
 </script>
 @*@Html.ActionLink("T_RetailerOrderFilter", "T_RetailerOrderFilter", "T_RetailerOrderFilter")*@
@@ -557,6 +731,7 @@
         @Html.HiddenFor(model => model.T_DISTORDER.SLMSLCD, new { id = "SLMSLCD" })
         @Html.HiddenFor(model => model.BrandCode, new { id = "BrandCode" })
         <input type="hidden" id="hiddenindex" name="hiddenindex" value="" />
+        <input type="hidden" id="hiddenindexitem" name="hiddenindexitem" value="" />
 
         <input type="hidden" id="hdnData" />
         <input type="hidden" id="NoOfItem" />
@@ -590,13 +765,28 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 id="popupTitle">Default Title</h4>
-                    <span class="close-btn" onclick="ClosePopup();">&times;</span>
+                    <span class="close-btn" onclick="ClosePopup('popup');">&times;</span>
+                </div>
+                <div id="popupItem" class="modal-body">
+
+                </div>
+                <div id="Itemfooter" class="modal-footer">
+                    <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-warning" onclick="CloseSizeDet()" title="Add to Cart">Update <i class="fa fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="popup1" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="popupTitle1">Default Title</h4>
+                    <span class="close-btn" onclick="ClosePopup('popup1');">&times;</span>
                 </div>
                 <div id="popupSize" class="modal-body">
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-warning" onclick="CloseSizeDet()" title="Add to Cart">Update <i class="fa fa-arrow-right"></i></button>
+                <div id="Sizefooter" class="modal-footer">
+                    <input class="form-control  text-box single-line" data-val="true" data-val-length="The field popupITREM must be a string with a maximum length of 50." data-val-length-max="50" id="popupITREM" maxlength="50" name="popupITREM" placeholder="Remarks" style="font-weight:bold;font-size:15px;" type="text" value="">
+                    <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-warning" onclick="UpdateItemSize()" title="Add to Cart">Update <i class="fa fa-arrow-right"></i></button>
                 </div>
             </div>
         </div>

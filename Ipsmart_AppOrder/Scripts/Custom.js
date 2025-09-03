@@ -1618,3 +1618,54 @@ function OpenHome(){
 function Reload() {
     location.reload();
 }
+function ConvPcstoBox(pcs, pcsperbox) {
+    pcs = retFloat(pcs);
+    pcsperbox = retFloat(pcsperbox);
+    var box = 0;
+    var dbDzn, dbPcs, zDzn = 0;
+    var txt1, txt2 = "";
+    if (pcsperbox == 0)
+        return 0;
+    if (pcs == 0) dbPcs = 0; else dbPcs = RoundOff(pcs / pcsperbox, 2);
+
+    txt1 = retStr(retFloat(dbPcs).toFixed(2));
+    txt1 = txt1.substring(0, txt1.length - 3);
+    txt2 = retStr(retFloat(pcs - retFloat(txt1) * pcsperbox).toFixed(0));
+
+    if (pcsperbox != 10) {
+        if (retFloat(txt2) < 10) box = retFloat(txt1 + ".0" + txt2.substring(txt2.length - 1));
+        else box = retFloat(txt1 + "." + txt2);
+    }
+    else {
+        box = retFloat(txt1 + ".0" + txt2.substring(txt2.length - 1));
+    }
+    return box;
+}
+function ConvPcstoSet(pcs, pcsperset) {
+    pcs = retFloat(pcs);
+    pcsperset = retFloat(pcsperset);
+    var box = 0;
+    var dbDzn, dbPcs, zDzn = 0;
+    var txt1, txt2 = "";
+    if (pcsperset == 0)
+        return 0;
+    if (pcs == 0) dbPcs = 0; else dbPcs = RoundOff(pcs / pcsperset, 2);
+
+    txt1 = retStr(retFloat(dbPcs).toFixed(2));
+    txt1 = txt1.substring(0, txt1.length - 3);
+    txt2 = retStr(retFloat(pcs - retFloat(txt1) * pcsperset).toFixed(0));
+
+    if (pcsperset != 10) {
+        if (retFloat(txt2) < 10) box = retFloat(txt1 + ".0" + txt2.substring(txt2.length - 1));
+        else box = retFloat(txt1 + "." + txt2);
+    }
+    else {
+        box = retFloat(txt1 + ".0" + txt2.substring(txt2.length - 1));
+    }
+    return box;
+}
+function ConvBoxtoPcs(box, pcsperbox) {
+    var pcs = 0;
+    pcs = retFloat(box) * retFloat(pcsperbox);
+    return pcs;
+}

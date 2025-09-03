@@ -3095,7 +3095,7 @@ namespace Improvar
             }
             return retval;
         }
-        public string MaxDocNumber(string doc_date, string YR_CD = "")
+        public string MaxDocNumber(string doc_date, string tblnm, string YR_CD = "")
         {
             MasterHelp masterHelp = new MasterHelp();
             var UNQSNO = getQueryStringUNQSNO();
@@ -3109,7 +3109,7 @@ namespace Improvar
 
             sql = "select nvl(a.maxdocno,0) maxdocno from ";         
             sql += "( select a.mnthcd, max(a.vchrno) maxdocno ";
-            sql += "from " + scm + ".T_RETAILORDER a ";
+            sql += "from " + scm + "."+ tblnm + " a ";
             sql += "where a.mnthcd='"+ month_code + "'";
             //sql += "a.compcd='" + CommVar.Compcd(UNQSNO) + "' and a.loccd='" + CommVar.Loccd(UNQSNO) + "' and a.yr_cd='" + yrcd + "' ";
             sql += "group by a.mnthcd) a ";
@@ -3134,7 +3134,7 @@ namespace Improvar
             if (yy == dfinyr[1].ToString().Trim().Substring(8)) finyr = yy;
             else finyr = yy + "-" + dfinyr[1].ToString().Trim().Substring(8);
 
-            string newPattern = "HP/" + mnthcd + "/" + docno + "/" + finyr;
+            string newPattern = "HP/" + mnthcd + "/" + docno.retStr().PadLeft(5, '0') + "/" + finyr;
 
             return newPattern;
         }

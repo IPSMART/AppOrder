@@ -149,12 +149,12 @@ namespace Improvar.Controllers
                         if (DefaultAction == "A")
                         {
                             TRETAILORDER.EMD_NO = 0;
-                            string DOCNO = Cn.MaxDocNumber(Ddate);
+                            string DOCNO = Cn.MaxDocNumber(Ddate, "T_RETAILORDER");
                             TRETAILORDER.VCHRNO = DOCNO.Split(Convert.ToChar(Cn.GCS()))[0].retInt();
                             TRETAILORDER.MNTHCD = DOCNO.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
 
                             TRETAILORDER.DOCNO = Cn.DocPattern(TRETAILORDER.VCHRNO.retDbl(), TRETAILORDER.MNTHCD);
-                            TRETAILORDER.AUTONO = VE.T_RETAILORDER.SLCD + TRETAILORDER.VCHRNO;
+                            TRETAILORDER.AUTONO = "RTL" + VE.T_RETAILORDER.SLCD + TRETAILORDER.VCHRNO.retStr().PadLeft(5, '0');
 
                         }
                         else
@@ -323,7 +323,7 @@ namespace Improvar.Controllers
 
                 DataTable IR = new DataTable();
 
-                IR.Columns.Add("docno", typeof(string), ""); 
+                IR.Columns.Add("docno", typeof(string), "");
                 IR.Columns.Add("docdt", typeof(string), "");
                 IR.Columns.Add("slnm", typeof(string), "");
                 IR.Columns.Add("slcd", typeof(string), "");
@@ -425,7 +425,7 @@ namespace Improvar.Controllers
                     string autono = rstbl.Rows[i]["autono"].ToString();
                     string docdt = rstbl.Rows[i]["docdt"].ToString().retDateStr();
                     billno = rstbl.Rows[i]["docno"].ToString();
-                    slcd = rstbl.Rows[i]["RTLCD"].ToString();                    
+                    slcd = rstbl.Rows[i]["RTLCD"].ToString();
                     double tset = 0;
 
 
@@ -456,7 +456,7 @@ namespace Improvar.Controllers
                     Row1["prccd"] = rstbl.Rows[i]["prccd"].ToString();
                     Row1["discrtcd"] = rstbl.Rows[i]["discrtcd"].ToString();
                     Row1["discrteffdt"] = rstbl.Rows[i]["discrteffdt"].ToString();
-                    Row1["sldistrict"] = " "+rstbl.Rows[i]["sldistrict"].ToString()+" - "+ rstbl.Rows[i]["slpin"].ToString()+", " + rstbl.Rows[i]["slstate"].ToString();
+                    Row1["sldistrict"] = " " + rstbl.Rows[i]["sldistrict"].ToString() + " - " + rstbl.Rows[i]["slpin"].ToString() + ", " + rstbl.Rows[i]["slstate"].ToString();
                     Row1["crslnm"] = rstbl.Rows[i]["crslnm"].ToString();
                     Row1["RTLREGEMAIL"] = rstbl.Rows[i]["REGEMAIL"].ToString();
                     Row1["DISREGEMAILID"] = rstbl.Rows[i]["REGEMAILID"].ToString();
@@ -493,7 +493,7 @@ namespace Improvar.Controllers
                     Row1["sladd5"] = rstbl.Rows[i]["sladd5"].ToString();
                     Row1["sladd6"] = rstbl.Rows[i]["sladd6"].ToString();
                     Row1["sladd7"] = rstbl.Rows[i]["sladd7"].ToString();
-                    Row1["sladd"] = rstbl.Rows[i]["sladd1"].ToString() + " " + rstbl.Rows[i]["sladd2"].ToString() + " " + rstbl.Rows[i]["sladd3"].ToString() + " " + rstbl.Rows[i]["sladd4"].ToString() + " " + rstbl.Rows[i]["sladd5"].ToString()+" ";
+                    Row1["sladd"] = rstbl.Rows[i]["sladd1"].ToString() + " " + rstbl.Rows[i]["sladd2"].ToString() + " " + rstbl.Rows[i]["sladd3"].ToString() + " " + rstbl.Rows[i]["sladd4"].ToString() + " " + rstbl.Rows[i]["sladd5"].ToString() + " ";
                     //if (!string.IsNullOrEmpty(add))
                     //{
                     //Row1["sladd"] = add;

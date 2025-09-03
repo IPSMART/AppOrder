@@ -334,7 +334,7 @@
         var PCSPERSET = retFloat($("#PCSPERSET_" + index1).html());
         var MIXSIZE = $("#MIXSIZE_" + index1).html();
         var PCSPERBOX = retFloat($("#PCSPERBOX_" + index1).html());
-        var SIZE_COUNT = sizearr.length-1;
+        var SIZE_COUNT = sizearr.length;
         $('#tblSizes > tbody').html('');
         $.each(sizearr, function (index, value) {
             var QNTY = 0;
@@ -353,7 +353,7 @@
             else {
                 QNTY = (NOOFSETS * PCSPERSET)
             }
-
+            QNTY=retFloat(QNTY.toFixed(3));
             var tr = '<tr><td>' + value + '</td><td> <input type="number" value="' + QNTY + '"  class="form-control"/></td><td> <input type="text" value="' + ITREM + '"  class="form-control"/></td></tr>';
             $('#tblSizes > tbody:last-child').append(tr);
         });

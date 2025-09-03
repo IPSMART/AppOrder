@@ -37,6 +37,9 @@ namespace Improvar.Models
 
         [StringLength(4)]
         public string SIZECD { get; set; }
+        public string SIZEDET { get; set; }
+        public string ALLSIZES { get; set; }
+
 
         [StringLength(1)]
         public string FREESTK { get; set; }
@@ -60,5 +63,6 @@ namespace Improvar.Models
         public double TRTLSET { get; set; }
         public string MIXSIZE { get; set; }
         public double SIZE_COUNT { get; set; }
+        public string CheckedORDSKIP { get; set; }
     }
 }

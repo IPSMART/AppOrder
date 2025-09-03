@@ -119,6 +119,7 @@ namespace Improvar.Models
         public bool CheckedORDSKIP { get; set; }
         public string ORDDET { get; set; }
         public string ChildData { get; set; }
-
+        [StringLength(50)]
+        public string ORDSKIPREASON { get; set; }
     }
 }
