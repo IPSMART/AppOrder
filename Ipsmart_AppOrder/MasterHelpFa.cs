@@ -175,7 +175,7 @@ namespace Improvar
             var hdr = "COUNTRY Name" + Cn.GCS() + "COUNTRY Code";
             return Generate_help(hdr, SB.ToString());
         }
-  
+
         public string UOM_help(ImprovarDB DB)
         {
             var query = (from c in DB.M_UOM
@@ -1824,7 +1824,7 @@ namespace Improvar
             var hdr = "Location Code" + Cn.GCS() + "Location Name";
             return Generate_help(hdr, SB.ToString());
         }
-       
+
         public DataTable genSlCdTable(string slcd = "", string linkcd = "ALL")
         {
             var UNQSNO = Cn.getQueryStringUNQSNO();
@@ -1882,10 +1882,12 @@ namespace Improvar
             if (!System.IO.File.Exists(complogo)) complogo = "";
             return complogo;
         }
-        public string retCompAddress(string gocd = "", string grpemailid = "")
+        public string retCompAddress(string gocd = "", string grpemailid = "", string compcd = "", string loccd = "")
         {
             var UNQSNO = Cn.getQueryStringUNQSNO();
             string scm1 = CommVar.CurSchema(UNQSNO), Scmf = CommVar.FinSchema(UNQSNO), COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO);
+            if (compcd.retStr() != "") COM = compcd;
+            if (loccd.retStr() != "") LOC = loccd;
             string str, sql, goadd = "";
             string fssailicno = "";
             if (gocd == null) gocd = "";
@@ -1902,7 +1904,7 @@ namespace Improvar
                 }
             }
 
-            DataTable comptbl = retComptbl();
+            DataTable comptbl = retComptbl(LOC,COM);
 
             string compstat = "", compadd = "", locaadd = "", locastat = "", cregadd = "", stremail = "", legalname = "", corpadd = "";
             string locacommu = "", compcommu = "", corpcommu = "";
@@ -1932,7 +1934,7 @@ namespace Improvar
             //Corporate Office
             if (comptbl.Rows[0]["linkloccd"].ToString() != "")
             {
-                DataTable corpaddtbl = retComptbl(comptbl.Rows[0]["linkloccd"].ToString());
+                DataTable corpaddtbl = retComptbl(comptbl.Rows[0]["linkloccd"].ToString(),COM);
                 for (int f = 1; f <= 6; f++)
                 {
                     mfld = "ladd" + Convert.ToString(f).ToString();
@@ -1992,10 +1994,11 @@ namespace Improvar
             str += "^CORPCOMMU=^" + corpcommu + Cn.GCS();
             return str;
         }
-        public DataTable retComptbl(string loccd = "")
+        public DataTable retComptbl(string loccd = "", string compcd = "")
         {
             string sql = "", scmf = CommVar.FinSchema(UNQSNO), COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO);
             if (loccd.retStr() != "") LOC = loccd;
+            if (compcd.retStr() != "") COM = compcd;
             //sql += "select b.compnm, b.add1, b.add2, b.add3, b.add4, b.add5, b.add6, b.state, b.country, b.panno, a.tanno, b.cinno, b.propname, ";
             //sql += "nvl(a.regdoffsame,'Y') regdoffsame, a.addtype, a.linkloccd, ";
             //sql += "a.add1 ladd1, a.add2 ladd2, a.add3 ladd3, a.add4 ladd4, a.add5 ladd5, a.add6 ladd6, ";
@@ -2661,5 +2664,6 @@ namespace Improvar
                 }
             }
         }
+
     }
 }

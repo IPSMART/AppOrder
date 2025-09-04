@@ -247,6 +247,7 @@
         align-items: flex-start;
         transition: all 0.4s;
         -webkit-transition: all 0.4s;
+         text-decoration: none;
     }
 
         .menu a i {
@@ -492,12 +493,10 @@
                 $('#popupItem').html(result);
                 document.getElementById('popupTitle').textContent = RTLNM + " " + RTLAREA + " (" + BRANDNM + ")";
                 document.getElementById("popup").style.display = "flex";
-                if ($("#popup_CheckedORDSKIP_0").val() == 'Y')
-                {
+                if ($("#popup_CheckedORDSKIP_0").val() == 'Y') {
                     document.getElementById("Itemfooter").style.display = "none";
                 }
-                else
-                {
+                else {
                     document.getElementById("Itemfooter").style.display = "";
                 }
             },
@@ -619,12 +618,10 @@
             let qnty = sizearr[value];
             var size = value;
             tr += '<tr><td class="sticky-col-left readonly-td">' + size + '</td>';
-            if (CheckedORDSKIP == 'Y')
-            {
+            if (CheckedORDSKIP == 'Y') {
                 tr += '<td class="readonly-td"> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" readonly="readonly"/></td>';
             }
-            else
-            {
+            else {
                 tr += '<td> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;"/></td>';
             }
             tr += '</tr>';
@@ -690,9 +687,16 @@
         $("#popup_QNTY_" + indexitem).val(tqnty);
         $("#popup_SET_" + indexitem).val(set);
         $("#popup_ORDSKIPREASON_" + indexitem).val(itrem);
-     
+
 
         ClosePopup('popup1');
+    }
+</script>
+<script>
+    function Print() {
+        debugger;
+        jQuery("form").attr("target", "_blank");
+        jQuery("form").submit();
     }
 </script>
 @*@Html.ActionLink("T_RetailerOrderFilter", "T_RetailerOrderFilter", "T_RetailerOrderFilter")*@
@@ -707,8 +711,8 @@
         <div class="row" id="headertitle" style="font-size: large;white-space:nowrap;">
             <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
             <div class="menu" style="float:right;">
-                <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
                 <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
+                <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
                 @*<a onclick="Print();" style="border: 2px solid blue;"><i class="fa fa-print fa-lg" style="color:revert-layer;"></i></a>*@
             </div>
         </div>

@@ -1607,7 +1607,7 @@ function getLocation(callback) {
     }
 }
 function OpenHome(){
-    window.location.href = "../T_RetailerOrderFilter/T_RetailerOrderFilter";
+    window.location.href = "../Multiviewer/multiVu";
     if (newWindow) {
         window.open('', '_self'); // Required for some browsers
         window.close(); // Attempt to close current window

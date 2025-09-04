@@ -31,7 +31,7 @@
             color: #3a87ad;
             padding: 15px;
             font-size: 18px;
-            display: flex;
+            /*display: flex;*/
             align-items: center;
             position: relative;
             z-index: 1001;
@@ -148,11 +148,37 @@
             }
         }
     </style>
+    <style>
+        .navmenu a {
+            text-align: center;
+            float: left;
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            margin-right: 7px; /*space between*/
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.4s;
+            -webkit-transition: all 0.4s;
+            text-decoration: none;
+        }
+
+            .navmenu a i {
+                font-size: 15px;
+                align-self: center;
+                transition: all 0.4s;
+                -webkit-transition: all 0.4s;
+                margin: 0 auto;
+            }
+    </style>
 </head>
 <body>
 
     <header>
         <i class="fas fa-bars menu-btn"></i> CRM Garment
+        <div class="navmenu" style="float:right;">
+            <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
+        </div>
     </header>
 
     <div class="sidebar" id="sidebar">
@@ -201,7 +227,7 @@
         const submenus = document.querySelectorAll('.has-submenu');
         const menuItems = document.querySelectorAll('#menu > li');
         const searchInput = document.getElementById('search');
-        const searchBtn = document.getElementById('searchBtn');
+        //const searchBtn = document.getElementById('searchBtn');
 
         // Toggle sidebar open
         menuBtn.addEventListener('click', (e) => {
@@ -253,7 +279,7 @@
             });
         }
         searchInput.addEventListener('keyup', filterMenu);
-        searchBtn.addEventListener('click', filterMenu);
+        //searchBtn.addEventListener('click', filterMenu);
     </script>
 
 </body>

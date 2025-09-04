@@ -422,6 +422,15 @@ namespace Improvar
             return dt;
 
         }
+        public DataTable GetComcdByBrand(string brandcd)
+        {
+            string scm = CommVar.CurSchema(UNQSNO);
+            string sql = "";
+            sql += "select brandcd,compcd,loccd,REGMOBILE,REGEMAIL from " + scm + ".M_BRANDCOMP ";
+            sql += "where brandcd ='" + brandcd + "' ";
+            DataTable dt = SQLquery(sql);
+            return dt;
+        }
 
     }
 }

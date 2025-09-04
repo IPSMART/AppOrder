@@ -247,6 +247,7 @@
         align-items: flex-start;
         transition: all 0.4s;
         -webkit-transition: all 0.4s;
+        text-decoration: none;
     }
 
         .menu a i {
@@ -693,8 +694,8 @@
         <div class="row" id="headertitle" style="font-size: large;white-space:nowrap;">
             <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
             <div class="menu" style="float:right;">
-                <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
                 <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
+                <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
                 @*<a onclick="Print();" style="border: 2px solid blue;"><i class="fa fa-print fa-lg" style="color:revert-layer;"></i></a>*@
             </div>
         </div>
