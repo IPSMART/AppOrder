@@ -43,6 +43,7 @@ namespace Improvar.Controllers
                     else
                     {
                         VE = (TransactionRetailOrder)TempData["OrderFilter"];
+                        TempData.Keep();
                     }
                     ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
                     ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
@@ -130,7 +131,7 @@ namespace Improvar.Controllers
                 return Content(ex.Message + ex.InnerException);
             }
         }
-        public ActionResult SAVE(FormCollection FC, TransactionRetailOrder VE)
+        public ActionResult SAVE(FormCollection FC, TransactionRetailOrder VE, string RTLAUTONO)
         {
             ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
             using (var transaction = DB.Database.BeginTransaction())
@@ -141,24 +142,14 @@ namespace Improvar.Controllers
                     DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_RETAILORDER in  row share mode");
                     if (DefaultAction == "A")
                     {
+                        int slno = 0;
+
                         T_RETAILORDER TRETAILORDER = new T_RETAILORDER();
                         TRETAILORDER.CLCD = CommVar.ClientCode(UNQSNO);
-                        TRETAILORDER.DOCDT = System.DateTime.Now.Date;
-                        string Ddate = Convert.ToString(TRETAILORDER.DOCDT);
 
-                        if (DefaultAction == "A")
+                        if (RTLAUTONO.retStr() != "")
                         {
-                            TRETAILORDER.EMD_NO = 0;
-                            string DOCNO = Cn.MaxDocNumber(Ddate, "T_RETAILORDER");
-                            TRETAILORDER.VCHRNO = DOCNO.Split(Convert.ToChar(Cn.GCS()))[0].retInt();
-                            TRETAILORDER.MNTHCD = DOCNO.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
-
-                            TRETAILORDER.DOCNO = Cn.DocPattern(TRETAILORDER.VCHRNO.retDbl(), TRETAILORDER.MNTHCD);
-                            TRETAILORDER.AUTONO = "RTL" + VE.T_RETAILORDER.SLCD + TRETAILORDER.VCHRNO.retStr().PadLeft(5, '0');
-
-                        }
-                        else
-                        {
+                            TRETAILORDER.AUTONO = RTLAUTONO;
                             var MAXEMDNO = (from p in DB.T_RETAILORDER where p.AUTONO == TRETAILORDER.AUTONO select p.EMD_NO).Max();
                             if (MAXEMDNO == null)
                             {
@@ -168,53 +159,83 @@ namespace Improvar.Controllers
                             {
                                 TRETAILORDER.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
                             }
-                            TRETAILORDER.VCHRNO = VE.T_RETAILORDER.VCHRNO;
-                            TRETAILORDER.DOCNO = VE.T_RETAILORDER.AUTONO;
-                            TRETAILORDER.AUTONO = VE.T_RETAILORDER.AUTONO;
-                            TRETAILORDER.MNTHCD = VE.T_RETAILORDER.MNTHCD;
-                            TRETAILORDER.DTAG = "E";
+                            slno = (from p in DB.T_RETAILORDERDTL where p.AUTONO == TRETAILORDER.AUTONO select p.SLNO).Max();
                         }
-                        TRETAILORDER.RTLCD = VE.T_RETAILORDER.RTLCD;
-                        TRETAILORDER.SLCD = VE.T_RETAILORDER.SLCD;
-                        TRETAILORDER.SLMSLCD = VE.T_RETAILORDER.SLMSLCD;
-                        TRETAILORDER.DOCAMT = VE.T_RETAILORDER.DOCAMT;
-
-                        TRETAILORDER.USR_ID = CommVar.UserID();
-                        TRETAILORDER.USR_ENTDT = System.DateTime.Now;
-                        TRETAILORDER.USR_SIP = Cn.GetStaticIp();
-
-                        //TRETAILORDER.LM_USR_ID = CommVar.UserID();
-                        //TRETAILORDER.LM_USR_ENTDT = System.DateTime.Now;
-                        //TRETAILORDER.LM_USR_SIP = Cn.GetStaticIp();
-                        //TRETAILORDER.LM_REM = "";
-
-                        //TRETAILORDER.DEL_USR_ID = CommVar.UserID();
-                        //TRETAILORDER.DEL_USR_ENTDT = System.DateTime.Now;
-                        //TRETAILORDER.DEL_USR_SIP =Cn.GetStaticIp();
-                        //TRETAILORDER.DEL_REM = "";
-
-                        //TRETAILORDER.CANCEL = "Y";
-                        //TRETAILORDER.CANC_REM = "";
-                        //TRETAILORDER.CANC_USR_ID = CommVar.UserID();
-                        //TRETAILORDER.CANC_USR_ENTDT = System.DateTime.Now;
-                        //TRETAILORDER.CANC_USR_SIP =Cn.GetStaticIp();
-
-                        TRETAILORDER.GPSLAT = VE.T_RETAILORDER.GPSLAT;
-                        TRETAILORDER.GPSLOT = VE.T_RETAILORDER.GPSLOT;
-                        TRETAILORDER.DOCREM = VE.T_RETAILORDER.DOCREM;
-                        TRETAILORDER.GPSNM = GetAddress(VE.T_RETAILORDER.GPSLAT.retStr(), VE.T_RETAILORDER.GPSLOT.retStr());
-
-
-                        if (DefaultAction == "A")
+                        else
                         {
-                            DB.T_RETAILORDER.Add(TRETAILORDER);
+                            TRETAILORDER.DOCDT = System.DateTime.Now.Date;
+                            string Ddate = Convert.ToString(TRETAILORDER.DOCDT);
+
+                            if (DefaultAction == "A")
+                            {
+                                TRETAILORDER.EMD_NO = 0;
+                                string DOCNO = Cn.MaxDocNumber(Ddate, "T_RETAILORDER");
+                                TRETAILORDER.VCHRNO = DOCNO.Split(Convert.ToChar(Cn.GCS()))[0].retInt();
+                                TRETAILORDER.MNTHCD = DOCNO.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
+
+                                TRETAILORDER.DOCNO = Cn.DocPattern(TRETAILORDER.VCHRNO.retDbl(), TRETAILORDER.MNTHCD);
+                                TRETAILORDER.AUTONO = "RTL" + VE.T_RETAILORDER.SLCD + TRETAILORDER.VCHRNO.retStr().PadLeft(5, '0');
+
+                            }
+                            else
+                            {
+                                var MAXEMDNO = (from p in DB.T_RETAILORDER where p.AUTONO == TRETAILORDER.AUTONO select p.EMD_NO).Max();
+                                if (MAXEMDNO == null)
+                                {
+                                    TRETAILORDER.EMD_NO = 0;
+                                }
+                                else
+                                {
+                                    TRETAILORDER.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
+                                }
+                                TRETAILORDER.VCHRNO = VE.T_RETAILORDER.VCHRNO;
+                                TRETAILORDER.DOCNO = VE.T_RETAILORDER.AUTONO;
+                                TRETAILORDER.AUTONO = VE.T_RETAILORDER.AUTONO;
+                                TRETAILORDER.MNTHCD = VE.T_RETAILORDER.MNTHCD;
+                                TRETAILORDER.DTAG = "E";
+                            }
+                            TRETAILORDER.RTLCD = VE.T_RETAILORDER.RTLCD;
+                            TRETAILORDER.SLCD = VE.T_RETAILORDER.SLCD;
+                            TRETAILORDER.SLMSLCD = VE.T_RETAILORDER.SLMSLCD;
+                            TRETAILORDER.DOCAMT = VE.T_RETAILORDER.DOCAMT;
+
+                            TRETAILORDER.USR_ID = CommVar.UserID();
+                            TRETAILORDER.USR_ENTDT = System.DateTime.Now;
+                            TRETAILORDER.USR_SIP = Cn.GetStaticIp();
+
+                            //TRETAILORDER.LM_USR_ID = CommVar.UserID();
+                            //TRETAILORDER.LM_USR_ENTDT = System.DateTime.Now;
+                            //TRETAILORDER.LM_USR_SIP = Cn.GetStaticIp();
+                            //TRETAILORDER.LM_REM = "";
+
+                            //TRETAILORDER.DEL_USR_ID = CommVar.UserID();
+                            //TRETAILORDER.DEL_USR_ENTDT = System.DateTime.Now;
+                            //TRETAILORDER.DEL_USR_SIP =Cn.GetStaticIp();
+                            //TRETAILORDER.DEL_REM = "";
+
+                            //TRETAILORDER.CANCEL = "Y";
+                            //TRETAILORDER.CANC_REM = "";
+                            //TRETAILORDER.CANC_USR_ID = CommVar.UserID();
+                            //TRETAILORDER.CANC_USR_ENTDT = System.DateTime.Now;
+                            //TRETAILORDER.CANC_USR_SIP =Cn.GetStaticIp();
+
+                            TRETAILORDER.GPSLAT = VE.T_RETAILORDER.GPSLAT;
+                            TRETAILORDER.GPSLOT = VE.T_RETAILORDER.GPSLOT;
+                            TRETAILORDER.DOCREM = VE.T_RETAILORDER.DOCREM;
+                            TRETAILORDER.GPSNM = GetAddress(VE.T_RETAILORDER.GPSLAT.retStr(), VE.T_RETAILORDER.GPSLOT.retStr());
+
+
+                            if (DefaultAction == "A")
+                            {
+                                DB.T_RETAILORDER.Add(TRETAILORDER);
+                            }
+                            else if (DefaultAction == "E")
+                            {
+                                DB.Entry(TRETAILORDER).State = System.Data.Entity.EntityState.Modified;
+                            }
                         }
-                        else if (DefaultAction == "E")
-                        {
-                            DB.Entry(TRETAILORDER).State = System.Data.Entity.EntityState.Modified;
-                        }
+
                         List<APP_ITEMLIST> aPP_ITEMLIST = JsonConvert.DeserializeObject<List<APP_ITEMLIST>>(VE.ITEMDETAIL_JSTR);
-                        int slno = 0;
                         foreach (var v in aPP_ITEMLIST)
                         {
                             var sizes = v.sizes.retStr().Split(',');
@@ -287,6 +308,35 @@ namespace Improvar.Controllers
                 }
             }
             return null;
+        }
+        public ActionResult ChkForMerge(TransactionRetailOrder VE)
+        {
+            try
+            {
+                string msg = "";
+
+                string RTLCD = VE.T_RETAILORDER.RTLCD;
+                string SLCD = VE.T_RETAILORDER.SLCD;
+
+                string scm = CommVar.SaleSchema(UNQSNO);
+                string sql = "";
+                sql += "select autono,USR_ENTDT from " + scm + ".T_RETAILORDER where RTLCD='" + RTLCD + "' and SLCD='" + SLCD + "' ";
+                sql += "order by USR_ENTDT desc ";
+                DataTable dt = masterHelp.SQLquery(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    msg += "^MSG=^Y" + Cn.GCS();
+                    msg += "^AUTONO=^" + dt.Rows[0]["autono"] + Cn.GCS();
+
+                }
+                return Content(msg);
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message);
+            }
+
         }
         public dynamic SendEmailWhatsapp(string autonum, bool onlyprint = false)
         {

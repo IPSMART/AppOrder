@@ -1669,3 +1669,57 @@ function ConvBoxtoPcs(box, pcsperbox) {
     pcs = retFloat(box) * retFloat(pcsperbox);
     return pcs;
 }
+//function askYesNo(message) {
+//    return Swal.fire({
+//        title: "Confirmation",
+//        text: message,
+//        icon: "question",
+//        showCancelButton: true,
+//        confirmButtonText: "Yes",
+//        cancelButtonText: "No",
+//        showCloseButton: true,
+//    }).then((res) => res.isConfirmed);
+//}
+//function askYesNoCancel(message) {
+//    return Swal.fire({
+//        title: "Confirmation",
+//        text: message,
+//        icon: "question",
+//        showDenyButton: true,
+//        showCancelButton: true,
+//        confirmButtonText: "Yes",
+//        denyButtonText: "No",
+//        cancelButtonText: "Cancel",
+//        buttonsStyling: true
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            return "yes";
+//        } else if (result.isDenied) {
+//            return "no";
+//        } else {
+//            return "cancel";
+//        }
+//    });
+//}
+function askYesNo(message) {
+    return Swal.fire({
+        title: "Confirmation",
+        text: message,
+        icon: "question",
+        showCancelButton: true,   // No button
+        showCloseButton: true,    // X button (Cancel)
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        buttonsStyling: true,
+        confirmButtonColor: '#5cb85c',
+        cancelButtonColor: '#d33',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            return "yes";
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            return "no"; // No button
+        } else if (result.dismiss === Swal.DismissReason.close) {
+            return "cancel"; // X button
+        }
+    });
+}

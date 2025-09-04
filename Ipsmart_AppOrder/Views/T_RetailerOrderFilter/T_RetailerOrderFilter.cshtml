@@ -7,7 +7,7 @@
 }
 <script>
     window.addEventListener("unload", function () { });
-    debugger;
+    
     // If this page loads and reloadOnBack flag is set, refresh
     if (sessionStorage.getItem("reloadOnBack") === "true") {
         sessionStorage.removeItem("reloadOnBack");
@@ -37,7 +37,7 @@
         });
 
         $('#Dstbrslcd').change(function () {
-            debugger;
+            
             var selectedText = $("#Dstbrslcd option:selected").text();
             $('#Dstbrslnm').val(selectedText);
         });
@@ -51,7 +51,7 @@
         });
 
         $('#RetailerCode').change(function () {
-            debugger;
+            
             var selectedText = $("#RetailerCode option:selected").text();
             $('#RetailerName').val(selectedText);
         });
@@ -64,7 +64,7 @@
         });
 
         $('#BrandCode').change(function () {
-            debugger;
+            
             var selectedTexts = $('#BrandCode option:selected').map(function () {
                 return $(this).text();
             }).get().join(', '); // You can change delimiter if needed
@@ -81,7 +81,7 @@
         });
 
         $('#GroupCode').change(function () {
-            debugger;
+            
             var selectedTexts = $('#GroupCode option:selected').map(function () {
                 return $(this).text();
             }).get().join(', '); // You can change delimiter if needed
@@ -98,7 +98,7 @@
         });
 
         $('#CollCode').change(function () {
-            debugger;
+            
             var selectedTexts = $('#CollCode option:selected').map(function () {
                 return $(this).text();
             }).get().join(', '); // You can change delimiter if needed
@@ -130,7 +130,7 @@
         }
     }
     function BindRetailer() {
-        debugger;
+        
 
         var Dstbrslcd = $("#Dstbrslcd").val();
         if (Dstbrslcd) {
@@ -162,7 +162,7 @@
     });
     }
     function BindGroup() {
-        debugger;
+        
         $('#GroupCode').empty().append('<option value="">Select Group</option>');
             $.ajax({
                 url: "@Url.Action("BindGroupData", PageControllerName)",
@@ -186,7 +186,7 @@
 </script>
 <script>
     function GetItemData() {
-        debugger;
+        
         if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
         if (!emptyFieldCheck("Please Select Retailer Name", "RetailerCode")) { return false; }
         if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
@@ -212,7 +212,7 @@
         });
     }
     function RetailMaster() {
-        debugger;
+        
         if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
         $.ajax({
             type: 'post',
@@ -341,7 +341,7 @@ window.open(url, '_blank');*@
             <div class="row">
                 <div class="col-md-5" style="width:auto;">
                     <div class="editor-label" style="margin-top: 0px;">
-                        <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="GetItemData()" class="btn btn-sm btn-danger" value="Get Data" />
+                        <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="GetItemData()" class="btn btn-sm btn-success" value="Get Data" />
                     </div>
                 </div>
             </div>

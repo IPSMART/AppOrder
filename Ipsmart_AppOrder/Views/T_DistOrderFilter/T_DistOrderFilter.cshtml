@@ -153,7 +153,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple", @onchange = "BindGroup();" })
+                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple" })
                         @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
                     </div>
                 </div>

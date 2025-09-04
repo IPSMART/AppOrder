@@ -441,7 +441,7 @@
                     var res = result.split("~");
                     if (res[0] == '1') {
                         alert('Data Saved Successfully !!' + res[1]);
-                        window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                        window.location.href = "@Url.Action("T_DistOrderFilter", "T_DistOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
                         if (newWindow) {
                             window.open('', '_self'); // Required for some browsers
                             window.close(); // Attempt to close current window

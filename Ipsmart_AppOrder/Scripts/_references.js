@@ -43,4 +43,5 @@
 /// <reference path="respond.matchmedia.addlistener.min.js" />
 /// <reference path="respond.min.js" />
 /// <reference path="select2.min.js" />
+/// <reference path="sweetalert2@11.js" />
 /// <reference path="swiper-bundle.min.js" />

@@ -20,6 +20,7 @@
 <script src="~/Scripts/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="~/Content/datatables.min.css" />
 <script src="~/Scripts/datatables.min.js"></script>
+<script src="~/Scripts/sweetalert2@11.js"></script>
 @Scripts.Render("~/bundles/jqueryui")
 @Styles.Render("~/Content/bootstrap.css?Ver=" + Module.ContentVersion)
 @Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])
@@ -398,6 +399,8 @@
                     qnty +=retFloat(QNTY);
                 }
             });
+            TQnty=retFloat(TQnty.toFixed(3));
+            qnty=retFloat(qnty.toFixed(3));
             var icon ='<div class="menu" style="float:right;">';
             icon +='<a onclick="ModifyCart(\'' + itcd + '\');" style="border:2px solid #5cb85c;width:20px;height:20px;">';
             icon +='<i class="fa fa-pencil" style="color:#5cb85c;font-size:15px;"></i>';
@@ -458,7 +461,7 @@
                     row[0].dataset.sizeqnty.replace(/[{}]/g, "").split(",").forEach(item => {
                         let parts = item.split("=");
                         let size = parts[0];
-                        let qty = parseInt(parts[1], 10);
+                        let qty = retFloat(parts[1]);
                         sizearr[size] = qty;
                     });
 
@@ -467,7 +470,7 @@
                         //var qnty=value.split('=')[1];
                         let qnty = sizearr[value];
                         var size=value;
-                        tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;"/></td></tr>';
+                        tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="text" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" maxlength="12" onkeypress="return numericOnly(this,3);" /></td></tr>';
                         itrem = row.find("td").eq(2).find('input').val();
                     });
                 }
@@ -504,15 +507,15 @@
         var qnty=0;
         $('#popuptblSizes > tbody  > tr').each(function () {
             var SIZE = $(this).find("td").eq(0).html();
-            var QNTY = $(this).find("td:eq(1) input[type='number']").val();
+            var QNTY = $(this).find("td:eq(1) input[type='text']").val();
             if (retFloat(QNTY) != 0) {
                 if (sizedt != '') sizedt += ',';
                 sizedt += SIZE + '=' + retFloat(QNTY);
-                TQnty +=retFloat(QNTY);
                 qnty +=retFloat(QNTY);
 
             }
         });
+        qnty=retFloat(qnty.toFixed(3));
         var TQnty=0,NoOfItem=0;
 
         $('#tblCart > tbody  > tr').each(function () {
@@ -530,6 +533,8 @@
             TQnty += retFloat(row[0].dataset.qnty);
 
         });
+        TQnty=retFloat(TQnty.toFixed(3));
+
         $("#TQnty").val(TQnty);
         $("#NoOfItem").val(NoOfItem);
         $('#cartsummary').text(NoOfItem+"("+TQnty+")");
@@ -550,6 +555,8 @@
                 NoOfItem++;
             }
         });
+        TQnty=retFloat(TQnty.toFixed(3));
+
         $("#TQnty").val(TQnty);
         $("#NoOfItem").val(NoOfItem);
         $('#cartsummary').text(NoOfItem+"("+TQnty+")");
@@ -580,7 +587,102 @@
     }
 </script>
 <script>
-    function SaveData() {
+    function ChkForMergeData(){
+        $("#WaitingMode").show();
+        getLocation(function (latlot) {
+            if (latlot != "") {
+                var LAT = returncolvalue(latlot, "LAT");
+                var LOT = returncolvalue(latlot, "LOT");
+
+                $("#GPSLAT").val(LAT);
+                $("#GPSLOT").val(LOT);
+            }
+            //need to open
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
+                alert('retailer not found!');
+                $("#WaitingMode").hide();
+                return false;
+            }
+            $.ajax({
+                type: 'post',
+                url:  "@Url.Action("ChkForMerge", PageControllerName)",
+                beforesend: $("#WaitingMode").show(),
+                data: $('form').serialize() ,
+                success: function (result) {
+                    $("#WaitingMode").hide();
+                    if(result != "")
+                    {
+                        var msg = returncolvalue(result, "MSG");
+                        if(msg =="Y")
+                        {
+                            //if (confirm("Data Available for Partcular Distributor and Retailer ! Are You Sure ? You Want To Merge Order \n\nPress OK for YES, Cancel for NO. !!"))
+                            //{
+                            //    SaveData(returncolvalue(result, "AUTONO"));
+                            //}
+                            //else
+                            //{
+                            //    SaveData('');
+                            //}
+                            //askYesNo("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
+                            //  .then((yes) => {
+                            //      debugger;
+                            //      if (yes) {
+                            //          SaveData(returncolvalue(result, "AUTONO")); // YES
+                            //      } else {
+                            //          SaveData(''); // NO
+                            //      }
+                            //  });
+  //                          askYesNoCancel("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
+  //.then((choice) => {
+  //    if (choice === "yes") {
+  //        SaveData(returncolvalue(result, "AUTONO")); // YES
+  //    } else if (choice === "no") {
+  //        SaveData(''); // NO
+  //    } else {
+  //        $("#WaitingMode").hide();
+  //    }
+                            //});
+                            askYesNo("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
+  .then((choice) => {
+      if (choice === "yes") {
+          SaveData(returncolvalue(result, "AUTONO")); // YES
+      } else if (choice === "no") {
+          SaveData(''); // NO
+      } else if (choice === "cancel") {
+          $("#WaitingMode").hide();
+      }
+  });
+                        }
+                        else
+                        {
+                            alert(result);
+                        }
+                    }
+                    else
+                    {
+                        SaveData('');
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#WaitingMode").hide();
+                    msgError("Error: " + textStatus + "," + errorThrown);
+                }
+            });
+        });
+    }
+    function SaveData(autono) {
         $("#WaitingMode").show();
         getLocation(function (latlot) {
             if (latlot != "") {
@@ -626,7 +728,7 @@
             $.ajax({
                 type: 'post',
                 url: "@Url.Action("SAVE", PageControllerName)",
-                data: $('form').serialize(),
+                data: $('form').serialize()+ "&RTLAUTONO=" +autono,
                 success: function (result) {
                     var res = result.split("~");
                     if (res[0] == '1') {
@@ -731,7 +833,7 @@
                         <th>Remarks</th>
                         <th>Item</th>
                         <th class="sticky-col-right" style="width:95px;">
-                            <i class="fa fa-shopping-cart" title="Place Order" style="font-size:medium;color:greenyellow;cursor:pointer;" onclick="SaveData()"></i>
+                            <i class="fa fa-shopping-cart" title="Place Order" style="font-size:medium;color:greenyellow;cursor:pointer;" onclick="ChkForMergeData()"></i>
                             <span id="cartsummary" style="font-size:medium;color:white;">0(0)</span>
 
                             <span id="btnShowMore" title="Show More" class="glyphicon glyphicon-chevron-down"
