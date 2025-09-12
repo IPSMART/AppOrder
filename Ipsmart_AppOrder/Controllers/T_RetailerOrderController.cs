@@ -317,10 +317,10 @@ namespace Improvar.Controllers
 
                 string RTLCD = VE.T_RETAILORDER.RTLCD;
                 string SLCD = VE.T_RETAILORDER.SLCD;
-
+                string docdt = System.DateTime.Now.Date.retDateStr();
                 string scm = CommVar.SaleSchema(UNQSNO);
                 string sql = "";
-                sql += "select autono,USR_ENTDT from " + scm + ".T_RETAILORDER where RTLCD='" + RTLCD + "' and SLCD='" + SLCD + "' ";
+                sql += "select autono,USR_ENTDT from " + scm + ".T_RETAILORDER where RTLCD='" + RTLCD + "' and SLCD='" + SLCD + "' and docdt=to_date('" + docdt + "','dd/mm/yyyy') ";
                 sql += "order by USR_ENTDT desc ";
                 DataTable dt = masterHelp.SQLquery(sql);
                 if (dt != null && dt.Rows.Count > 0)

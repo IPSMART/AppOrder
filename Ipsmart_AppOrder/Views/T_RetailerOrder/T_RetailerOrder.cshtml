@@ -470,7 +470,8 @@
                         //var qnty=value.split('=')[1];
                         let qnty = sizearr[value];
                         var size=value;
-                        tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="text" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" maxlength="12" onkeypress="return numericOnly(this,3);" /></td></tr>';
+                        //tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="text" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" maxlength="12" onkeypress="return numericOnly(this,3);" /></td></tr>';
+                        tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" maxlength="12" onkeypress="return numericOnly(this,3);" /></td></tr>';
                         itrem = row.find("td").eq(2).find('input').val();
                     });
                 }
