@@ -508,7 +508,7 @@
         var qnty=0;
         $('#popuptblSizes > tbody  > tr').each(function () {
             var SIZE = $(this).find("td").eq(0).html();
-            var QNTY = $(this).find("td:eq(1) input[type='text']").val();
+            var QNTY = $(this).find("td:eq(1) input[type='number']").val();
             if (retFloat(QNTY) != 0) {
                 if (sizedt != '') sizedt += ',';
                 sizedt += SIZE + '=' + retFloat(QNTY);
