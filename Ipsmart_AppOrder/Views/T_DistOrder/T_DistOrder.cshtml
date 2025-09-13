@@ -610,7 +610,7 @@
         $("#popup_SIZEDET_" + index).val().replace(/[{}]/g, "").split(",").forEach(item => {
             let parts = item.split("=");
             let size = parts[0];
-            let qty = parseInt(parts[1], 10);
+            let qty = retFloat(parts[1]);
             sizearr[size] = qty;
         });
 

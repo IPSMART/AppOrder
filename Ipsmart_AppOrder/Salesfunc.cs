@@ -405,18 +405,19 @@ namespace Improvar
             string sql = "";
             sql += "select a.autono, a.slno, a.itcd, a.sizecd, a.qnty, a.itrem, a.freestk, " + Environment.NewLine;
             sql += "b.slcd, d.slnm, b.slmslcd, b.rtlcd, e.rtlnm, e.city, e.landmark, nvl(e.regwhatsappno, e.regmobile) regmobile, " + Environment.NewLine;
-            sql += "f.brandcd, g.brandnm, c.styleno, c.pcsperbox, c.pcsperset,c.MIXSIZE from " + Environment.NewLine;
+            sql += "f.brandcd, g.brandnm, c.styleno, c.pcsperbox, c.pcsperset,c.MIXSIZE,h.PRINT_SEQ,h.sizenm from " + Environment.NewLine;
             sql += "(select a.autono, a.slno, a.itcd, a.sizecd, a.qnty, a.itrem, a.freestk " + Environment.NewLine;
             sql += "from " + scm + ".t_retailorderdtl a, " + scm + ".t_distordlink b " + Environment.NewLine;
             sql += "where a.autono = b.rtlautono(+) and a.slno = b.slno(+) and " + Environment.NewLine;
             sql += "b.autono is null ) a, " + Environment.NewLine;
             sql += "" + scm + ".t_retailorder b, " + scm + ".m_sitem c, " + scmf + ".m_subleg d, " + scm + ".m_retail e, " + Environment.NewLine;
-            sql += "" + scm + ".m_group f, " + scm + ".m_brand g " + Environment.NewLine;
+            sql += "" + scm + ".m_group f, " + scm + ".m_brand g , " + scm + ".m_size h " + Environment.NewLine;
             sql += "where a.autono = b.autono(+) and a.itcd = c.itcd(+) and b.slcd = d.slcd(+) and b.rtlcd = e.rtlcd(+) and " + Environment.NewLine;
-            sql += "c.itgrpcd = f.itgrpcd(+) and f.brandcd = g.brandcd(+) " + Environment.NewLine;
+            sql += "c.itgrpcd = f.itgrpcd(+) and f.brandcd = g.brandcd(+) and a.sizecd=h.sizecd(+) " + Environment.NewLine;
             if (distslcd.retStr() != "") sql += "and b.slcd in (" + distslcd + ")  " + Environment.NewLine;
             if (brandcd.retStr() != "") sql += "and f.brandcd in (" + brandcd + ")  " + Environment.NewLine;
             if (rtlautono.retStr() != "") sql += "and a.autono in (" + rtlautono + ")  " + Environment.NewLine;
+            sql += "order by a.autono,h.PRINT_SEQ,h.sizenm " + Environment.NewLine;
             DataTable dt = SQLquery(sql);
 
             return dt;
