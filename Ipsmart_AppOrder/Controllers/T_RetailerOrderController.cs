@@ -860,7 +860,7 @@ namespace Improvar.Controllers
             catch (Exception ex)
             {
                 Cn.SaveException(ex, "");
-                return ("");
+                return (ex.Message + ex.InnerException);
             }
 
 
