@@ -238,7 +238,7 @@ namespace Improvar
                     smtp.EnableSsl = true;
                     System.Net.NetworkCredential NetworkCred = new System.Net.NetworkCredential();
                     NetworkCred.UserName = "ipsmart.erp@gmail.com";
-                    NetworkCred.Password = "ipsmart@123";
+                    NetworkCred.Password = "cclowaeoiuukimqf";
                     smtp.UseDefaultCredentials = true;
                     smtp.Credentials = NetworkCred;
                     smtp.Port = 587;
