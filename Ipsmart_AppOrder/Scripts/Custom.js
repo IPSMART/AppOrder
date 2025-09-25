@@ -1597,7 +1597,7 @@ function getLocation(callback) {
                 callback(latlot); // Pass the value back
             },
             function (error) {
-                alert("Location access is required to use this service.");
+                //alert("Location access is required to use this service.");
                 callback(""); // Return empty string
             }
         );
