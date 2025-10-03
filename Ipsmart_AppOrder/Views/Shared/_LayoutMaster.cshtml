@@ -188,6 +188,44 @@
             }
         }
     </script>
+    <style>
+        /* Fix header */
+.container_box_outer > .body-content > div:first-child {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px; /* Adjust if needed */
+    z-index: 1000;   
+    border-bottom: 1px solid #bce8f1;
+    align-items: center;
+    padding: 0 15px;
+}
+
+/* Shift content down so it doesn't hide under header */
+.container_box_inner {
+    margin-top: 30px; /* Must be >= header height */
+    margin-bottom: 70px; /* Must be >= footer height */
+}
+
+/* Fix footer */
+.bottomDiv {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #ccc;
+    padding: 8px 15px;
+    z-index: 1000;
+}
+
+/* Buttons inside footer aligned nicely */
+.bottom-button-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+    </style>
 </head>
 <body style="padding-top:0px;padding-bottom:0px;" onload="inputfocus();">
     <input type="hidden" id="tempHDD" name="tempHDD" value="" />
@@ -203,14 +241,15 @@
 
 
 
-    <div class="container_box_outer">
+    <div class="container_box_outer" style="height:85vh;">
         <div class="body-content container_box">
             @*required border*@
             <div style="background-color: #d9edf7; border-color: #bce8f1;   height: 23px;  padding-left: 15px;padding-right: 15px;  vertical-align: middle;    font-size: medium; font-weight:bold;  color: #3a87ad;">
                 @ViewBag.formname
-                <a href="../Home/Logout">
-                    <span class="glyphicon glyphicon-off" style="font-size:medium;color:#dc0624f2;float:right;"></span>
-                </a>
+                <div class="navmenu" style="float:right;">
+                    <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
+                    <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
+                </div>
             </div>
             <div class="container_box_inner">
                 @RenderBody()
@@ -222,8 +261,7 @@
             <button type="button" class="bottombutton btn btn-success" onclick="return pageValidation('A');">
                 <i class="fa fa-save"></i> Save
             </button>
-            <a onclick="Reload();" style="border: 2px solid #3a87ad;width:25px;"><i class="fa fa-refresh" style="color:#f0ad4e;font-size:25px;"></i></a>
-            <a onclick="OpenHome();" style="border: 2px solid #3a87ad;width:25px;"><i class="fa fa-home" style="font-size:25px;"></i></a>
+            <a onclick="Reload();" style="border: 2px solid #3a87ad;width:25px;"><i class="fa fa-refresh" style="color:#f0ad4e;font-size:25px;"></i></a>           
 
         </div>
     </div>
