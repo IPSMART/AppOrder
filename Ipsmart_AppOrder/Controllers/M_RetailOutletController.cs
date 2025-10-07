@@ -457,7 +457,9 @@ namespace Improvar.Controllers
                         string ContentFlg = "";
                         if (VE.DefaultAction == "A")
                         {
-                            ContentFlg = "1";
+                            ContentFlg = "1~" + MRETAILOUTLET.RTLCD;
+                            TempData["DISTSLCD"] = VE.Dstbrslcd;
+                            TempData["RTLCD"] = MRETAILOUTLET.RTLCD;
                         }
                         else if (VE.DefaultAction == "E")
                         {

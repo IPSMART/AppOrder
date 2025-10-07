@@ -10,6 +10,7 @@
     
     // If this page loads and reloadOnBack flag is set, refresh
     if (sessionStorage.getItem("reloadOnBack") === "true") {
+        debugger;
         sessionStorage.removeItem("reloadOnBack");
         location.reload();
     }
@@ -106,6 +107,16 @@
             $('#CollName').val(selectedTexts);
 
         });
+
+        var Dstbrslcd = $("#Dstbrslcd").val();
+        if (Dstbrslcd) {
+            $('#BtnAddRtl').css('pointer-events', 'auto');
+            $('#BtnAddRtl').css('color', '#428bca');
+        }
+        else {
+            $('#BtnAddRtl').css('pointer-events', 'none');
+            $('#BtnAddRtl').css('color', 'rgba(66, 139, 202, 0.55)');
+        }
     });
 </script>
 <script>

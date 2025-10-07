@@ -42,6 +42,9 @@
     @Styles.Render("~/Content/themes/base/tooltip.css")
     @Styles.Render("~/Content/themes/base/theme.css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])
+
+
     <script>
         function winclose() {
             if (confirm("Close Window?")) {
@@ -296,7 +299,7 @@
     </script>
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/datatables.js")
-    @Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])
+    @*@Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])*@
     @Scripts.Render("~/bundles/jqueryui")
     <script>
         $(function () {

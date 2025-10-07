@@ -33,6 +33,7 @@ namespace Improvar.Controllers
                 else
                 {
                     ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
+                    ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
                     ViewBag.formname = "ORDER TAKEN FROM RETAILER";
                     ViewBag.Title = "Order";
                     VE.UNQSNO_ENCRYPTED = Cn.Encrypt_URL(UNQSNO);
@@ -129,6 +130,38 @@ namespace Improvar.Controllers
                                                  value = a["COLLCD"].retStr(),
                                                  text = a["COLLNM"].retStr(),
                                              }).ToList();
+                        if (TempData["DISTSLCD"].retStr() != "")
+                        {
+                            VE.Dstbrslcd = TempData["DISTSLCD"].retStr();
+                            VE.Dstbrslnm = DBF.M_SUBLEG.Find(VE.Dstbrslcd).SLNM;
+                        }
+                        if (TempData["RTLCD"].retStr() != "")
+                        {
+                            sql = "";
+                            sql += "select a.rtlcd, a.rtlnm, a.landmark from " + Environment.NewLine;
+                            sql += "(select a.rtlcd, c.rtlnm, c.landmark, " + Environment.NewLine;
+                            sql += "row_number() over(partition by a.rtlcd order by a.effdt desc) rno " + Environment.NewLine;
+                            sql += "from " + scm + ".m_retail_link a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_retail c " + Environment.NewLine;
+                            sql += "where a.m_autono = b.m_autono(+) and a.rtlcd = c.rtlcd(+) and nvl(b.inactive_tag, 'N') = 'N' and " + Environment.NewLine;
+                            sql += "a.effdt <= to_date('" + tdt + "', 'dd/mm/yyyy') and " + Environment.NewLine;
+                            sql += "a.slcd = '" + VE.Dstbrslcd + "' ) a " + Environment.NewLine;
+                            sql += "  where rno = 1 " + Environment.NewLine;
+                            sql += "order by rtlnm " + Environment.NewLine;
+
+                            tbl = masterHelp.SQLquery(sql);
+                            if (tbl != null && tbl.Rows.Count > 0)
+                            {
+                                VE.ListRetailer = (from DataRow a in tbl.Rows
+                                                   select new ListRetailer()
+                                                   {
+                                                       value = a["RTLCD"].retStr(),
+                                                       text = a["RTLNM"].retStr() + GCS + a["LANDMARK"].retStr(),
+                                                   }).ToList();
+                            }
+                            VE.RetailerCode = TempData["RTLCD"].retStr();
+                            VE.RetailerName = DB.M_RETAIL.Find(VE.RetailerCode).RTLNM;
+                        }
+                        //TempData.Keep();
                     }
                     else
                     {
