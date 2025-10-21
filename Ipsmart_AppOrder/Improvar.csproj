@@ -890,6 +890,7 @@
     <Content Include="Views\T_DistOrder\T_DistOrder.cshtml" />
     <Content Include="Views\Shared\_T_DistOrder_Main.cshtml" />
     <Content Include="Views\Shared\_T_DistOrder_Popup.cshtml" />
+    <Content Include="Views\Shared\_T_RetailerOrderFilter_Main.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

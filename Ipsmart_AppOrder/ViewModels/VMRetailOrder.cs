@@ -43,6 +43,10 @@ namespace Improvar.ViewModels
         [StringLength(8)]
         public string SLMSLCD { get; set; }
 
+        public T_RETAILORDER T_RETAILORDER { get; set; }
+        public int? NOOFSETS { get; set; }
+        [StringLength(50)]
+        public string ITREM { get; set; }
     }
 
     public class ImageView

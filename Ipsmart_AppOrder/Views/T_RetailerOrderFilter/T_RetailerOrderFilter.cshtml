@@ -5,6 +5,10 @@
     string US = Model?.UNQSNO_ENCRYPTED;
 
 }
+<link href="~/Content/swiper-bundle.min.css" rel="stylesheet" />
+<script src="~/Scripts/swiper-bundle.min.js"></script>
+<script src="~/Scripts/sweetalert2@11.js"></script>
+
 <script>
     window.addEventListener("unload", function () { });
     
@@ -197,7 +201,7 @@
 </script>
 <script>
     function GetItemData() {
-        
+
         if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
         if (!emptyFieldCheck("Please Select Retailer Name", "RetailerCode")) { return false; }
         if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
@@ -207,8 +211,26 @@
             url: "@Url.Action("GetItem", PageControllerName)",
             data: $('form').serialize() + "&DOCNO=" + $("#DOCNO").val() + "&DOC_CD=" + $("#DOC_ID").val(),
             success: function (result) {
-                sessionStorage.setItem("reloadOnBack", "true");
-                window.location.href = '@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })';
+
+               
+                $("#partialdivDetail").html(result);
+                $("#CartDiv").show();
+                $("#FilterDiv").hide();
+                $("#DISTSLNM").html($("#Dstbrslnm").val().split(String.fromCharCode(181))[0]);
+                $("#RTSLNM").html($("#RetailerName").val().split(String.fromCharCode(181))[0]);
+                if ($("#BrandName").val() != "") {
+                    $("#BRANDNM").html("[" + $("#BrandName").val() + "]");
+                }
+                if ($("#GroupName").val() != "") {
+                    $("#GRPNM").html("[" + $("#GroupName").val() + "]");
+                }
+                if ($("#CollName").val() != "") {
+                    $("#COLLNM").html("[" + $("#CollName").val() + "]");
+                }
+                $("#SLCD").val($("#Dstbrslcd").val());
+                $("#RTLCD").val($("#RetailerCode").val());
+                @*sessionStorage.setItem("reloadOnBack", "true");
+                window.location.href = '@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })';*@
 
                 @*//testing
             window.open("@Url.Action("T_RetailerOrder", "T_RetailerOrder", new { US = Model.UNQSNO_ENCRYPTED })", "_blank")
@@ -223,7 +245,7 @@
         });
     }
     function RetailMaster() {
-        
+
         if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
         $.ajax({
             type: 'post',
@@ -255,6 +277,27 @@ window.open(url, '_blank');*@
     });
     }
 </script>
+<script>
+    function OpenFilter(){
+        $("#FilterDiv").show();
+        $("#CartDiv").hide();
+    }
+</script>
+<script>
+function toggleExpand(el) {
+    if(el.style.whiteSpace === 'nowrap') {
+        el.style.whiteSpace = 'normal';
+        el.style.overflow = 'visible';
+        const container = document.getElementById('header-text');
+        if (container) {
+            container.style.overflowY = 'auto';
+        }
+    } else {
+        el.style.whiteSpace = 'nowrap';
+        el.style.overflow = 'hidden';
+    }
+}
+</script>
 @using (Html.BeginForm())
 {
     if (Model.DefaultView == true)
@@ -272,91 +315,96 @@ window.open(url, '_blank');*@
             @Html.HiddenFor(model => model.GEOLATITUDE)
             @*@Html.HiddenFor(model => model.GEOADDRESS)*@
             @Html.HiddenFor(model => model.ITEMDETAIL_JSTR)
-            <div class="row" id="divGetRetailerInfo">
-                <div class="col-lg-2">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Distributor Name")
-                        <b style="color:Red;">*</b>
+            <div id="FilterDiv">
+                <div class="row" id="divGetRetailerInfo">
+                    <div class="col-lg-2">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Distributor Name")
+                            <b style="color:Red;">*</b>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="editor-field">
-                        @Html.DropDownListFor(model => model.Dstbrslcd, new SelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), "Select", new { @class = "form-control select2", id = "Dstbrslcd", @onchange = "BindRetailer();" })
-                        @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
-                        @Html.HiddenFor(model => model.SLMSLCD, new { id = "SLMSLCD" })
+                    <div class="col-lg-5">
+                        <div class="editor-field">
+                            @Html.DropDownListFor(model => model.Dstbrslcd, new SelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), "Select", new { @class = "form-control select2", id = "Dstbrslcd", @onchange = "BindRetailer();" })
+                            @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
+                            @Html.HiddenFor(model => model.SLMSLCD, new { id = "SLMSLCD" })
 
 
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Retailer Name")
+                            <b style="color:Red;">*</b>
+                            <a onclick="RetailMaster();" style="pointer-events:none;color:#428bca8c" id="BtnAddRtl">
+                                <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>
+                            </a>
+                            @*<a href="../M_RetailOutlet/M_RetailOutlet?op=A&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=@US&DC=&MP=" target="_blank" style="pointer-events:none;color:#428bca8c" id="BtnAddRtl">
+                        <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>
+                    </a>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.DropDownListFor(model => model.RetailerCode, new SelectList(Model.ListRetailer, "Value", "Text", Model.RetailerCode), "Select", new { @class = "form-control select2", id = "RetailerCode" })
+                            @Html.HiddenFor(model => model.RetailerName, new { id = "RetailerName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Brand")
+                            <b style="color:Red;">*</b>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple", @onchange = "BindGroup();" })
+                            @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Group")
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.DropDownListFor(model => model.GroupCode, new SelectList(Model.ListGroup, "Value", "Text", Model.GroupCode), new { @class = "form-control select2", id = "GroupCode", multiple = "multiple" })
+                            @Html.HiddenFor(model => model.GroupName, new { id = "GroupName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.Label("", "Collection")
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="editor-field" style="margin-top: 4px;">
+                            @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode), new { @class = "form-control select2", id = "CollCode", multiple = "multiple" })
+                            @Html.HiddenFor(model => model.CollName, new { id = "CollName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5" style="width:auto;">
+                        <div class="editor-label" style="margin-top: 0px;">
+                            <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="GetItemData()" class="btn btn-sm btn-success" value="Get Data" />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Retailer Name")
-                        <b style="color:Red;">*</b>
-                        <a onclick="RetailMaster();" style="pointer-events:none;color:#428bca8c" id="BtnAddRtl">
-                            <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>
-                        </a>
-                        @*<a href="../M_RetailOutlet/M_RetailOutlet?op=A&MNUDET=UFJPRE1BU1R+MH5NX0dycE1hc3R+fk1+MH4wfkFFRFY=&US=@US&DC=&MP=" target="_blank" style="pointer-events:none;color:#428bca8c" id="BtnAddRtl">
-                            <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>
-                        </a>*@
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.RetailerCode, new SelectList(Model.ListRetailer, "Value", "Text", Model.RetailerCode), "Select", new { @class = "form-control select2", id = "RetailerCode" })
-                        @Html.HiddenFor(model => model.RetailerName, new { id = "RetailerName" })
-                    </div>
-                </div>
+           
+            <div class="row" id="CartDiv" style="display:none;">
+                    @Html.Partial("_T_RetailerOrderFilter_Main")
             </div>
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Brand")
-                        <b style="color:Red;">*</b>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple", @onchange = "BindGroup();" })
-                        @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Group")
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.GroupCode, new SelectList(Model.ListGroup, "Value", "Text", Model.GroupCode), new { @class = "form-control select2", id = "GroupCode", multiple = "multiple" })
-                        @Html.HiddenFor(model => model.GroupName, new { id = "GroupName" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Collection")
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode), new { @class = "form-control select2", id = "CollCode", multiple = "multiple" })
-                        @Html.HiddenFor(model => model.CollName, new { id = "CollName" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-5" style="width:auto;">
-                    <div class="editor-label" style="margin-top: 0px;">
-                        <input type="button" style="margin-top: 2px;padding: 2px 7px 1px 7px;" onclick="GetItemData()" class="btn btn-sm btn-success" value="Get Data" />
-                    </div>
-                </div>
-            </div>
-
 
         </div>
     }

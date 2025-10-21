@@ -1,0 +1,921 @@
+﻿@model Improvar.ViewModels.VMRetailOrder
+@{
+    ViewBag.Title = "Order";
+    Layout = null;
+    string PageControllerName = "T_RetailerOrderFilter";
+    string US = Model?.UNQSNO_ENCRYPTED;
+    var VisibleRow = 2;
+}
+@*<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@ViewBag.Title</title>
+<link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+<link rel="icon" href="~/favicon.ico" type="image/x-icon">
+<link href="~/Content/layout_misc.css" rel="stylesheet" />
+<link href="~/Content/swiper-bundle.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Content/font-awesome.min.css" />
+<script src="~/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="~/Scripts/bootstrap.js"></script>*@
+@*<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>*@
+@*<script src="~/Scripts/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/datatables.min.js"></script>
+<script src="~/Scripts/sweetalert2@11.js"></script>
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/bootstrap.css?Ver=" + Module.ContentVersion)
+@Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])*@
+
+
+
+
+<script src="~/Scripts/jquery.mobile-events.js"></script>
+<style>
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide .title {
+            position: absolute;
+            bottom: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 12pt;
+            font-family: 'Mark Bold' !important;
+        }
+
+
+    @@media (max-width: 800px) {
+        .mySwiper {
+            display: block;
+            width: 100%;
+            height: 50%;
+        }
+
+        .swiper-slide img {
+        }
+    }
+
+    .textbox_image {
+        padding-right: 18px;
+        margin-right: -21px;
+        float: left;
+    }
+
+    .Help_image_button {
+        width: 19px;
+        height: 19px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+</style>
+<style>
+    .top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 55px;
+        z-index: 1000;
+    }
+
+    .sub-top {
+        position: fixed;
+        top: 55px; /* offset by the height of .top */
+        left: 0;
+        width: 100%;
+        /*height: 40px;*/
+        z-index: 999; /* slightly lower than .top */
+    }
+
+    .content {
+        margin-top: 175px; /* push content below both fixed divs */
+        padding: 1rem;
+        padding-bottom: 70px; /* space to avoid hiding content under footer */
+    }
+</style>
+<style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #d9edf7;
+        color: #3a87ad;
+        line-height: 60px;
+        z-index: 1000;
+    }
+
+    .quantity-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap;
+        background-color: #e4f2fb;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+</style>
+<style>
+    @@media (max-width: 768px) {
+        .truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 1; /* show only one line */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            cursor: pointer;
+        }
+
+            .truncate.expanded {
+                -webkit-line-clamp: unset;
+                max-height: 80px; /* fixed height when expanded */
+                overflow-y: auto; /* scroll inside */
+                padding-right: 5px; /* space for scrollbar */
+                box-shadow: inset 0 -1px 0 #ddd; /* optional styling */
+            }
+    }
+</style>
+<style>
+    .table-wrapper {
+        width: 100%;
+        max-height: 300px; /* Control vertical height inside modal */
+        overflow: auto; /* Enable scroll both vertically and horizontally */
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 700px; /* Forces horizontal scroll when narrow */
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        text-align: left;
+        white-space: nowrap;
+        font-size: 12px;
+    }
+
+    th {
+        padding: 10px 14px;
+    }
+
+    tbody td {
+        padding: 0px !important;
+    }
+    /* Sticky header */
+    thead th {
+        background: #255994;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 3;
+    }
+
+    /* Sticky first column */
+    .sticky-col-left {
+        position: sticky;
+        left: 0;
+        background: white;
+        z-index: 2;
+    }
+
+    /* Sticky last column */
+    .sticky-col-right {
+        position: sticky;
+        right: 0;
+        background: white;
+        z-index: 2;
+    }
+
+    /* Keep sticky header columns above rows */
+    thead .sticky-col-left {
+        z-index: 4;
+        background: #255994;
+        color: white;
+    }
+
+    thead .sticky-col-right {
+        z-index: 4;
+        background: #255994;
+        color: white;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #f2f2f2;
+    }
+</style>
+<style>
+    .menu a {
+        text-align: center;
+        float: left;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        margin-right: 7px; /*space between*/
+        display: flex;
+        align-items: flex-start;
+        transition: all 0.4s;
+        -webkit-transition: all 0.4s;
+        text-decoration: none;
+    }
+
+        .menu a i {
+            font-size: 15px;
+            align-self: center;
+            transition: all 0.4s;
+            -webkit-transition: all 0.4s;
+            margin: 0 auto;
+        }
+</style>
+<style>
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .modal-content {
+        background: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        width: 600px;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .modal-header, .modal-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+        margin-top: 0px;
+    }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+    .modal-body {
+        padding: 0px;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+</style>
+<script>
+    //$(document).ready(function () {
+    //    document.getElementById('header-text').addEventListener('click', function () {
+    //        const isExpanded = this.classList.toggle('expanded'); // true if expanded now
+    //        if (isExpanded) {
+    //            $("#headertitle").css("white-space", "normal"); // Allow wrapping when expanded
+    //        } else {
+    //            $("#headertitle").css("white-space", "nowrap"); // Keep it single-line when collapsed
+    //        }
+    //    });
+    //});
+</script>
+<script>
+    function TakeOrder() {
+        debugger;
+        var index1 = swiper.realIndex;
+        var sizes = $("#size_" + index1).html();
+        var sizearr = sizes.split(',');
+
+        var NOOFSETS = retFloat($("#NOOFSETS").val());
+        var ITREM = $("#ITREM").val();
+        var PCSPERSET = retFloat($("#PCSPERSET_" + index1).html());
+        var MIXSIZE = $("#MIXSIZE_" + index1).html();
+        var PCSPERBOX = retFloat($("#PCSPERBOX_" + index1).html());
+        var SIZE_COUNT = sizearr.length;
+        $('#tblSizes > tbody').html('');
+        $.each(sizearr, function (index, value) {
+            var QNTY = 0;
+            if (NOOFSETS != 0 && PCSPERSET != 0) {
+                if (MIXSIZE == "M") {
+                    QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
+                }
+                else {
+                    if (PCSPERBOX != PCSPERSET) {
+                        QNTY = (NOOFSETS * PCSPERSET / SIZE_COUNT);
+                    } else {
+                        QNTY = NOOFSETS * PCSPERSET;
+                    }
+                }
+            }
+            else {
+                QNTY = (NOOFSETS * PCSPERSET)
+            }
+            QNTY=retFloat(QNTY.toFixed(3));
+            var tr = '<tr><td>' + value + '</td><td> <input type="number" value="' + QNTY + '"  class="form-control"/></td><td> <input type="text" value="' + ITREM + '"  class="form-control"/></td></tr>';
+            $('#tblSizes > tbody:last-child').append(tr);
+        });
+    }
+    function AddtoCart() {
+        if(retFloat($("#NOOFSETS").val()) == 0)
+        {
+            alert('Enter No. Of Sets !!');
+            return false;
+        }
+        TakeOrder();
+        var index = swiper.realIndex;
+        var itrem =  $("#ITREM").val();
+        var itcd = $("#itcd_" + index).html();
+        var styleno = $("#styleno_" + index).html();
+        var sizes = $("#size_" + index).html();
+        var sizedt = '';
+        var itcdexist=false;
+        if ($('#tblCart > tbody > tr td:contains("' + itcd + '")').length > 0) {
+            itcdexist = true;
+        }
+        if(itcdexist == true)
+        {
+            $('#tblSizes > tbody').html('');
+            alert('this style already added in cart !!');
+            return false;
+        }
+        else
+        {
+            var NoOfItem=retFloat($("#NoOfItem").val());
+            NoOfItem++;
+            var TQnty=retFloat($("#TQnty").val());
+            var qnty=0;
+            $('#tblSizes > tbody  > tr').each(function () {
+                var SIZE = $(this).find("td").eq(0).html();
+                var QNTY = $(this).find("td:eq(1) input[type='number']").val();
+                if (QNTY != '') {
+                    if (sizedt != '') sizedt += ',';
+                    sizedt += SIZE + '=' + QNTY;
+                    TQnty +=retFloat(QNTY);
+                    qnty +=retFloat(QNTY);
+                }
+            });
+            TQnty=retFloat(TQnty.toFixed(3));
+            qnty=retFloat(qnty.toFixed(3));
+            var icon ='<div class="menu" style="float:right;">';
+            icon +='<a onclick="ModifyCart(\'' + itcd + '\');" style="border:2px solid #5cb85c;width:20px;height:20px;">';
+            icon +='<i class="fa fa-pencil" style="color:#5cb85c;font-size:15px;"></i>';
+            icon +='</a>';
+            icon +='<a onclick="DeleteCart(\'' + itcd + '\');" style="border:2px solid red;width:20px;height:20px;">';
+            icon +='<i class="fa fa-minus" style="color:red;font-size:15px;"></i>';
+            icon +='</a>';
+            icon +='</div>';
+            var tr = '<tr data-qnty='+qnty+' data-allsizes='+sizes+' data-sizeqnty='+sizedt+' >';
+            tr += '<td>' + styleno + '</td>';
+            tr += '<td><span style="font-weight: bold;">'+qnty+'</span> (<span style="font-size: 10px;">'+ sizedt + '</span>)</td>';
+            //tr += '<td>' + itrem + '</td>';
+            tr += '<td><input type="text" value="' + itrem + '" style="width:100%;margin-top: 0px;" class="form-control" ></td>';
+
+            //tr += '<td><input class="form-control  text-box single-line" data-val="true" data-val-length="The field popupITREM must be a string with a maximum length of 50." data-val-length-max="50" id="popupITREM" maxlength="50" name="popupITREM" placeholder="Remarks" style="font-weight:bold;font-size:15px;" type="text" value="' + itrem + '"></td>';
+            tr += '<td>' + itcd + '</td>';
+            tr += '<td class="sticky-col-right">'+icon+'</td>';
+            tr += '</tr>';
+            $('#tblCart > tbody').prepend(tr);
+            $('#tblSizes > tbody').html('');
+            $("#NOOFSETS").val("");
+            $("#ITREM").val("");
+            $("#TQnty").val(TQnty);
+            $("#NoOfItem").val(NoOfItem);
+            $('#cartsummary').text(NoOfItem+"("+TQnty+")");
+            updateVisibility(@VisibleRow);
+        }
+    }
+    function toggleRows(btnid) {
+        isExpanded = false;
+        if (btnid == "btnShowMore") {
+            ShowMore();
+            $("#btnShowLess").show();
+            $("#btnShowMore").hide();
+        }
+        else {
+            ShowLess();
+            $("#btnShowLess").hide();
+            $("#btnShowMore").show();
+        }
+    }
+    function ModifyCart(itcd)
+    {
+        debugger;
+
+        $("#UpdateItcd").val(itcd);
+        var styleno="",itrem="";
+        var tr = "";
+        $('#tblCart > tbody  > tr').each(function () {
+            let row = $(this);
+            row.find("td").each(function () {
+                if ($(this).text().trim() === itcd) { // exact match
+                    styleno=row.find("td").eq(0).text();
+                    var allsizearr= row[0].dataset.allsizes.split(',');
+                    //var sizearr = row.find("td").eq(1).text().split(',');
+
+                    let sizearr = {};
+                    row[0].dataset.sizeqnty.replace(/[{}]/g, "").split(",").forEach(item => {
+                        let parts = item.split("=");
+                        let size = parts[0];
+                        let qty = retFloat(parts[1]);
+                        sizearr[size] = qty;
+                    });
+
+                    $.each(allsizearr, function (index, value) {
+                        //var size=value.split('=')[0];
+                        //var qnty=value.split('=')[1];
+                        let qnty = sizearr[value];
+                        var size=value;
+                        //tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="text" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" maxlength="12" onkeypress="return numericOnly(this,3);" /></td></tr>';
+                        tr += '<tr><td class="sticky-col-left">' + size + '</td><td> <input type="number" value="' + qnty + '"  class="form-control" style="width:100%;margin-top: 0px;" maxlength="12" onkeypress="return numericOnly(this,3);" /></td></tr>';
+                        itrem = row.find("td").eq(2).find('input').val();
+                    });
+                }
+            });
+        });
+        var table = "";
+
+        table += '<div class="table-responsive row" style="max-height:60%; overflow-y:auto;margin-bottom:0px;">';
+        table += '<table class="table table-striped" id="popuptblSizes">';
+        table += '<thead class="table-header-custom">';
+        table += '<tr style="background-color: #255994;color: white;">';
+        table += '<th class="sticky-col-left" style="width:50px;">Size</th>';
+        table += '<th>Qnty</th>';
+        table += '</tr>';
+        table += '</thead>';
+        table += '<tbody>'+tr+'</tbody>';
+        table += '</table>';
+        table += '</div>';
+        $("#popupSize").html(table);
+        $("#popupITREM").val(itrem);
+        document.getElementById('popupTitle').textContent = styleno;
+        document.getElementById("popup").style.display = "flex";
+    }
+    function ClosePopup(){
+        document.getElementById("popup").style.display = "none";
+
+    }
+    function UpdateCart() {
+        debugger;
+        var itcd = $("#UpdateItcd").val();
+        var itrem =  $("#popupITREM").val();
+        var sizedt ="";
+
+        var qnty=0;
+        $('#popuptblSizes > tbody  > tr').each(function () {
+            var SIZE = $(this).find("td").eq(0).html();
+            var QNTY = $(this).find("td:eq(1) input[type='number']").val();
+            if (retFloat(QNTY) != 0) {
+                if (sizedt != '') sizedt += ',';
+                sizedt += SIZE + '=' + retFloat(QNTY);
+                qnty +=retFloat(QNTY);
+
+            }
+        });
+        qnty=retFloat(qnty.toFixed(3));
+        var TQnty=0,NoOfItem=0;
+
+        $('#tblCart > tbody  > tr').each(function () {
+            let row = $(this);
+            NoOfItem++;
+            row.find("td").each(function () {
+                if ($(this).text().trim() === itcd) { // exact match
+                    var sizes='<span style="font-weight: bold;">'+qnty+'</span> (<span style="font-size: 10px;">'+sizedt+'</span>)';
+                    row.find("td").eq(1).html(sizes);
+                    row.find("td").eq(2).find('input').val(itrem);
+                    row[0].dataset.qnty=qnty;
+                    row[0].dataset.sizeqnty=sizedt;
+                }
+            });
+            TQnty += retFloat(row[0].dataset.qnty);
+
+        });
+        TQnty=retFloat(TQnty.toFixed(3));
+
+        $("#TQnty").val(TQnty);
+        $("#NoOfItem").val(NoOfItem);
+        $('#cartsummary').text(NoOfItem+"("+TQnty+")");
+        updateVisibility(@VisibleRow);
+        ClosePopup();
+    }
+    function DeleteCart(itcd)
+    {
+        debugger;
+        var TQnty=0,NoOfItem=0;
+        $("#tblCart tbody tr").each(function() {
+            if ($(this).find("td").eq(3).text().trim() === itcd) {
+                $(this).remove();
+            }
+            else
+            {
+                TQnty += retFloat($(this)[0].dataset.qnty);
+                NoOfItem++;
+            }
+        });
+        TQnty=retFloat(TQnty.toFixed(3));
+
+        $("#TQnty").val(TQnty);
+        $("#NoOfItem").val(NoOfItem);
+        $('#cartsummary').text(NoOfItem+"("+TQnty+")");
+        updateVisibility(@VisibleRow);
+    }
+</script>
+<script>
+    function ShowMore() {
+        const rows = document.querySelectorAll('#tblCart tr');
+        visibleCount = rows.length;
+        updateVisibility(visibleCount);
+    }
+    function ShowLess() {
+        visibleCount = @VisibleRow;
+        updateVisibility(visibleCount);
+    }
+    function updateVisibility(visibleCount) {
+        const rows = document.querySelectorAll('#tblCart tr');
+        if (rows.length > 1) {
+            rows.forEach((row, index) => {
+                if (index <= visibleCount) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+    }
+</script>
+<script>
+    function ChkForMergeData(){
+        $("#WaitingMode").show();
+        getLocation(function (latlot) {
+            if (latlot != "") {
+                var LAT = returncolvalue(latlot, "LAT");
+                var LOT = returncolvalue(latlot, "LOT");
+
+                $("#GPSLAT").val(LAT);
+                $("#GPSLOT").val(LOT);
+            }
+            //need to open
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
+                alert('retailer not found!');
+                $("#WaitingMode").hide();
+                return false;
+            }
+            $.ajax({
+                type: 'post',
+                url:  "@Url.Action("ChkForMerge", PageControllerName)",
+                beforesend: $("#WaitingMode").show(),
+                data: $('form').serialize() ,
+                success: function (result) {
+                    $("#WaitingMode").hide();
+                    if(result != "")
+                    {
+                        var msg = returncolvalue(result, "MSG");
+                        if(msg =="Y")
+                        {
+                            //if (confirm("Data Available for Partcular Distributor and Retailer ! Are You Sure ? You Want To Merge Order \n\nPress OK for YES, Cancel for NO. !!"))
+                            //{
+                            //    SaveData(returncolvalue(result, "AUTONO"));
+                            //}
+                            //else
+                            //{
+                            //    SaveData('');
+                            //}
+                            //askYesNo("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
+                            //  .then((yes) => {
+                            //      debugger;
+                            //      if (yes) {
+                            //          SaveData(returncolvalue(result, "AUTONO")); // YES
+                            //      } else {
+                            //          SaveData(''); // NO
+                            //      }
+                            //  });
+  //                          askYesNoCancel("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
+  //.then((choice) => {
+  //    if (choice === "yes") {
+  //        SaveData(returncolvalue(result, "AUTONO")); // YES
+  //    } else if (choice === "no") {
+  //        SaveData(''); // NO
+  //    } else {
+  //        $("#WaitingMode").hide();
+  //    }
+                            //});
+                            askYesNo("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
+  .then((choice) => {
+      if (choice === "yes") {
+          SaveData(returncolvalue(result, "AUTONO")); // YES
+      } else if (choice === "no") {
+          SaveData(''); // NO
+      } else if (choice === "cancel") {
+          $("#WaitingMode").hide();
+      }
+  });
+                        }
+                        else
+                        {
+                            alert(result);
+                        }
+                    }
+                    else
+                    {
+                        SaveData('');
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#WaitingMode").hide();
+                    msgError("Error: " + textStatus + "," + errorThrown);
+                }
+            });
+        });
+    }
+    function SaveData(autono) {
+        $("#WaitingMode").show();
+        getLocation(function (latlot) {
+            if (latlot != "") {
+                var LAT = returncolvalue(latlot, "LAT");
+                var LOT = returncolvalue(latlot, "LOT");
+
+                $("#GPSLAT").val(LAT);
+                $("#GPSLOT").val(LOT);
+            }
+            //need to open
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+            //    alert('Location not found,Save again!');
+            //    //getLocation();
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
+                alert('retailer not found!');
+                $("#WaitingMode").hide();
+                return false;
+            }
+            var hdnData1 = '';
+            $('#tblCart > tbody  > tr').each(function () {
+                var ITCD = $(this).find("td").eq(3).html();
+                //var QNTY = $(this).find("td").eq(1).html();
+                var SIZE = $(this)[0].dataset.sizeqnty;// $(this).find("td").eq(1).html();
+                var ITREM = $(this).find("td").eq(2).find('input').val();
+
+                if (hdnData1 != '') hdnData1 += ',';
+                hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "', 'itrem': '" + ITREM + "'  }";
+            });
+
+            console.log(hdnData1);
+            if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
+            $("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+
+            $.ajax({
+                type: 'post',
+                url: "@Url.Action("SAVE", PageControllerName)",
+                data: $('form').serialize()+ "&RTLAUTONO=" +autono,
+                success: function (result) {
+                    var res = result.split("~");
+                    if (res[0] == '1') {
+                        alert('Data Saved Successfully !!'+res[1]);
+                        window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                        if (newWindow) {
+                            window.open('', '_self'); // Required for some browsers
+                            window.close(); // Attempt to close current window
+                        } else {
+                            alert("Popup blocked! Please allow popups for this website.");
+                        }
+                    }
+                    else{
+                        alert(result);
+                        $("#WaitingMode").hide();
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#WaitingMode").hide();
+                    msgError(XMLHttpRequest.responseText);
+                    $("body span h1").remove(); $("#msgbody_error style").remove();
+                }
+            });
+        });
+
+    }
+</script>
+<script>
+    function increment(id) {
+        var input = document.getElementById(id);
+        input.stepUp();
+    }
+    function decrement(id) {
+        var input = document.getElementById(id);
+        input.stepDown();
+    }
+</script>
+@*<script>
+        function OpenHome(){
+            window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+            if (newWindow) {
+                window.open('', '_self'); // Required for some browsers
+                window.close(); // Attempt to close current window
+            } else {
+                alert("Popup blocked! Please allow popups for this website.");
+            }
+        }
+    </script>*@
+<script>
+    function Print() {
+        debugger;
+        jQuery("form").attr("target", "_blank");
+        jQuery("form").submit();
+    }
+</script>
+@*@Html.ActionLink("T_RetailerOrderFilter", "T_RetailerOrderFilter", "T_RetailerOrderFilter")*@
+<div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
+    <p style="position: absolute; color: White; top: 46%; left: 47%;">
+        Loading, please wait...<br />
+        <span> <img src="~/Image/ajax_loader.gif" width="60px" height="60px"></span>
+    </p>
+</div>
+<div class="container-fluid">
+    <div id="header-text" class="alert alert-info top" style="padding:5px; margin-bottom:0px;">
+        <!-- Main header flex container -->
+        <div id="headertitle" style="display: flex; justify-content: space-between; align-items: center; font-size: large; flex-wrap: nowrap;">
+
+            <!-- Left side: combined DISTSLNM + RTSLNM with ellipsis -->
+            <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; flex-shrink: 1; min-width: 0;"  onclick="toggleExpand(this);">
+                <strong id="DISTSLNM"></strong>&nbsp;<strong id="RTSLNM"></strong>
+            </div>
+
+            <!-- Right side menu -->
+            <div class="menu" style="display: flex; gap: 5px; flex-shrink: 0;">
+                <a onclick="OpenHome();" style="border: 2px solid green;">
+                    <i class="fa fa-home fa-lg" style="color:green;"></i>
+                </a>
+                <a onclick="OpenFilter();" style="border: 2px solid green;">
+                    <i class="fa fa-backward fa-lg" style="color:green;"></i>
+                </a>
+                <a href="../Home/Logout" style="border: 2px solid #dc0624f2;">
+                    <i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom row: brand info -->
+        <div style="font-size: small; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <strong id="BRANDNM"></strong>&nbsp;<strong id="GRPNM"></strong>&nbsp;<strong id="COLLNM"></strong>
+        </div>
+    </div>
+
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.T_RETAILORDER.GPSLOT, new { id = "GPSLOT" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.GPSLAT, new { id = "GPSLAT" })
+        @*@Html.HiddenFor(model => model.GEOADDRESS)*@
+        @Html.HiddenFor(model => model.ITEMDETAIL_JSTR, new { id = "ITEMDETAIL_JSTR" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.SLCD, new { id = "SLCD" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.RTLCD, new { id = "RTLCD" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.AUTONO, new { id = "AUTONO" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.DOCNO, new { id = "DOCNO" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.VCHRNO, new { id = "VCHRNO" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.MNTHCD, new { id = "MNTHCD" })
+        @Html.HiddenFor(model => model.T_RETAILORDER.SLMSLCD, new { id = "SLMSLCD" })
+
+        <input type="hidden" id="hdnData" />
+        <input type="hidden" id="NoOfItem" />
+        <input type="hidden" id="TQnty" />
+        <input type="hidden" id="UpdateItcd" />
+
+        <div class="table-responsive row sub-top" style="max-height:60%; overflow-y:auto;">
+            <table class="table table-striped" id="tblCart">
+                <thead class="table-header-custom">
+                    <tr style="background-color: #255994;color: white;">
+                        <th>Styleno</th>
+                        <th>Sizes Qnty</th>
+                        <th>Remarks</th>
+                        <th>Item</th>
+                        <th class="sticky-col-right" style="width:95px;">
+                            <i class="fa fa-shopping-cart" title="Place Order" style="font-size:medium;color:greenyellow;cursor:pointer;" onclick="ChkForMergeData()"></i>
+                            <span id="cartsummary" style="font-size:medium;color:white;">0(0)</span>
+
+                            <span id="btnShowMore" title="Show More" class="glyphicon glyphicon-chevron-down"
+                                  style="font-size:medium;color:white;cursor:pointer;"
+                                  onclick="toggleRows('btnShowMore')"></span>
+
+                            <span id="btnShowLess" title="Show Less" class="glyphicon glyphicon-chevron-up"
+                                  style="font-size:medium;color:white;cursor:pointer;display:none;"
+                                  onclick="toggleRows('btnShowLess')"></span>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="row content">
+            <div id="partialdivDetail" style="margin-top:0px;">
+                @Html.Partial("_T_RetailerOrder_Main")
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-striped" id="tblSizes" style="display:none;">
+                <thead>
+                    <tr style="background-color: #255994;color: white;"><th>Size</th><th>Qnty</th><th>Remarks</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="popup_size" class="row" style="margin-top: 11px;top:15%;left:15%;position:absolute;">
+        </div>
+        <div class="footer" style="padding:5px;">
+            <div class="quantity-row">
+                <i class="fa fa-minus-circle" style="font-size:25px;color:#428bca;cursor:pointer;" onclick="decrement('NOOFSETS')"></i>
+                @Html.EditorFor(model => model.NOOFSETS, new { htmlAttributes = new { @class = "form-control", id = "NOOFSETS", @placeholder = "Sets", maxlength = 10, @onkeypress = "return numericOnly(this);", min = "1", @style = "text-align:center;font-weight:bold;font-size:20px;height:33px;width:55px;" } })
+                <i class="fa fa-plus-circle" style="font-size:25px;color:#428bca;cursor:pointer;" onclick="increment('NOOFSETS')"></i>
+                @Html.EditorFor(model => model.ITREM, new { htmlAttributes = new { @class = "form-control ", id = "ITREM", @placeholder = "Remarks", maxlength = 50, @style = "font-weight:bold;font-size:20px;height:33px;" } })
+                <div class="menu" style="float:right;">
+                    <a onclick="AddtoCart();" style="border: 2px solid #f0ad4e;width:30px;height:30px;"><i class="fa fa-cart-plus" style="color:#f0ad4e;font-size:20px;"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div id="helpDIV">
+
+            </div>
+        </div>
+        <div id="popup" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="popupTitle">Default Title</h2>
+                    <span class="close-btn" onclick="ClosePopup();">&times;</span>
+                </div>
+                <div id="popupSize" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <input class="form-control  text-box single-line" data-val="true" data-val-length="The field popupITREM must be a string with a maximum length of 50." data-val-length-max="50" id="popupITREM" maxlength="50" name="popupITREM" placeholder="Remarks" style="font-weight:bold;font-size:15px;" type="text" value="">
+                    <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-warning" onclick="UpdateCart()" title="Add to Cart">Update <i class="fa fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
