@@ -135,12 +135,12 @@
 
                 },
                 function (error) {
-                    //alert("Location access is required to use this service.");
+                    //showCustomAlert('info',"Location access is required to use this service.");
 
                 }
             );
         } else {
-            alert("Geolocation is not supported by this browser.");
+            showCustomAlert('info', "Geolocation is not supported by this browser.");
 
         }
     }

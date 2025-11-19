@@ -696,7 +696,7 @@ namespace Improvar.Controllers
                             body += "<td>" + rsemailid1.Rows[iz]["docno"] + "</td>";
                             body += "<td>" + rsemailid1.Rows[iz]["QNTY"] + "</td>";
                             body += "</tr>";
-                            if (rsemailid1.Rows[iz]["DISREGEMAILID"].ToString().retStr() != "") ccemailid = "";// rsemailid1.Rows[iz]["DISREGEMAILID"].ToString();
+                            if (rsemailid1.Rows[iz]["DISREGEMAILID"].ToString().retStr() != "") ccemailid = rsemailid1.Rows[iz]["DISREGEMAILID"].ToString();
                             chkfld = rsemailid1.Rows[iz]["autono"].ToString().Substring(0, rsemailid1.Rows[iz]["autono"].ToString().Length - 1);
 
                             while (rsemailid1.Rows[iz]["autono"].ToString().Substring(0, rsemailid1.Rows[iz]["autono"].ToString().Length - 1) == chkfld)

@@ -3095,7 +3095,7 @@ namespace Improvar
             }
             return retval;
         }
-        public string MaxDocNumber(string doc_date, string tblnm, string YR_CD = "")
+        public string MaxDocNumber(string doc_date, string tblnm, string YR_CD = "", bool monthwise = false)
         {
             MasterHelp masterHelp = new MasterHelp();
             var UNQSNO = getQueryStringUNQSNO();
@@ -3107,17 +3107,17 @@ namespace Improvar
             if (YR_CD == "") yrcd = CommVar.YearCode(UNQSNO); else yrcd = YR_CD;
             string sql = "", scm = CommVar.CurSchema(UNQSNO);
 
-            sql = "select nvl(a.maxdocno,0) maxdocno from ";         
+            sql = "select nvl(a.maxdocno,0) maxdocno from ";
             sql += "( select a.mnthcd, max(a.vchrno) maxdocno ";
-            sql += "from " + scm + "."+ tblnm + " a ";
-            sql += "where a.mnthcd='"+ month_code + "'";
+            sql += "from " + scm + "." + tblnm + " a ";
+            if (monthwise == true) sql += "where a.mnthcd='" + month_code + "'";
             //sql += "a.compcd='" + CommVar.Compcd(UNQSNO) + "' and a.loccd='" + CommVar.Loccd(UNQSNO) + "' and a.yr_cd='" + yrcd + "' ";
             sql += "group by a.mnthcd) a ";
 
 
             DataTable tbl = masterHelp.SQLquery(sql);
             string maxdocno = "0";
-            if(tbl != null && tbl.Rows.Count > 0)
+            if (tbl != null && tbl.Rows.Count > 0)
             {
                 maxdocno = tbl.Rows[0]["maxdocno"].retStr();
             }

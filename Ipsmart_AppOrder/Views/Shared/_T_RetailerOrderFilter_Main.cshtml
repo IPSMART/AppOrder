@@ -52,18 +52,18 @@
         -ms-flex-align: center;
         -webkit-align-items: center;
         align-items: center;
+        padding-bottom: 60px;
     }
 
         .swiper-slide img {
             display: block;
             width: 100%;
-            height: 100%;
+            height: 350px;
         }
 
         .swiper-slide .title {
             position: absolute;
-            bottom: 40px;
-            color: white;
+            bottom: 8%;
             font-weight: bold;
             font-size: 12pt;
             font-family: 'Mark Bold' !important;
@@ -114,9 +114,9 @@
     }
 
     .content {
-        margin-top: 175px; /* push content below both fixed divs */
+        margin-top: 40%; /* push content below both fixed divs */
         padding: 1rem;
-        padding-bottom: 70px; /* space to avoid hiding content under footer */
+        /*padding-bottom: 70px;*/ /* space to avoid hiding content under footer */
     }
 </style>
 <style>
@@ -363,7 +363,7 @@
     function AddtoCart() {
         if(retFloat($("#NOOFSETS").val()) == 0)
         {
-            alert('Enter No. Of Sets !!');
+            showCustomAlert('info', 'Enter No. Of Sets');
             return false;
         }
         TakeOrder();
@@ -380,7 +380,7 @@
         if(itcdexist == true)
         {
             $('#tblSizes > tbody').html('');
-            alert('this style already added in cart !!');
+            showCustomAlert('info','this style already added in cart !!');
             return false;
         }
         else
@@ -600,19 +600,19 @@
             }
             //need to open
             //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            //    alert('Location not found,Save again!');
+            //    showCustomAlert('info','Location not found,Save again!');
             //    //getLocation();
             //    $("#WaitingMode").hide();
             //    return false;
             //}
             //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            //    alert('Location not found,Save again!');
+            //     showCustomAlert('info','Location not found,Save again!');
             //    //getLocation();
             //    $("#WaitingMode").hide();
             //    return false;
             //}
             if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
-                alert('retailer not found!');
+                showCustomAlert('info','retailer not found!');
                 $("#WaitingMode").hide();
                 return false;
             }
@@ -645,15 +645,15 @@
                             //          SaveData(''); // NO
                             //      }
                             //  });
-  //                          askYesNoCancel("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
-  //.then((choice) => {
-  //    if (choice === "yes") {
-  //        SaveData(returncolvalue(result, "AUTONO")); // YES
-  //    } else if (choice === "no") {
-  //        SaveData(''); // NO
-  //    } else {
-  //        $("#WaitingMode").hide();
-  //    }
+                            //                          askYesNoCancel("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
+                            //.then((choice) => {
+                            //    if (choice === "yes") {
+                            //        SaveData(returncolvalue(result, "AUTONO")); // YES
+                            //    } else if (choice === "no") {
+                            //        SaveData(''); // NO
+                            //    } else {
+                            //        $("#WaitingMode").hide();
+                            //    }
                             //});
                             askYesNo("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
   .then((choice) => {
@@ -668,7 +668,7 @@
                         }
                         else
                         {
-                            alert(result);
+                            showCustomAlert('info',result);
                         }
                     }
                     else
@@ -695,19 +695,19 @@
             }
             //need to open
             //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            //    alert('Location not found,Save again!');
+            //     showCustomAlert('info','Location not found,Save again!');
             //    //getLocation();
             //    $("#WaitingMode").hide();
             //    return false;
             //}
             //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            //    alert('Location not found,Save again!');
+            //     showCustomAlert('info','Location not found,Save again!');
             //    //getLocation();
             //    $("#WaitingMode").hide();
             //    return false;
             //}
             if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
-                alert('retailer not found!');
+                showCustomAlert('info','retailer not found!');
                 $("#WaitingMode").hide();
                 return false;
             }
@@ -723,7 +723,7 @@
             });
 
             console.log(hdnData1);
-            if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
+            if (hdnData1 == '') { showCustomAlert('info', 'Data Not found'); return false; }
             $("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
 
             $.ajax({
@@ -733,17 +733,29 @@
                 success: function (result) {
                     var res = result.split("~");
                     if (res[0] == '1') {
-                        alert('Data Saved Successfully !!'+res[1]);
-                        window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
-                        if (newWindow) {
-                            window.open('', '_self'); // Required for some browsers
-                            window.close(); // Attempt to close current window
-                        } else {
-                            alert("Popup blocked! Please allow popups for this website.");
-                        }
+                        showCustomAlert('success', 'Data Saved Successfully !!'+res[1], function () {
+                window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                if (newWindow) {
+                    window.open('', '_self');
+                    window.close();
+                } else {
+                    showCustomAlert('info',"Popup blocked! Please allow popups for this website.");
+                }
+            });
+                    }
+                    else if (res[0] == '2') {
+                        showCustomAlert('success', 'Edited Successfully!'+res[1], function () {
+                            window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                            if (newWindow) {
+                                window.open('', '_self');
+                                window.close();
+                            } else {
+                                showCustomAlert('info',"Popup blocked! Please allow popups for this website.");
+                            }
+                        });
                     }
                     else{
-                        alert(result);
+                        showCustomAlert('info',result);
                         $("#WaitingMode").hide();
                     }
                 },
@@ -774,7 +786,7 @@
                 window.open('', '_self'); // Required for some browsers
                 window.close(); // Attempt to close current window
             } else {
-                alert("Popup blocked! Please allow popups for this website.");
+                 showCustomAlert('info',"Popup blocked! Please allow popups for this website.");
             }
         }
     </script>*@

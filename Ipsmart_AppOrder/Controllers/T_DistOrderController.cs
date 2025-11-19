@@ -367,6 +367,7 @@ namespace Improvar.Controllers
                     transaction.Rollback();
                     Cn.SaveException(ex, "");
                     return Content(ex.Message + ex.InnerException);
+                    //return Content("test");
                 }
             }
             return null;

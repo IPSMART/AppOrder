@@ -402,19 +402,19 @@
             }
             //need to open
             //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            //    alert('Location not found,Save again!');
+            //    showCustomAlert('info','Location not found,Save again!');
             //    //getLocation();
             //    $("#WaitingMode").hide();
             //    return false;
             //}
             //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            //    alert('Location not found,Save again!');
+            //    showCustomAlert('info','Location not found,Save again!');
             //    //getLocation();
             //    $("#WaitingMode").hide();
             //    return false;
             //}
             //if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
-            //    alert('retailer not found!');
+            //    showCustomAlert('info','retailer not found!');
             //    $("#WaitingMode").hide();
             //    return false;
             //}
@@ -440,17 +440,18 @@
                 success: function (result) {
                     var res = result.split("~");
                     if (res[0] == '1') {
-                        alert('Data Saved Successfully !!' + res[1]);
-                        window.location.href = "@Url.Action("T_DistOrderFilter", "T_DistOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
-                        if (newWindow) {
-                            window.open('', '_self'); // Required for some browsers
-                            window.close(); // Attempt to close current window
-                        } else {
-                            alert("Popup blocked! Please allow popups for this website.");
-                        }
+                        showCustomAlert('success', 'Data Saved Successfully!' + res[1], function () {
+                window.location.href = "@Url.Action("T_DistOrderFilter", "T_DistOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                if (newWindow) {
+                    window.open('', '_self');
+                    window.close();
+                } else {
+                    showCustomAlert('info',"Popup blocked! Please allow popups for this website.");
+                }
+            });
                     }
                     else {
-                        alert(result);
+                        showCustomAlert('info', result);
                         $("#WaitingMode").hide();
                     }
                 },
@@ -795,6 +796,22 @@
             </div>
         </div>
     }
+</div>
+<div id="customAlert" style="display:none;
+     position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.4); z-index:40000;
+     justify-content:center; align-items:center;">
+    <div id="customAlertBox" style="background:#fff; padding:20px 30px;
+       border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.3);
+       text-align:center; min-width:260px; max-width:80%;max-height:70vh; overflow-y:auto;">
+        <div id="customAlertIcon" style="font-size:40px; margin-bottom:10px;"></div>
+        <p id="customAlertMessage" style="font-size:16px; margin-bottom:15px;"></p>
+        <button onclick="closeCustomAlert()" id="customAlertButton"
+                style="background:#007bff; color:white; border:none;
+                   padding:8px 20px; border-radius:5px; cursor:pointer;">
+            OK
+        </button>
+    </div>
 </div>
 
 

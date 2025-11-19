@@ -108,8 +108,8 @@ function msgError(msgText) {
 function emptyFieldCheck(msgText, focusfield) {
     var fieldValue = $("#" + focusfield).val();
     if (fieldValue.length <= 0) {
-        msgInfo(msgText + " ! ");
-        message_value = focusfield;
+        focus_id = focusfield;
+        showCustomAlert('info', msgText + " ! ");
         return false;
     }
     else {
@@ -1722,4 +1722,63 @@ function askYesNo(message) {
             return "cancel"; // X button
         }
     });
+}
+var customAlertCallback = null; // store callback to run after OK
+
+function showCustomAlert(type, message, callback) {
+    const alertBox = document.getElementById('customAlertBox');
+    const alertIcon = document.getElementById('customAlertIcon');
+    const alertMsg = document.getElementById('customAlertMessage');
+    const okButton = document.getElementById('customAlertButton');
+    const overlay = document.getElementById('customAlert');
+
+    // Store callback function
+    customAlertCallback = callback || null;
+
+    // Reset styles
+    alertBox.style.borderTop = "5px solid transparent";
+    alertIcon.innerHTML = "";
+    okButton.style.background = "#007bff";
+
+    // Configure appearance based on alert type
+    switch (type.toLowerCase()) {
+        case "success":
+            alertBox.style.borderTop = "5px solid #28a745";
+            alertIcon.innerHTML = "✅";
+            okButton.style.background = "#28a745";
+            break;
+        case "info":
+            alertBox.style.borderTop = "5px solid #17a2b8";
+            alertIcon.innerHTML = "ℹ️";
+            okButton.style.background = "#17a2b8";
+            break;
+        case "warning":
+            alertBox.style.borderTop = "5px solid #ffc107";
+            alertIcon.innerHTML = "⚠️";
+            okButton.style.background = "#ffc107";
+            break;
+        case "error":
+            alertBox.style.borderTop = "5px solid #dc3545";
+            alertIcon.innerHTML = "❌";
+            okButton.style.background = "#dc3545";
+            break;
+        default:
+            alertBox.style.borderTop = "5px solid #007bff";
+            alertIcon.innerHTML = "🔔";
+            okButton.style.background = "#007bff";
+    }
+
+    alertMsg.innerHTML = message;
+    overlay.style.display = "flex";
+}
+var focus_id;
+function closeCustomAlert() {
+    document.getElementById('customAlert').style.display = 'none';
+    $("#" + focus_id).focus();
+    // run callback if defined
+    if (typeof customAlertCallback === "function") {
+        const cb = customAlertCallback;
+        customAlertCallback = null; // clear for safety
+        cb();
+    }
 }

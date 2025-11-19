@@ -449,7 +449,7 @@ namespace Improvar.Controllers
                             if (DefaultAction == "A")
                             {
                                 TRETAILORDER.EMD_NO = 0;
-                                string DOCNO = Cn.MaxDocNumber(Ddate, "T_RETAILORDER");
+                                string DOCNO = Cn.MaxDocNumber(Ddate, "T_RETAILORDER", "", true);
                                 TRETAILORDER.VCHRNO = DOCNO.Split(Convert.ToChar(Cn.GCS()))[0].retInt();
                                 TRETAILORDER.MNTHCD = DOCNO.Split(Convert.ToChar(Cn.GCS()))[1].ToString();
 
@@ -549,7 +549,15 @@ namespace Improvar.Controllers
                         if (DefaultAction == "A")
                         {
                             string emailmsg = SendEmailWhatsapp(TRETAILORDER.AUTONO);
-                            ContentFlg = "1~(Order No. " + TRETAILORDER.DOCNO + ")" + emailmsg;
+                            if (RTLAUTONO.retStr() == "")
+                            {
+                                ContentFlg = "1~(Order No. " + TRETAILORDER.DOCNO + ")" + emailmsg;
+
+                            }
+                            else
+                            {
+                                ContentFlg = "2~(Order No. " + TRETAILORDER.DOCNO + ")" + emailmsg;
+                            }
                         }
                         else if (DefaultAction == "E")
                         {

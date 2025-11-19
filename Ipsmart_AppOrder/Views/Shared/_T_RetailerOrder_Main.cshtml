@@ -4,11 +4,11 @@
 }
 <script>
     $(document).ready(function () {
-        var swiper = new Swiper('.swiper-container', {
+        var swiper = new Swiper('.mySwiper', {
             loop: false,
             navigation: false, // Disable built-in navigation
         });
-        document.querySelector('.swiper-button-next').addEventListener('click', function() {
+        document.querySelector('.swiper-button-next').addEventListener('click', function () {
             // Custom logic before navigating
             $("#NOOFSETS").val("");
             $("#ITREM").val("");
@@ -38,8 +38,9 @@
                     <span style="display: none" id="SIZE_COUNT_@i">@Model.ImageView[i].SIZE_COUNT</span>
                     <span style="display: none" id="PCSPERBOX_@i">@Model.ImageView[i].PCSPERBOX</span>
                     <span style="display: none" id="itrem_@i">@Model.ImageView[i].ITREM</span>
-                    <div class="title" id="styleno_@i">@Model.ImageView[i].Desc</div>
-                    <img src="@Model.ImageView[i].Url?@tt" id="img_@i"/>
+                    <span style="display: none" id="styleno_@i">@Model.ImageView[i].Desc</span>
+                    <div class="title" id="Desc_@i">@Model.ImageView[i].Desc (@(i + 1) of @Model.ImageView.Count)</div>
+                    <img src="@Model.ImageView[i].Url?@tt" id="img_@i" />
 
                 </div>
             }
