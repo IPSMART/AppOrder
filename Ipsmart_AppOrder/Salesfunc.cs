@@ -432,6 +432,19 @@ namespace Improvar
             DataTable dt = SQLquery(sql);
             return dt;
         }
+        public string retsizemaxmin(string sizecdgrp)
+        {
+            string chkval = sizecdgrp.Replace("^", "");
+            string rval = "";
+            string[] chk1 = chkval.Split(',');
+            rval = chk1[0];
+            if (chk1.Count() > 1)
+            {
+                rval = rval + "-" + chk1[chk1.Count() - 1];
+            }
+            if (rval == "") rval = sizecdgrp;
+            return rval;
+        }
 
     }
 }

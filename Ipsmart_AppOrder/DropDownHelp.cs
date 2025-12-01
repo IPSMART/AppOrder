@@ -217,6 +217,29 @@ namespace Improvar
                       }).ToList();
             return sllist;
         }
+        public List<ListCollection> GetCollectionforSelection()
+        {
+            string GCS = Cn.GCS();
+            List<ListCollection> sllist = new List<ListCollection>();
+
+            string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmp = CommVar.PaySchema(UNQSNO);
+            string sql = "";
+            sql = "";
+            sql += "select distinct a.COLLCD, a.COLLNM " + Environment.NewLine;
+            sql += "from " + scm + ".M_COLLECTION a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_sitem c, " + scm + ".m_itemorder d " + Environment.NewLine;
+            sql += "where a.m_autono = b.m_autono(+) and nvl(b.inactive_tag, 'N')= 'N' and a.collcd = c.collcd(+) and c.itcd = d.itcd " + Environment.NewLine;
+            sql += "order by COLLNM " + Environment.NewLine;
+            DataTable tbl = masterHelp.SQLquery(sql);
+
+
+            sllist = (from DataRow a in tbl.Rows
+                                 select new ListCollection()
+                                 {
+                                     value = a["COLLCD"].retStr(),
+                                     text = a["COLLNM"].retStr(),
+                                 }).ToList();
+            return sllist;
+        }
 
 
     }

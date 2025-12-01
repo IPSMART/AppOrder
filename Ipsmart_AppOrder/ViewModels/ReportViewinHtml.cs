@@ -61,5 +61,24 @@ namespace Improvar.ViewModels
         public List<DropDown_list_Class1> DropDown_list_Class1 { get; set; }
         public string SubLeg_Grp { get; set; }
         public List<DropDown_list_SubLegGrp> DropDown_list_SubLegGrp { get; set; }
+        public string[] Dstbrslcd { get; set; }
+        public string Dstbrslnm { get; set; }
+        public string GEOLONGITUDE { get; set; }
+        public string GEOLATITUDE { get; set; }
+        public List<ListDistributor> ListDistributor { get; set; }
+        public List<ListRetailer> ListRetailer { get; set; }
+        public List<ListBrand> ListBrand { get; set; }
+        public List<ListGroup> ListGroup { get; set; }
+        public List<ListCollection> ListCollection { get; set; }
+        [StringLength(8)]
+        public string SLMSLCD { get; set; }
+        public string[] RetailerCode { get; set; }
+        public string RetailerName { get; set; }
+        public string[] BrandCode { get; set; }
+        public string BrandName { get; set; }
+        public string[] GroupCode { get; set; }
+        public string GroupName { get; set; }
+        public string[] CollCode { get; set; }
+        public string CollName { get; set; }
     }
 }
