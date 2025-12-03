@@ -214,18 +214,18 @@ namespace Improvar.Controllers
                 sql += Environment.NewLine + " a.autono, a.docno, a.docdt,a.VCHRNO, a.slcd,h.itnm, h.styleno,b.itcd,h.pcsperbox,h.pcsperset,h.colrperset,a.usr_id,a.usr_entdt, ";
                 sql += Environment.NewLine + "m.RTLCD,n.RTLNM,a.slcd,e.slnm,e.add1 sladd1,e.add3 sladd2,e.add3 sladd3,e.add4 sladd4,e.add5 sladd5, ";
                 sql += Environment.NewLine + "e.add6 sladd6,e.add7 sladd7,e.state slstate,e.REGEMAILID,e.PANNO slpanno,e.TANNO sltanno,e.REGEMAILID slemail, ";
-                sql += Environment.NewLine + "e.REGMOBILE slmobile,e.GSTNO slgstno,a.SLMSLCD,f.slnm SLMSLNM,d.add1,d.add2,d.add3,d.add4,d.landmark,d.city,d.pin,g.statenm, ";
-                sql += Environment.NewLine + "e.DISTRICT sldistrict,e.PIN slpin, d.GSTNO, d.REGMOBILE, d.REGEMAIL,b.SIZECD,b.QNTY,d.pan,d.REGWHATSAPPNO,j.brandcd,k.BRANDNM,h.uomcd, ";
+                sql += Environment.NewLine + "e.REGMOBILE slmobile,e.GSTNO slgstno,a.SLMSLCD,f.slnm SLMSLNM,n.add1,n.add2,n.add3,n.add4,n.landmark,n.city,n.pin,g.statenm, ";
+                sql += Environment.NewLine + "e.DISTRICT sldistrict,e.PIN slpin, n.GSTNO, n.REGMOBILE, n.REGEMAIL,b.SIZECD,b.QNTY,n.pan,n.REGWHATSAPPNO,j.brandcd,k.BRANDNM,h.uomcd, ";
                 sql += Environment.NewLine + "l.RTLAUTONO,m.docno rtldocno,m.docdt rtldocdt from ";
 
-                sql += Environment.NewLine + scm + ".T_DISTORDER a, " + scm + ".T_DISTORDERDTL b, " + scm + ".t_cntrl_hdr c, " + scm + ".M_RETAIL d, ";
+                sql += Environment.NewLine + scm + ".T_DISTORDER a, " + scm + ".T_DISTORDERDTL b, " + scm + ".t_cntrl_hdr c, ";
                 sql += Environment.NewLine + scmf + ".m_subleg e, " + scmf + ".m_subleg f, " + scm + ".m_sitem h, " + csm + ".ms_state g, " + scm + ".M_GROUP j, " + scm + ".M_BRAND k, ";
                 sql += Environment.NewLine + scm + ".T_DISTORDLINK l, " + scm + ".T_RETAILORDER m, " + scm + ".M_RETAIL n ";
-                sql += Environment.NewLine + "where a.autono=b.autono(+) and a.autono=c.autono(+) and a.RTLCD=d.RTLCD(+) and a.slcd=e.slcd(+) and a.SLMSLCD=f.slcd(+) ";
-                sql += Environment.NewLine + " and b.itcd = h.itcd(+) and d.STATECD = g.STATECD(+) and h.itgrpcd=j.itgrpcd(+) and j.brandcd = k.brandcd(+) ";
-                sql += Environment.NewLine + " and b.autono=l.autono(+) and b.slno=l.slno(+) and l.RTLAUTONO=m.autono(+) and m.RTLCD=n.RTLCD(+) ";
+                sql += Environment.NewLine + "where a.autono=b.autono(+) and a.autono=c.autono(+) and a.slcd=e.slcd(+) and a.SLMSLCD=f.slcd(+) ";
+                sql += Environment.NewLine + " and b.itcd = h.itcd(+) and n.STATECD = g.STATECD(+) and h.itgrpcd=j.itgrpcd(+) and j.brandcd = k.brandcd(+) ";
+                sql += Environment.NewLine + " and b.autono=l.autono(+) and b.slno=l.slno(+) and l.RTLAUTONO=m.autono(+) and m.RTLCD=n.RTLCD(+) and a.SLMSLCD='" + VE.SLMSLCD + "' ";
                 if (Dstbrslcd.retStr() != "") sql += Environment.NewLine + "and  a.slcd in (" + Dstbrslcd + ") ";
-                if (RetailerCode.retStr() != "") sql += Environment.NewLine + "and  a.RTLCD in (" + RetailerCode + ") ";
+                if (RetailerCode.retStr() != "") sql += Environment.NewLine + "and  m.RTLCD in (" + RetailerCode + ") ";
                 if (BrandCode.retStr() != "") sql += Environment.NewLine + "and  j.brandcd in (" + BrandCode + ") ";
                 if (GroupCode.retStr() != "") sql += Environment.NewLine + "and  h.itgrpcd in (" + GroupCode + ") ";
                 if (CollCode.retStr() != "") sql += Environment.NewLine + "and  h.COLLCD in (" + CollCode + ") ";
