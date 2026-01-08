@@ -313,6 +313,7 @@ namespace Improvar.Controllers
         public ActionResult SAVE(FormCollection FC, RetailOutletEntry VE)
         {
             ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
+            ImprovarDB DB1 = new ImprovarDB(Cn.GetConnectionString(), CommVar.CommSchema());
             using (var transaction = DB.Database.BeginTransaction())
             {
                 try
@@ -391,7 +392,7 @@ namespace Improvar.Controllers
                         MRETAILOUTLET.PIN = VE.M_RETAIL.PIN;
                         MRETAILOUTLET.STATECD = VE.M_RETAIL.STATECD;
                         MRETAILOUTLET.CNCD = VE.M_RETAIL.CNCD;
-                        MRETAILOUTLET.COUNTRY = VE.M_RETAIL.COUNTRY;
+                        MRETAILOUTLET.COUNTRY = DB1.MS_COUNTRY.Where(i => i.CNCD == MRETAILOUTLET.CNCD).Select(i => i.CNAME).FirstOrDefault();
                         MRETAILOUTLET.REGMOBILE = VE.M_RETAIL.REGMOBILE;
                         MRETAILOUTLET.REGEMAIL = VE.M_RETAIL.REGEMAIL;
                         MRETAILOUTLET.CPERSON = VE.M_RETAIL.CPERSON;

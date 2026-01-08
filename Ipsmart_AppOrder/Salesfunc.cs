@@ -360,7 +360,7 @@ namespace Improvar
             string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmp = CommVar.PaySchema(UNQSNO);
 
             string sql = "";
-            sql += "select a.slmslcd, a.DISTSLCD , b.slnm DISTSLnm, nvl(b.slarea, b.district) slarea from " + Environment.NewLine;
+            sql += "select a.slmslcd, a.DISTSLCD , b.slnm DISTSLnm, nvl(b.slarea, b.district) slarea, b.WHATSAPP_NO, b.regemailid from " + Environment.NewLine;
             sql += "" + scm + ".m_slsmn_agent a," + scmf + ".m_subleg b " + Environment.NewLine;
             sql += "where a.DISTSLCD  = b.slcd(+) " + Environment.NewLine;
             sql += "and a.effdt=(select a.effdt from " + Environment.NewLine;

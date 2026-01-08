@@ -199,8 +199,8 @@ namespace Improvar.Controllers
                 string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
                 string tdt = System.DateTime.Now.Date.retDateStr();
                 string sql = "";
-                sql += "select a.rtlcd, a.rtlnm, a.landmark from " + Environment.NewLine;
-                sql += "(select a.rtlcd, c.rtlnm, c.landmark, " + Environment.NewLine;
+                sql += "select a.rtlcd, a.rtlnm, a.landmark, a.REGEMAIL, a.REGWHATSAPPNO from " + Environment.NewLine;
+                sql += "(select a.rtlcd, c.rtlnm, c.landmark, c.REGWHATSAPPNO, c.REGEMAIL, " + Environment.NewLine;
                 sql += "row_number() over(partition by a.rtlcd order by a.effdt desc) rno " + Environment.NewLine;
                 sql += "from " + scm + ".m_retail_link a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_retail c " + Environment.NewLine;
                 sql += "where a.m_autono = b.m_autono(+) and a.rtlcd = c.rtlcd(+) and nvl(b.inactive_tag, 'N') = 'N' and " + Environment.NewLine;
@@ -216,7 +216,7 @@ namespace Improvar.Controllers
                                        select new ListRetailer()
                                        {
                                            value = a["RTLCD"].retStr(),
-                                           text = a["RTLNM"].retStr() + GCS + a["LANDMARK"].retStr(),
+                                           text = a["RTLNM"].retStr() + GCS + a["LANDMARK"].retStr() + GCS + a["REGEMAIL"].retStr() + GCS + a["REGWHATSAPPNO"].retStr(),
                                        }).ToList();
                 }
                 else

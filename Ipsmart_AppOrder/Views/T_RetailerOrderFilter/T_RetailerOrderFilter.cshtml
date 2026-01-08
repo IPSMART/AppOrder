@@ -243,7 +243,7 @@
                 $("body span h1").remove(); $("#msgbody_error style").remove();
             }
         });
-    }
+    }    
     function RetailMaster() {
 
         if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
@@ -275,6 +275,31 @@ window.open(url, '_blank');*@
             $("body span h1").remove(); $("#msgbody_error style").remove();
         }
     });
+    }
+</script>
+<script>
+    function ChkMailNumber() {
+        debugger;
+        var selectedText = $('#RetailerCode option:selected').text();
+        if (!selectedText || selectedText === "Select Retailer") {
+            return;
+        }
+        var parts = selectedText.split(String.fromCharCode(181));
+
+        
+        var email = parts[2] || "";
+        var mobile = parts[3] || "";
+
+        // Validation
+        if (mobile === "" && email === "") {
+            showCustomAlert('warning', 'Retailer has no Whatsapp Number and Email.');
+        }
+        else if (mobile === "") {
+            showCustomAlert('warning', 'Retailer has no Whatsapp Number.');
+        }
+        else if (email === "") {
+            showCustomAlert('warning', 'Retailer has no Email.');
+        }
     }
 </script>
 <script>
@@ -348,7 +373,7 @@ function toggleExpand(el) {
                     </div>
                     <div class="col-lg-5">
                         <div class="editor-field" style="margin-top: 4px;">
-                            @Html.DropDownListFor(model => model.RetailerCode, new SelectList(Model.ListRetailer, "Value", "Text", Model.RetailerCode), "Select", new { @class = "form-control select2", id = "RetailerCode" })
+                            @Html.DropDownListFor(model => model.RetailerCode, new SelectList(Model.ListRetailer, "Value", "Text", Model.RetailerCode), "Select", new { @class = "form-control select2", id = "RetailerCode", @onchange = "ChkMailNumber();" })
                             @Html.HiddenFor(model => model.RetailerName, new { id = "RetailerName" })
                         </div>
                     </div>

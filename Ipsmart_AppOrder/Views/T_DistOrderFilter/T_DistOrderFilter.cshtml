@@ -111,6 +111,30 @@
         });
     }
 </script>
+<script>
+    function ChkMailNumber() {
+        debugger;
+        var selectedText = $('#Dstbrslcd option:selected').text();
+        if (!selectedText || selectedText === "Select Retailer") {
+            return;
+        }
+        var parts = selectedText.split(String.fromCharCode(181));
+
+        var mobile = parts[2] || "";
+        var email = parts[3] || "";
+
+        // Validation
+        if (mobile === "" && email === "") {
+            showCustomAlert('warning', 'Distributor has no Whatsapp Number and Email.');
+        }
+        else if (mobile === "") {
+            showCustomAlert('warning', 'Distributor has no Whatsapp Number.');
+        }
+        else if (email === "") {
+            showCustomAlert('warning', 'Distributor has no Email.');
+        }
+    }
+</script>
 @using (Html.BeginForm())
 {
     if (Model.DefaultView == true)
@@ -137,7 +161,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field">
-                        @Html.DropDownListFor(model => model.Dstbrslcd, new SelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), "Select", new { @class = "form-control select2", id = "Dstbrslcd" })
+                        @Html.DropDownListFor(model => model.Dstbrslcd, new SelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), "Select", new { @class = "form-control select2", id = "Dstbrslcd", @onchange = "ChkMailNumber();" })
                         @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
                         @Html.HiddenFor(model => model.SLMSLCD, new { id = "SLMSLCD" })
                     </div>

@@ -198,7 +198,7 @@ namespace Improvar
                       select new ListDistributor()
                       {
                           value = a["DISTSLCD"].retStr(),
-                          text = a["DISTSLnm"].retStr() + GCS + a["SLAREA"].retStr(),
+                          text = a["DISTSLnm"].retStr() + GCS + a["SLAREA"].retStr() + GCS + a["WHATSAPP_NO"].retStr() + GCS + a["regemailid"].retStr(),
                       }).ToList();
             return sllist;
         }
