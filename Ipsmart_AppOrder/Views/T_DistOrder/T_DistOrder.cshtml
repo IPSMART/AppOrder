@@ -247,7 +247,7 @@
         align-items: flex-start;
         transition: all 0.4s;
         -webkit-transition: all 0.4s;
-         text-decoration: none;
+        text-decoration: none;
     }
 
         .menu a i {
@@ -441,14 +441,14 @@
                     var res = result.split("~");
                     if (res[0] == '1') {
                         showCustomAlert('success', 'Data Saved Successfully!' + res[1], function () {
-                window.location.href = "@Url.Action("T_DistOrderFilter", "T_DistOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
-                if (newWindow) {
-                    window.open('', '_self');
-                    window.close();
-                } else {
-                    showCustomAlert('info',"Popup blocked! Please allow popups for this website.");
-                }
-            });
+                            window.location.href = "@Url.Action("T_DistOrderFilter", "T_DistOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                            if (newWindow) {
+                                window.open('', '_self');
+                                window.close();
+                            } else {
+                                showCustomAlert('info', "Popup blocked! Please allow popups for this website.");
+                            }
+                        });
                     }
                     else {
                         showCustomAlert('info', result);
@@ -477,7 +477,6 @@
 </script>
 <script>
     function OpenSizeDet(index) {
-        debugger;
         var SerialNo = $("#SLNO_" + index).val();
         $("#hiddenindex").val(index);
         var RTLNM = $("#RTLNM_" + index).val();
@@ -510,7 +509,6 @@
     }
 
     function CloseSizeDet() {
-        debugger;
         var index = $("#hiddenindex").val();
         var SerialNo = $("#SLNO_" + index).val();
         $.ajax({
@@ -652,7 +650,6 @@
         }
     }
     function UpdateItemSize() {
-        debugger;
         var indexitem = $("#hiddenindexitem").val();
         var itrem = $("#popupITREM").val();
 
@@ -695,7 +692,6 @@
 </script>
 <script>
     function Print() {
-        debugger;
         jQuery("form").attr("target", "_blank");
         jQuery("form").submit();
     }
@@ -711,7 +707,7 @@
     <div class="truncate alert alert-info top" id="header-text" style="padding:5px;margin-bottom:0px;">
         <div class="row" id="headertitle" style="font-size: large;white-space:nowrap;">
             <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
-            <div class="menu" style="float:right;">
+            <div class="menu" style="float:right; display: flex;gap: 12px;justify-content: flex-end;">
                 <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
                 <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
                 @*<a onclick="Print();" style="border: 2px solid blue;"><i class="fa fa-print fa-lg" style="color:revert-layer;"></i></a>*@

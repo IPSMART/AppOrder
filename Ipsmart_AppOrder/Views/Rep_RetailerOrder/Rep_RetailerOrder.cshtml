@@ -149,6 +149,28 @@
         }
     });
     }
+    function BindCollection() {
+        
+        $('#CollCode').empty().append('<option value="">Select Collection</option>');
+        $.ajax({
+            url: "@Url.Action("BindCollectionData", PageControllerName)",
+            type: 'POST',
+        beforesend: $("#WaitingMode").show(),
+        data: $('form').serialize(),
+        success: function (result) {
+            $.each(result, function (index, ListCollection) {
+                $('#CollCode').append('<option value="' + ListCollection.value + '">' + ListCollection.text + '</option>');
+            });
+            $('#CollCode').trigger('change.select2'); // Refresh Select2
+            $("#WaitingMode").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
 </script>
 
 @using (Html.BeginForm())
@@ -204,8 +226,21 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple", @onchange = "BindGroup();" })
+                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple", @onchange = "BindCollection();" })
                         @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "Collection")
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode), new { @class = "form-control select2", id = "CollCode", multiple = "multiple", @onchange = "BindGroup();" })
+                        @Html.HiddenFor(model => model.CollName, new { id = "CollName" })
                     </div>
                 </div>
             </div>
@@ -222,19 +257,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.Label("", "Collection")
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="editor-field" style="margin-top: 4px;">
-                        @Html.DropDownListFor(model => model.CollCode, new SelectList(Model.ListCollection, "Value", "Text", Model.CollCode), new { @class = "form-control select2", id = "CollCode", multiple = "multiple" })
-                        @Html.HiddenFor(model => model.CollName, new { id = "CollName" })
-                    </div>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="col-lg-5" style="width:auto;">
                     <div class="editor-label" style="margin-top: 0px;">

@@ -121,20 +121,21 @@ namespace Improvar.Controllers
                                         }).ToList();
 
                         VE.ListGroup = new List<ListGroup>();
+                        VE.ListCollection = new List<ListCollection>();
 
-                        sql = "";
-                        sql += "select distinct a.COLLCD, a.COLLNM " + Environment.NewLine;
-                        sql += "from " + scm + ".M_COLLECTION a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_sitem c, " + scm + ".m_itemorder d " + Environment.NewLine;
-                        sql += "where a.m_autono = b.m_autono(+) and nvl(b.inactive_tag, 'N')= 'N' and a.collcd = c.collcd(+) and c.itcd = d.itcd " + Environment.NewLine;
-                        sql += "order by COLLNM " + Environment.NewLine;
-                        tbl = masterHelp.SQLquery(sql);
+                        //sql = "";
+                        //sql += "select distinct a.COLLCD, a.COLLNM " + Environment.NewLine;
+                        //sql += "from " + scm + ".M_COLLECTION a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_sitem c, " + scm + ".m_itemorder d " + Environment.NewLine;
+                        //sql += "where a.m_autono = b.m_autono(+) and nvl(b.inactive_tag, 'N')= 'N' and a.collcd = c.collcd(+) and c.itcd = d.itcd " + Environment.NewLine;
+                        //sql += "order by COLLNM " + Environment.NewLine;
+                        //tbl = masterHelp.SQLquery(sql);
 
-                        VE.ListCollection = (from DataRow a in tbl.Rows
-                                             select new ListCollection()
-                                             {
-                                                 value = a["COLLCD"].retStr(),
-                                                 text = a["COLLNM"].retStr(),
-                                             }).ToList();
+                        //VE.ListCollection = (from DataRow a in tbl.Rows
+                        //                     select new ListCollection()
+                        //                     {
+                        //                         value = a["COLLCD"].retStr(),
+                        //                         text = a["COLLNM"].retStr(),
+                        //                     }).ToList();
                         if (TempData["DISTSLCD"].retStr() != "")
                         {
                             VE.Dstbrslcd = TempData["DISTSLCD"].retStr();
@@ -200,7 +201,7 @@ namespace Improvar.Controllers
                 string tdt = System.DateTime.Now.Date.retDateStr();
                 string sql = "";
                 sql += "select a.rtlcd, a.rtlnm, a.landmark, a.REGEMAIL, a.REGWHATSAPPNO from " + Environment.NewLine;
-                sql += "(select a.rtlcd, c.rtlnm, c.landmark, c.REGWHATSAPPNO, c.REGEMAIL, " + Environment.NewLine;
+                sql += "(select a.rtlcd, c.rtlnm, c.landmark, nvl(c.REGWHATSAPPNO,c.REGMOBILE)REGWHATSAPPNO, c.REGEMAIL, " + Environment.NewLine;
                 sql += "row_number() over(partition by a.rtlcd order by a.effdt desc) rno " + Environment.NewLine;
                 sql += "from " + scm + ".m_retail_link a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_retail c " + Environment.NewLine;
                 sql += "where a.m_autono = b.m_autono(+) and a.rtlcd = c.rtlcd(+) and nvl(b.inactive_tag, 'N') = 'N' and " + Environment.NewLine;
@@ -240,19 +241,24 @@ namespace Improvar.Controllers
             Dictionary<string, string> dic = new Dictionary<string, string>();
             try
             {
-                string brandcd = "''";
+                string brandcd = "", collcd = "";
                 if (VE.BrandCode != null)
                 {
                     brandcd = VE.BrandCode.retSqlfromStrarray();
+                }
+                if (VE.CollCode != null)
+                {
+                    collcd = VE.CollCode.retSqlfromStrarray();
                 }
 
                 string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
                 string sql = "";
                 sql += "select distinct a.ITGRPCD, a.ITGRPNM " + Environment.NewLine;
-                sql += "from " + scm + ".M_GROUP a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_sitem c, " + scm + ".m_itemorder d " + Environment.NewLine;
+                sql += "from " + scm + ".M_GROUP a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_sitem c, " + scm + ".m_itemorder d, " + scm + ".m_group e " + Environment.NewLine;
                 sql += "where a.m_autono = b.m_autono(+)  and nvl(b.inactive_tag, 'N')= 'N' and " + Environment.NewLine;
-                sql += "a.brandcd IN (" + brandcd + ") and " + Environment.NewLine;
-                sql += "a.itgrpcd = c.itgrpcd(+) and c.itcd = d.itcd " + Environment.NewLine;
+                sql += "e.brandcd IN (" + brandcd + ") and " + Environment.NewLine;
+                if (collcd.retStr() != "") sql += "c.collcd IN (" + collcd + ") and " + Environment.NewLine;
+                sql += "a.itgrpcd = c.itgrpcd(+) and c.itcd = d.itcd and c.itgrpcd=e.itgrpcd(+) " + Environment.NewLine;
                 sql += "order by ITGRPNM " + Environment.NewLine;
 
                 DataTable tbl = masterHelp.SQLquery(sql);
@@ -273,6 +279,52 @@ namespace Improvar.Controllers
 
                 ModelState.Clear();
                 return Json(VE.ListGroup, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                dic.Add("message", ex.Message + ex.InnerException);
+                Cn.SaveException(ex, "");
+            }
+            return Json(dic, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult BindCollectionData(VMRetailOrder VE)
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            try
+            {
+                string brandcd = "";
+                if (VE.BrandCode != null)
+                {
+                    brandcd = VE.BrandCode.retSqlfromStrarray();
+                }
+
+                string COM = CommVar.Compcd(UNQSNO), LOC = CommVar.Loccd(UNQSNO), scm = CommVar.CurSchema(UNQSNO);
+                string sql = "";
+                sql = "";
+                sql += "select distinct a.COLLCD, a.COLLNM " + Environment.NewLine;
+                sql += "from " + scm + ".M_COLLECTION a, " + scm + ".m_cntrl_hdr b, " + scm + ".m_sitem c, " + scm + ".m_itemorder d, " + scm + ".m_group e " + Environment.NewLine;
+                sql += "where a.m_autono = b.m_autono(+) and nvl(b.inactive_tag, 'N')= 'N' and a.collcd = c.collcd(+) and c.itcd = d.itcd and c.itgrpcd=e.itgrpcd(+) " + Environment.NewLine;
+                sql += "and e.brandcd in (" + brandcd + ") " + Environment.NewLine;
+                sql += "order by COLLNM " + Environment.NewLine;
+                DataTable tbl = masterHelp.SQLquery(sql);
+
+                if (tbl != null && tbl.Rows.Count > 0)
+                {
+                    VE.ListCollection = (from DataRow a in tbl.Rows
+                                         select new ListCollection()
+                                         {
+                                             value = a["COLLCD"].retStr(),
+                                             text = a["COLLNM"].retStr(),
+                                         }).ToList();
+                }
+                else
+                {
+                    VE.ListCollection = new List<ListCollection>();
+                }
+
+
+                ModelState.Clear();
+                return Json(VE.ListCollection, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -647,7 +699,7 @@ namespace Improvar.Controllers
                 sql += Environment.NewLine + "a.RTLCD,d.RTLNM,a.slcd,e.slnm,e.add1 sladd1,e.add3 sladd2,e.add3 sladd3,e.add4 sladd4,e.add5 sladd5, ";
                 sql += Environment.NewLine + "e.add6 sladd6,e.add7 sladd7,e.state slstate,e.REGEMAILID,e.PANNO slpanno,e.TANNO sltanno,e.REGEMAILID slemail, ";
                 sql += Environment.NewLine + "e.REGMOBILE slmobile,e.GSTNO slgstno,d.SLMSLCD,f.slnm SLMSLNM,d.add1,d.add2,d.add3,d.add4,d.landmark,d.city,d.pin,g.statenm, ";
-                sql += Environment.NewLine + "e.DISTRICT sldistrict,e.PIN slpin, d.GSTNO, d.REGMOBILE, d.REGEMAIL,b.SIZECD,b.QNTY,d.pan,d.REGWHATSAPPNO,k.BRANDNM from ";
+                sql += Environment.NewLine + "e.DISTRICT sldistrict,e.PIN slpin, d.GSTNO, d.REGMOBILE, d.REGEMAIL,b.SIZECD,b.QNTY,d.pan,nvl(d.REGWHATSAPPNO,d.REGMOBILE)REGWHATSAPPNO,k.BRANDNM from ";
 
                 sql += Environment.NewLine + scm + ".T_RETAILORDER a, " + scm + ".T_RETAILORDERDTL b, " + scm + ".t_cntrl_hdr c, " + scm + ".M_RETAIL d, ";
                 sql += Environment.NewLine + scmf + ".m_subleg e, " + scmf + ".m_subleg f, " + scm + ".m_sitem h, " + csm + ".ms_state g, " + scm + ".M_SITEM i, " + scm + ".M_GROUP j, " + scm + ".M_BRAND k ";

@@ -7,7 +7,6 @@
 }
 <script>
     window.addEventListener("unload", function () { });
-    debugger;
     // If this page loads and reloadOnBack flag is set, refresh
     if (sessionStorage.getItem("reloadOnBack") === "true") {
         sessionStorage.removeItem("reloadOnBack");
@@ -37,7 +36,6 @@
         });
 
         $('#Dstbrslcd').change(function () {
-            debugger;
             var selectedText = $("#Dstbrslcd option:selected").text();
             $('#Dstbrslnm').val(selectedText);
         });
@@ -52,7 +50,6 @@
         });
 
         $('#BrandCode').change(function () {
-            debugger;
             var selectedTexts = $('#BrandCode option:selected').map(function () {
                 return $(this).text();
             }).get().join(', '); // You can change delimiter if needed
@@ -86,7 +83,6 @@
 </script>
 <script>
     function GetItemData() {
-        debugger;
         if (!emptyFieldCheck("Please Select Distributor Name", "Dstbrslcd")) { return false; }
         if (!emptyFieldCheck("Please Select Brand", "BrandCode")) { return false; }
         $.ajax({
@@ -113,7 +109,6 @@
 </script>
 <script>
     function ChkMailNumber() {
-        debugger;
         var selectedText = $('#Dstbrslcd option:selected').text();
         if (!selectedText || selectedText === "Select Retailer") {
             return;
@@ -125,10 +120,10 @@
 
         // Validation
         if (mobile === "" && email === "") {
-            showCustomAlert('warning', 'Distributor has no Whatsapp Number and Email.');
+            showCustomAlert('warning', 'Distributor has no Whatsapp/Mobile Number and Email.');
         }
         else if (mobile === "") {
-            showCustomAlert('warning', 'Distributor has no Whatsapp Number.');
+            showCustomAlert('warning', 'Distributor has no Whatsapp/Mobile Number.');
         }
         else if (email === "") {
             showCustomAlert('warning', 'Distributor has no Email.');

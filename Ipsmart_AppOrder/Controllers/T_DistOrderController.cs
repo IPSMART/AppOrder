@@ -405,9 +405,9 @@ namespace Improvar.Controllers
 
                 sql += Environment.NewLine + " a.autono, a.docno, a.docdt,a.VCHRNO, a.slcd,h.itnm, h.styleno,b.itcd,i.pcsperbox,i.pcsperset,i.colrperset,a.usr_id,a.usr_entdt, ";
                 sql += Environment.NewLine + "a.RTLCD,d.RTLNM,a.slcd,e.slnm,e.add1 sladd1,e.add3 sladd2,e.add3 sladd3,e.add4 sladd4,e.add5 sladd5, ";
-                sql += Environment.NewLine + "e.add6 sladd6,e.add7 sladd7,e.state slstate,e.REGEMAILID,e.PANNO slpanno,e.TANNO sltanno,e.REGEMAILID slemail, ";
+                sql += Environment.NewLine + "e.add6 sladd6,e.add7 sladd7,e.state slstate,e.REGEMAILID,nvl(e.WHATSAPP_NO,e.REGMOBILE)DISWHATSAPPNO,e.PANNO slpanno,e.TANNO sltanno,e.REGEMAILID slemail, ";
                 sql += Environment.NewLine + "e.REGMOBILE slmobile,e.GSTNO slgstno,a.SLMSLCD,f.slnm SLMSLNM,d.add1,d.add2,d.add3,d.add4,d.landmark,d.city,d.pin,g.statenm, ";
-                sql += Environment.NewLine + "e.DISTRICT sldistrict,e.PIN slpin, d.GSTNO, d.REGMOBILE, d.REGEMAIL,b.SIZECD,b.QNTY,d.pan,d.REGWHATSAPPNO,j.brandcd,k.BRANDNM from ";
+                sql += Environment.NewLine + "e.DISTRICT sldistrict,e.PIN slpin, d.GSTNO, d.REGMOBILE,nvl(d.REGWHATSAPPNO,d.REGMOBILE)REGWHATSAPPNO, d.REGEMAIL,b.SIZECD,b.QNTY,d.pan,j.brandcd,k.BRANDNM from ";
 
                 sql += Environment.NewLine + scm + ".T_DISTORDER a, " + scm + ".T_DISTORDERDTL b, " + scm + ".t_cntrl_hdr c, " + scm + ".M_RETAIL d, ";
                 sql += Environment.NewLine + scmf + ".m_subleg e, " + scmf + ".m_subleg f, " + scm + ".m_sitem h, " + csm + ".ms_state g, " + scm + ".M_SITEM i, " + scm + ".M_GROUP j, " + scm + ".M_BRAND k ";
@@ -488,6 +488,7 @@ namespace Improvar.Controllers
                 IR.Columns.Add("REGMOBILE", typeof(string), "");
                 IR.Columns.Add("RTLREGEMAIL", typeof(string), "");
                 IR.Columns.Add("DISREGEMAILID", typeof(string), "");
+                IR.Columns.Add("DISWHATSAPPNO", typeof(string), "");
                 IR.Columns.Add("autono", typeof(string), "");
                 IR.Columns.Add("QNTY", typeof(double), "");
                 IR.Columns.Add("REGWHATSAPPNO", typeof(string), "");
@@ -496,6 +497,7 @@ namespace Improvar.Controllers
                 IR.Columns.Add("compcommu", typeof(string), "");
                 IR.Columns.Add("compstat", typeof(string), "");
                 IR.Columns.Add("compREGEMAILID", typeof(string), "");
+                IR.Columns.Add("compREGWHATSAPPNO", typeof(string), "");
                 IR.Columns.Add("locaadd", typeof(string), "");
                 IR.Columns.Add("locacommu", typeof(string), "");
                 IR.Columns.Add("locastat", typeof(string), "");
@@ -542,6 +544,7 @@ namespace Improvar.Controllers
                         Row1["corpadd"] = compdtl.retCompValue("corpadd");
                         Row1["corpcommu"] = compdtl.retCompValue("corpcommu");
                         Row1["compREGEMAILID"] = comdet.Rows[0]["REGEMAIL"].retStr();
+                        Row1["compREGWHATSAPPNO"] = comdet.Rows[0]["REGMOBILE"].retStr();
                         Row1["docno"] = rstbl.Rows[i]["docno"].ToString();
                         /* Row1["docdt"] = prndt; rstbl.Rows[i]["docdt"].ToString().Remove(10);*/
                         Row1["docdt"] = rstbl.Rows[i]["docdt"].ToString().Remove(10);
@@ -554,12 +557,13 @@ namespace Improvar.Controllers
                         Row1["sldistrict"] = " " + rstbl.Rows[i]["sldistrict"].ToString() + " - " + rstbl.Rows[i]["slpin"].ToString() + ", " + rstbl.Rows[i]["slstate"].ToString();
                         Row1["RTLREGEMAIL"] = rstbl.Rows[i]["REGEMAIL"].ToString();
                         Row1["DISREGEMAILID"] = rstbl.Rows[i]["REGEMAILID"].ToString();
+                        Row1["DISWHATSAPPNO"] = rstbl.Rows[i]["DISWHATSAPPNO"].ToString();
                         Row1["usr_id"] = rstbl.Rows[i]["usr_id"].ToString();
                         Row1["usr_entdt"] = rstbl.Rows[i]["usr_entdt"].ToString();
                         Row1["rem"] = "";
                         Row1["autono"] = rstbl.Rows[i]["autono"].ToString();
                         Row1["QNTY"] = rstbl.Rows[i]["QNTY"].ToString();
-                        Row1["REGWHATSAPPNO"] = comdet.Rows[0]["REGMOBILE"].retStr();// rstbl.Rows[i]["REGWHATSAPPNO"].ToString();
+                        //Row1["REGWHATSAPPNO"] = comdet.Rows[0]["REGMOBILE"].retStr();// rstbl.Rows[i]["REGWHATSAPPNO"].ToString();
                         //details table
                         slno++;
                         Row1["slno"] = slno;
@@ -691,13 +695,23 @@ namespace Improvar.Controllers
                 rptname = "~/Report/" + rptfile;
                 ReportDocument reportdocument = new ReportDocument();
 
+                sql = "select b.SLMSLCD,b.SLNO, b.agslcd,c.slnm agslnm, b.DISTSLCD, d.slnm DISTSlnm,d.SLAREA DISTSLAREA,c.REGEMAILID from " + Environment.NewLine;
+                sql += scm + ".M_SLSMN_AGENT b," + scmf + ".M_SUBLEG c," + scmf + ".M_SUBLEG d " + Environment.NewLine;
+                sql += "where b.AGSLCD=C.SLCD and b.DISTSLCD=d.slcd(+) and b.EFFDT=( SELECT MAX(x.EFFDT)  " + Environment.NewLine;
+                sql += "FROM " + scm + ".M_SLSMN_AGENT x  " + Environment.NewLine;
+                sql += "WHERE x.SLMSLCD = b.SLMSLCD ) order by b.slno " + Environment.NewLine;
+                DataTable tbl = masterHelp.SQLquery(sql);
+
+
                 var rsemailid = (from DataRow dr in IR.Rows
                                  select new
                                  {
                                      email = dr["DISREGEMAILID"],
                                      slcd = dr["slcd"],
-                                     regmno = dr["REGWHATSAPPNO"],
+                                     regmno = dr["DISWHATSAPPNO"],
                                      autono = dr["autono"],
+                                     compregmno = dr["compREGWHATSAPPNO"],
+                                     SLMSLCD = dr["SLMSLCD"],
 
                                  }).Distinct().ToList();
 
@@ -833,6 +847,20 @@ namespace Improvar.Controllers
                         emlaryBody[8, 0] = "{compmobno}"; emlaryBody[8, 1] = compMobile;
                         if (rsemailid[z].email.ToString() != "")
                         {
+                            string distslcd = rsemailid[z].slcd.retStr();
+                            string slmslcd = rsemailid[z].SLMSLCD.retStr();
+                            string agmailid = string.Join(";", (from DataRow dr in tbl.Rows where dr["DISTSLCD"].retStr() == distslcd && dr["SLMSLCD"].retStr() == slmslcd && dr["REGEMAILID"].retStr() != "" select dr["REGEMAILID"].retStr()).Distinct());
+
+                            if (agmailid.retStr() != "")
+                            {
+                                if (ccemailid.retStr() != "")
+                                {
+                                    ccemailid += ";";
+                                }
+                                ccemailid += agmailid;
+                            }
+                            // distributor,company,agent
+
                             bool emailsent = EmailControl.SendHtmlFormattedEmail(rsemailid[z].email.ToString(), "Order Copy", "DistOrder.htm", emlaryBody, attchmail, ccemailid);
                             if (emailsent == true) sendemailids = sendemailids + rsemailid[z].email.ToString() + ";"; else sendemailids = sendemailids + " not able to send on " + rsemailid[z].email.ToString();
                         }
@@ -848,15 +876,27 @@ namespace Improvar.Controllers
                         smsaryMsg[7, 0] = "&compfixlogo&"; smsaryMsg[7, 1] = compfixlogosrc;
                         smsaryMsg[8, 0] = "&compmobno&"; smsaryMsg[8, 1] = compMobile;
 
-                        if (rsemailid[z].regmno.ToString() != "")
+
+                       
+                        string mobno = rsemailid[z].regmno.ToString();
+                        if (rsemailid[z].compregmno.retStr() != "")
+                        {
+                            if (mobno.retStr() != "")
+                            {
+                                mobno += ",";
+                            }
+                            mobno += rsemailid[z].compregmno.ToString();
+                        }
+                        if (mobno.retStr() != "")
                         {
                             SMS sms = new SMS();
                             List<string> sendmsg = sms.WHATSAPPMessContectGen(slcd, "APPORDW", smsaryMsg);
-                            msgresult = sms.WHATSAPPsend(rsemailid[z].regmno.ToString(), sendmsg[0], sendmsg[1], pdffilenm, imgfilenm);
+                            // distributor,company
+                            msgresult = sms.WHATSAPPsend(mobno, sendmsg[0], sendmsg[1], pdffilenm, imgfilenm);
                             string[] msgretval = msgresult.Split('=');
                             if (msgretval[0].retStr() == "")
                             {
-                                sendmobno = rsemailid[z].regmno.ToString();
+                                sendmobno = mobno.ToString();
                             }
                         }
 

@@ -36,8 +36,8 @@ namespace Improvar.Controllers
                 else
                 {
                     ImprovarDB DBF = new ImprovarDB(Cn.GetConnectionString(), CommVar.FinSchema(UNQSNO));
-                    ViewBag.formname = "DISTRIBUTOR ORDER CONFIRMATION";
-                    ViewBag.Title = "Order";
+                    ViewBag.formname = "DIST. ORDER CONFIRMATION";
+                    ViewBag.Title = "DIST. ORDER CONFIRMATION";
                     VE.UNQSNO_ENCRYPTED = Cn.Encrypt_URL(UNQSNO);
 
                     string GCS = Cn.GCS();

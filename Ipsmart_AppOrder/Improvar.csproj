@@ -320,7 +320,6 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MultiviewerController.cs" />
     <Compile Include="Controllers\RPTViewerController.cs" />
-    <Compile Include="Controllers\T_RetailerOrderController.cs" />
     <Compile Include="Controllers\UserRightsController.cs" />
     <Compile Include="Controllers\User_GuideController.cs" />
     <Compile Include="DataTableToList.cs" />
@@ -892,7 +891,6 @@
     <Content Include="Views\M_RetailOutlet\M_RetailOutlet.cshtml" />
     <Content Include="Views\Shared\_T_RetailerOrder_Main.cshtml" />
     <Content Include="Views\Shared\_LayoutReport.cshtml" />
-    <Content Include="Views\T_RetailerOrder\T_RetailerOrder.cshtml" />
     <Content Include="Views\Shared\_M_Retail_Distributor.cshtml" />
     <Content Include="Views\Shared\_MobileLayout.cshtml" />
     <Content Include="Views\Shared\_LayoutMaster.cshtml" />

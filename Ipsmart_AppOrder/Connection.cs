@@ -3112,7 +3112,8 @@ namespace Improvar
             sql += "from " + scm + "." + tblnm + " a ";
             if (monthwise == true) sql += "where a.mnthcd='" + month_code + "'";
             //sql += "a.compcd='" + CommVar.Compcd(UNQSNO) + "' and a.loccd='" + CommVar.Loccd(UNQSNO) + "' and a.yr_cd='" + yrcd + "' ";
-            sql += "group by a.mnthcd) a ";
+            if (monthwise == true) sql += "group by a.mnthcd ";
+            sql += ") a ";
 
 
             DataTable tbl = masterHelp.SQLquery(sql);
