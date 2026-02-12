@@ -228,4 +228,9 @@ namespace Improvar.Models
         public string text { get; set; }
         public string value { get; set; }
     }
+    public class DropDown_list_REPAUTONO
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
 }

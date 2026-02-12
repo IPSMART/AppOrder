@@ -263,33 +263,57 @@ function pageValidation(id, MNUDET, UNQSNO) {
                     resultIndex = result.substring(0, 1);
                     if (resultIndex == "1") {
                         $("#WaitingMode").hide();
-                        var strrel = result.split("~");
-                        if (strrel.length == 1) {
-                            var outr = strrel[0].substring(1);
-                            msgSuccess1("Save Successfully" + outr);
-                        }
-                        else {
-                            var outr = strrel[0].substring(1);
-                            msgSuccess1("Save Successfully" + outr);
-                            $("#SearchValue").val(strrel[1]);
-                        }
+                        //var strrel = result.split("~");
+                        //if (strrel.length == 1) {
+                        //    var outr = strrel[0].substring(1);
+                        //    msgSuccess1("Save Successfully" + outr);
+                        //}
+                        //else {
+                        //    var outr = strrel[0].substring(1);
+                        //    msgSuccess1("Save Successfully" + outr);
+                        //    $("#SearchValue").val(strrel[1]);
+                        //}
+                        var res = result.split("~");
+                        showCustomAlert('success', 'Data Saved Successfully!' + res[1], function () {
+                            var url = window.location.href;
+                            window.location = url;
+                            if (newWindow) {
+                                window.open('', '_self');
+                                window.close();
+                            }
+                            else {
+                                showCustomAlert('info', "Popup blocked! Please allow popups for this website.");
+                            }
+                        });
                         return false;
                     }
                     else if (resultIndex == "2") {
-                        $("#WaitingMode").hide();
-                        msgSuccess2("Edited Successfully ");
+                        showCustomAlert('success', 'Edited Successfully!', function () {
+                            var url = window.location.href;
+                            window.location = url;
+                            if (newWindow) {
+                                window.open('', '_self');
+                                window.close();
+                            }
+                            else {
+                                showCustomAlert('info', "Popup blocked! Please allow popups for this website.");
+                            }
+                        });
+                        //$("#WaitingMode").hide();
+                        //msgSuccess2("Edited Successfully ");
                         return false;
                     }
                     else {
                         $("#WaitingMode").hide()
                         COUNTER_FOR_SAVE = 0;
-                        msgWarning(result);
+                        showCustomAlert('info', result);
                         return false;
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     $("#WaitingMode").hide(); COUNTER_FOR_SAVE = 0;
-                    msgError(XMLHttpRequest.responseText);
+                    showCustomAlert('error', XMLHttpRequest.responseText);
+
                     $("body span h1").remove(); $("#msgbody_error style").remove();
                 }
             });
@@ -299,6 +323,7 @@ function pageValidation(id, MNUDET, UNQSNO) {
         }
     }
 }
+
 
 function deletePageData() {
     $.ajax({

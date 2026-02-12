@@ -399,40 +399,7 @@
 
                 $("#GPSLAT").val(LAT);
                 $("#GPSLOT").val(LOT);
-            }
-            //need to open
-            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            //    showCustomAlert('info','Location not found,Save again!');
-            //    //getLocation();
-            //    $("#WaitingMode").hide();
-            //    return false;
-            //}
-            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            //    showCustomAlert('info','Location not found,Save again!');
-            //    //getLocation();
-            //    $("#WaitingMode").hide();
-            //    return false;
-            //}
-            //if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
-            //    showCustomAlert('info','retailer not found!');
-            //    $("#WaitingMode").hide();
-            //    return false;
-            //}
-            //var hdnData1 = '';
-            //$('#tblMain > tbody  > tr').each(function () {
-            //    var ITCD = $(this).find("td").eq(3).html();
-            //    //var QNTY = $(this).find("td").eq(1).html();
-            //    var SIZE = $(this)[0].dataset.sizeqnty;// $(this).find("td").eq(1).html();
-            //    var ITREM = $(this).find("td").eq(2).find('input').val();
-
-            //    if (hdnData1 != '') hdnData1 += ',';
-            //    hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "', 'itrem': '" + ITREM + "'  }";
-            //});
-
-            //console.log(hdnData1);
-            //if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
-            //$("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
-
+            }     
             $.ajax({
                 type: 'post',
                 url: "@Url.Action("SAVE", PageControllerName)",

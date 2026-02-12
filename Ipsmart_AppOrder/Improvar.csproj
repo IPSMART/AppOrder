@@ -320,6 +320,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MultiviewerController.cs" />
     <Compile Include="Controllers\RPTViewerController.cs" />
+    <Compile Include="Controllers\T_SLM_DLYREPController.cs" />
     <Compile Include="Controllers\UserRightsController.cs" />
     <Compile Include="Controllers\User_GuideController.cs" />
     <Compile Include="DataTableToList.cs" />
@@ -453,6 +454,7 @@
     <Compile Include="Models\SignAuthority.cs" />
     <Compile Include="Models\SubLedgerDetails.cs" />
     <Compile Include="Models\TCNTRLAUTH.cs" />
+    <Compile Include="Models\TSLMDLYREP.cs" />
     <Compile Include="Models\T_CNTRL_AUTH.cs" />
     <Compile Include="Models\T_CNTRL_DOC_PASS.cs" />
     <Compile Include="Models\T_CNTRL_HDR.cs" />
@@ -465,6 +467,8 @@
     <Compile Include="Models\T_DISTORDPICKUP.cs" />
     <Compile Include="Models\T_RETAILORDER.cs" />
     <Compile Include="Models\T_RETAILORDERDTL.cs" />
+    <Compile Include="Models\T_SLM_DLYREP.cs" />
+    <Compile Include="Models\T_SLM_DLYREP_HDR.cs" />
     <Compile Include="Models\T_TXNEINV.cs" />
     <Compile Include="Models\T_TXNEWB.cs" />
     <Compile Include="Models\T_TXNSTATUS.cs" />
@@ -516,6 +520,7 @@
     <Compile Include="ViewModels\UserWiseDocumentTypeRightsEntry.cs" />
     <Compile Include="ViewModels\VMDistOrder.cs" />
     <Compile Include="ViewModels\VMRetailOrder.cs" />
+    <Compile Include="ViewModels\VM_SLMDLYREP.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\A4-Landscep.css" />
@@ -901,6 +906,9 @@
     <Content Include="Views\Shared\_T_RetailerOrderFilter_Main.cshtml" />
     <Content Include="Views\Rep_RetailerOrder\Rep_RetailerOrder.cshtml" />
     <Content Include="Views\Rep_DistOrder\Rep_DistOrder.cshtml" />
+    <Content Include="Views\T_SLM_DLYREP\T_SLM_DLYREP.cshtml" />
+    <Content Include="Views\Shared\_T_SLM_DLYREP.cshtml" />
+    <Content Include="Views\Shared\_LayoutTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

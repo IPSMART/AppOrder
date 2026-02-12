@@ -1,0 +1,142 @@
+﻿@model Improvar.ViewModels.VM_SLMDLYREP
+@*<style>
+    .menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;   /* space between number & icon */
+}*@
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        function formatResult(item) {
+            if (!item.id) return item.text;
+            var parts = item.text.split(String.fromCharCode(181));
+            return $('<div><strong>' + parts[0] + '</strong><br/><small>' + parts[1] + '</small></div>');
+        }
+        function formatResult1(item) {
+            if (!item.id) return item.text;
+            var parts = item.text.split(String.fromCharCode(181));
+            return $('<div><strong>' + parts[0] + '</strong></div>');
+        }
+        function formatSelection(item) {
+            var str = "";
+            if (item.text.split(String.fromCharCode(181)).length > 1) {
+                return item.text.split(String.fromCharCode(181))[0] + " [" + item.text.split(String.fromCharCode(181))[1] + "]";
+            }
+            else {
+                return item.text.split(String.fromCharCode(181))[0];
+            }
+        }
+
+        $('.DropdownDISTSLCD').select2({
+            width: '100%',
+            placeholder: "Select Distributor",
+            allowClear: true,
+            templateResult: formatResult,
+            templateSelection: formatSelection,
+        });
+        $('.DropdownBRANDCD').select2({
+            width: '100%',
+            placeholder: "Select Brand",
+            allowClear: true,
+            templateResult: formatResult1,
+            templateSelection: formatSelection,
+        });
+        $('.DropdownRTLCD').select2({
+            width: '100%',
+            placeholder: "Select Retailer",
+            allowClear: true,
+            templateResult: formatResult,
+            templateSelection: formatSelection,
+        });
+        $('.DropdownITMCTG').select2({
+            width: '100%',
+            placeholder: "Select Ctg",
+            allowClear: true,
+            templateResult: formatResult1,
+            templateSelection: formatSelection,
+        });
+    });
+</script>
+
+<div class="table-scroll">
+    <div class="table-header-fixed">
+        <table class="inner-table header-table">
+            <tr class="m-header">
+                <td width="92px;">SL.</td>
+                <td width="85px;">Ctg.</td>
+                <td>Details</td>
+                <td>Qnty</td>
+            </tr>
+            <tr class="m-header">
+                <td>
+                    <div class="menu">
+                        Amount
+                        <a onclick="AddRowData();" style="border:2px solid red;width:20px;height:20px;">
+                            <i class="fa fa-plus" style="color:red;font-size:15px;"></i>
+                        </a>
+                    </div>
+                </td>
+                <td>Dist.</td>
+                <td>Brand</td>
+                <td>Retailer</td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="table mobile-4col" style="margin-bottom:0px;">
+        <tbody>
+            @if (Model.TSLMDLYREP != null)
+            {
+                for (int i = 0; i < Model.TSLMDLYREP.Count; i++)
+                {
+                    <tr class="item-card">
+                        <td colspan="4">
+                            <table id="tblMain" class="inner-table">
+                                <!-- FIRST VALUE ROW -->
+                                <tr class="m-value">
+                                    <td width="92px;">                                          
+                                        <div class="menu">
+                                            <span class="sl-badge">@Model.TSLMDLYREP[i].SLNO</span>
+                                            <a onclick="DeleteRowData('@i');" style="border:2px solid red;width:20px;height:20px;">
+                                                <i class="fa fa-minus" style="color:red;font-size:15px;"></i>
+                                            </a>                                            
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].ITMCTG, new SelectList(Model.DropDown_list, "Value", "Text", Model.TSLMDLYREP[i].ITMCTG), "", new { id = "ITMCTG_" + i, @class = "DropdownITMCTG GridDropDownListFor" })
+                                        @Html.HiddenFor(model => Model.TSLMDLYREP[i].SLNO, new { id = "SLNO_" + i })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].DTLS, new { htmlAttributes = new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } })                                        
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].QNTY, new { htmlAttributes = new { id = "QNTY_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Quantity" } })
+                                    </td>                                    
+                                </tr>
+
+                                <!-- SECOND VALUE ROW -->
+                                <tr class="m-value">
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].AMT, new { htmlAttributes = new { id = "AMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Amount" } })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].DISTSLCD, new SelectList(Model.ListDistributor, "Value", "Text", Model.TSLMDLYREP[i].DISTSLCD), "", new { id = "DISTSLCD_" + i, @class = "DropdownDISTSLCD GridDropDownListFor" })  
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].BRANDCD, new SelectList(Model.ListBrand, "Value", "Text", Model.TSLMDLYREP[i].BRANDCD), "", new { id = "BRANDCD_" + i, @class = "DropdownBRANDCD GridDropDownListFor" })
+                                    </td>
+                                    <td>
+                                       @Html.DropDownListFor(model => Model.TSLMDLYREP[i].RTLCD, new SelectList(Model.ListRetailer, "Value", "Text", Model.TSLMDLYREP[i].RTLCD), "", new { id = "RTLCD_" + i, @class = "DropdownRTLCD GridDropDownListFor" })
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
