@@ -20,7 +20,17 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        //getLocation();
+        getLocation(function (loc) {
+            if (loc) {
+                $("#GEOLATITUDE").val(loc.lat);
+                $("#GEOLONGITUDE").val(loc.lng);
+                //showCustomAlert("info", "Location: " + loc.lat + ", " + loc.lng);
+            }
+            else {
+                return false;
+                //showCustomAlert("info", "Location: ");
+            }
+        });
 
         function formatResult(item) {
             if (!item.id) return item.text;
@@ -127,26 +137,6 @@
     });
 </script>
 <script>
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    // Success: Set hidden fields
-                    $("#GEOLONGITUDE").val(position.coords.latitude);
-                    $("#GEOLATITUDE").val(position.coords.longitude);
-                    console.log(position.coords.latitude + ',' + position.coords.longitude);
-
-                },
-                function (error) {
-                    //showCustomAlert('info',"Location access is required to use this service.");
-
-                }
-            );
-        } else {
-            showCustomAlert('info', "Geolocation is not supported by this browser.");
-
-        }
-    }
     function BindRetailer() {
         
 

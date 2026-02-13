@@ -392,14 +392,46 @@
 <script>
     function SaveData() {
         $("#WaitingMode").show();
-        getLocation(function (latlot) {
-            if (latlot != "") {
-                var LAT = returncolvalue(latlot, "LAT");
-                var LOT = returncolvalue(latlot, "LOT");
+        getLocation(function (loc) {
+            if (loc) {
+                var LAT = loc.lat;
+                var LOT = loc.lng;
 
                 $("#GPSLAT").val(LAT);
                 $("#GPSLOT").val(LOT);
-            }     
+            }
+            else {
+                $("#WaitingMode").hide();
+                return false;
+            }
+            if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+                $("#WaitingMode").hide();
+                return false;
+            }
+            if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+                $("#WaitingMode").hide();
+                return false;
+            }
+            //if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
+            //    showCustomAlert('info','retailer not found!');
+            //    $("#WaitingMode").hide();
+            //    return false;
+            //}
+            //var hdnData1 = '';
+            //$('#tblMain > tbody  > tr').each(function () {
+            //    var ITCD = $(this).find("td").eq(3).html();
+            //    //var QNTY = $(this).find("td").eq(1).html();
+            //    var SIZE = $(this)[0].dataset.sizeqnty;// $(this).find("td").eq(1).html();
+            //    var ITREM = $(this).find("td").eq(2).find('input').val();
+
+            //    if (hdnData1 != '') hdnData1 += ',';
+            //    hdnData1 += "{ 'ITCD': '" + ITCD + "', 'sizes': '" + SIZE + "', 'itrem': '" + ITREM + "'  }";
+            //});
+
+            //console.log(hdnData1);
+            //if (hdnData1 == '') { msgInfo('Data Not found'); return false; }
+            //$("#ITEMDETAIL_JSTR").val('[' + hdnData1 + ']');
+
             $.ajax({
                 type: 'post',
                 url: "@Url.Action("SAVE", PageControllerName)",

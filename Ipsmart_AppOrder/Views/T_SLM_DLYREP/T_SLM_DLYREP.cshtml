@@ -8,147 +8,145 @@
 <link href="~/Content/swiper-bundle.min.css" rel="stylesheet" />
 <script src="~/Scripts/swiper-bundle.min.js"></script>
 <script src="~/Scripts/sweetalert2@11.js"></script>
-<link href="~/Content/layout_misc.css" rel="stylesheet" />
 <style>
-    .inner-table td:has(input[readonly]) {
-        background-color: #eeeeee;
-    }
-</style>
 
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        padding: 10px;
-    }
+/* ===== GLOBAL TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-    .sub-top {
-        position: fixed;
-        left: 0;
-        width: 100%;
-    }
+/* readonly input background */
+.inner-table td:has(input[readonly]) {
+    background: #eeeeee;
+}
 
-    .table-responsive {
-        overflow-x: auto;
-        overflow-y: auto;
-    }
-</style>
+/* scroll container */
+.table-responsive {
+    overflow-x: auto;
+    overflow-y: auto;
+}
 
-<style>
-    /*@@media (max-width: 768px) {*/
+.sub-top {
+    position: fixed;
+    left: 0;
+    width: 100%;
+}
+
+/* ===== INNER GRID LAYOUT ===== */
+
+.inner-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.inner-table td {
+    text-align: center;
+    padding: 6px 4px;
+    border: 1px solid #cfd8dc;
+    font-size: 12px;
+}
+
+/* header */
+.m-header td {
+    background: #1f4e79;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* sticky header */
+.header-table td {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #1f4e79;
+}
+
+/* scroll body */
+.table-scroll {
+    max-height: 63vh;
+    overflow-y: auto;
+}
+
+.table-header-fixed {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* ===== SL COLUMN ===== */
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.sl-badge {
+    background: #1f4e79;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* ===== INPUTS / DROPDOWN ===== */
+
+.inner-table select,
+.inner-table input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 12px;
+}
+
+/* remove bootstrap default look inside grid */
+#tblMain td input.form-control {
+    border: none;
+    background: transparent;
+    margin: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+/* wrapping text */
+#tblMain th,
+#tblMain td {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    padding: 0;
+    border: 1px solid #ddd;
+}
+
+/* ===== MOBILE OPTIMIZATION ===== */
+
+@@media (max-width: 768px) {
 
     .item-card td {
         position: relative;
-        padding: 14px 10px 10px;
+        padding: 12px 8px;
         border: none;
     }
+}
 
-    /* SL badge */
-    .sl-badge {
-        position: absolute;
-        top: 2px;
-        /*left: 6px;*/
-        background: #1f4e79;
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 12px;
-        z-index: 10;
-    }
-    /* container alignment */
-    .item-line {
-        margin-left: 65px;
-        margin-top: -6px;
-    }
-
-    .inner-table {
-        width: 100%;
-        border: 1px solid #cfd8dc;
-        border-radius: 6px;
-        overflow: hidden;
-    }
-
-        /* GRID ONLY FOR BODY ROWS */
-        .inner-table .m-value {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-    /* NORMAL TABLE FOR HEADER */
-    .header-table tr {
-        display: table-row;
-    }
-
-    .inner-table td {
-        text-align: center;
-        padding: 6px 4px;
-        border: 1px solid #cfd8dc;
-        font-size: 12px;
-    }
-
-    .m-header td {
-        background: #1f4e79;
-        color: #fff;
-        font-weight: 600;
-    }
-
-    #tblMain td input.form-control {
-        width: 100%;
-        height: auto;
-        border: none; /* remove border */
-        background: transparent; /* transparent background */
-        padding: 0; /* remove padding */
-        margin: 0;
-        font-size: 12px;
-        line-height: 1.4;
-        outline: none; /* no blue border on focus */
-        box-shadow: none; /* remove extra effects */
-    }
-
-    .header-table {
-        margin-bottom: 0;
-    }
-
-        .header-table td {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: #1f4e79;
-        }
-
-
-    .table-scroll {
-        max-height: 63vh; /* REQUIRED */
-        overflow-y: auto;
-    }
-
-    .table-header-fixed {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-    /*}*/
+/* WRAP TEXT (important) */
+.select2-results__option {
+    white-space: normal !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
+    padding: 8px 10px;
+}
+.card-wrap{
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.08);
+    overflow:hidden;
+    margin-bottom:10px;
+}
 </style>
-<style>
-    /* Input boxes fill cell but do NOT resize table */
-    .GridDropDownListFor {
-        box-sizing: border-box;
-        font-size: 12px;
-    }
-</style>
-<style>
-    /* Allow wrapping inside cells */
-    #tblMain th,
-    #tblMain td {
-        white-space: normal;
-        word-break: break-word;
-        overflow-wrap: break-word;
-        font-size: 12px;
-        padding: 4px;
-        border: 1px solid #ddd;
-    }
-</style>
+
 <script>
     window.addEventListener("unload", function () { });
 

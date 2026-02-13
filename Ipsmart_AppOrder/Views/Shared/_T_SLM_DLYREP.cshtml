@@ -1,11 +1,4 @@
 ﻿@model Improvar.ViewModels.VM_SLMDLYREP
-@*<style>
-    .menu {
-    display: flex;
-    align-items: center;
-    gap: 8px;   /* space between number & icon */
-}*@
-</style>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -33,6 +26,7 @@
             width: '100%',
             placeholder: "Select Distributor",
             allowClear: true,
+            dropdownParent: $('body'),
             templateResult: formatResult,
             templateSelection: formatSelection,
         });
@@ -40,6 +34,7 @@
             width: '100%',
             placeholder: "Select Brand",
             allowClear: true,
+            dropdownParent: $('body'),
             templateResult: formatResult1,
             templateSelection: formatSelection,
         });
@@ -47,6 +42,7 @@
             width: '100%',
             placeholder: "Select Retailer",
             allowClear: true,
+            dropdownParent: $('body'),
             templateResult: formatResult,
             templateSelection: formatSelection,
         });
@@ -54,6 +50,7 @@
             width: '100%',
             placeholder: "Select Ctg",
             allowClear: true,
+            dropdownParent: $('body'),
             templateResult: formatResult1,
             templateSelection: formatSelection,
         });
@@ -72,10 +69,10 @@
             <tr class="m-header">
                 <td>
                     <div class="menu">
-                        Amount
                         <a onclick="AddRowData();" style="border:2px solid red;width:20px;height:20px;">
                             <i class="fa fa-plus" style="color:red;font-size:15px;"></i>
                         </a>
+                        Amount
                     </div>
                 </td>
                 <td>Dist.</td>
@@ -93,27 +90,27 @@
                 {
                     <tr class="item-card">
                         <td colspan="4">
-                            <table id="tblMain" class="inner-table">
+                            <table id="tblMain" class="inner-table card-wrap">
                                 <!-- FIRST VALUE ROW -->
                                 <tr class="m-value">
-                                    <td width="92px;">                                          
-                                        <div class="menu">
-                                            <span class="sl-badge">@Model.TSLMDLYREP[i].SLNO</span>
+                                    <td>
+                                        <div class="menu" style="margin-top: 2px;">
                                             <a onclick="DeleteRowData('@i');" style="border:2px solid red;width:20px;height:20px;">
                                                 <i class="fa fa-minus" style="color:red;font-size:15px;"></i>
-                                            </a>                                            
+                                            </a>
+                                            <span class="sl-badge">@Model.TSLMDLYREP[i].SLNO</span>
                                         </div>
                                     </td>
                                     <td>
-                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].ITMCTG, new SelectList(Model.DropDown_list, "Value", "Text", Model.TSLMDLYREP[i].ITMCTG), "", new { id = "ITMCTG_" + i, @class = "DropdownITMCTG GridDropDownListFor" })
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].ITMCTG, new SelectList(Model.DropDown_list, "Value", "Text", Model.TSLMDLYREP[i].ITMCTG), "", new { id = "ITMCTG_" + i, @class = "DropdownITMCTG atextBoxFor select_3d" })
                                         @Html.HiddenFor(model => Model.TSLMDLYREP[i].SLNO, new { id = "SLNO_" + i })
                                     </td>
                                     <td>
-                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].DTLS, new { htmlAttributes = new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } })                                        
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].DTLS, new { htmlAttributes = new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } })
                                     </td>
                                     <td>
                                         @Html.EditorFor(model => Model.TSLMDLYREP[i].QNTY, new { htmlAttributes = new { id = "QNTY_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Quantity" } })
-                                    </td>                                    
+                                    </td>
                                 </tr>
 
                                 <!-- SECOND VALUE ROW -->
@@ -122,13 +119,13 @@
                                         @Html.EditorFor(model => Model.TSLMDLYREP[i].AMT, new { htmlAttributes = new { id = "AMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Amount" } })
                                     </td>
                                     <td>
-                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].DISTSLCD, new SelectList(Model.ListDistributor, "Value", "Text", Model.TSLMDLYREP[i].DISTSLCD), "", new { id = "DISTSLCD_" + i, @class = "DropdownDISTSLCD GridDropDownListFor" })  
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].DISTSLCD, new SelectList(Model.ListDistributor, "Value", "Text", Model.TSLMDLYREP[i].DISTSLCD), "", new { id = "DISTSLCD_" + i, @class = "DropdownDISTSLCD atextBoxFor select_3d" })
                                     </td>
                                     <td>
-                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].BRANDCD, new SelectList(Model.ListBrand, "Value", "Text", Model.TSLMDLYREP[i].BRANDCD), "", new { id = "BRANDCD_" + i, @class = "DropdownBRANDCD GridDropDownListFor" })
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].BRANDCD, new SelectList(Model.ListBrand, "Value", "Text", Model.TSLMDLYREP[i].BRANDCD), "", new { id = "BRANDCD_" + i, @class = "DropdownBRANDCD atextBoxFor select_3d" })
                                     </td>
                                     <td>
-                                       @Html.DropDownListFor(model => Model.TSLMDLYREP[i].RTLCD, new SelectList(Model.ListRetailer, "Value", "Text", Model.TSLMDLYREP[i].RTLCD), "", new { id = "RTLCD_" + i, @class = "DropdownRTLCD GridDropDownListFor" })
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].RTLCD, new SelectList(Model.ListRetailer, "Value", "Text", Model.TSLMDLYREP[i].RTLCD), "", new { id = "RTLCD_" + i, @class = "DropdownRTLCD atextBoxFor select_3d" })
                                     </td>
                                 </tr>
                             </table>

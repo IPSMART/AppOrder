@@ -50,11 +50,11 @@
             $("#PURECD").attr("readonly", true);
         }
         else if ("@Model.DefaultAction" == "A") {
-            getLocation(function (latlot) {
+            getLocation(function (loc) {
                 $("#WaitingMode").show();
-                if (latlot != "") {
-                    var LAT = returncolvalue(latlot, "LAT");
-                    var LOT = returncolvalue(latlot, "LOT");
+                if (loc) {
+                    var LAT = loc.lat;
+                    var LOT = loc.lng;
 
                     $("#GPSLAT").val(LAT);
                     $("#GPSLOT").val(LOT);
@@ -69,9 +69,13 @@
                         },
                         error: function (XMLHttpRequest) {
                             $("#WaitingMode").hide();
-                            msgError(XMLHttpRequest.responseText);
+                            showCustomAlert('error', XMLHttpRequest.responseText);
                         }
                     });
+                }
+                else {
+                    $("#WaitingMode").hide();
+                    return false;
                 }
                 $('form :input:enabled:visible:not([readonly]):first').focus();
                 $("#WaitingMode").hide();

@@ -586,29 +586,28 @@
 <script>
     function ChkForMergeData(){
         $("#WaitingMode").show();
-        getLocation(function (latlot) {
-            if (latlot != "") {
-                var LAT = returncolvalue(latlot, "LAT");
-                var LOT = returncolvalue(latlot, "LOT");
+        getLocation(function (loc) {
+            if (loc) {
+                var LAT = loc.lat;
+                var LOT = loc.lng;
 
                 $("#GPSLAT").val(LAT);
                 $("#GPSLOT").val(LOT);
             }
-            //need to open
-            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            //    showCustomAlert('info','Location not found,Save again!');
-            //    //getLocation();
-            //    $("#WaitingMode").hide();
-            //    return false;
-            //}
-            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            //     showCustomAlert('info','Location not found,Save again!');
-            //    //getLocation();
-            //    $("#WaitingMode").hide();
-            //    return false;
-            //}
+            else
+            {
+                $("#WaitingMode").hide();
+                return false;
+            }
+            if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+                $("#WaitingMode").hide();
+                return false;
+            }
+            if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+                $("#WaitingMode").hide();
+                return false;
+            }
             if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
-                showCustomAlert('info','retailer not found!');
                 $("#WaitingMode").hide();
                 return false;
             }
@@ -624,43 +623,16 @@
                         var msg = returncolvalue(result, "MSG");
                         if(msg =="Y")
                         {
-                            //if (confirm("Data Available for Partcular Distributor and Retailer ! Are You Sure ? You Want To Merge Order \n\nPress OK for YES, Cancel for NO. !!"))
-                            //{
-                            //    SaveData(returncolvalue(result, "AUTONO"));
-                            //}
-                            //else
-                            //{
-                            //    SaveData('');
-                            //}
-                            //askYesNo("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
-                            //  .then((yes) => {
-                            //      debugger;
-                            //      if (yes) {
-                            //          SaveData(returncolvalue(result, "AUTONO")); // YES
-                            //      } else {
-                            //          SaveData(''); // NO
-                            //      }
-                            //  });
-                            //                          askYesNoCancel("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
-                            //.then((choice) => {
-                            //    if (choice === "yes") {
-                            //        SaveData(returncolvalue(result, "AUTONO")); // YES
-                            //    } else if (choice === "no") {
-                            //        SaveData(''); // NO
-                            //    } else {
-                            //        $("#WaitingMode").hide();
-                            //    }
-                            //});
                             askYesNo("Data Available for Particular Distributor and Retailer!\nAre You Sure You Want To Merge Order?")
-  .then((choice) => {
-      if (choice === "yes") {
-          SaveData(returncolvalue(result, "AUTONO")); // YES
-      } else if (choice === "no") {
-          SaveData(''); // NO
-      } else if (choice === "cancel") {
-          $("#WaitingMode").hide();
-      }
-  });
+                              .then((choice) => {
+                                  if (choice === "yes") {
+                                      SaveData(returncolvalue(result, "AUTONO")); // YES
+                                  } else if (choice === "no") {
+                                      SaveData(''); // NO
+                                  } else if (choice === "cancel") {
+                                      $("#WaitingMode").hide();
+                                  }
+                              });
                         }
                         else
                         {
@@ -681,27 +653,27 @@
     }
     function SaveData(autono) {
         $("#WaitingMode").show();
-        getLocation(function (latlot) {
-            if (latlot != "") {
-                var LAT = returncolvalue(latlot, "LAT");
-                var LOT = returncolvalue(latlot, "LOT");
+        getLocation(function (loc) {
+            if (loc) {
+                var LAT = loc.lat;
+                var LOT = loc.lng;
 
                 $("#GPSLAT").val(LAT);
                 $("#GPSLOT").val(LOT);
             }
-            //need to open
-            //if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
-            //     showCustomAlert('info','Location not found,Save again!');
-            //    //getLocation();
-            //    $("#WaitingMode").hide();
-            //    return false;
-            //}
-            //if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
-            //     showCustomAlert('info','Location not found,Save again!');
-            //    //getLocation();
-            //    $("#WaitingMode").hide();
-            //    return false;
-            //}
+            else
+            { 
+                $("#WaitingMode").hide();
+                return false;
+            }
+            if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+                $("#WaitingMode").hide();
+                return false;
+            }
+            if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+                $("#WaitingMode").hide();
+                return false;
+            }
             if (!emptyFieldCheck("Please select retailer!", "RTLCD")) {
                 showCustomAlert('info','retailer not found!');
                 $("#WaitingMode").hide();

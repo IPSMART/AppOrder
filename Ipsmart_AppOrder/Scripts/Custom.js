@@ -847,7 +847,7 @@ function OpenCheckRemarks() {
     document.getElementById("CHK_Remarks").focus();
 }
 function CHK_Remark_close() {
-    document.getElementById("CHK_Remarks").value = ""; 
+    document.getElementById("CHK_Remarks").value = "";
     document.getElementById("CHK_overlay").style.display = "none";
     document.getElementById("Authorise_overlay").style.display = "none";
 }
@@ -1611,27 +1611,7 @@ function scrollToEnd(Id) {
     var chatList = document.getElementById(Id);
     chatList.scrollTop = chatList.scrollHeight;
 }
-function getLocation(callback) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                console.log(position.coords.latitude + ',' + position.coords.longitude);
-                var latlot = "";
-                latlot += "^LAT=^" + position.coords.latitude + String.fromCharCode(181);
-                latlot += "^LOT=^" + position.coords.longitude + String.fromCharCode(181);
-                callback(latlot); // Pass the value back
-            },
-            function (error) {
-                //alert("Location access is required to use this service.");
-                callback(""); // Return empty string
-            }
-        );
-    } else {
-        alert("Geolocation is not supported by this browser.");
-        callback("");
-    }
-}
-function OpenHome(){
+function OpenHome() {
     window.location.href = "../Multiviewer/multiVu";
     if (newWindow) {
         window.open('', '_self'); // Required for some browsers
@@ -1807,3 +1787,53 @@ function closeCustomAlert() {
         cb();
     }
 }
+function getLocation(callback) {
+    window._locationCallback = callback;
+
+    if (window.AndroidApp && window.AndroidApp.checkGpsAndGetLocation) {
+        window.AndroidApp.checkGpsAndGetLocation();
+    }
+        // 2️⃣ If normal Web Browser
+    else if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                callback({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
+            },
+            function (error) {
+                alert("Please allow location access.");
+                callback(null);
+            }
+        );
+    }
+
+    else {
+        showCustomAlert("info", "Geolocation is not supported.");
+        callback(null);
+    }
+}
+
+function handleLocationResult(success, lat, lng) {
+    if (!window._locationCallback) return;
+
+    if (success && lat && lng) {
+        window._locationCallback({ lat, lng });
+    }
+    else {
+        // permission denied OR GPS off OR failed
+        window._locationCallback(null);
+
+        if (lat === -2) {
+            console.log("Permission not granted. System prompt or Settings dialog shown.");
+        }
+        //else {
+        //    showCustomAlert("info", "Please turn on GPS and try again.");
+        //}
+    }
+
+    window._locationCallback = null;
+}
+
