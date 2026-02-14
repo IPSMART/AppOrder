@@ -30,6 +30,7 @@ namespace Improvar.Models
         [StringLength(8)]
         public string SLMSLCD { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DOCDT { get; set; }
 
         [StringLength(500)]

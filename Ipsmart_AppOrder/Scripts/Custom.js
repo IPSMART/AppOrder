@@ -1836,4 +1836,27 @@ function handleLocationResult(success, lat, lng) {
 
     window._locationCallback = null;
 }
+document.addEventListener("focusin", function (e) {
+    if (e.target.classList.contains("numeric-input")) {
+        e.target.setAttribute("autocomplete", "new-password");
+        if (e.target.value !== "") {
+            setTimeout(function () {
+                e.target.select();   // select existing value
+            }, 0);
+        }
+    }
+});
+// Disable autocomplete at form level
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll("form").forEach(function (form) {
+        form.setAttribute("autocomplete", "off");
+    });
+
+    document.querySelectorAll(".numeric-input").forEach(function (el) {
+        el.setAttribute("autocomplete", "new-password");
+    });
+
+});
+
 
