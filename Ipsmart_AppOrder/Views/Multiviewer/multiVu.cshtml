@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>CRM Garment</title>
     @*@Styles.Render("~/Content/all.min.css?Ver=" + Module.ContentVersion)*@
 
@@ -19,10 +19,14 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-
+        html, body {
+    height: 100%;
+}
         body {
-            overflow-x: hidden;
-        }
+           overflow-x: hidden;
+    position: relative;
+    height: 100%;
+  }
 
         /* Header */
         header {
@@ -31,10 +35,11 @@
             color: #3a87ad;
             padding: 15px;
             font-size: 18px;
-            /*display: flex;*/
-            align-items: center;
-            position: relative;
-            z-index: 1001;
+            position: fixed; /* ADD */
+            top: 0; /* ADD */
+            left: 0; /* ADD */
+            width: 100%; /* ADD */
+            z-index: 3000; /* HIGHER THAN SIDEBAR */
         }
 
             header .menu-btn {
@@ -45,23 +50,22 @@
 
         /* Sidebar */
         .sidebar {
-            position: fixed;
-            top: 0;
+            position: absolute; /* CHANGE from fixed */
+            top: 60px;
             left: -260px;
             width: 260px;
-            height: 100%;
+            bottom: 0;
             background: #d9edf7;
-            border-color: #bce8f1;
             color: #3a87ad;
-            transition: 0.3s;
-            padding-top: 20px;
-            z-index: 1000;
+            transition: left 0.3s ease;
+            z-index: 2000;
             overflow-y: auto;
         }
 
             .sidebar.active {
                 left: 0;
             }
+
 
         /* Close button */
         .close-btn {
@@ -77,7 +81,7 @@
         .search-container {
             display: flex;
             align-items: center;
-            margin: 50px 20px 15px 20px;
+            margin: 15px 20px 15px 20px;
             background: #fff;
             border-radius: 4px;
             overflow: hidden;
@@ -103,12 +107,15 @@
         .sidebar ul {
             list-style: none;
             margin-top: 10px;
+             position: relative;
+    z-index: 2;
         }
 
             .sidebar ul li {
                 padding: 10px 20px;
                 cursor: pointer;
                 position: relative;
+                display: block;
             }
 
                 .sidebar ul li:hover {
@@ -119,6 +126,11 @@
                     float: right;
                     margin-top: 4px;
                 }
+                .sidebar li {
+    position: relative;
+    z-index: 2;
+    background: #d9edf7;
+}
 
         /* Submenu */
         .submenu {
@@ -133,9 +145,9 @@
 
         /* Content */
         .content {
-            padding: 20px;
-            transition: 0.3s;
-            margin-left: 0;
+           padding: 80px 20px 20px 20px;
+    min-height: 100vh;
+    background: #fff;
         }
 
             .content.shifted {
@@ -182,7 +194,7 @@
     </header>
 
     <div class="sidebar" id="sidebar">
-        <i class="fas fa-times close-btn" id="closeBtn"></i>
+        @*<i class="fas fa-times close-btn" id="closeBtn"></i>*@
 
         <!-- Search box -->
         <div class="search-container">
@@ -196,7 +208,7 @@
             <li onclick="window.open('@Url.Action("T_DistOrderFilter","T_DistOrderFilter")','_self')" class="menu-item">Distributor Order</li>
             <li onclick="window.open('@Url.Action("Rep_DistOrder","Rep_DistOrder")','_self')" class="menu-item">Distributor Order Register</li>
             <li onclick="window.open('@Url.Action("T_SLM_DLYREP","T_SLM_DLYREP")','_self')" class="menu-item">Salesmen Daily Acitivity</li>
-  @*<li class="menu-item has-submenu">
+            @*<li class="menu-item has-submenu">
                     Products <i class="fas fa-chevron-down"></i>
                     <ul class="submenu">
                         <li>Electronics</li>
@@ -226,30 +238,30 @@
         const menuBtn = document.querySelector('.menu-btn');
         const sidebar = document.getElementById('sidebar');
         const content = document.getElementById('content');
-        const closeBtn = document.getElementById('closeBtn');
         const submenus = document.querySelectorAll('.has-submenu');
         const menuItems = document.querySelectorAll('#menu > li');
         const searchInput = document.getElementById('search');
         //const searchBtn = document.getElementById('searchBtn');
 
+        let startX = 0;
+        let endX = 0;
+
         // Toggle sidebar open
-        menuBtn.addEventListener('click', (e) => {
+        menuBtn.addEventListener('click', function (e) {
             e.stopPropagation();
-            sidebar.classList.add('active');
-            content.classList.add('shifted');
+            sidebar.classList.toggle('active');
         });
 
         // Close sidebar with close button
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-            content.classList.remove('shifted');
-        });
+        //closeBtn.addEventListener('click', () => {
+        //    sidebar.classList.remove('active');
+        //    content.classList.remove('shifted');
+        //});
 
         // Close sidebar when clicking outside
         document.addEventListener('click', (e) => {
             if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
                 sidebar.classList.remove('active');
-                content.classList.remove('shifted');
             }
         });
 
@@ -267,9 +279,23 @@
             item.addEventListener('click', () => {
                 if (!item.classList.contains('has-submenu')) {
                     sidebar.classList.remove('active');
-                    content.classList.remove('shifted');
                 }
             });
+        });
+
+        /* SWIPE LEFT → CLOSE */
+        sidebar.addEventListener('touchstart', function (e) {
+            startX = e.touches[0].clientX;
+        });
+
+        sidebar.addEventListener('touchmove', function (e) {
+            endX = e.touches[0].clientX;
+        });
+
+        sidebar.addEventListener('touchend', function () {
+            if (startX - endX > 60) {   // swipe left distance
+                sidebar.classList.remove('active');
+            }
         });
 
         // Search button functionality

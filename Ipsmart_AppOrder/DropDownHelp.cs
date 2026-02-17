@@ -193,13 +193,15 @@ namespace Improvar
             string GCS = Cn.GCS();
             List<ListDistributor> sllist = new List<ListDistributor>();
             DataTable tbl = salesfunc.GetDistributor(tdt, SLMSLCD);
-
-            sllist = (from DataRow a in tbl.Rows
-                      select new ListDistributor()
-                      {
-                          value = a["DISTSLCD"].retStr(),
-                          text = a["DISTSLnm"].retStr() + GCS + a["SLAREA"].retStr() + GCS + a["WHATSAPP_NO"].retStr() + GCS + a["regemailid"].retStr(),
-                      }).ToList();
+            if (tbl != null)
+            {
+                sllist = (from DataRow a in tbl.Rows
+                          select new ListDistributor()
+                          {
+                              value = a["DISTSLCD"].retStr(),
+                              text = a["DISTSLnm"].retStr() + GCS + a["SLAREA"].retStr() + GCS + a["WHATSAPP_NO"].retStr() + GCS + a["regemailid"].retStr(),
+                          }).ToList();
+            }
             return sllist;
         }
 
@@ -208,13 +210,15 @@ namespace Improvar
             string GCS = Cn.GCS();
             List<ListBrand> sllist = new List<ListBrand>();
             DataTable tbl = salesfunc.GetBrand(tdt, SLMSLCD);
-
-            sllist = (from DataRow a in tbl.Rows
-                      select new ListBrand()
-                      {
-                          value = a["BRANDCD"].retStr(),
-                          text = a["BRANDNM"].retStr(),
-                      }).ToList();
+            if (tbl != null)
+            {
+                sllist = (from DataRow a in tbl.Rows
+                          select new ListBrand()
+                          {
+                              value = a["BRANDCD"].retStr(),
+                              text = a["BRANDNM"].retStr(),
+                          }).ToList();
+            }
             return sllist;
         }
         public List<ListCollection> GetCollectionforSelection()
@@ -231,13 +235,15 @@ namespace Improvar
             sql += "order by COLLNM " + Environment.NewLine;
             DataTable tbl = masterHelp.SQLquery(sql);
 
-
-            sllist = (from DataRow a in tbl.Rows
-                                 select new ListCollection()
-                                 {
-                                     value = a["COLLCD"].retStr(),
-                                     text = a["COLLNM"].retStr(),
-                                 }).ToList();
+            if (tbl != null)
+            {
+                sllist = (from DataRow a in tbl.Rows
+                          select new ListCollection()
+                          {
+                              value = a["COLLCD"].retStr(),
+                              text = a["COLLNM"].retStr(),
+                          }).ToList();
+            }
             return sllist;
         }
 

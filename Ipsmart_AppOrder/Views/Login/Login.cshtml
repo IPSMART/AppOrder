@@ -98,7 +98,8 @@
                     $("#latitude").val(loc.lat);
                     $("#longitude").val(loc.lng);
                     //jQuery("form").attr("target", "_blank");
-                    jQuery("form").submit();
+                    //jQuery("form").submit();
+                    document.forms[0].submit();
                 }
                 else {
                     return false;

@@ -63,8 +63,8 @@
             <tr class="m-header">
                 <td width="92px;">SL.</td>
                 <td width="85px;">Ctg.</td>
-                <td>Details</td>
                 <td>Qnty</td>
+                <td>Amount</td>
             </tr>
             <tr class="m-header">
                 <td>
@@ -72,12 +72,11 @@
                         <a onclick="AddRowData();" style="border:2px solid red;width:20px;height:20px;">
                             <i class="fa fa-plus" style="color:red;font-size:15px;"></i>
                         </a>
-                        Amount
+                        Dist.
                     </div>
                 </td>
-                <td>Dist.</td>
                 <td>Brand</td>
-                <td>Retailer</td>
+                <td colspan="2">Retailer</td>
             </tr>
         </table>
     </div>
@@ -105,27 +104,33 @@
                                         @Html.DropDownListFor(model => Model.TSLMDLYREP[i].ITMCTG, new SelectList(Model.DropDown_list, "Value", "Text", Model.TSLMDLYREP[i].ITMCTG), "", new { id = "ITMCTG_" + i, @class = "DropdownITMCTG atextBoxFor select_3d" })
                                         @Html.HiddenFor(model => Model.TSLMDLYREP[i].SLNO, new { id = "SLNO_" + i })
                                     </td>
-                                    <td>
-                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].DTLS, new { htmlAttributes = new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } })
-                                    </td>
+                                    @*<td>
+                                            @Html.EditorFor(model => Model.TSLMDLYREP[i].DTLS, new { htmlAttributes = new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } })
+                                        </td>*@
                                     <td>
                                         @Html.EditorFor(model => Model.TSLMDLYREP[i].QNTY, new { htmlAttributes = new { id = "QNTY_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Quantity" } })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].AMT, new { htmlAttributes = new { id = "AMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Amount" } })
                                     </td>
                                 </tr>
 
                                 <!-- SECOND VALUE ROW -->
                                 <tr class="m-value">
-                                    <td>
-                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].AMT, new { htmlAttributes = new { id = "AMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Amount" } })
-                                    </td>
+
                                     <td>
                                         @Html.DropDownListFor(model => Model.TSLMDLYREP[i].DISTSLCD, new SelectList(Model.ListDistributor, "Value", "Text", Model.TSLMDLYREP[i].DISTSLCD), "", new { id = "DISTSLCD_" + i, @class = "DropdownDISTSLCD atextBoxFor select_3d" })
                                     </td>
                                     <td>
                                         @Html.DropDownListFor(model => Model.TSLMDLYREP[i].BRANDCD, new SelectList(Model.ListBrand, "Value", "Text", Model.TSLMDLYREP[i].BRANDCD), "", new { id = "BRANDCD_" + i, @class = "DropdownBRANDCD atextBoxFor select_3d" })
                                     </td>
-                                    <td>
+                                    <td colspan="2">
                                         @Html.DropDownListFor(model => Model.TSLMDLYREP[i].RTLCD, new SelectList(Model.ListRetailer, "Value", "Text", Model.TSLMDLYREP[i].RTLCD), "", new { id = "RTLCD_" + i, @class = "DropdownRTLCD atextBoxFor select_3d" })
+                                    </td>
+                                </tr>
+                                <tr class="m-value">
+                                    <td colspan="4">
+                                        @Html.TextAreaFor(model => Model.TSLMDLYREP[i].DTLS, new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } )
                                     </td>
                                 </tr>
                             </table>
