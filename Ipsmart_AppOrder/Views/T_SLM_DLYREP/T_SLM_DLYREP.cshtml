@@ -169,11 +169,11 @@ table {
     });
     
 </script>
-<script>
+@*<script>
     $(function () {
-            $("#DOCDT").datepicker({ dateFormat: "dd/mm/yy", changeMonth: false, changeYear: false, maxDate: '@Model.maxdate', minDate: '@Model.mindate' });
+        $("#DOCDT").datepicker({ dateFormat: "dd/mm/yy", changeMonth: true, changeYear: true, maxDate: '@Model.maxdate', minDate: '@Model.mindate' });
     });
-</script>
+</script>*@
 <script>
     function requiredFieldValidator() {        
         if (!emptyFieldCheck("Enter / Select Document Date", "DOCDT")) { return false; }        
@@ -254,7 +254,38 @@ table {
         $("#hide_dlt_1").hide();
         $("#show_dtl").show();
     }
+    function validateCONVSTR(input, index) {
+        debugger;
+        // allow digits, + and decimal
+        input.value = input.value.replace(/[^0-9+\.]/g, '');
 
+        // prevent multiple decimals in one number
+        var parts = input.value.split("+");
+        for (var i = 0; i < parts.length; i++) {
+            var segment = parts[i];
+            var firstDot = segment.indexOf(".");
+            if (firstDot !== -1) {
+                // remove extra dots
+                parts[i] = segment.substring(0, firstDot + 1) +
+                           segment.substring(firstDot + 1).replace(/\./g, '');
+            }
+        }
+
+        input.value = parts.join("+");
+        CalculateTotalTa(index);
+    }
+    function CalculateTotalTa(index)
+    {
+        var arrCONVSTR = $("#CONVSTR_" + index).val().split("+");
+        var CONVAMT=0
+        for (var i = 0; i <= arrCONVSTR.length - 1; i++) {
+             CONVAMT += retFloat(arrCONVSTR[i]);
+        }
+
+        var TAAMT = retFloat($("#TAAMT_" + index).val());
+        var totaltaamt = retFloat(TAAMT + CONVAMT).toFixed(2);
+        $("#TOT_TAAMT_" + index).val(totaltaamt);
+    }
 </script>
 @using (Html.BeginForm())
 {
@@ -292,12 +323,17 @@ table {
                     </div>
                     <div class="col-md-2">
                         <div class="editor-field">
-                            @Html.EditorFor(model => model.T_SLM_DLYREP_HDR.DOCDT, new { htmlAttributes = new { @class = "form-control", id = "DOCDT", maxlength = 10, @placeholder = "dd/mm/yyyy" } })
+                            @Html.EditorFor(model => model.T_SLM_DLYREP_HDR.DOCDT, new { htmlAttributes = new { @class = "form-control", id = "DOCDT", maxlength = 10, @placeholder = "dd/mm/yyyy", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="btn_" style="width:auto;margin-top: 4px;">
+                        <div class="editor-field">
+                            <input type="button" class="btn btn-info" style="padding:2px 2px 2px 2px;" value="Edite Record" onclick="DeptDivtoggle()" />
                         </div>
                     </div>
                 </div>
 
-                <div class="row" id="divGetRetailerInfo">
+                @*<div class="row" id="divGetRetailerInfo">
                     <div class="col-lg-1">
                         <div class="editor-field" style="margin-top: 4px;">
                             @Html.Label("", "Remarks")
@@ -313,7 +349,7 @@ table {
                             <input type="button" class="btn btn-info" style="padding:2px 2px 2px 2px;" value="Edite Record" onclick="DeptDivtoggle()" />
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="row" id="show_dtl">
                     <div class="col-lg-1">
                         <div class="editor-field" style="margin-top: 4px;">

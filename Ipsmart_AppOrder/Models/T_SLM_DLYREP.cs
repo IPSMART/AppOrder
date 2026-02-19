@@ -30,25 +30,39 @@ namespace Improvar.Models
         [Column(Order = 1)]
         public byte SLNO { get; set; }
 
-        [StringLength(8)]
-        public string DISTSLCD { get; set; }
+        public DateTime? DTD { get; set; }
 
-        [StringLength(8)]
-        public string RTLCD { get; set; }
+        [StringLength(30)]
+        public string PLFROM { get; set; }
+
+        [StringLength(30)]
+        public string PLTO { get; set; }
+
+        [StringLength(10)]
+        public string MODETRAVEL { get; set; }
+
+        public short? KMUPDN { get; set; }
+
+        [StringLength(40)]
+        public string CONVSTR { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public double? CONVAMT { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public double? TAAMT { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public double? DAAMT { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public double? BOOKQTY { get; set; }
 
         [StringLength(4)]
-        public string BRANDCD { get; set; }
+        public string BOOKUOM { get; set; }
 
-        [Required]
-        [StringLength(12)]
-        public string ITMCTG { get; set; }
+        [StringLength(200)]
+        public string REMK { get; set; }
 
-        [Required]
-        [StringLength(500)]
-        public string DTLS { get; set; }
-
-        public decimal? QNTY { get; set; }
-
-        public decimal? AMT { get; set; }
     }
 }

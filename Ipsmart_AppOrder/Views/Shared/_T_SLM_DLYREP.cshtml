@@ -22,49 +22,35 @@
             }
         }
 
-        $('.DropdownDISTSLCD').select2({
+        $('.DropdownBOOKUOM').select2({
             width: '100%',
-            placeholder: "Select Distributor",
-            allowClear: true,
-            dropdownParent: $('body'),
-            templateResult: formatResult,
-            templateSelection: formatSelection,
-        });
-        $('.DropdownBRANDCD').select2({
-            width: '100%',
-            placeholder: "Select Brand",
+            placeholder: "Select Uom",
             allowClear: true,
             dropdownParent: $('body'),
             templateResult: formatResult1,
             templateSelection: formatSelection,
         });
-        $('.DropdownRTLCD').select2({
-            width: '100%',
-            placeholder: "Select Retailer",
-            allowClear: true,
-            dropdownParent: $('body'),
-            templateResult: formatResult,
-            templateSelection: formatSelection,
-        });
-        $('.DropdownITMCTG').select2({
-            width: '100%',
-            placeholder: "Select Ctg",
-            allowClear: true,
-            dropdownParent: $('body'),
-            templateResult: formatResult1,
-            templateSelection: formatSelection,
-        });
+
+        var firstVal = $('.DropdownBOOKUOM option:not(:empty)').first().val();
+        $('.DropdownBOOKUOM').val(firstVal).trigger('change');
     });
 </script>
+<script>
+    $(function () {
 
+        $(".DTD").datepicker({ dateFormat: "dd/mm/yy", changeMonth: true, changeYear: true, maxDate: '@Model.maxdate', minDate: '@Model.mindate' });
+
+    });
+</script>
 <div class="table-scroll">
     <div class="table-header-fixed">
         <table class="inner-table header-table">
             <tr class="m-header">
-                <td width="92px;">SL.</td>
-                <td width="85px;">Ctg.</td>
-                <td>Qnty</td>
-                <td>Amount</td>
+                <td>SL.</td>
+                <td>Date</td>
+                <td>Place From</td>
+                <td>Place To</td>
+                <td>Km.(Up/Down)</td>
             </tr>
             <tr class="m-header">
                 <td>
@@ -72,11 +58,12 @@
                         <a onclick="AddRowData();" style="border:2px solid red;width:20px;height:20px;">
                             <i class="fa fa-plus" style="color:red;font-size:15px;"></i>
                         </a>
-                        Dist.
+                        Conv. fees
                     </div>
                 </td>
-                <td>Brand</td>
-                <td colspan="2">Retailer</td>
+                <td>T.A.</td>
+                <td>D.A.</td>
+                <td colspan="2">Booking Qnty</td>
             </tr>
         </table>
     </div>
@@ -101,36 +88,48 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].ITMCTG, new SelectList(Model.DropDown_list, "Value", "Text", Model.TSLMDLYREP[i].ITMCTG), "", new { id = "ITMCTG_" + i, @class = "DropdownITMCTG atextBoxFor select_3d" })
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].DTD, new { htmlAttributes = new { id = "DTD_" + i, @style = "font-weight:bold;", @class = "DTD form-control ", maxlength = 10, @placeholder = "dd/mm/yyyy" } })
                                         @Html.HiddenFor(model => Model.TSLMDLYREP[i].SLNO, new { id = "SLNO_" + i })
                                     </td>
-                                    @*<td>
-                                            @Html.EditorFor(model => Model.TSLMDLYREP[i].DTLS, new { htmlAttributes = new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } })
-                                        </td>*@
                                     <td>
-                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].QNTY, new { htmlAttributes = new { id = "QNTY_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Quantity" } })
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].PLFROM, new { htmlAttributes = new { id = "PLFROM_" + i, @class = "form-control ", maxlength = 500, @placeholder = "From" } })
                                     </td>
                                     <td>
-                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].AMT, new { htmlAttributes = new { id = "AMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Amount" } })
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].PLTO, new { htmlAttributes = new { id = "PLTO_" + i, @class = "form-control ", maxlength = 500, @placeholder = "To" } })
                                     </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].KMUPDN, new { htmlAttributes = new { id = "KMUPDN_" + i, @class = "form-control ", inputmode = "decimal", type = "tel", maxlength = 500, @placeholder = "KM.(Up/Down)" } })
+                                        @*@Html.DropDownListFor(model => Model.TSLMDLYREP[i].MODETRAVEL, new SelectList(Model.MODETRAVEL, "Value", "Text", Model.TSLMDLYREP[i].MODETRAVEL), "", new { id = "MODETRAVEL_" + i, @class = "DropdownITMCTG atextBoxFor select_3d" })*@
+                                    </td>
+
                                 </tr>
 
                                 <!-- SECOND VALUE ROW -->
                                 <tr class="m-value">
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].CONVSTR, new { htmlAttributes = new { id = "CONVSTR_" + i, @class = "form-control ", maxlength = 500, inputmode = "decimal", type = "tel", @placeholder = "E.g.0+0+0..", oninput = "return validateCONVSTR(this," + i + ")" } })
+                                        @Html.HiddenFor(model => Model.TSLMDLYREP[i].CONVAMT, new { id = "CONVAMT_" + i })
+                                    </td>
 
                                     <td>
-                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].DISTSLCD, new SelectList(Model.ListDistributor, "Value", "Text", Model.TSLMDLYREP[i].DISTSLCD), "", new { id = "DISTSLCD_" + i, @class = "DropdownDISTSLCD atextBoxFor select_3d" })
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].TAAMT, new { htmlAttributes = new { id = "TAAMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "T.A.", oninput = "CalculateTotalTa(" + i + ");" } })
                                     </td>
                                     <td>
-                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].BRANDCD, new SelectList(Model.ListBrand, "Value", "Text", Model.TSLMDLYREP[i].BRANDCD), "", new { id = "BRANDCD_" + i, @class = "DropdownBRANDCD atextBoxFor select_3d" })
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].DAAMT, new { htmlAttributes = new { id = "DAAMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "D.A." } })
                                     </td>
-                                    <td colspan="2">
-                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].RTLCD, new SelectList(Model.ListRetailer, "Value", "Text", Model.TSLMDLYREP[i].RTLCD), "", new { id = "RTLCD_" + i, @class = "DropdownRTLCD atextBoxFor select_3d" })
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].BOOKQTY, new { htmlAttributes = new { id = "BOOKQTY_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Qnty" } })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => Model.TSLMDLYREP[i].BOOKUOM, new SelectList(Model.BOOKUOM, "Value", "Text", Model.TSLMDLYREP[i].BOOKUOM), "", new { id = "BOOKUOM_" + i, @class = "DropdownBOOKUOM atextBoxFor select_3d" })
                                     </td>
                                 </tr>
                                 <tr class="m-value">
                                     <td colspan="4">
-                                        @Html.TextAreaFor(model => Model.TSLMDLYREP[i].DTLS, new { id = "DTLS_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" } )
+                                        @Html.TextAreaFor(model => Model.TSLMDLYREP[i].REMK, new { id = "REMK_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].TOT_TAAMT, new { htmlAttributes = new { id = "TOT_TAAMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Total", @readonly = "readonly" } })
                                     </td>
                                 </tr>
                             </table>

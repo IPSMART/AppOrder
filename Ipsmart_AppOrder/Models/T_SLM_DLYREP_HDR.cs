@@ -9,7 +9,7 @@ namespace Improvar.Models
     [Table("T_SLM_DLYREP_HDR")]
     public partial class T_SLM_DLYREP_HDR
     {
-        
+
         public short? EMD_NO { get; set; }
 
         [Required]
@@ -33,7 +33,5 @@ namespace Improvar.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DOCDT { get; set; }
 
-        [StringLength(500)]
-        public string DOCREM { get; set; }       
     }
 }

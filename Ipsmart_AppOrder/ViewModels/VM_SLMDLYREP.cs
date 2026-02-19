@@ -21,15 +21,13 @@ namespace Improvar.ViewModels
         public string TCOMPNM { get; set; }
         public List<TSLMDLYREP> TSLMDLYREP { get; set; }
         public List<DocumentType> DocumentType { get; set; }
+        public List<BOOKUOM> BOOKUOM { get; set; }
+        public List<TRANSMODE> MODETRAVEL { get; set; }
         public string GEOLONGITUDE { get; set; }
         public string GEOLATITUDE { get; set; }
         public List<DropDown_list> DropDown_list { get; set; }       
         public string DEPTCD { get; set; }
         public string TMPLNAME { get; set; }
-        public List<Database_Combo2> Database_Combo2 { get; set; }
-        public List<ListDistributor> ListDistributor { get; set; }
-        public List<ListBrand> ListBrand { get; set; }
-        public List<ListRetailer> ListRetailer { get; set; }
         public string SLMSLCD { get; set; }
         public string REPAUTONO { get; set; }
         public List<DropDown_list_REPAUTONO> DropDown_list_REPAUTONO { get; set; }

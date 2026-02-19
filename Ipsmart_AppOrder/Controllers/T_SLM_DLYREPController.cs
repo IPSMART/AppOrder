@@ -53,7 +53,6 @@ namespace Improvar.Controllers
                     string uid = CommVar.UserID();
                     DataTable tbl = new DataTable();
                     VE.DropDown_list_REPAUTONO = new List<DropDown_list_REPAUTONO>();
-                    VE.Database_Combo2 = new List<Database_Combo2>();
                     T_CNTRL_HDR tcnrl = new T_CNTRL_HDR();
                     //tcnrl.DOCDT = System.DateTime.Now;
                     //if (VE.DocumentType != null && VE.DocumentType.Count() > 0)
@@ -63,10 +62,8 @@ namespace Improvar.Controllers
                     VE.T_CNTRL_HDR = tcnrl;
 
                     VE.SLMSLCD = Salesfunc.GetSalesman(tdt, uid);
-                    VE.DropDown_list = GetdocctgSelection();
-                    VE.ListDistributor = DropDown_Help.GetDistributorforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                    VE.ListBrand = DropDown_Help.GetBrandforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                    VE.ListRetailer = GetRetailerforSelection(VE.SLMSLCD);
+                    VE.MODETRAVEL = MODETRAVEL();
+                    VE.BOOKUOM = BOOKUOM();
 
                     string sql1 = "select distinct a.autono, c.docno, a.docdt " + Environment.NewLine;
                     sql1 += "from " + scm + ".T_SLM_DLYREP_HDR a, " + scm + ".T_SLM_DLYREP b, " + scm + ".t_cntrl_hdr c " + Environment.NewLine;
@@ -208,7 +205,7 @@ namespace Improvar.Controllers
                         }
                         TSLMDLYREPHDR.DOCDT = VE.T_SLM_DLYREP_HDR.DOCDT;
                         TSLMDLYREPHDR.SLMSLCD = VE.SLMSLCD.retStr();
-                        TSLMDLYREPHDR.DOCREM = VE.T_SLM_DLYREP_HDR.DOCREM.retStr();
+                        //TSLMDLYREPHDR.DOCREM = VE.T_SLM_DLYREP_HDR.DOCREM.retStr();
                         if (VE.DefaultAction == "E")
                         {
                             dbsql = masterHelp.TblUpdt("T_SLM_DLYREP", TSLMDLYREPHDR.AUTONO, "E");
@@ -225,22 +222,28 @@ namespace Improvar.Controllers
 
                         for (int i = 0; i <= VE.TSLMDLYREP.Count - 1; i++)
                         {
-                            if (VE.TSLMDLYREP[i].ITMCTG.retStr() != "")
+                            if (VE.TSLMDLYREP[i].DTD.retStr() != "")
                             {
                                 COUNTER = COUNTER + 1;
                                 T_SLM_DLYREP TSLMDLYREP = new T_SLM_DLYREP();
-                                TSLMDLYREP.SLNO = VE.TSLMDLYREP[i].SLNO;
-                                TSLMDLYREP.AUTONO = TSLMDLYREPHDR.AUTONO;
-                                TSLMDLYREP.CLCD = TSLMDLYREPHDR.CLCD;
                                 TSLMDLYREP.EMD_NO = TSLMDLYREPHDR.EMD_NO;
-                                TSLMDLYREP.QNTY = VE.TSLMDLYREP[i].QNTY;
-                                TSLMDLYREP.DISTSLCD = VE.TSLMDLYREP[i].DISTSLCD;
-                                TSLMDLYREP.RTLCD = VE.TSLMDLYREP[i].RTLCD;
-                                TSLMDLYREP.BRANDCD = VE.TSLMDLYREP[i].BRANDCD;
-                                TSLMDLYREP.ITMCTG = VE.TSLMDLYREP[i].ITMCTG;
-                                TSLMDLYREP.DTLS = VE.TSLMDLYREP[i].DTLS;
-                                TSLMDLYREP.QNTY = VE.TSLMDLYREP[i].QNTY;
-                                TSLMDLYREP.AMT = VE.TSLMDLYREP[i].AMT;
+                                TSLMDLYREP.CLCD = TSLMDLYREPHDR.CLCD;
+                                TSLMDLYREP.DTAG = TSLMDLYREPHDR.DTAG;
+
+                                TSLMDLYREP.AUTONO = TSLMDLYREPHDR.AUTONO;
+                                TSLMDLYREP.SLNO = VE.TSLMDLYREP[i].SLNO;
+                                TSLMDLYREP.DTD = VE.TSLMDLYREP[i].DTD;
+                                TSLMDLYREP.PLFROM = VE.TSLMDLYREP[i].PLFROM;
+                                TSLMDLYREP.PLTO = VE.TSLMDLYREP[i].PLTO;
+                                TSLMDLYREP.MODETRAVEL = VE.TSLMDLYREP[i].MODETRAVEL;
+                                TSLMDLYREP.KMUPDN = VE.TSLMDLYREP[i].KMUPDN;
+                                TSLMDLYREP.CONVSTR = VE.TSLMDLYREP[i].CONVSTR;
+                                TSLMDLYREP.CONVAMT = VE.TSLMDLYREP[i].CONVAMT;
+                                TSLMDLYREP.TAAMT = VE.TSLMDLYREP[i].TAAMT;
+                                TSLMDLYREP.DAAMT = VE.TSLMDLYREP[i].DAAMT;
+                                TSLMDLYREP.BOOKQTY = VE.TSLMDLYREP[i].BOOKQTY;
+                                TSLMDLYREP.BOOKUOM = VE.TSLMDLYREP[i].BOOKUOM;
+                                TSLMDLYREP.REMK = VE.TSLMDLYREP[i].REMK;
                                 dbsql = masterHelp.RetModeltoSql(TSLMDLYREP);
                                 dbsql1 = dbsql.Split('~'); OraCmd.CommandText = dbsql1[0]; OraCmd.ExecuteNonQuery();
                             }
@@ -338,21 +341,22 @@ namespace Improvar.Controllers
                                  select new TSLMDLYREP()
                                  {
                                      SLNO = Convert.ToByte(dr["SLNO"].retInt()),
-                                     ITMCTG = dr["ITMCTG"].retStr(),
-                                     DTLS = dr["DTLS"].retStr(),
-                                     QNTY = dr["QNTY"].retDcml(),
-                                     AMT = dr["AMT"].retDcml(),
-                                     DISTSLCD = dr["DISTSLCD"].retStr(),
-                                     RTLCD = dr["RTLCD"].retStr(),
-                                     BRANDCD = dr["BRANDCD"].retStr()
-
+                                     DTD = Convert.ToDateTime(dr["DTD"].retStr()),
+                                     PLFROM = dr["PLFROM"].retStr(),
+                                     PLTO = dr["PLTO"].retStr(),
+                                     MODETRAVEL = dr["MODETRAVEL"].retStr(),
+                                     KMUPDN = dr["KMUPDN"].retShort(),
+                                     CONVSTR = dr["CONVSTR"].retStr(),
+                                     CONVAMT = dr["CONVAMT"].retDbl(),
+                                     TAAMT = dr["TAAMT"].retDbl(),
+                                     DAAMT = dr["DAAMT"].retDbl(),
+                                     BOOKQTY = dr["BOOKQTY"].retDbl(),
+                                     BOOKUOM = dr["BOOKUOM"].retStr(),
+                                     REMK = dr["REMK"].retStr(),
                                  }).ToList();
 
-                VE.DropDown_list = GetdocctgSelection();
-                VE.ListDistributor = DropDown_Help.GetDistributorforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                VE.ListBrand = DropDown_Help.GetBrandforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                VE.ListRetailer = GetRetailerforSelection(VE.SLMSLCD);
-
+                VE.MODETRAVEL = MODETRAVEL();
+                VE.BOOKUOM = BOOKUOM();
 
                 ModelState.Clear();
                 VE.DefaultAction = "A";
@@ -442,16 +446,8 @@ namespace Improvar.Controllers
                 }
                 VE.TSLMDLYREP = TSLMDLYREP;
 
-                string scm = CommVar.CurSchema(UNQSNO);
-                string tdt = System.DateTime.Now.Date.retDateStr();
-                string uid = CommVar.UserID();
-
-                VE.DropDown_list = GetdocctgSelection();
-                VE.ListDistributor = DropDown_Help.GetDistributorforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                VE.ListBrand = DropDown_Help.GetBrandforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                VE.ListRetailer = GetRetailerforSelection(VE.SLMSLCD);
-
-
+                VE.MODETRAVEL = MODETRAVEL();
+                VE.BOOKUOM = BOOKUOM();
                 ModelState.Clear();
                 VE.DefaultView = true;
                 return PartialView("_T_SLM_DLYREP", VE);
@@ -493,15 +489,8 @@ namespace Improvar.Controllers
                     VE.TSLMDLYREP = TXNDTL_HEAD;
                 }
 
-                string scm = CommVar.CurSchema(UNQSNO);
-                string tdt = System.DateTime.Now.Date.retDateStr();
-                string uid = CommVar.UserID();
-
-                VE.DropDown_list = GetdocctgSelection();
-                VE.ListDistributor = DropDown_Help.GetDistributorforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                VE.ListBrand = DropDown_Help.GetBrandforSelection(tdt, VE.SLMSLCD.retSqlformat());
-                VE.ListRetailer = GetRetailerforSelection(VE.SLMSLCD);
-
+                VE.MODETRAVEL = MODETRAVEL();
+                VE.BOOKUOM = BOOKUOM();
 
                 ModelState.Clear();
                 VE.DefaultView = true;
@@ -513,22 +502,43 @@ namespace Improvar.Controllers
                 return Content(ex.Message + ex.InnerException);
             }
         }
-        public List<DropDown_list> GetdocctgSelection()
+        public List<BOOKUOM> BOOKUOM()
         {
-            List<DropDown_list> DropDownlist = new List<DropDown_list>();
-            DropDown_list DropDown_list0 = new DropDown_list();
-            DropDown_list0.value = "T";
-            DropDown_list0.text = "TA";
-            DropDownlist.Add(DropDown_list0);
-            DropDown_list DropDown_list1 = new DropDown_list();
-            DropDown_list1.value = "V";
-            DropDown_list1.text = "VISIT";
-            DropDownlist.Add(DropDown_list1);
-            DropDown_list DropDown_list2 = new DropDown_list();
-            DropDown_list2.value = "B";
-            DropDown_list2.text = "BOARDING";
-            DropDownlist.Add(DropDown_list2);
+            List<BOOKUOM> DropDownlist = new List<BOOKUOM>();
+            BOOKUOM BOOKUOM0 = new BOOKUOM();
+            BOOKUOM0.Value = "BOX";
+            BOOKUOM0.Text = "BOX";
+            DropDownlist.Add(BOOKUOM0);
+            BOOKUOM BOOKUOM1 = new BOOKUOM();
+            BOOKUOM1.Value = "SET";
+            BOOKUOM1.Text = "SET";
+            DropDownlist.Add(BOOKUOM1);
+            BOOKUOM BOOKUOM2 = new BOOKUOM();
+            BOOKUOM2.Value = "PCS";
+            BOOKUOM2.Text = "PCS";
+            DropDownlist.Add(BOOKUOM2);
             return DropDownlist;
+        }
+        public List<TRANSMODE> MODETRAVEL()
+        {
+            List<TRANSMODE> DTYP = new List<TRANSMODE>();
+            TRANSMODE DTYP3 = new TRANSMODE();
+            DTYP3.Text = "Road";
+            DTYP3.Value = "RO";
+            DTYP.Add(DTYP3);
+            TRANSMODE DTYP2 = new TRANSMODE();
+            DTYP2.Text = "Rail";
+            DTYP2.Value = "RA";
+            DTYP.Add(DTYP2);
+            TRANSMODE DTYP1 = new TRANSMODE();
+            DTYP1.Text = "Air";
+            DTYP1.Value = "AI";
+            DTYP.Add(DTYP1);
+            TRANSMODE DTYP4 = new TRANSMODE();
+            DTYP4.Text = "Ship";
+            DTYP4.Value = "SH";
+            DTYP.Add(DTYP4);
+            return DTYP;
         }
         public List<ListRetailer> GetRetailerforSelection(string SLMSLCD = "")
         {
