@@ -65,7 +65,7 @@ table {
 
 /* scroll body */
 .table-scroll {
-    max-height: 63vh;
+   
     overflow-y: auto;
 }
 
@@ -234,9 +234,10 @@ table {
             success: function (result) {
                 debugger;
                 var res = result.split("^^^^^^^^^^^^~~~~~~^^^^^^^^^^");
-                $("#partialdivMain").html(res[2]);
+                $("#partialdivMain").html(res[1]);
+
                 $("#DOCDT").val(res[0]);
-                $("#DOCREM").val(res[1]);
+                //$("#DOCREM").val(res[1]);
                 $("#WaitingMode").hide();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -253,6 +254,8 @@ table {
         $("#hide_dlt").hide();
         $("#hide_dlt_1").hide();
         $("#show_dtl").show();
+        $('.table-scroll').css('max-height', '60vh');
+        $("#DefaultAction").val("E");
     }
     function validateCONVSTR(input, index) {
         debugger;
@@ -285,6 +288,7 @@ table {
         var TAAMT = retFloat($("#TAAMT_" + index).val());
         var totaltaamt = retFloat(TAAMT + CONVAMT).toFixed(2);
         $("#TOT_TAAMT_" + index).val(totaltaamt);
+        $("#CONVAMT_" + index).val(CONVAMT);
     }
 </script>
 @using (Html.BeginForm())
@@ -370,7 +374,7 @@ table {
                 </div>
             </div>
 
-            <div class="table-responsive row sub-top" id="partialdivMain" style="max-height:68%; overflow-y:auto;margin-top:10px;">
+            <div class="table-responsive row sub-top" id="partialdivMain" style="overflow-y:auto;margin-top:10px;">
                 @Html.Partial("_T_SLM_DLYREP")
             </div>
             @*<div class="footer" style="padding:5px;">

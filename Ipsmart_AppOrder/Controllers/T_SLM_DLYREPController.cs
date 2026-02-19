@@ -95,15 +95,14 @@ namespace Improvar.Controllers
                     {
                         TSLMDLYREP SLMDLY_REP = new TSLMDLYREP();
                         SLMDLY_REP.SLNO = Convert.ToByte(i + 1);
-
-
+                        SLMDLY_REP.BOOKUOM = "BOX";
                         SLMDLYREP.Add(SLMDLY_REP);
                     }
                     VE.TSLMDLYREP = SLMDLYREP;
 
 
                     VE.DefaultView = true;
-
+                    VE.DefaultAction = "A";
                     return View(VE);
 
                 }
@@ -241,8 +240,11 @@ namespace Improvar.Controllers
                                 TSLMDLYREP.CONVAMT = VE.TSLMDLYREP[i].CONVAMT;
                                 TSLMDLYREP.TAAMT = VE.TSLMDLYREP[i].TAAMT;
                                 TSLMDLYREP.DAAMT = VE.TSLMDLYREP[i].DAAMT;
-                                TSLMDLYREP.BOOKQTY = VE.TSLMDLYREP[i].BOOKQTY;
-                                TSLMDLYREP.BOOKUOM = VE.TSLMDLYREP[i].BOOKUOM;
+                                if (VE.TSLMDLYREP[i].BOOKQTY.retDbl() != 0)
+                                {
+                                    TSLMDLYREP.BOOKQTY = VE.TSLMDLYREP[i].BOOKQTY;
+                                    TSLMDLYREP.BOOKUOM = VE.TSLMDLYREP[i].BOOKUOM;
+                                }
                                 TSLMDLYREP.REMK = VE.TSLMDLYREP[i].REMK;
                                 dbsql = masterHelp.RetModeltoSql(TSLMDLYREP);
                                 dbsql1 = dbsql.Split('~'); OraCmd.CommandText = dbsql1[0]; OraCmd.ExecuteNonQuery();
@@ -322,7 +324,8 @@ namespace Improvar.Controllers
                 string uid = CommVar.UserID();
                 var GRID_DATA = "";
 
-                sql1 = "select a.autono,b.slno,a.docrem,c.docno, a.docdt, b.itmctg, b.dtls, b.qnty, b.amt, b.distslcd, b.rtlcd, b.brandcd " + Environment.NewLine;
+                sql1 = "select a.autono,c.docno, a.docdt,b.SLNO, b.DTD, b.PLFROM, b.PLTO, b.MODETRAVEL, b.KMUPDN, b.CONVSTR, " + Environment.NewLine;
+                sql1 += "b.CONVAMT, b.TAAMT, b.DAAMT, b.BOOKQTY, b.BOOKUOM, b.REMK " + Environment.NewLine;
                 sql1 += "from " + Scm + ".T_SLM_DLYREP_HDR a, " + Scm + ".T_SLM_DLYREP b, " + Scm + ".t_cntrl_hdr c " + Environment.NewLine;
                 sql1 += "where a.autono = b.autono(+) and a.autono = c.autono(+) and c.compcd = " + COM.retSqlformat() + "" + Environment.NewLine;
                 sql1 += "and a.autono = " + VE.REPAUTONO.retSqlformat() + "" + Environment.NewLine;
@@ -335,7 +338,7 @@ namespace Improvar.Controllers
                 }
 
                 string DOCDT = Record.Rows[0]["DOCDT"].retDateStr();
-                string DOCREM = Record.Rows[0]["DOCREM"].retStr();
+                //string DOCREM = Record.Rows[0]["DOCREM"].retStr();
 
                 VE.TSLMDLYREP = (from DataRow dr in Record.Rows
                                  select new TSLMDLYREP()
@@ -351,8 +354,9 @@ namespace Improvar.Controllers
                                      TAAMT = dr["TAAMT"].retDbl(),
                                      DAAMT = dr["DAAMT"].retDbl(),
                                      BOOKQTY = dr["BOOKQTY"].retDbl(),
-                                     BOOKUOM = dr["BOOKUOM"].retStr(),
+                                     BOOKUOM = dr["BOOKUOM"].retStr() == "" ? "BOX" : dr["BOOKUOM"].retStr(),
                                      REMK = dr["REMK"].retStr(),
+                                     TOT_TAAMT = (dr["CONVAMT"].retDbl() + dr["TAAMT"].retDbl()).toRound(),
                                  }).ToList();
 
                 VE.MODETRAVEL = MODETRAVEL();
@@ -362,7 +366,7 @@ namespace Improvar.Controllers
                 VE.DefaultAction = "A";
                 VE.DefaultView = true;
                 GRID_DATA = RenderRazorViewToString(ControllerContext, "_T_SLM_DLYREP", VE);
-                return Content(DOCDT + "^^^^^^^^^^^^~~~~~~^^^^^^^^^^" + DOCREM + "^^^^^^^^^^^^~~~~~~^^^^^^^^^^" + GRID_DATA);
+                return Content(DOCDT + "^^^^^^^^^^^^~~~~~~^^^^^^^^^^" + GRID_DATA);
             }
             catch (Exception Ex)
             {
@@ -469,6 +473,7 @@ namespace Improvar.Controllers
 
                     TSLMDLYREP DTL = new TSLMDLYREP();
                     DTL.SLNO = 1;
+                    DTL.BOOKUOM = "BOX";
                     TXNDTL_HEAD.Add(DTL);
                     VE.TSLMDLYREP = TXNDTL_HEAD;
 
@@ -485,6 +490,7 @@ namespace Improvar.Controllers
 
                     TSLMDLYREP MIB1 = new TSLMDLYREP();
                     MIB1.SLNO = Convert.ToByte(Convert.ToByte(VE.TSLMDLYREP.Max(a => Convert.ToInt32(a.SLNO))) + 1);
+                    MIB1.BOOKUOM = "BOX";
                     TXNDTL_HEAD.Add(MIB1);
                     VE.TSLMDLYREP = TXNDTL_HEAD;
                 }

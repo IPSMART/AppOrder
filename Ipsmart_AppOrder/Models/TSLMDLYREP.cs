@@ -33,10 +33,10 @@ namespace Improvar.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DTD { get; set; }
 
-        [StringLength(30)]
+        [StringLength(500)]
         public string PLFROM { get; set; }
 
-        [StringLength(30)]
+        [StringLength(500)]
         public string PLTO { get; set; }
 
         [StringLength(10)]

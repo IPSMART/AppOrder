@@ -1,4 +1,15 @@
 ﻿@model Improvar.ViewModels.VM_SLMDLYREP
+@{
+    string HEIGHT = "";
+    if (Model.DefaultAction == "E")
+    {
+        HEIGHT = "60vh;";
+    }
+    else
+    {
+        HEIGHT = "72vh;";
+    }
+}
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -31,8 +42,7 @@
             templateSelection: formatSelection,
         });
 
-        var firstVal = $('.DropdownBOOKUOM option:not(:empty)').first().val();
-        $('.DropdownBOOKUOM').val(firstVal).trigger('change');
+   
     });
 </script>
 <script>
@@ -42,7 +52,7 @@
 
     });
 </script>
-<div class="table-scroll">
+<div class="table-scroll" style="max-height:@HEIGHT">
     <div class="table-header-fixed">
         <table class="inner-table header-table">
             <tr class="m-header">
@@ -98,7 +108,7 @@
                                         @Html.EditorFor(model => Model.TSLMDLYREP[i].PLTO, new { htmlAttributes = new { id = "PLTO_" + i, @class = "form-control ", maxlength = 500, @placeholder = "To" } })
                                     </td>
                                     <td>
-                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].KMUPDN, new { htmlAttributes = new { id = "KMUPDN_" + i, @class = "form-control ", inputmode = "decimal", type = "tel", maxlength = 500, @placeholder = "KM.(Up/Down)" } })
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].KMUPDN, new { htmlAttributes = new { id = "KMUPDN_" + i, @class = "form-control ", inputmode = "decimal", type = "tel", maxlength = 4, @onkeypress = "return numericOnly(this,0);",@placeholder = "KM.(Up/Down)" } })
                                         @*@Html.DropDownListFor(model => Model.TSLMDLYREP[i].MODETRAVEL, new SelectList(Model.MODETRAVEL, "Value", "Text", Model.TSLMDLYREP[i].MODETRAVEL), "", new { id = "MODETRAVEL_" + i, @class = "DropdownITMCTG atextBoxFor select_3d" })*@
                                     </td>
 
@@ -107,7 +117,7 @@
                                 <!-- SECOND VALUE ROW -->
                                 <tr class="m-value">
                                     <td>
-                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].CONVSTR, new { htmlAttributes = new { id = "CONVSTR_" + i, @class = "form-control ", maxlength = 500, inputmode = "decimal", type = "tel", @placeholder = "E.g.0+0+0..", oninput = "return validateCONVSTR(this," + i + ")" } })
+                                        @Html.EditorFor(model => Model.TSLMDLYREP[i].CONVSTR, new { htmlAttributes = new { id = "CONVSTR_" + i, @class = "form-control ", maxlength = 40, inputmode = "decimal", type = "tel", @placeholder = "E.g.0+0+0..", oninput = "return validateCONVSTR(this," + i + ")" } })
                                         @Html.HiddenFor(model => Model.TSLMDLYREP[i].CONVAMT, new { id = "CONVAMT_" + i })
                                     </td>
 
@@ -126,7 +136,7 @@
                                 </tr>
                                 <tr class="m-value">
                                     <td colspan="4">
-                                        @Html.TextAreaFor(model => Model.TSLMDLYREP[i].REMK, new { id = "REMK_" + i, @class = "form-control ", maxlength = 500, @placeholder = "Details" })
+                                        @Html.TextAreaFor(model => Model.TSLMDLYREP[i].REMK, new { id = "REMK_" + i, @class = "form-control ", maxlength = 200, @placeholder = "Details" })
                                     </td>
                                     <td>
                                         @Html.EditorFor(model => Model.TSLMDLYREP[i].TOT_TAAMT, new { htmlAttributes = new { id = "TOT_TAAMT_" + i, inputmode = "decimal", @class = "form-control text-right numeric-input", maxlength = 10, @onkeypress = "return numericOnly(this,2);", @title = "Only Numeric", @placeholder = "Total", @readonly = "readonly" } })
