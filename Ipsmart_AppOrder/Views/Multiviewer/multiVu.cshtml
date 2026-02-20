@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Improvar.Models.Menu
+@{
     ViewBag.Title = "";
     Layout = null;
 }
@@ -12,6 +13,13 @@
 
     @*<link href="~/Content/all.min.css" rel="stylesheet" />*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+
+    <script src="~/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+
+    @Scripts.Render("~/Scripts/Custom.js?Ver=" + Session["publishversion"])
+
+
     <style>
         * {
             margin: 0;
@@ -19,14 +27,16 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
+
         html, body {
-    height: 100%;
-}
+            height: 100%;
+        }
+
         body {
-           overflow-x: hidden;
-    position: relative;
-    height: 100%;
-  }
+            overflow-x: hidden;
+            position: relative;
+            height: 100%;
+        }
 
         /* Header */
         header {
@@ -107,8 +117,8 @@
         .sidebar ul {
             list-style: none;
             margin-top: 10px;
-             position: relative;
-    z-index: 2;
+            position: relative;
+            z-index: 2;
         }
 
             .sidebar ul li {
@@ -126,11 +136,12 @@
                     float: right;
                     margin-top: 4px;
                 }
-                .sidebar li {
-    position: relative;
-    z-index: 2;
-    background: #d9edf7;
-}
+
+        .sidebar li {
+            position: relative;
+            z-index: 2;
+            background: #d9edf7;
+        }
 
         /* Submenu */
         .submenu {
@@ -145,9 +156,9 @@
 
         /* Content */
         .content {
-           padding: 80px 20px 20px 20px;
-    min-height: 100vh;
-    background: #fff;
+            padding: 80px 20px 20px 20px;
+            min-height: 100vh;
+            background: #fff;
         }
 
             .content.shifted {
@@ -183,9 +194,58 @@
                 margin: 0 auto;
             }
     </style>
+    <script>
+        function SaveAttendance() {
+            $("#WaitingMode").show();
+            getLocation(function (loc) {
+                if (loc) {
+                    var LAT = loc.lat;
+                    var LOT = loc.lng;
+
+                    $("#GPSLAT").val(LAT);
+                    $("#GPSLOT").val(LOT);
+                }
+                else {
+                    $("#WaitingMode").hide();
+                    return false;
+                }
+                if (!emptyFieldCheck("Location not found,Save again", "GPSLOT")) {
+                    $("#WaitingMode").hide();
+                    return false;
+                }
+                if (!emptyFieldCheck("Location not found,Save again", "GPSLAT")) {
+                    $("#WaitingMode").hide();
+                    return false;
+                }
+                var GPSLAT = $("#GPSLAT").val();
+                var GPSLOT = $("#GPSLOT").val();
+                $.ajax({
+                    type: 'post',
+                    beforesend: $("#WaitingMode").show(),
+                    url: "@Url.Action("SaveAttendanceData", "Multiviewer")",
+                    data: $('form').serialize() + "&GPSLAT=" + GPSLAT + "&GPSLOT=" + GPSLOT,
+                    success: function (result) {
+                        showCustomAlert('info', result);
+                        $("#WaitingMode").hide();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $("#WaitingMode").hide();
+                        msgError(XMLHttpRequest.responseText);
+                        $("body span h1").remove(); $("#msgbody_error style").remove();
+                    }
+                });
+            });
+
+        }
+    </script>
 </head>
 <body>
-
+    <div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
+        <p style="position: absolute; color: White; top: 46%; left: 47%;">
+            Loading, please wait...<br />
+            <span> <img src="~/Image/ajax_loader.gif" width="60px" height="60px"></span>
+        </p>
+    </div>
     <header>
         <i class="fas fa-bars menu-btn"></i> CRM Garment
         <div class="navmenu" style="float:right;">
@@ -232,8 +292,32 @@
     <div class="content" id="content">
         <h1>Welcome</h1>
         @*<p>This is your main page content.</p>*@
+        <div class="row">
+            <div class="col-md-6" style="width:auto;margin-top: 4px;">
+                <div class="editor-field">
+                    <input type="button" class="btn btn-info" style="padding:2px 2px 2px 2px;" value="Attendance" onclick="SaveAttendance()" />
+                    @Html.HiddenFor(model => model.GPSLOT, new { id = "GPSLOT" })
+                    @Html.HiddenFor(model => model.GPSLAT, new { id = "GPSLAT" })
+                </div>
+            </div>
+        </div>
     </div>
-
+    <div id="customAlert" style="display:none;
+     position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.4); z-index:40000;
+     justify-content:center; align-items:center;">
+        <div id="customAlertBox" style="background:#fff; padding:20px 30px;
+       border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.3);
+       text-align:center; min-width:260px; max-width:80%;max-height:70vh; overflow-y:auto;">
+            <div id="customAlertIcon" style="font-size:40px; margin-bottom:10px;"></div>
+            <p id="customAlertMessage" style="font-size:16px; margin-bottom:15px;"></p>
+            <button onclick="closeCustomAlert()" id="customAlertButton"
+                    style="background:#007bff; color:white; border:none;
+                   padding:8px 20px; border-radius:5px; cursor:pointer;">
+                OK
+            </button>
+        </div>
+    </div>
     <script>
         const menuBtn = document.querySelector('.menu-btn');
         const sidebar = document.getElementById('sidebar');

@@ -13,6 +13,12 @@ namespace Improvar.Models
         public string FavoriteManuDetails { get; set; }      
         public string UNQSNO { get; set; }
         public List<DashboardDetails> DashboardList { get; set; }
+        public string GPSLAT { get; set; }
+
+        public string GPSLOT { get; set; }
+
+        [StringLength(500)]
+        public string GPSNM { get; set; }
     }
     public class DashboardDetails
     {

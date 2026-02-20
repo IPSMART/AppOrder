@@ -81,7 +81,7 @@ namespace Improvar.Controllers
             sql += " from " + CommVar.CurSchema(UNQSNO) + ".M_USR_ACS p , APPL_MENU m ";
             sql += " where p.MENU_NAME=m.MENU_ID and p.MENU_INDEX=m.MENU_INDEX and p.USER_ID='" + CommVar.UserID() + "' and m.module_code='" + CommVar.ModuleCode() + "' and upper(MENU_FIND_ID)='" + code.ToUpper() + "' AND ";
             sql += "p.compcd = '" + CommVar.Compcd(UNQSNO) + "' and p.loccd = '" + CommVar.Loccd(UNQSNO) + "' and p.schema_name = '" + CommVar.CurSchema(UNQSNO) + "' " + fld2;
-        http://localhost:53704/TS_DOCAUTH/TS_DOCAUTH/?op=V&MNUDET="++"&US=Q0hFTUtPTEsyMDE5NDA3MTM=&DC=&MP=&param_SQL=yBwYqtpmZzR9rkMFTUWqjJGfAsaCOXPV2iioWExH6xw=
+            http://localhost:53704/TS_DOCAUTH/TS_DOCAUTH/?op=V&MNUDET="++"&US=Q0hFTUtPTEsyMDE5NDA3MTM=&DC=&MP=&param_SQL=yBwYqtpmZzR9rkMFTUWqjJGfAsaCOXPV2iioWExH6xw=
             //LinkUrl = "winopen('" + MENU_PROGCALL + "','" + enc_MENU_DETAIL + "','" + enc_MENU_DOCCD + "','" + enc_MENU_PARA + "')";
             //sql = "select menu_id,menu_name,menu_index,menu_type,menu_date_option from appl_menu where menu_progcall='" + MENU_PROGCALL + "' AND MODULE_CODE='"+MODULE_CODE+"'";
             DataTable DT = masterHelp.SQLquery(sql);
@@ -333,6 +333,33 @@ namespace Improvar.Controllers
                 }
                 Mnu.DashboardList = DashboardDetails;
                 return PartialView("_Dashboard", Mnu);
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message);
+            }
+        }
+
+        public ActionResult SaveAttendanceData(string GPSLAT, string GPSLOT)
+        {
+            try
+            {
+                string msg = "";
+                if (GPSLAT.retStr() != "")
+                {
+                    var currentaddress = masterHelp.GetAddress(GPSLAT, GPSLOT);
+                    string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
+                    sql += "VALUES('" + CommVar.UserName() + "','" + Module.Module_Code + "','" + CommVar.SessionNo() + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + currentaddress + "','" + Cn.GetStaticIp() + "') ";
+                    var res = masterHelp.SQLNonQuery(sql);
+                    msg = "Attendance Saved";
+                }
+                else
+                {
+                    msg = "Location is required.";
+                    ModelState.Clear();
+                }
+                return Content(msg);
             }
             catch (Exception ex)
             {
