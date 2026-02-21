@@ -21,7 +21,7 @@ namespace Improvar
     {
         string UNQSNO = CommVar.getQueryStringUNQSNO();
         Connection Cn = new Connection();
-         public string DOCCD_help(string val, string doctype = "", string doccd = "")
+        public string DOCCD_help(string val, string doctype = "", string doccd = "")
         {
             var UNQSNO = Cn.getQueryStringUNQSNO();
             ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
@@ -750,7 +750,7 @@ namespace Improvar
             if (tbl.Rows.Count == 1) rtval = tbl.Rows[0]["amt"].retDbl();
             return rtval;
         }
-        public DataTable GenShareFile(string docdt, string invest = "", string ctgcd = "", string shrcd = "", string compcd = "", bool OnlyBal = false, string shrdpcd = "", string skipautono="")
+        public DataTable GenShareFile(string docdt, string invest = "", string ctgcd = "", string shrcd = "", string compcd = "", bool OnlyBal = false, string shrdpcd = "", string skipautono = "")
         {
             try
             {
@@ -765,7 +765,7 @@ namespace Improvar
                 Str += "and a.autono = h.autono(+) AND H.DOCCD = I.DOCCD(+) and h.compcd=j.compcd(+) and h.loccd=j.loccd(+) ";
                 Str += "AND H.DOCDT <=  to_date('" + docdt + "','dd/mm/yyyy')  ";
                 Str += "AND B.DRCR = 'D' ";
-                if (skipautono.retStr() != "") Str += "AND A.AUTONO NOT IN (" + skipautono + ") ";  
+                if (skipautono.retStr() != "") Str += "AND A.AUTONO NOT IN (" + skipautono + ") ";
                 if (compcd.retStr() != "") Str += "AND H.COMPCD||H.LOCCD IN(" + compcd + ") "; else Str += "AND h.compcd = '" + COM + "'  and h.loccd = '" + LOC + "' ";
                 if (invest.retStr() != "") Str += "AND B.INVEST='" + invest + "'  ";
                 if (ctgcd.retStr() != "") Str += "AND C.CTGCD IN(" + ctgcd + ")  ";
@@ -1173,22 +1173,101 @@ namespace Improvar
                 return "";
             }
         }
-        public class GeoLocation
+        public GeoLocation GetLocDet(string lat, string lng)
         {
-            public List<Result> results { get; set; }
-            public string status { get; set; }
+            try
+            {
+                string datastring = "";
+                //lat = "22.555"; lng = "88.258";
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBrcfaBjHKJWpTeEkQbdwom5ExTn7zbt2c";
+                WebRequest rqst = HttpWebRequest.Create(url);
+                using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
+                {
+                    Stream strm = (Stream)rspns.GetResponseStream();
+                    StreamReader strmrdr = new StreamReader(strm);
+                    datastring = strmrdr.ReadToEnd();
+                    strm.Close();
+                    strmrdr.Close();
+                    rspns.Close();
+                }
+                GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
+                return geoLocation;
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return null;
+            }
         }
-        public class Result
+        public string SaveLocation(string GPSLAT, string GPSLOT)
         {
-            public List<AddressComponent> address_components { get; set; }
-            public string formatted_address { get; set; }
+            try
+            {
+                string msg = "";
+                if (GPSLAT.retStr() != "")
+                {
+                    string GCS = Cn.GCS();
+                    GeoLocation geoLocation = GetLocDet(GPSLAT, GPSLOT);
+
+                    var components = geoLocation.results[0].address_components;
+                    var location = new
+                    {
+                        currentaddress = geoLocation.results[0].formatted_address,
+
+                        premise = string.Join(GCS, components
+         .Where(x => x.types.Contains("premise")
+                      || x.types.Contains("neighborhood")).Select(x => x.long_name))
+                     ?? components.FirstOrDefault(x => x.types.Contains("subpremise")
+                  || x.types.Contains("establishment"))?.long_name,
+
+                        locality = string.Join(GCS, components
+         .Where(x => x.types.Contains("sublocality_level_2")
+                      || x.types.Contains("sublocality_level_1")).Select(x => x.long_name))
+                       ?? components.FirstOrDefault(x => x.types.Contains("administrative_area_level_2"))?.long_name,
+
+
+                        City = components
+         .FirstOrDefault(x => x.types.Contains("locality"))?.long_name,
+
+                        State = components
+         .FirstOrDefault(x => x.types.Contains("administrative_area_level_1"))?.long_name,
+
+                        Country = components
+         .FirstOrDefault(x => x.types.Contains("country"))?.long_name,
+
+                        Pincode = components
+         .FirstOrDefault(x => x.types.Contains("postal_code"))?.long_name
+                    };
+
+                    if (components != null)
+                    {
+                        string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1, ";
+                        sql += "premise,locality,city,pincode,state,country ";
+                        sql += ") ";
+                        sql += "VALUES('" + CommVar.UserID() + "','" + Module.Module_Code + "','" + CommVar.SessionNo() + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + location.currentaddress + "','" + Cn.GetStaticIp() + "',";
+                        sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "' ";
+                        sql += ") ";
+                        var res = SQLNonQuery(sql);
+                        msg = "Attendance Saved";
+                    }
+                    else
+                    {
+                        msg = "address not found";
+                    }
+                }
+                else
+                {
+                    msg = "Location is required.";
+                }
+                return msg;
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return ex.Message;
+            }
         }
-        public class AddressComponent
-        {
-            public string long_name { get; set; }
-            public string short_name { get; set; }
-            public List<string> types { get; set; }
-        }
+
 
     }
 }

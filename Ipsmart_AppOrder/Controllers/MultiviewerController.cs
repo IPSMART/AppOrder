@@ -348,11 +348,7 @@ namespace Improvar.Controllers
                 string msg = "";
                 if (GPSLAT.retStr() != "")
                 {
-                    var currentaddress = masterHelp.GetAddress(GPSLAT, GPSLOT);
-                    string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
-                    sql += "VALUES('" + CommVar.UserName() + "','" + Module.Module_Code + "','" + CommVar.SessionNo() + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + currentaddress + "','" + Cn.GetStaticIp() + "') ";
-                    var res = masterHelp.SQLNonQuery(sql);
-                    msg = "Attendance Saved";
+                    msg = masterHelp.SaveLocation(GPSLAT, GPSLOT);
                 }
                 else
                 {

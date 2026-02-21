@@ -237,10 +237,11 @@ namespace Improvar.Controllers
                         //save login address
                         if (log.latitude.retStr() != "")
                         {
-                            var currentaddress = LoginAddress(log.latitude, log.longitude);
-                            sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
-                            sql += "VALUES('" + log.UserName + "','" + Module.Module_Code + "','" + session_no[1] + "',sysdate,'" + log.latitude + "-" + log.longitude + "','" + currentaddress + "','" + Cn.GetStaticIp() + "') ";
-                            masterHelp.SQLNonQuery(sql);
+                            masterHelp.SaveLocation(log.latitude, log.longitude);
+                            //var currentaddress = LoginAddress(log.latitude, log.longitude);
+                            //sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
+                            //sql += "VALUES('" + log.UserName + "','" + Module.Module_Code + "','" + session_no[1] + "',sysdate,'" + log.latitude + "-" + log.longitude + "','" + currentaddress + "','" + Cn.GetStaticIp() + "') ";
+                            //masterHelp.SQLNonQuery(sql);
                         }
                         else
                         {

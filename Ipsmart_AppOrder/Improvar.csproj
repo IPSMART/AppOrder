@@ -347,6 +347,7 @@
     <Compile Include="Models\DropDown_list.cs" />
     <Compile Include="Models\FinancialYear.cs" />
     <Compile Include="Models\GenEinvIRNGrid.cs" />
+    <Compile Include="Models\GeoLocation.cs" />
     <Compile Include="Models\HELPLIST.cs" />
     <Compile Include="Models\ImageData.cs" />
     <Compile Include="Models\ImprovarDB.cs" />
