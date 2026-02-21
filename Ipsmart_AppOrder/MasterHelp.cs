@@ -1199,7 +1199,7 @@ namespace Improvar
                 return null;
             }
         }
-        public string SaveLocation(string GPSLAT, string GPSLOT)
+        public string SaveLocation(string GPSLAT, string GPSLOT, string REMARKS = "")
         {
             try
             {
@@ -1242,10 +1242,10 @@ namespace Improvar
                     if (components != null)
                     {
                         string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1, ";
-                        sql += "premise,locality,city,pincode,state,country ";
+                        sql += "premise,locality,city,pincode,state,country,FLAG2 ";
                         sql += ") ";
                         sql += "VALUES('" + CommVar.UserID() + "','" + Module.Module_Code + "','" + CommVar.SessionNo() + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + location.currentaddress + "','" + Cn.GetStaticIp() + "',";
-                        sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "' ";
+                        sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "','" + REMARKS + "' ";
                         sql += ") ";
                         var res = SQLNonQuery(sql);
                         msg = "Attendance Saved";

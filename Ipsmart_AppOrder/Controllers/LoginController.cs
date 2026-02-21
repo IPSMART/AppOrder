@@ -237,7 +237,7 @@ namespace Improvar.Controllers
                         //save login address
                         if (log.latitude.retStr() != "")
                         {
-                            masterHelp.SaveLocation(log.latitude, log.longitude);
+                            masterHelp.SaveLocation(log.latitude, log.longitude, "L");
                             //var currentaddress = LoginAddress(log.latitude, log.longitude);
                             //sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1) ";
                             //sql += "VALUES('" + log.UserName + "','" + Module.Module_Code + "','" + session_no[1] + "',sysdate,'" + log.latitude + "-" + log.longitude + "','" + currentaddress + "','" + Cn.GetStaticIp() + "') ";
@@ -751,71 +751,6 @@ namespace Improvar.Controllers
                 ViewBag.Msg = ex.Message;
             }
             return View(Pass);
-        }
-        public string LoginAddress(string Lat, string Lng)
-        {
-            string address = "";
-            if (Lat != null)
-            {
-                string url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + Lat + "," + Lng + "&key=AIzaSyBrcfaBjHKJWpTeEkQbdwom5ExTn7zbt2c";
-                string jsonstr = ConsumeAPI(url);
-
-                var data = JObject.Parse(jsonstr);
-                string status = data["status"].retStr();
-                if (status == "OK")
-                {
-                    address = data["results"][0]["formatted_address"].retStr();
-                }
-                else
-                {
-                    address = status;
-                }
-            }
-            return address;
-        }
-        public string ConsumeAPI(string url)
-        {
-            if (url == null) return "";
-            string resp = "", hdrString = "";
-            HttpResponseMessage response = new HttpResponseMessage();
-            try
-            {
-                hdrString = url + System.Environment.NewLine;
-                using (HttpClient client = new HttpClient())
-                {
-                    response = client.GetAsync(url).GetAwaiter().GetResult(); //Make sure it is synchonrous  //   response = client.GetAsync(url).Result;                    
-                    resp = response.Content.ReadAsStringAsync().Result;//Make sure it is synchonrous
-                    int StatusCode = (int)response.StatusCode;
-                    Cn.SaveTextFile("Response: " + resp);
-                    if (StatusCode > 200)
-                    {
-                        return "{\"message\":\"" + ErrorAPI(resp).Replace("\"", "") + "\"}";
-                    }
-                    response.EnsureSuccessStatusCode();
-                    return resp;
-                }
-            }
-            catch (Exception ex)
-            {
-                Cn.SaveException(ex, resp);
-                return "{\"message\":\"" + ex.Message + "\"}";
-            }
-        }
-        private string ErrorAPI(string response)
-        {
-            string resp = "";
-            try
-            {
-                AdqrRespError adqrRespExtractInvoice = JsonConvert.DeserializeObject<AdqrRespError>(response);
-                if (adqrRespExtractInvoice != null)
-                {
-                    return adqrRespExtractInvoice.error_description;
-                }
-            }
-            catch
-            {
-            }
-            return resp;
         }
 
     }

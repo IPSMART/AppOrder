@@ -455,6 +455,7 @@ namespace Improvar.Controllers
                         ModelState.Clear();
                         transaction.Commit();
 
+                        Master_Help.SaveLocation(VE.M_RETAIL.GPSLAT.retStr(), VE.M_RETAIL.GPSLOT.retStr(), "RTLM" + Cn.GCS() + VE.DefaultAction + Cn.GCS() + MRETAILOUTLET.RTLCD);
                         string ContentFlg = "";
                         if (VE.DefaultAction == "A")
                         {

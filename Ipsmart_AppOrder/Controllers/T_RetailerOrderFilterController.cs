@@ -471,8 +471,12 @@ namespace Improvar.Controllers
                 try
                 {
                     string DefaultAction = "A";
+                    if (RTLAUTONO.retStr() != "")
+                    {
+                        DefaultAction = "E";
+                    }
                     DB.Database.ExecuteSqlCommand("lock table " + CommVar.CurSchema(UNQSNO) + ".T_RETAILORDER in  row share mode");
-                    if (DefaultAction == "A")
+                    if (DefaultAction == "A" || DefaultAction == "E")
                     {
                         int slno = 0;
 
@@ -492,6 +496,7 @@ namespace Improvar.Controllers
                                 TRETAILORDER.EMD_NO = Convert.ToByte(MAXEMDNO + 1);
                             }
                             slno = (from p in DB.T_RETAILORDERDTL where p.AUTONO == TRETAILORDER.AUTONO select p.SLNO).Max();
+                            TRETAILORDER.DOCNO = (from p in DB.T_RETAILORDER where p.AUTONO == TRETAILORDER.AUTONO select p.DOCNO).FirstOrDefault();
                         }
                         else
                         {
@@ -554,7 +559,7 @@ namespace Improvar.Controllers
                             TRETAILORDER.GPSLAT = VE.T_RETAILORDER.GPSLAT;
                             TRETAILORDER.GPSLOT = VE.T_RETAILORDER.GPSLOT;
                             TRETAILORDER.DOCREM = VE.T_RETAILORDER.DOCREM;
-                            TRETAILORDER.GPSNM = GetAddress(VE.T_RETAILORDER.GPSLAT.retStr(), VE.T_RETAILORDER.GPSLOT.retStr());
+                            TRETAILORDER.GPSNM = masterHelp.GetAddress(VE.T_RETAILORDER.GPSLAT.retStr(), VE.T_RETAILORDER.GPSLOT.retStr());
 
 
                             if (DefaultAction == "A")
@@ -597,24 +602,25 @@ namespace Improvar.Controllers
                         ModelState.Clear();
                         transaction.Commit();
 
+                        masterHelp.SaveLocation(VE.T_RETAILORDER.GPSLAT.retStr(), VE.T_RETAILORDER.GPSLOT.retStr(), "RTL" + Cn.GCS() + DefaultAction + Cn.GCS() + TRETAILORDER.AUTONO);
                         string ContentFlg = "";
-                        if (DefaultAction == "A")
+                        //if (DefaultAction == "A")
+                        //{
+                        string emailmsg = SendEmailWhatsapp(TRETAILORDER.AUTONO);
+                        if (RTLAUTONO.retStr() == "")
                         {
-                            string emailmsg = SendEmailWhatsapp(TRETAILORDER.AUTONO);
-                            if (RTLAUTONO.retStr() == "")
-                            {
-                                ContentFlg = "1~(Order No. " + TRETAILORDER.DOCNO + ")" + emailmsg;
+                            ContentFlg = "1~(Order No. " + TRETAILORDER.DOCNO + ")" + emailmsg;
 
-                            }
-                            else
-                            {
-                                ContentFlg = "2~(Order No. " + TRETAILORDER.DOCNO + ")" + emailmsg;
-                            }
                         }
-                        else if (DefaultAction == "E")
+                        else
                         {
-                            ContentFlg = "2";
+                            ContentFlg = "2~(Order No. " + TRETAILORDER.DOCNO + ")" + emailmsg;
                         }
+                        //}
+                        //else if (DefaultAction == "E")
+                        //{
+                        //    ContentFlg = "2";
+                        //}
                         return Content(ContentFlg);
 
                     }
@@ -1206,52 +1212,6 @@ namespace Improvar.Controllers
 
         }
 
-
-        public string GetAddress(string lat, string lng)
-        {
-            try
-            {
-                string datastring = "";
-                //lat = "22.555"; lng = "88.258";
-                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBrcfaBjHKJWpTeEkQbdwom5ExTn7zbt2c";
-                WebRequest rqst = HttpWebRequest.Create(url);
-                using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
-                {
-                    Stream strm = (Stream)rspns.GetResponseStream();
-                    StreamReader strmrdr = new StreamReader(strm);
-                    datastring = strmrdr.ReadToEnd();
-                    strm.Close();
-                    strmrdr.Close();
-                    rspns.Close();
-                }
-                GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
-                var address = geoLocation.results[0].formatted_address;
-                return address;
-            }
-            catch (Exception ex)
-            {
-                Cn.SaveException(ex, "");
-                return "";
-            }
-        }
-        public class AddressComponent
-        {
-            public string long_name { get; set; }
-            public string short_name { get; set; }
-            public List<string> types { get; set; }
-        }
-
-        public class Result
-        {
-            public List<AddressComponent> address_components { get; set; }
-            public string formatted_address { get; set; }
-        }
-
-        public class GeoLocation
-        {
-            public List<Result> results { get; set; }
-            public string status { get; set; }
-        }
     }
 }
 

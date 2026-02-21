@@ -238,7 +238,7 @@ namespace Improvar.Controllers
                         TDISTORDER.GPSLAT = VE.T_DISTORDER.GPSLAT;
                         TDISTORDER.GPSLOT = VE.T_DISTORDER.GPSLOT;
                         TDISTORDER.DOCREM = VE.T_DISTORDER.DOCREM;
-                        TDISTORDER.GPSNM = GetAddress(VE.T_DISTORDER.GPSLAT.retStr(), VE.T_DISTORDER.GPSLOT.retStr());
+                        TDISTORDER.GPSNM = masterHelp.GetAddress(VE.T_DISTORDER.GPSLAT.retStr(), VE.T_DISTORDER.GPSLOT.retStr());
 
 
                         if (DefaultAction == "A")
@@ -327,6 +327,7 @@ namespace Improvar.Controllers
                         ModelState.Clear();
                         transaction.Commit();
 
+                        masterHelp.SaveLocation(VE.T_DISTORDER.GPSLAT.retStr(), VE.T_DISTORDER.GPSLOT.retStr(), "DST" + Cn.GCS() + DefaultAction + Cn.GCS() + TDISTORDER.AUTONO);
                         string ContentFlg = "";
                         if (DefaultAction == "A")
                         {
@@ -877,7 +878,7 @@ namespace Improvar.Controllers
                         smsaryMsg[8, 0] = "&compmobno&"; smsaryMsg[8, 1] = compMobile;
 
 
-                       
+
                         string mobno = rsemailid[z].regmno.ToString();
                         if (rsemailid[z].compregmno.retStr() != "")
                         {
@@ -1009,52 +1010,6 @@ namespace Improvar.Controllers
             return PartialView("_T_DistOrder_Main", VE);
         }
 
-        public string GetAddress(string lat, string lng)
-        {
-            try
-            {
-                string datastring = "";
-                //lat = "22.555"; lng = "88.258";
-                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true&key=AIzaSyBrcfaBjHKJWpTeEkQbdwom5ExTn7zbt2c";
-                WebRequest rqst = HttpWebRequest.Create(url);
-                using (HttpWebResponse rspns = (HttpWebResponse)rqst.GetResponse())
-                {
-                    Stream strm = (Stream)rspns.GetResponseStream();
-                    StreamReader strmrdr = new StreamReader(strm);
-                    datastring = strmrdr.ReadToEnd();
-                    strm.Close();
-                    strmrdr.Close();
-                    rspns.Close();
-                }
-                GeoLocation geoLocation = JsonConvert.DeserializeObject<GeoLocation>(datastring);
-                var address = geoLocation.results[0].formatted_address;
-                return address;
-            }
-            catch (Exception ex)
-            {
-                Cn.SaveException(ex, "");
-                return "";
-            }
-        }
-
-        public class AddressComponent
-        {
-            public string long_name { get; set; }
-            public string short_name { get; set; }
-            public List<string> types { get; set; }
-        }
-
-        public class Result
-        {
-            public List<AddressComponent> address_components { get; set; }
-            public string formatted_address { get; set; }
-        }
-
-        public class GeoLocation
-        {
-            public List<Result> results { get; set; }
-            public string status { get; set; }
-        }
 
         public string DocPattern(double docno, string mnthcd)
         {

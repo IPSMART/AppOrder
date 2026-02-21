@@ -348,7 +348,7 @@ namespace Improvar.Controllers
                 string msg = "";
                 if (GPSLAT.retStr() != "")
                 {
-                    msg = masterHelp.SaveLocation(GPSLAT, GPSLOT);
+                    msg = masterHelp.SaveLocation(GPSLAT, GPSLOT, "A");
                 }
                 else
                 {
