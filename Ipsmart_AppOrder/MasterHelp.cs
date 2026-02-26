@@ -1199,7 +1199,7 @@ namespace Improvar
                 return null;
             }
         }
-        public string SaveLocation(string GPSLAT, string GPSLOT, string REMARKS = "")
+        public string SaveLocation(string GPSLAT, string GPSLOT, string REMARKS = "", string USERID = "", string MODULECD = "", string SESSIONNO = "", string CALLFRM = "")
         {
             try
             {
@@ -1241,10 +1241,31 @@ namespace Improvar
 
                     if (components != null)
                     {
+                        string UserID = "", Module_Code = "", SessionNo = "";
+                        if (CALLFRM.retStr() == "APP")
+                        {
+                            UserID = USERID;
+                            Module_Code = MODULECD;
+                            SessionNo = SESSIONNO;
+                        }
+                        else
+                        {
+                            UserID = CommVar.UserID();
+                            Module_Code = Module.Module_Code;
+                            SessionNo = CommVar.SessionNo();
+                        }
+
+                        //string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1, ";
+                        //sql += "premise,locality,city,pincode,state,country,FLAG2 ";
+                        //sql += ") ";
+                        //sql += "VALUES('" + CommVar.UserID() + "','" + Module.Module_Code + "','" + CommVar.SessionNo() + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + location.currentaddress + "','" + Cn.GetStaticIp() + "',";
+                        //sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "','" + REMARKS + "' ";
+                        //sql += ") ";
+
                         string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1, ";
                         sql += "premise,locality,city,pincode,state,country,FLAG2 ";
                         sql += ") ";
-                        sql += "VALUES('" + CommVar.UserID() + "','" + Module.Module_Code + "','" + CommVar.SessionNo() + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + location.currentaddress + "','" + Cn.GetStaticIp() + "',";
+                        sql += "VALUES('" + UserID + "','" + Module_Code + "','" + SessionNo + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + location.currentaddress + "','" + Cn.GetStaticIp() + "',";
                         sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "','" + REMARKS + "' ";
                         sql += ") ";
                         var res = SQLNonQuery(sql);

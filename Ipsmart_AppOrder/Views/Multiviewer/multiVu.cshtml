@@ -238,6 +238,51 @@
 
         }
     </script>
+    <script type="text/javascript">
+
+    function sendUserDataToAndroid() {
+
+        var userId = '@(CommVar.UserID() ?? "")';
+        var moduleCode = '@(Module.Module_Code ?? "")';
+        var sessionNo = '@(CommVar.SessionNo() ?? "")';
+        var compCode = '';
+        var locCode = '';
+
+        if (window.AndroidApp && AndroidApp.saveUserData) {
+
+            AndroidApp.saveUserData(
+                userId.toString(),
+                moduleCode.toString(),
+                sessionNo.toString(),
+                compCode.toString(),
+                locCode.toString()
+            );
+
+        } else {
+            console.log("Android interface not available");
+        }
+    }
+
+    function onDataSaved(status) {
+
+        console.log("Android Response: " + status);
+
+        if (status === "SUCCESS") {
+            console.log("Data saved successfully");
+        } else {
+            console.log("Error saving data");
+        }
+    }
+
+    // 🔥 WebView-safe page load
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            sendUserDataToAndroid();
+        }, 500);
+    });
+
+    </script>
+
 </head>
 <body>
     <div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
@@ -295,7 +340,7 @@
         <div class="row">
             <div class="col-md-6" style="width:auto;margin-top: 4px;">
                 <div class="editor-field">
-                    <input type="button" class="btn btn-info" style="padding:2px 2px 2px 2px;" value="Attendance" onclick="SaveAttendance()" />
+                    @*<input type="button" class="btn btn-info" style="padding:2px 2px 2px 2px;" value="Attendance" onclick="SaveAttendance()" />*@
                     @Html.HiddenFor(model => model.GPSLOT, new { id = "GPSLOT" })
                     @Html.HiddenFor(model => model.GPSLAT, new { id = "GPSLAT" })
                 </div>

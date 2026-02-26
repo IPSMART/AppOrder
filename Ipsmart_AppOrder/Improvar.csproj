@@ -305,6 +305,7 @@
     <Compile Include="Controllers\DOCPASS_AUTHController.cs" />
     <Compile Include="Controllers\Rep_DistOrderController.cs" />
     <Compile Include="Controllers\Rep_RetailerOrderController.cs" />
+    <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="Controllers\T_DistOrderController.cs" />
     <Compile Include="Controllers\T_DistOrderFilterController.cs" />
     <Compile Include="Controllers\T_RetailerOrderFilterController.cs" />
@@ -915,6 +916,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="DataSets\" />
     <Folder Include="UploadDocuments\" />
+    <Folder Include="Views\Tracking\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
