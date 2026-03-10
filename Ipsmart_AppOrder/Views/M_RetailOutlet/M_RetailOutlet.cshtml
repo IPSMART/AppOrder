@@ -475,6 +475,20 @@
                 }
             });
                 }
+                else if (res[0] == '2')
+                    {
+                    showCustomAlert('success', 'Data Edited Successfully!', function () {
+                        sessionStorage.setItem("reloadOnBack", "false");
+
+                        window.location.href = "@Url.Action("T_RetailerOrderFilter", "T_RetailerOrderFilter", new { US = Model.UNQSNO_ENCRYPTED })";
+                if (newWindow) {
+                    window.open('', '_self');
+                    window.close();
+                } else {
+                    showCustomAlert('info', "Popup blocked! Please allow popups for this website.");
+                }
+            });
+                }
                 else {
                     showCustomAlert('info', result);
                     $("#WaitingMode").hide();

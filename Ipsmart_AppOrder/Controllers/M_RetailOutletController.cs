@@ -465,7 +465,9 @@ namespace Improvar.Controllers
                         }
                         else if (VE.DefaultAction == "E")
                         {
-                            ContentFlg = "2";
+                            ContentFlg = "2~";
+                            TempData["DISTSLCD"] = VE.Dstbrslcd;
+                            TempData["RTLCD"] = MRETAILOUTLET.RTLCD;
                         }
                         return Content(ContentFlg);
 

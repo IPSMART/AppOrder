@@ -462,6 +462,28 @@ namespace Improvar.Controllers
 
             return Content("");
         }
+        public ActionResult OpenEditeRetailMaster(VMRetailOrder TSP, string rtlcd)
+        {
+            try
+            {
+                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CurSchema(UNQSNO));
+                var rtlcd_data = (from a in DB.M_RETAIL where a.RTLCD == rtlcd select a).ToList();
+                if (rtlcd_data.Count > 0)
+                {
+                    string url = Cn.CreateMenuUrl("M_RetailOutlet", "", "") + "&searchValue=" + rtlcd;
+                    return Content(url);
+                }
+                else
+                {
+                    return Content("0");
+                }
+            }
+            catch (Exception ex)
+            {
+                Cn.SaveException(ex, "");
+                return Content(ex.Message);
+            }
+        }
 
         public ActionResult SAVE(FormCollection FC, VMRetailOrder VE, string RTLAUTONO)
         {
