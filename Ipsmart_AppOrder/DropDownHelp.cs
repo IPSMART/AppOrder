@@ -246,7 +246,80 @@ namespace Improvar
             }
             return sllist;
         }
+        public List<ListSalesman> GetSalesmanforSelection()
+        {
+            string GCS = Cn.GCS();
+            List<ListSalesman> sllist = new List<ListSalesman>();
+            string tdt = System.DateTime.Now.Date.retDateStr();
+            string uid = CommVar.UserID();
+            string scmf = CommVar.FinSchema(UNQSNO), scm = CommVar.CurSchema(UNQSNO), scmp = CommVar.PaySchema(UNQSNO);
+            string valsrch = "";
+            string sql = "";
+            sql += "select distinct a.slmslcd,d.slnm slmslnm,d.gstno slmgstno,nvl(d.slarea,d.district) slmdistrict, a.effdt, a.enm, b.agslcd, c.slnm agslnm from ";
+            sql += "(select a.slmslcd, a.effdt, a.enm from( ";
+            sql += "select a.slmslcd, a.effdt, b.enm, ";
+            sql += "row_number() over(partition by a.slmslcd order by a.effdt desc) rno ";
+            sql += "from " + scm + ".m_slsmn_hdr a, " + scmp + ".m_empmas b ";
+            sql += "where a.slmslcd = b.empcd(+) and b.dol is null and ";
+            sql += "a.effdt <= to_date('" + tdt + "', 'dd/mm/yyyy')) a ";
+            sql += "where rno = 1) a, ";
+            sql += " ";
+            sql += "(select a.slmslcd, a.effdt, a.agslcd ";
+            sql += "from " + scm + ".m_slsmn_agent a ) b, ";
+            sql += "" + scmf + ".m_subleg c," + scmf + ".m_subleg d ";
+            sql += "where a.slmslcd = b.slmslcd(+) and a.effdt = b.effdt(+) and b.agslcd = c.slcd(+)  and a.slmslcd=d.slcd(+) ";
+            sql += "order by slmslcd, agslnm ";
+            DataTable tbl = masterHelp.SQLquery(sql);
 
+            sllist = (from DataRow a in tbl.Rows
+                      select new ListSalesman()
+                      {
+                          value = a["slmslcd"].retStr(),
+                          text = a["slmslnm"].retStr(),
+                      }).ToList();
+            return sllist;
+        }
+        public List<List_State> GetStateforSelection()
+        {
+            string GCS = Cn.GCS();
+            List<List_State> sllist = new List<List_State>();
+            //DataTable tbl = salesfunc.GetDistributor(tdt, SLMSLCD);
+            string COM = CommVar.CommSchema();
+
+            string sql = "";
+            sql = "select STATECD, STATENM ";
+            sql += "from " + COM + ".MS_STATE ";
+            sql += "order by STATENM ";
+            DataTable tbl = masterHelp.SQLquery(sql);
+
+            sllist = (from DataRow a in tbl.Rows
+                      select new List_State()
+                      {
+                          value = a["STATECD"].retStr(),
+                          text = a["STATENM"].retStr(),
+                      }).ToList();
+            return sllist;
+        }
+        public List<List_City> GetCityforSelection()
+        {
+            string GCS = Cn.GCS();
+            List<List_City> sllist = new List<List_City>();
+            string COM = CommVar.CurSchema(UNQSNO);
+
+            string sql = "";
+            sql = "select distinct CITY ";
+            sql += "from " + COM + ".M_RETAIL ";
+            sql += "order by CITY ";
+            DataTable tbl = masterHelp.SQLquery(sql);
+
+            sllist = (from DataRow a in tbl.Rows
+                      select new List_City()
+                      {
+                          value = a["CITY"].retStr(),
+                          text = a["CITY"].retStr(),
+                      }).ToList();
+            return sllist;
+        }
 
     }
 }

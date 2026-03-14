@@ -238,4 +238,19 @@ namespace Improvar.Models
         public string text { get; set; }
         public string value { get; set; }
     }
+    public class ListSalesman
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
+    public class List_City
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
+    public class List_State
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
 }

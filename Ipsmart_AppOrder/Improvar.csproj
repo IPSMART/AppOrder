@@ -305,6 +305,8 @@
     <Compile Include="Controllers\DOCPASS_AUTHController.cs" />
     <Compile Include="Controllers\Rep_DistOrderController.cs" />
     <Compile Include="Controllers\Rep_RetailerOrderController.cs" />
+    <Compile Include="Controllers\Rep_RetailOutletController.cs" />
+    <Compile Include="Controllers\Rep_SLM_DLYREPController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="Controllers\T_DistOrderController.cs" />
     <Compile Include="Controllers\T_DistOrderFilterController.cs" />
@@ -911,6 +913,8 @@
     <Content Include="Views\T_SLM_DLYREP\T_SLM_DLYREP.cshtml" />
     <Content Include="Views\Shared\_T_SLM_DLYREP.cshtml" />
     <Content Include="Views\Shared\_LayoutTransaction.cshtml" />
+    <Content Include="Views\Rep_SLM_DLYREP\Rep_SLM_DLYREP.cshtml" />
+    <Content Include="Views\Rep_RetailOutlet\Rep_RetailOutlet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

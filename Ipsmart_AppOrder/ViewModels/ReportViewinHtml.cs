@@ -80,5 +80,15 @@ namespace Improvar.ViewModels
         public string GroupName { get; set; }
         public string[] CollCode { get; set; }
         public string CollName { get; set; }
+        public string Slsmnnm { get; set; }
+        public string[] State { get; set; }
+        public string StateName { get; set; }
+        public string[] City { get; set; }
+        public string CityName { get; set; }
+        public string[] distributor { get; set; }
+        public string[] slcd { get; set; }
+        public List<List_City> List_City { get; set; }
+        public List<ListSalesman> ListSalesman { get; set; }
+        public List<List_State> List_State { get; set; }
     }
 }

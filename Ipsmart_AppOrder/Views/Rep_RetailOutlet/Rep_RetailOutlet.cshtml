@@ -1,0 +1,283 @@
+﻿@model Improvar.ViewModels.ReportViewinHtml
+@{
+    Layout = "~/Views/Shared/_LayoutReport.cshtml";
+    string PageControllerName = "Rep_RetailerOrder";
+    string US = Model?.UNQSNO_ENCRYPTED;
+
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        function formatResult(item) {
+            if (!item.id) return item.text;
+            var parts = item.text.split(String.fromCharCode(181));
+            return $('<div><strong>' + parts[0] + '</strong><br/><small>' + parts[1] + '</small></div>');
+        }
+
+        function formatSelection(item) {
+            return item.text.split(String.fromCharCode(181))[0];
+        }
+
+        $('#Dstbrslcd').select2({
+            width: '100%',
+            placeholder: "Select Distributor",
+            allowClear: true,
+            closeOnSelect: false,
+            templateResult: formatResult,
+            templateSelection: formatSelection,
+
+        });
+
+        $('#Dstbrslcd').change(function () {
+            var selectedTexts = $('#Dstbrslcd option:selected').map(function () {
+                return $(this).text();
+            }).get().join(', '); // You can change delimiter if needed
+            $('#Dstbrslnm').val(selectedTexts);
+        });
+
+        $('#slcd').select2({
+            width: '100%',
+            placeholder: "Select Salesman",
+            allowClear: true,
+            closeOnSelect: false,
+            templateResult: formatResult,
+            templateSelection: formatSelection,
+        });
+
+        $('#slcd').change(function () {
+            var selectedTexts = $('#slcd option:selected').map(function () {
+                return $(this).text();
+            }).get().join(', '); // You can change delimiter if needed
+            $('#Slsmnnm').val(selectedTexts);
+        });
+
+        $('#BrandCode').select2({
+            width: '100%',
+            placeholder: "Select Brand",
+            allowClear: true,
+            closeOnSelect: false,
+        });
+
+        $('#BrandCode').change(function () {
+
+            var selectedTexts = $('#BrandCode option:selected').map(function () {
+                return $(this).text();
+            }).get().join(', '); // You can change delimiter if needed
+
+            $('#BrandName').val(selectedTexts);
+
+        });
+
+        $('#State').select2({
+            width: '100%',
+            placeholder: "Select State",
+            allowClear: true,
+            closeOnSelect: false,
+        });
+
+        $('#State').change(function () {
+
+            var selectedTexts = $('#State option:selected').map(function () {
+                return $(this).text();
+            }).get().join(', '); // You can change delimiter if needed
+
+            $('#StateName').val(selectedTexts);
+
+        });
+
+        $('#City').select2({
+            width: '100%',
+            placeholder: "Select Collection",
+            allowClear: true,
+            closeOnSelect: false,
+        });
+
+        $('#City').change(function () {
+
+            var selectedTexts = $('#City option:selected').map(function () {
+                return $(this).text();
+            }).get().join(', '); // You can change delimiter if needed
+
+            $('#CityName').val(selectedTexts);
+
+        });
+    });
+</script>
+<script>
+    function BindRetailer() {
+        var Dstbrslcd = $("#Dstbrslcd").val();
+
+        $('#RetailerCode').empty().append('<option value="">Select Retailer</option>');
+        $.ajax({
+            url: "@Url.Action("BindRetailerData", PageControllerName)",
+            type: 'POST',
+        beforesend: $("#WaitingMode").show(),
+        data: { Distributor: Dstbrslcd },
+        success: function (result) {
+            $.each(result, function (index, ListRetailer) {
+                $('#RetailerCode').append('<option value="' + ListRetailer.value + '">' + ListRetailer.text + '</option>');
+            });
+            $('#RetailerCode').trigger('change'); // Refresh Select2
+            $("#WaitingMode").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
+    function BindGroup() {
+
+        $('#GroupCode').empty().append('<option value="">Select Group</option>');
+        $.ajax({
+            url: "@Url.Action("BindGroupData", PageControllerName)",
+            type: 'POST',
+        beforesend: $("#WaitingMode").show(),
+        data: $('form').serialize(),
+        success: function (result) {
+            $.each(result, function (index, ListGroup) {
+                $('#GroupCode').append('<option value="' + ListGroup.value + '">' + ListGroup.text + '</option>');
+            });
+            $('#GroupCode').trigger('change.select2'); // Refresh Select2
+            $("#WaitingMode").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
+    function BindCollection() {
+
+        $('#CollCode').empty().append('<option value="">Select Collection</option>');
+        $.ajax({
+            url: "@Url.Action("BindCollectionData", PageControllerName)",
+            type: 'POST',
+        beforesend: $("#WaitingMode").show(),
+        data: $('form').serialize(),
+        success: function (result) {
+            $.each(result, function (index, ListCollection) {
+                $('#CollCode').append('<option value="' + ListCollection.value + '">' + ListCollection.text + '</option>');
+            });
+            $('#CollCode').trigger('change.select2'); // Refresh Select2
+            $("#WaitingMode").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#WaitingMode").hide();
+            msgError(XMLHttpRequest.responseText);
+            $("body span h1").remove(); $("#msgbody_error style").remove();
+        }
+    });
+    }
+</script>
+
+@using (Html.BeginForm())
+{
+    if (Model.DefaultView == true)
+    {
+        @Html.HiddenFor(a => Model.maxdate)
+        @Html.HiddenFor(a => Model.mindate)
+        <div class="form-horizontal" style="padding-left:5px;padding-right:5px;">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" id="btnSave" value="@Url.Action("SAVE", PageControllerName)" />
+            <input type="hidden" id="MetalCode" value="@Url.Action("CheckCode", PageControllerName)" />
+            <input type="hidden" id="srhpnl" value="@Url.Action("SearchPannelData", PageControllerName)" />
+            <input type="hidden" id="add_doc_url" value="@Url.Action("AddDOCRow", PageControllerName )" />
+            <input type="hidden" id="del_doc_url" value="@Url.Action("DeleteDOCRow", PageControllerName )" />
+            @Html.HiddenFor(model => model.GEOLONGITUDE)
+            @Html.HiddenFor(model => model.GEOLATITUDE)
+            @*@Html.HiddenFor(model => model.GEOADDRESS)*@
+
+            @*<div class="row">
+                <div class="col-lg-2">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "Salesman Name")
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.DropDownListFor(model => model.slcd, new SelectList(Model.ListSalesman, "Value", "Text", Model.Slsmnnm), new { @class = "form-control select2", id = "slcd", multiple = "multiple" })
+                        @Html.HiddenFor(model => model.Slsmnnm, new { id = "Slsmnnm" })
+                    </div>
+                </div>
+            </div>*@
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "Distributor Name")
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.distributor, new SelectList(Model.ListDistributor, "Value", "Text", Model.Dstbrslcd), new { @class = "form-control select2", id = "Dstbrslcd", multiple = "multiple"})
+                        @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "Brand")
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.DropDownListFor(model => model.BrandCode, new SelectList(Model.ListBrand, "Value", "Text", Model.BrandCode), new { @class = "form-control select2", id = "BrandCode", multiple = "multiple" })
+                        @Html.HiddenFor(model => model.BrandName, new { id = "BrandName" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "State")
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.DropDownListFor(model => model.State, new SelectList(Model.List_State, "Value", "Text", Model.State), new { @class = "form-control select2", id = "State", multiple = "multiple"})
+                        @Html.HiddenFor(model => model.StateName, new { id = "StateName" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.Label("", "City")
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="editor-field" style="margin-top: 4px;">
+                        @Html.DropDownListFor(model => model.City, new SelectList(Model.List_City, "Value", "Text", Model.City), new { @class = "form-control select2", id = "City", multiple = "multiple" })
+                       @Html.HiddenFor(model => model.CityName, new { id = "CityName" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5" style="width:auto;">
+                    <div class="editor-label" style="margin-top: 0px;">
+                        <input type="submit" formtarget="_blank" name="Show_rep" value="Show Report" title="Show report in a new tab" class="btn btn-sm btn-info" />
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    }
+    else
+    {
+        @ViewBag.ErrorMessage
+    }
+
+    <div class="container">
+        <div id="helpDIV">
+
+        </div>
+    </div>
+}
+
+
