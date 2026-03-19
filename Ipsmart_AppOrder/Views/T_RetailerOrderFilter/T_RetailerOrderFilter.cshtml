@@ -1,6 +1,6 @@
 ﻿@model Improvar.ViewModels.VMRetailOrder
 @{
-    Layout = "~/Views/Shared/_LayoutReport.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     string PageControllerName = "T_RetailerOrderFilter";
     string US = Model?.UNQSNO_ENCRYPTED;
 
@@ -17,6 +17,9 @@
         sessionStorage.removeItem("reloadOnBack");
         location.reload();
     }
+    window.onload = function () {
+        document.getElementById("WaitingMode").style.display = "none";
+    };
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -124,13 +127,11 @@
         var Dstbrslcd = $("#Dstbrslcd").val();
         if (Dstbrslcd) {
             $("#BtnAddRtl").prop("disabled", false);
-            $("#BtnModiRtl").prop("disabled", false);
             //$('#BtnAddRtl').css('pointer-events', 'auto');
             //$('#BtnAddRtl').css('color', '#428bca');
         }
         else {
             $("#BtnAddRtl").prop("disabled", true);
-            $("#BtnModiRtl").prop("disabled", false);
             //$('#BtnAddRtl').css('pointer-events', 'none');
             //$('#BtnAddRtl').css('color', 'rgba(66, 139, 202, 0.55)');
         }
@@ -143,13 +144,11 @@
         var Dstbrslcd = $("#Dstbrslcd").val();
         if (Dstbrslcd) {
             $("#BtnAddRtl").prop("disabled", false);
-            $("#BtnModiRtl").prop("disabled", false);
             //$('#BtnAddRtl').css('pointer-events', 'auto');
             //$('#BtnAddRtl').css('color', '#428bca');
         }
         else {
             $("#BtnAddRtl").prop("disabled", true);
-            $("#BtnModiRtl").prop("disabled", false);
             //$('#BtnAddRtl').css('pointer-events', 'none');
             //$('#BtnAddRtl').css('color', 'rgba(66, 139, 202, 0.55)');
         }
@@ -320,6 +319,14 @@
 </script>
 <script>
     function ChkMailNumber() {
+        var RetailerCode = $("#RetailerCode").val();
+        if (RetailerCode) {
+            $("#BtnModiRtl").prop("disabled", false);
+        }
+        else {
+            $("#BtnModiRtl").prop("disabled", true);
+        }
+
         var selectedText = $('#RetailerCode option:selected').text();
         if (!selectedText || selectedText === "Select Retailer") {
             return;
@@ -404,7 +411,7 @@ function toggleExpand(el) {
                             @Html.Label("", "Retailer Name")
                             <b style="color:Red;">*</b>
                             <input type="button" style="margin-top: -10px;padding: 2px 7px 1px 7px;" onclick="RetailMaster()" class="btn btn-sm btn-info" value="Add" id="BtnAddRtl" />
-                            <input type="button" style="margin-top: -10px;padding: 2px 7px 1px 7px;" onclick="EditeRetailMaster()" class="btn btn-sm btn-info" value="Modify" id="BtnModiRtl" />
+                            <input type="button" style="margin-top: -10px;padding: 2px 7px 1px 7px;" onclick="EditeRetailMaster()" class="btn btn-sm btn-info" value="Modify" id="BtnModiRtl" disabled/>
 
                             @*<a onclick="RetailMaster();" style="pointer-events:none;color:#428bca8c" id="BtnAddRtl">
                                 <span class="glyphicon glyphicon-plus-sign" style="font-size:20px;margin-top:3px;"></span>

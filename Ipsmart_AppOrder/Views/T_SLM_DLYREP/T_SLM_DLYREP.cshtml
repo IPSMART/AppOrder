@@ -1,6 +1,6 @@
 ﻿@model Improvar.ViewModels.VM_SLMDLYREP
 @{
-    Layout = "~/Views/Shared/_LayoutTransaction.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     string PageControllerName = "T_SLM_DLYREP";
     string US = Model?.UNQSNO_ENCRYPTED;
 
@@ -155,6 +155,9 @@ table {
         sessionStorage.removeItem("reloadOnBack");
         location.reload();
     }
+    window.onload = function () {
+        document.getElementById("WaitingMode").style.display = "none";
+    };
 </script>
 <script type="text/javascript">
     $(document).ready(function () {

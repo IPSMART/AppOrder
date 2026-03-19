@@ -61,6 +61,7 @@ namespace Improvar.Controllers
                         VE.ListBrand = new List<ListBrand>();
                     }
                     VE.DefaultView = true;
+                    VE.Add = "N";
                     return View(VE);
 
                 }

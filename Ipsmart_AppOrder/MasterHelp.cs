@@ -1269,7 +1269,7 @@ namespace Improvar
                         sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "','" + REMARKS + "' ";
                         sql += ") ";
                         var res = SQLNonQuery(sql);
-                        msg = "Attendance Saved";
+                        msg = "Attendance Submitted";
                     }
                     else
                     {

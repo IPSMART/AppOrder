@@ -705,6 +705,11 @@
 <div class="container-fluid">
     <div class="truncate alert alert-info top" id="header-text" style="padding:5px;margin-bottom:0px;">
         <div class="row" id="headertitle" style="font-size: large;white-space:nowrap;">
+            <div class="menu" style="gap: 12px; flex-shrink: 0;">
+                <a onclick="BackPage();" style="border: 2px solid #f0ad4e;">
+                    <i class="fa fa-arrow-left fa-lg" style="color:#f0ad4e;"></i>
+                </a>
+            </div>
             <strong>@ViewBag.DistributorName @ViewBag.RetailerName</strong>
             <div class="menu" style="float:right; display: flex;gap: 12px;justify-content: flex-end;">
                 <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
@@ -753,7 +758,12 @@
         </div>
         <div class="footer" style="padding:5px;">
             <div class="quantity-row">
-                <button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-success" onclick="SaveData()" title="Add to Cart">Save <i class="fa fa-check-circle"></i></button>
+                <button type="button" class="bottombutton btn btn-success" onclick="return SaveData();">
+                    <i class="fa fa-save"></i> Save
+                </button>
+                <a onclick="Reload();" style="border: 2px solid #3a87ad;width:25px;"><i class="fa fa-refresh" style="color:#f0ad4e;font-size:25px;"></i></a>
+
+                @*<button type="button" style="margin-top: 2px;margin-left: 2px;padding: 2px 7px 1px 7px;" class="btn btn-sm btn-success" onclick="SaveData()" title="Add to Cart">Save <i class="fa fa-check-circle"></i></button>*@
             </div>
         </div>
         <div class="container">

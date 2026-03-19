@@ -1,6 +1,6 @@
 ﻿@model Improvar.ViewModels.VMDistOrder
 @{
-    Layout = "~/Views/Shared/_LayoutReport.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     string PageControllerName = "T_DistOrderFilter";
     string US = Model?.UNQSNO_ENCRYPTED;
 
@@ -12,6 +12,9 @@
         sessionStorage.removeItem("reloadOnBack");
         location.reload();
     }
+    window.onload = function () {
+        document.getElementById("WaitingMode").style.display = "none";
+    };
 </script>
 <script type="text/javascript">
     $(document).ready(function () {

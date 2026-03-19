@@ -1858,5 +1858,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+function BackPage() {
+    window.history.back();
+}
 
 

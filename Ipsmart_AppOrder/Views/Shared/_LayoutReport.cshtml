@@ -208,8 +208,13 @@
     <div class="container_box_outer">
         <div class="body-content container_box">
             @*required border*@
-            <div style="background-color: #d9edf7; border-color: #bce8f1;   height: 23px;  padding-left: 15px;padding-right: 15px;  vertical-align: middle;    font-size: medium; font-weight:bold;  color: #3a87ad;">
-                @ViewBag.formname
+            <div style="background-color: #d9edf7; border-color: #bce8f1;   height: 33px;  padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;  vertical-align: middle;    font-size: medium; font-weight:bold;  color: #3a87ad;">
+                <div class="menu" style="gap: 12px; flex-shrink: 0;">
+                    <a onclick="BackPage();" style="border: 2px solid #f0ad4e;">
+                        <i class="fa fa-arrow-left fa-lg" style="color:#f0ad4e;"></i>
+                    </a>
+                </div>
+                  @ViewBag.formname
                 @*<a href="../Home/Logout">
                         <span class="glyphicon glyphicon-off" style="font-size:medium;color:#dc0624f2;float:right;"></span>
                     </a>*@

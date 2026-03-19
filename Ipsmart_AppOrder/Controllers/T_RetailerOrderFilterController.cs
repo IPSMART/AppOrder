@@ -178,6 +178,7 @@ namespace Improvar.Controllers
                         VE.ListCollection = new List<ListCollection>();
                     }
                     VE.DefaultView = true;
+                    VE.Add = "N";
                     return View(VE);
 
                 }

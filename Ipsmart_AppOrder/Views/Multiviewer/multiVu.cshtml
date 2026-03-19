@@ -194,6 +194,59 @@
                 margin: 0 auto;
             }
     </style>
+    <style>
+        #menu {
+            list-style: none;
+            padding: 0;
+            width: 260px;
+            font-family: Segoe UI, Arial;
+        }
+
+        .folder {
+            padding: 10px;
+            background: #f7f7f7;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .sign {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            list-style: none;
+            padding-left: 30px;
+        }
+
+        .menu-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+            .menu-item:hover {
+                background: #f0f0f0;
+            }
+    </style>
+    <script>
+        window.addEventListener("pageshow", function (event) {
+            document.getElementById("WaitingMode").style.display = "none";
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("WaitingMode").style.display = "none";
+        });
+    </script>
     <script>
         function SaveAttendance() {
             $("#WaitingMode").show();
@@ -225,7 +278,7 @@
                     url: "@Url.Action("SaveAttendanceData", "Multiviewer")",
                     data: $('form').serialize() + "&GPSLAT=" + GPSLAT + "&GPSLOT=" + GPSLOT,
                     success: function (result) {
-                        showCustomAlert('info', result);
+                        showCustomAlert('success', result);
                         $("#WaitingMode").hide();
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -240,49 +293,68 @@
     </script>
     <script type="text/javascript">
 
-    function sendUserDataToAndroid() {
+        function sendUserDataToAndroid() {
 
-        var userId = '@(CommVar.UserID() ?? "")';
-        var moduleCode = '@(Module.Module_Code ?? "")';
-        var sessionNo = '@(CommVar.SessionNo() ?? "")';
-        var compCode = '';
-        var locCode = '';
+            var userId = '@(CommVar.UserID() ?? "")';
+            var moduleCode = '@(Module.Module_Code ?? "")';
+            var sessionNo = '@(CommVar.SessionNo() ?? "")';
+            var compCode = '';
+            var locCode = '';
 
-        if (window.AndroidApp && AndroidApp.saveUserData) {
+            if (window.AndroidApp && AndroidApp.saveUserData) {
 
-            AndroidApp.saveUserData(
-                userId.toString(),
-                moduleCode.toString(),
-                sessionNo.toString(),
-                compCode.toString(),
-                locCode.toString()
-            );
+                AndroidApp.saveUserData(
+                    userId.toString(),
+                    moduleCode.toString(),
+                    sessionNo.toString(),
+                    compCode.toString(),
+                    locCode.toString()
+                );
 
-        } else {
-            console.log("Android interface not available");
+            } else {
+                console.log("Android interface not available");
+            }
         }
-    }
 
-    function onDataSaved(status) {
+        function onDataSaved(status) {
 
-        console.log("Android Response: " + status);
+            console.log("Android Response: " + status);
 
-        if (status === "SUCCESS") {
-            console.log("Data saved successfully");
-        } else {
-            console.log("Error saving data");
+            if (status === "SUCCESS") {
+                console.log("Data saved successfully");
+            } else {
+                console.log("Error saving data");
+            }
         }
-    }
 
-    // 🔥 WebView-safe page load
-    document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-            sendUserDataToAndroid();
-        }, 500);
-    });
-
+        // 🔥 WebView-safe page load
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                sendUserDataToAndroid();
+            }, 500);
+        });
+        function openPage(url) {
+            document.getElementById("WaitingMode").style.display = "block";
+            window.location = url;
+        }
     </script>
+    <script>
+        function toggleMenu(el, id) {
 
+            var menu = document.getElementById(id);
+            var sign = el.querySelector(".sign");
+
+            if (menu.style.display === "none" || menu.style.display === "") {
+                menu.style.display = "block";
+                sign.innerHTML = "−";
+            }
+            else {
+                menu.style.display = "none";
+                sign.innerHTML = "+";
+            }
+
+        }
+    </script>
 </head>
 <body>
     <div id="WaitingMode" style="display:none; margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(16, 134, 16); z-index: 30001; opacity: 0.4;">
@@ -308,31 +380,26 @@
 
         <!-- Menu Items -->
         <ul id="menu">
-            <li onclick="window.open('@Url.Action("T_RetailerOrderFilter","T_RetailerOrderFilter")','_self')" class="menu-item">Retail Order</li>
-            <li onclick="window.open('@Url.Action("Rep_RetailerOrder","Rep_RetailerOrder")','_self')" class="menu-item">Retail Order Register</li>
-            <li onclick="window.open('@Url.Action("Rep_RetailOutlet","Rep_RetailOutlet")','_self')" class="menu-item">Retailer's Counter Report</li>
-            <li onclick="window.open('@Url.Action("T_DistOrderFilter","T_DistOrderFilter")','_self')" class="menu-item">Distributor Order</li>
-            <li onclick="window.open('@Url.Action("Rep_DistOrder","Rep_DistOrder")','_self')" class="menu-item">Distributor Order Register</li>
-            <li onclick="window.open('@Url.Action("T_SLM_DLYREP","T_SLM_DLYREP")','_self')" class="menu-item">Salesmen Daily Acitivity</li>
-            <li onclick="window.open('@Url.Action("Rep_SLM_DLYREP","Rep_SLM_DLYREP")','_self')" class="menu-item">Salesmen Daily Acitivity Report</li>
-            @*<li class="menu-item has-submenu">
-                    Products <i class="fas fa-chevron-down"></i>
-                    <ul class="submenu">
-                        <li>Electronics</li>
-                        <li>Clothing</li>
-                        <li>Accessories</li>
-                    </ul>
-                </li>
-                <li class="menu-item has-submenu">
-                    Services <i class="fas fa-chevron-down"></i>
-                    <ul class="submenu">
-                        <li>Consulting</li>
-                        <li>Support</li>
-                        <li>Training</li>
-                    </ul>
-                </li>
-                <li class="menu-item">About</li>
-                <li class="menu-item">Contact</li>*@
+
+            <li class="folder" onclick="toggleMenu(this,'trans')">
+                <span class="sign">−</span> Transactions
+            </li>
+            <ul id="trans" class="submenu" style="display:block;">
+                <li onclick="openPage('@Url.Action("T_RetailerOrderFilter","T_RetailerOrderFilter")')" class="menu-item">Retail Order</li>
+                <li onclick="openPage('@Url.Action("T_DistOrderFilter","T_DistOrderFilter")')" class="menu-item">Distributor Order</li>
+                <li onclick="openPage('@Url.Action("T_SLM_DLYREP","T_SLM_DLYREP")')" class="menu-item">Salesmen Daily Activity</li>
+            </ul>
+
+            <li class="folder" onclick="toggleMenu(this,'register')">
+                <span class="sign">+</span> Register / Reports
+            </li>
+            <ul id="register" class="submenu">
+                <li onclick="openPage('@Url.Action("Rep_RetailOutlet","Rep_RetailOutlet")')" class="menu-item">Retailer's Counter Report</li>
+                <li onclick="openPage('@Url.Action("Rep_RetailerOrder","Rep_RetailerOrder")')" class="menu-item">Retail Order Register</li>
+                <li onclick="openPage('@Url.Action("Rep_DistOrder","Rep_DistOrder")')" class="menu-item">Distributor Order Register</li>
+                <li onclick="openPage('@Url.Action("Rep_SLM_DLYREP","Rep_SLM_DLYREP")')" class="menu-item">Salesmen Daily Activity Report</li>
+            </ul>
+
         </ul>
     </div>
 
@@ -342,7 +409,7 @@
         <div class="row">
             <div class="col-md-6" style="width:auto;margin-top: 4px;">
                 <div class="editor-field">
-                    @*<input type="button" class="btn btn-info" style="padding:2px 2px 2px 2px;" value="Attendance" onclick="SaveAttendance()" />*@
+                    <input type="button" class="btn btn-info" style="padding:2px 2px 2px 2px;" value="Attendance" onclick="SaveAttendance()" />
                     @Html.HiddenFor(model => model.GPSLOT, new { id = "GPSLOT" })
                     @Html.HiddenFor(model => model.GPSLAT, new { id = "GPSLAT" })
                 </div>
@@ -376,9 +443,12 @@
 
         let startX = 0;
         let endX = 0;
+        let startY = 0;
+        let endY = 0;
 
         // Toggle sidebar open
         menuBtn.addEventListener('click', function (e) {
+
             e.stopPropagation();
             sidebar.classList.toggle('active');
         });
@@ -391,6 +461,7 @@
 
         // Close sidebar when clicking outside
         document.addEventListener('click', (e) => {
+
             if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
                 sidebar.classList.remove('active');
             }
@@ -398,6 +469,7 @@
 
         // Toggle submenus
         submenus.forEach(item => {
+
             item.addEventListener('click', (e) => {
                 e.stopPropagation(); // prevent sidebar from closing
                 const submenu = item.querySelector('.submenu');
@@ -406,27 +478,35 @@
         });
 
         // Close sidebar when clicking a normal menu item
-        menuItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (!item.classList.contains('has-submenu')) {
-                    sidebar.classList.remove('active');
-                }
-            });
-        });
+        //menuItems.forEach(item => {
+        //    item.addEventListener('click', () => {
+        //        if (!item.classList.contains('has-submenu')) {
+        //            sidebar.classList.remove('active');
+        //        }
+        //    });
+        //});
 
         /* SWIPE LEFT → CLOSE */
         sidebar.addEventListener('touchstart', function (e) {
             startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
         });
 
         sidebar.addEventListener('touchmove', function (e) {
             endX = e.touches[0].clientX;
+            endY = e.touches[0].clientY;
         });
 
         sidebar.addEventListener('touchend', function () {
-            if (startX - endX > 60) {   // swipe left distance
+
+            let diffX = startX - endX;
+            let diffY = Math.abs(startY - endY);
+
+            // close ONLY if horizontal swipe and big enough
+            if (diffX > 80 && diffY < 40) {
                 sidebar.classList.remove('active');
             }
+
         });
 
         // Search button functionality
