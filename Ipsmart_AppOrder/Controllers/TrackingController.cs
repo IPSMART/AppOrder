@@ -52,7 +52,7 @@ namespace Improvar.Controllers
                 string res = masterHelp.SaveLocation(lat.ToString(), lng.ToString(), "T", USERID, MODULECD, SESSIONNO, CALLFRM);
                 string filepath = @"C:/IPSMART/ErrorLog/" + "ERROR LOG " + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";   //Text File Name
 
-                Cn.SaveTextFile(res, "", filepath);
+                //Cn.SaveTextFile(res, "", filepath);
                 return Json(new { status = "OK" });
             }
             catch (Exception ex)
