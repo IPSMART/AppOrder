@@ -345,9 +345,21 @@ namespace Improvar.Controllers
         {
             try
             {
-                string msg = "";
+                ImprovarDB DB = new ImprovarDB(Cn.GetConnectionString(), CommVar.CommSchema());
+                string msg = "",sql = "";
+                string usr_id = CommVar.UserID();
+                string date = System.DateTime.Now.retDateStr(); 
                 if (GPSLAT.retStr() != "")
                 {
+                    sql = "select USER_ID, LOGDT from USER_APP_LOG ";
+                    sql += "where USER_ID = '" + usr_id + "' and TRUNC(LOGDT) = to_date('" + date + "','dd/mm/yyyy') ";
+                    DataTable tbl = masterHelp.SQLquery(sql);
+
+                    if (tbl.Rows.Count > 0)
+                    {
+                        msg = "Attendence Already Saved For: " + date + "";
+                        return Content(msg);
+                    }
                     msg = masterHelp.SaveLocation(GPSLAT, GPSLOT, "A");
                 }
                 else
