@@ -75,7 +75,10 @@ namespace Improvar.Controllers
                 string tdt1 = System.DateTime.Now.Date.retDateStr();
                 string uid = CommVar.UserID();
                 slmslcd = GetSalesman(tdt1, uid).retSqlformat();
-
+                if (slmslcd.retStr() == "")
+                {
+                    return Content("Please 'Salesmen Linkup with Agent/Brand' ");
+                }
                 string sql = "";
 
                 sql += "select c.docno,c.docdt,b.AUTONO, b.SLMSLCD,d.slnm SLMSLNM, a.SLNO, a.DTD, a.PLFROM, a.PLTO, a.MODETRAVEL, a.KMUPDN, " + Environment.NewLine;

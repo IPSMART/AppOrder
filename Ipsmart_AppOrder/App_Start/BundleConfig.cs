@@ -7,7 +7,7 @@ namespace Improvar
     {
         public static string MODCD = "S";
         public static string MODULE = "SALES";
-        public static string Module_Code = "SALES";
+        public static string Module_Code = "IPSMART_ESS";
         public static string Module_Name = "CRM Garment";
         public static string ContentVersion = "21";
     }

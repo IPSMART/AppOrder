@@ -119,6 +119,8 @@
 
 @using (Html.BeginForm())
 {
+    if (Model.DefaultView == true)
+    {
     @Html.HiddenFor(a => Model.maxdate)
     @Html.HiddenFor(a => Model.mindate)
     @Html.HiddenFor(model => model.Dstbrslnm, new { id = "Dstbrslnm" })
@@ -181,4 +183,9 @@
         <div id="helpDIV">
         </div>
     </div>
+    }
+    else
+    {
+        @ViewBag.ErrorMessage
+    }
 }
