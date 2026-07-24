@@ -34,7 +34,7 @@ namespace Improvar.Controllers
             ViewBag.Title = str;
             return View();
         }
-        public ActionResult Login()
+        public ActionResult Login(string AndroidId)
         {
             Connection Cn = new Connection();
             //Session.Clear();
@@ -110,6 +110,7 @@ namespace Improvar.Controllers
                     log.Password = Request.Cookies["Password"].Value;
                     log.REMEMBERME = Convert.ToBoolean(Request.Cookies["Rememberme"].Value);
                 }
+                log.AndroidId = AndroidId;
                 return View(log);
             }
             catch (Exception ex)
@@ -218,6 +219,8 @@ namespace Improvar.Controllers
                         Session.Add("LST_LOG_DT", dt);
                         Session.Add("Session_No", session_no[1]);
                         Session.Add("USER_TYPE", userType);
+                        Session.Add("ANDROID_ID", log.AndroidId);
+
                         if (log.REMEMBERME)
                         {
                             Response.Cookies["UserName"].Expires = DateTime.Now.AddDays(30);
@@ -334,6 +337,7 @@ namespace Improvar.Controllers
                         Session.Add("YEAR_CODE", tbl.Rows[0]["YEAR_CODE"].ToString());
                         Session.Add("IMPORT_TAG", tbl.Rows[0]["IMPORT_TAG"].ToString());
                         Session.Add("MIRROR_TAG", tbl.Rows[0]["MIRROR_TAG"].ToString());
+
                         sql = "";
                         sql = "select GSTNO, nvl(showloccd,loccd) showloccd from " + tbl.Rows[0]["fin_schema"].ToString() + ".M_loca a where loccd='" + LOCCD + "' and compcd='" + COMPCD + "'";
                         var dt1 = masterHelp.SQLquery(sql);
@@ -640,10 +644,15 @@ namespace Improvar.Controllers
                 }
 
                 string body = "Hi " + userdata.USER_NAME + ",<br/><br/><b>" + otp + "</b> is your OTP for forgot password on IPSMART ERP. Do not share with anyone. <br/><br/><br/> Thanks and regards<br/> IPSMART TEAM <BR/>PH: 033-4602-1119";
-                if (EmailControl.SendEmailfromIpsmart(userdata.EMAIL, "Forgot Password", body, "") == true)
+                string errmsg = EmailControl.SendEmailfromIpsmart(userdata.EMAIL, "Forgot Password", body, "");
+                if (errmsg == "")
                 {
                     //   otpsend = true;
                     msg += " Mail send to " + userdata.EMAIL;
+                }
+                else
+                {
+                    msg += errmsg;
                 }
                 Session["FORGOTOTP"] = otp;
                 return Content(msg);

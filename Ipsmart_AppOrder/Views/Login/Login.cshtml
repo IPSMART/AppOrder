@@ -142,7 +142,8 @@
                     @Html.HiddenFor(model => model.IP)
                     @Html.HiddenFor(model => model.latitude, new { id = "latitude" })
                     @Html.HiddenFor(model => model.longitude, new { id = "longitude" })
-                    <input type="hidden" id="locationReady" value="false" />
+                    @Html.HiddenFor(model => model.AndroidId, new { id = "AndroidId" })
+  <input type="hidden" id="locationReady" value="false" />
                     <br />
                     <br />
                     <br />

@@ -13,5 +13,7 @@ namespace Improvar.Models
         public string latitude { get; set; }
 
         public string longitude { get; set; }
+        public string AndroidId { get; set; }
+        
     }
 }

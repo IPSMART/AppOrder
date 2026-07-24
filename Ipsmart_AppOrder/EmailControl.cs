@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Improvar
 {
@@ -14,6 +15,7 @@ namespace Improvar
     {
         string CS = null;
         Connection Cn = new Connection();
+        MasterHelp Master_Help = new MasterHelp();
         string UNQSNO = CommVar.getQueryStringUNQSNO();
         public bool SendHtmlFormattedEmail(string recepientEmail, string subject, string emailTemplate, string[,] emailvar, List<Attachment> emailattachItem, string ccemail = "", string bccemail = "", string body = "", string sfemailid = "", string sfemailpw = "", string sfemailhost = "", string sfemailport = "", string sfemailssl = "")
         {
@@ -222,12 +224,19 @@ namespace Improvar
             }
             return AV;
         }
-        public bool SendEmailfromIpsmart(string recepientEmail, string subject, string body, string ccemail)
+        public string SendEmailfromIpsmart(string recepientEmail, string subject, string body, string ccemail)
         {
             using (MailMessage mailMessage = new MailMessage())
             {
                 try
                 {
+                    string sql = "select EMLPWD from IPSMART_POLICY";
+                    DataTable tbl = Master_Help.SQLquery(sql);
+                    string pwd = "";
+                    if (tbl != null && tbl.Rows.Count > 0)
+                    {
+                        pwd = tbl.Rows[0]["EMLPWD"].retStr();
+                    }
                     mailMessage.From = new MailAddress("ipsmart.erp@gmail.com");
                     mailMessage.Subject = subject;
                     mailMessage.Body = body;
@@ -238,18 +247,18 @@ namespace Improvar
                     smtp.EnableSsl = true;
                     System.Net.NetworkCredential NetworkCred = new System.Net.NetworkCredential();
                     NetworkCred.UserName = "ipsmart.erp@gmail.com";
-                    NetworkCred.Password = "cclowaeoiuukimqf";
+                    NetworkCred.Password = pwd;
                     smtp.UseDefaultCredentials = true;
                     smtp.Credentials = NetworkCred;
                     smtp.Port = 587;
                     smtp.Send(mailMessage);
                     smtp.Dispose();
-                    return true;
+                    return "";
                 }
                 catch (Exception ex)
                 {
                     Cn.SaveException(ex, "");
-                    return false;
+                    return ex.Message + ex.InnerException;
                 }
             }
         }      

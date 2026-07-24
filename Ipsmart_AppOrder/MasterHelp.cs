@@ -1199,12 +1199,12 @@ namespace Improvar
                 return null;
             }
         }
-        public string SaveLocation(string GPSLAT, string GPSLOT, string REMARKS = "", string USERID = "", string MODULECD = "", string SESSIONNO = "", string CALLFRM = "")
+        public string SaveLocation(string GPSLAT, string GPSLOT, string TRACKTYPE = "", string USERID = "", string MODULECD = "", string SESSIONNO = "", string CALLFRM = "", string REMARKS = "", string LOGDT = "", string AndroidId = "")
         {
             try
             {
-                string msg = "";
-                if (GPSLAT.retStr() != "")
+                string msg = "", currentaddress = "", premise = "", locality = "", City = "", Pincode = "", State = "", Country = "";
+                if (GPSLAT.retDbl() != 0 && GPSLOT.retDbl() != 0)
                 {
                     string GCS = Cn.GCS();
                     GeoLocation geoLocation = GetLocDet(GPSLAT, GPSLOT);
@@ -1241,19 +1241,7 @@ namespace Improvar
 
                     if (components != null)
                     {
-                        string UserID = "", Module_Code = "", SessionNo = "";
-                        if (CALLFRM.retStr() == "APP")
-                        {
-                            UserID = USERID;
-                            Module_Code = MODULECD;
-                            SessionNo = SESSIONNO;
-                        }
-                        else
-                        {
-                            UserID = CommVar.UserID();
-                            Module_Code = Module.Module_Code;
-                            SessionNo = CommVar.SessionNo();
-                        }
+
 
                         //string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1, ";
                         //sql += "premise,locality,city,pincode,state,country,FLAG2 ";
@@ -1261,15 +1249,13 @@ namespace Improvar
                         //sql += "VALUES('" + CommVar.UserID() + "','" + Module.Module_Code + "','" + CommVar.SessionNo() + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + location.currentaddress + "','" + Cn.GetStaticIp() + "',";
                         //sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "','" + REMARKS + "' ";
                         //sql += ") ";
-
-                        string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1, ";
-                        sql += "premise,locality,city,pincode,state,country,FLAG2 ";
-                        sql += ") ";
-                        sql += "VALUES('" + UserID + "','" + Module_Code + "','" + SessionNo + "',sysdate,'" + GPSLAT + "-" + GPSLOT + "','" + location.currentaddress + "','" + Cn.GetStaticIp() + "',";
-                        sql += "'" + location.premise + "','" + location.locality + "','" + location.City + "','" + location.Pincode + "','" + location.State + "','" + location.Country + "','" + REMARKS + "' ";
-                        sql += ") ";
-                        var res = SQLNonQuery(sql);
-                        msg = "Attendance Submitted";
+                        currentaddress = location.currentaddress;
+                        premise = location.premise;
+                        locality = location.locality;
+                        City = location.City;
+                        Pincode = location.Pincode;
+                        State = location.State;
+                        Country = location.Country;
                     }
                     else
                     {
@@ -1279,6 +1265,48 @@ namespace Improvar
                 else
                 {
                     msg = "Location is required.";
+                }
+
+                string UserID = "", Module_Code = "", SessionNo = "";
+                if (CALLFRM.retStr() == "APP")
+                {
+                    UserID = USERID;
+                    Module_Code = MODULECD;
+                    SessionNo = SESSIONNO;
+                }
+                else
+                {
+                    UserID = CommVar.UserID();
+                    Module_Code = Module.Module_Code;
+                    SessionNo = CommVar.SessionNo();
+                    AndroidId = System.Web.HttpContext.Current.Session["ANDROID_ID"].retStr();
+                }
+                if (AndroidId.retStr() == "")
+                {
+                    AndroidId = Cn.GetStaticIp();
+                }
+
+
+                string sql = "INSERT INTO IMPROVAR.USER_APP_LOG (USER_ID, MOD_NM, SESSION_NO, LOGDT, LOGGEO, LOGGEONAME, FLAG1, ";
+                sql += "premise,locality,city,pincode,state,country,FLAG2,REMARKS  ";
+                sql += ") ";
+                sql += "VALUES('" + UserID + "','" + Module_Code + "','" + SessionNo + "',";
+
+                if (CALLFRM.retStr() == "APP")
+                {
+                    sql += "TO_DATE('" + LOGDT + "', 'DD/MM/YYYY HH12:MI:SS AM')";
+                }
+                else
+                {
+                    sql += "sysdate";
+                }
+                sql += ",'" + GPSLAT + "-" + GPSLOT + "','" + currentaddress + "','" + AndroidId + "',";
+                sql += "'" + premise + "','" + locality + "','" + City + "','" + Pincode + "','" + State + "','" + Country + "','" + TRACKTYPE + "','" + REMARKS + "' ";
+                sql += ") ";
+                var res = SQLNonQuery(sql);
+                if (res.retStr() != "")
+                {
+                    msg = sql + " **** " + res;
                 }
                 return msg;
             }

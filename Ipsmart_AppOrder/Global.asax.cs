@@ -12,6 +12,7 @@ namespace Improvar
     {
         protected void Application_Start()
         {
+            System.Web.Routing.RouteTable.Routes.IgnoreRoute("{resource}.apk/{*pathInfo}");
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

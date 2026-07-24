@@ -352,7 +352,7 @@ namespace Improvar.Controllers
                 if (GPSLAT.retStr() != "")
                 {
                     sql = "select USER_ID, LOGDT from USER_APP_LOG ";
-                    sql += "where USER_ID = '" + usr_id + "' and TRUNC(LOGDT) = to_date('" + date + "','dd/mm/yyyy') ";
+                    sql += "where USER_ID = '" + usr_id + "' and TRUNC(LOGDT) = to_date('" + date + "','dd/mm/yyyy') and flag2='A' ";
                     DataTable tbl = masterHelp.SQLquery(sql);
 
                     if (tbl.Rows.Count > 0)
@@ -361,6 +361,10 @@ namespace Improvar.Controllers
                         return Content(msg);
                     }
                     msg = masterHelp.SaveLocation(GPSLAT, GPSLOT, "A");
+                    if (msg == "")
+                    {
+                        msg = "Attendence Saved";
+                    }
                 }
                 else
                 {
