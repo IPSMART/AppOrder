@@ -48,7 +48,8 @@
             z-index: 2;
             cursor: pointer;
         }
-          #docpopup_overlay {
+
+        #docpopup_overlay {
             position: fixed;
             display: block;
             width: 100%;
@@ -60,6 +61,7 @@
             background-color: rgba(0,0,0,0.5);
             z-index: 2;
         }
+
         #popup_overlay1 {
             position: fixed;
             display: block;
@@ -105,6 +107,27 @@
             transform: translate(-50%,-50%);
             -ms-transform: translate(-50%,-50%);
         }
+        .menu-report a {
+    text-align: center;
+    float: left;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    margin-right: 7px; /*space between*/
+    display: flex;
+    align-items: flex-start;
+    transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    text-decoration: none;
+}
+
+    .menu-report a i {
+        font-size: 15px;
+        align-self: center;
+        transition: all 0.4s;
+        -webkit-transition: all 0.4s;
+        margin: 0 auto;
+    }
     </style>
     @*<script>
             function findHeights() {
@@ -115,7 +138,7 @@
         </script>*@
     <script>
         function printd() {
-            $("#navhead").hide();
+            //$("#navhead").hide();
             window.print();
         }
     </script>
@@ -123,7 +146,7 @@
     <script>
         $(document).ready(function () {
             $(".bodyclass").dblclick(function () {
-                $("#navhead").hide();
+                //$("#navhead").hide();
             });
         });
     </script>
@@ -458,13 +481,13 @@
             mywindow.document.close();
         }
         function PopupPageclose(pname) {
-                $("#" + pname).hide(300);
-                if ($('#popup').html().length == 0) {
-                    $("body").css("overflow", "auto");
-                }
-                $('#popup').html("");
-                $('#popup').hide();
-                $("#" + pname).fadeOut();
+            $("#" + pname).hide(300);
+            if ($('#popup').html().length == 0) {
+                $("body").css("overflow", "auto");
+            }
+            $('#popup').html("");
+            $('#popup').hide();
+            $("#" + pname).fadeOut();
         }
     </script>
     <style>
@@ -663,13 +686,17 @@
             <input type="hidden" id="urlpopup" value="@Url.Action("POPUPSCREEN", "Rep_Trial_Zoom")" />
             <input type="hidden" id="urlpopup1" value="@Url.Action("POPUPSCREEN1", "Rep_Trial_Zoom")" />
             <input type="hidden" id="urlpopup2" value="@Url.Action("POPUPSCREEN1", "RPTViewer")" />
-            <div class="navbar navbar-inverse navbar-fixed-top dontprint" role="navigation" style="display:none;width:100%" id="navhead">
+            <div class="navbar navbar-inverse navbar-fixed-top dontprint" role="navigation" style="width:100%;background-color:#d9edf7;" id="navhead">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 @*<div id="d1" style="width:25%; display:inline-block;">*@
-                <div style="padding:1px 15px;display:inline-flex;">
-                    <span class="navbar-brand" style="font-family:Verdana;font-size:12px;color:#35eac9; display:inline-block;">Welcome  @Session["UR_ID"]</span>
-                    <span class="navbar-brand" style="font-family:Verdana;font-size:12px;color:#EEE; display:inline-block;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                    <span class="navbar-brand" style="font-family:Verdana;font-size:12px;color:#dcd106;cursor:pointer;display: inline-block;" title="Close window" onclick="winclose();">Close</span>
+                <div style="padding:10px 15px;display:inline-flex;">
+                    <div class="menu-report" style="gap: 12px; flex-shrink: 0;">
+                        <a onclick="BackPage();" style="border: 2px solid #f0ad4e;">
+                            <i class="fa fa-arrow-left fa-lg" style="color:#f0ad4e;"></i>
+                        </a>
+                    </div>
+                    @*<span class="navbar-brand" style="font-family:Verdana;font-size:12px;color:#EEE; display:inline-block;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                    <span class="navbar-brand" style="font-family:Verdana;font-size:12px;color:#dcd106;cursor:pointer;display: inline-block;" title="Close window" onclick="winclose();">Close</span>*@
                 </div>
                 @*</div>
                     <div id="d2" style="width:25%; display:inline-block;">*@
@@ -679,10 +706,13 @@
 
                     <div id="d3" style="width:49%; display:inline-block;">*@
                 @*<div class="rpt_header_btn_div" style="margin-top: 0px;padding-left: 10%;"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Download PDF" onclick="location.href='@Url.Action("GetPDF","RPTViewer")'"></i> </div>*@
-                <div class="rpt_header_btn_div"><i class="fa fa-file-excel-o" aria-hidden="true" title="Download Excel" onclick="location.href='@Url.Action("GetExcel", "RPTViewer")'"></i> </div>
+                <div class="rpt_header_btn_div" style="color:#3a87ad;font-size:25px;"><i class="fa fa-file-excel-o" aria-hidden="true" title="Download Excel" onclick="location.href='@Url.Action("GetExcel", "RPTViewer")'"></i> </div>
                 @*<div class="rpt_header_btn_div"><i class="fa fa-envelope-o" aria-hidden="true" title="Send Email"></i> </div>*@
-                <div class="rpt_header_btn_div"><i class="fa fa-print" aria-hidden="true" onclick="printd()" title="Print"></i> </div>
-                <img class="rpt_hdr_logo" style="margin-top: 5px;margin-right:15px;float:right;" src="~/Image/IPSMART-LOGO.png" />
+                <div class="rpt_header_btn_div" style="color:#3a87ad;font-size:25px;"><i class="fa fa-print" aria-hidden="true" onclick="printd()" title="Print"></i> </div>
+                <div class="menu-report"  style="float:right;display: flex; gap: 12px; flex-shrink: 0;padding-top:10px;">
+                    <a onclick="OpenHome();" style="border: 2px solid green;"><i class="fa fa-home fa-lg" style="color:green;"></i></a>
+                    <a href="../Home/Logout" style="border: 2px solid #dc0624f2;"><i class="fa fa-power-off fa-lg" style="color:#dc0624f2;"></i></a>
+                </div>
             </div>
             <center>
                 <menu class="menu no-print no-print-preview">
@@ -702,7 +732,7 @@
                             <button type="button" class="menu-btn" onclick="location.href='@Url.Action("GetPDF", "RPTViewer")'"> <i class="fa fa-file-pdf-o"></i> <span class="menu-text">Download to PDF</span> </button>
                         </li>*@
                 </menu>
-                <div name="as" id="as" style="padding:10px;">
+                <div name="as" id="as" style="padding:10px;margin-top: 33px;">
                     <div class="table-responsive" style="PADDING: 10PX;border:none;background-color: white;border-radius: 10px;">
                         @*<div class="table-responsive" style="overflow:auto;border:none;border-radius: 10px;">
                             <div style="width:fit-content;background-color: #f0f7fe;padding: 10px;border-radius: 6px;">*@
